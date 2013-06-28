@@ -1,0 +1,32 @@
+
+In order to compile the tool simply type "make".
+
+To obtain basic information about using the tool type "./amin_planner -help".
+
+For simple examples of use see the test scripts "test*.bash" in the "demo" 
+subdirectory.
+
+For several test examples as the one presented in the paper see files in 
+the "input" subdirectory. 
+Results of these tests are available in the "results" subdirectory.
+
+================================
+
+
+Ingredients required for successful compilation:
+
+
+1. Atd & Atdgen
+
+http://oss.wink.com/atdgen/
+
+Debian packages:
+libatd-ocaml libatd-ocaml-dev libatdgen-ocaml libatdgen-ocaml-dev
+
+2. OCamlgraph graph library
+
+http://ocamlgraph.lri.fr/index.en.html
+
+Debian packages:
+libocamlgraph-ocaml-dev
+

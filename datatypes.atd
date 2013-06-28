@@ -1,0 +1,35 @@
+(****************************************************************************)
+(*                                                                          *)
+(*    This file has been stolen from Zephyrus and then modified :-P         *)
+(*                                                                          *)
+(****************************************************************************)
+
+
+<doc text="Type definitions for naming.">
+
+type component_type_name = string
+type port_name           = string
+type component_name      = string
+type state_name          = string
+
+
+<doc text="Type definitions for Component Type.">
+
+type state_type = {
+	u_name : state_name;
+	~u_successors <ocaml default="[]"> : state_name list;
+	~u_provides <ocaml default="[]"> : port_name list;
+	~u_requires <ocaml default="[]"> : port_name list;
+}
+
+type automaton_type = state_type list <ocaml repr="array">
+
+type component_type = {
+  u_cname : component_type_name;
+	u_automaton :	automaton_type
+} 
+
+<doc text="Type definitions for Universe.">
+
+type universe = component_type list 
+
