@@ -1,0 +1,40 @@
+
+We generate the FULL G-GRAPH: 
+
+Generation nr.0: <B,state0>; <A,state0>
+Generation nr.1: <A,state0>_1; <B,state0>_1; <A,state1>
+Generation nr.2: <A,state1>_1; <B,state0>_2; <A,state0>_2; <B,state1>
+Generation nr.3: <B,state1>_1; <A,state0>_3; <B,state0>_3; <A,state1>_2; <A,state2>
+Generation nr.4: <A,state2>_1; <A,state1>_3; <B,state0>_4; <A,state0>_4; <B,state1>_2; <B,state2>
+
+BOTTOM-UP VISIT of the G-graph. For every node we choose origin node and providers.
+
+LINEARIZATION phase
+
+The linearized paths are the following:
+
+<A,state0> <A,state1> <A,state2> 
+
+<B,state0> <B,state1> <B,state2> 
+
+
+The INSTANCE LINES are the following:
+
+Instance b_1 : (C,state0) --<B,state0>--> (state0,state1) --<B,state1>--> (state1,state2) --<B,state2>--> (state2,D) 
+
+Instance a_0 : (C,state0) --<A,state0>--> (state0,state1) --<A,state1>--> (state1,state2) --<A,state2>--> (state2,D) 
+
+Next we ADD GO (blue) and RETURN (red) EDGES. 
+
+Now we perform a TOPOLOGICAL SORT.
+
+And finally the COMPUTED PLAN is:
+
+b_1 must perform actions: [Create instance]
+a_0 must perform actions: [Create instance]
+a_0 must perform actions: [Bind port p0_1 to instance b_1]  [Change state from state0 to state1]
+b_1 must perform actions: [Bind port p1_2 to instance a_0]  [Change state from state0 to state1]
+a_0 must perform actions: [Bind port p0_2 to instance b_1]  [Change state from state1 to state2]
+b_1 must perform actions: [Unbind port p0_1 from instance a_0]  [Change state from state1 to state2]
+0_2 to instance b_1]  [Change state from state1 to state2]
+b_1 must perform actions: [Unbind port p0_1 from instance a_0]  [Change state from state1 to state2]

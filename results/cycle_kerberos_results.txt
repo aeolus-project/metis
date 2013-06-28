@@ -1,0 +1,209 @@
+
+We generate the FULL G-GRAPH: 
+
+Generation nr.0: <open-ldap,uninst>; <krb5,uninst>
+Generation nr.1: <krb5,uninst>_1; <open-ldap,uninst>_1; <krb5,stage1>
+Generation nr.2: <krb5,stage1>_1; <open-ldap,uninst>_2; <krb5,uninst>_2; <open-ldap,normal>
+Generation nr.3: <open-ldap,normal>_1; <krb5,uninst>_3; <open-ldap,uninst>_3; <krb5,stage1>_2; <krb5,normal>
+
+BOTTOM-UP VISIT of the G-graph. For every node we choose origin node and providers.
+
+LINEARIZATION phase
+
+The linearized paths are the following:
+
+<open-ldap,uninst> <open-ldap,normal> 
+
+<open-ldap,uninst> 
+
+<krb5,uninst> <krb5,stage1> <krb5,normal> 
+
+
+The INSTANCE LINES are the following:
+
+Instance krb5 :
+krb5 (C,uninst) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<krb5,uninst>--> krb5 (uninst,stage1)
+
+krb5 (uninst,stage1) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<krb5,stage1>--> krb5 (stage1,normal)
+
+krb5 (stage1,normal) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<krb5,normal>--> krb5 (normal,D)
+
+krb5 (normal,D) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: { }
+
+Instance open-ldap :
+open-ldap (C,uninst) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<open-ldap,uninst>--> open-ldap (uninst,normal)
+
+open-ldap (uninst,normal) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<open-ldap,normal>--> open-ldap (normal,D)
+
+open-ldap (normal,D) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: { }
+
+Next we ADD GO (blue) and RETURN (red) EDGES. 
+
+
+Now the INSTANCE LINES WITH EDGES look like this:
+
+Instance krb5 :
+krb5 (C,uninst) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<krb5,uninst>--> krb5 (uninst,stage1)
+
+krb5 (uninst,stage1) nr.IN-edges =  1
+ GO EDGES: ---libkrb5-dev---> open-ldap (uninst,normal)
+ RETURN EDGES: 
+ INST EDGE: --<krb5,stage1>--> krb5 (stage1,normal)
+
+krb5 (stage1,normal) nr.IN-edges =  3
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<krb5,normal>--> krb5 (normal,D)
+
+krb5 (normal,D) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: ---libldap2-dev---> open-ldap (normal,D); ---ldap-uninst-p---> open-ldap (uninst,normal)
+ INST EDGE: { }
+
+Instance open-ldap :
+open-ldap (C,uninst) nr.IN-edges =  0
+ GO EDGES: ---ldap-uninst-p---> krb5 (stage1,normal)
+ RETURN EDGES: 
+ INST EDGE: --<open-ldap,uninst>--> open-ldap (uninst,normal)
+
+open-ldap (uninst,normal) nr.IN-edges =  3
+ GO EDGES: ---libldap2-dev---> krb5 (stage1,normal)
+ RETURN EDGES: 
+ INST EDGE: --<open-ldap,normal>--> open-ldap (normal,D)
+
+open-ldap (normal,D) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: ---libkrb5-dev---> krb5 (normal,D)
+ INST EDGE: { }
+
+
+********************** ORIGINAL CYCLES FOUND:
+open-ldap (C,uninst)
+ krb5 (C,uninst)
+ krb5 (uninst,stage1)
+ open-ldap (normal,D)  |  open-ldap (uninst,normal)  |  krb5 (normal,D)  |  krb5 (stage1,normal)
+
+
+********************** TRUE CYCLES KEPT:
+open-ldap (normal,D)  |  open-ldap (uninst,normal)  |  krb5 (normal,D)  |  krb5 (stage1,normal)
+
+Vertex chosen for splitting: open-ldap (uninst,normal)
+
+The instance line to be split must be:
+Instance open-ldap : open-ldap (C,uninst)  |  open-ldap (uninst,normal)  |  open-ldap (normal,D)
+
+Copy instance line:
+Instance open-ldap' : open-ldap' (C,uninst)  |  open-ldap' (uninst,D)
+
+Instance lines updated to: 
+Instance open-ldap' : open-ldap' (C,uninst)  |  open-ldap' (uninst,D)
+
+Instance krb5 : krb5 (C,uninst)  |  krb5 (uninst,stage1)  |  krb5 (stage1,normal)  |  krb5 (normal,D)
+
+Instance open-ldap : open-ldap (C,uninst)  |  open-ldap (uninst,normal)  |  open-ldap (normal,D)
+
+REDIRECTION OF GO/BLUE and RETURN/RED edges.
+RETURN/RED edge redirected towards: ---ldap-uninst-p---> open-ldap' (uninst,D)
+New GO/BLUE edge: open-ldap' (C,uninst) ---ldap-uninst-p---> krb5 (stage1,normal)
+Old GO/BLUE edge that has been removed: open-ldap (C,uninst) ---ldap-uninst-p---> krb5 (stage1,normal)
+
+
+********************** ORIGINAL CYCLES FOUND:
+open-ldap (C,uninst)
+ krb5 (C,uninst)
+ krb5 (uninst,stage1)
+ open-ldap (uninst,normal)
+ open-ldap' (C,uninst)
+ krb5 (stage1,normal)
+ open-ldap (normal,D)  |  krb5 (normal,D)
+ open-ldap' (uninst,D)
+
+
+********************** TRUE CYCLES KEPT:
+
+
+
+The INSTANCE LINES after splitting are the following:
+
+Instance open-ldap' :
+open-ldap' (C,uninst) nr.IN-edges =  0
+ GO EDGES: ---ldap-uninst-p---> krb5 (stage1,normal)
+ RETURN EDGES: 
+ INST EDGE: --<open-ldap,uninst>--> open-ldap' (uninst,D)
+
+open-ldap' (uninst,D) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: { }
+
+Instance krb5 :
+krb5 (C,uninst) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<krb5,uninst>--> krb5 (uninst,stage1)
+
+krb5 (uninst,stage1) nr.IN-edges =  1
+ GO EDGES: ---libkrb5-dev---> open-ldap (uninst,normal)
+ RETURN EDGES: 
+ INST EDGE: --<krb5,stage1>--> krb5 (stage1,normal)
+
+krb5 (stage1,normal) nr.IN-edges =  3
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<krb5,normal>--> krb5 (normal,D)
+
+krb5 (normal,D) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: ---libldap2-dev---> open-ldap (normal,D); ---ldap-uninst-p---> open-ldap' (uninst,D)
+ INST EDGE: { }
+
+Instance open-ldap :
+open-ldap (C,uninst) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<open-ldap,uninst>--> open-ldap (uninst,normal)
+
+open-ldap (uninst,normal) nr.IN-edges =  2
+ GO EDGES: ---libldap2-dev---> krb5 (stage1,normal)
+ RETURN EDGES: 
+ INST EDGE: --<open-ldap,normal>--> open-ldap (normal,D)
+
+open-ldap (normal,D) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: ---libkrb5-dev---> krb5 (normal,D)
+ INST EDGE: { }
+
+Now we perform a TOPOLOGICAL SORT.
+
+And finally the COMPUTED PLAN is:
+
+open-ldap' must perform actions: [Bind port ldap-uninst-p to instance krb5]  [Create instance]
+krb5 must perform actions: [Create instance]
+open-ldap must perform actions: [Create instance]
+krb5 must perform actions: [Bind port libkrb5-dev to instance open-ldap]  [Change state from uninst to stage1]
+open-ldap must perform actions: [Bind port libldap2-dev to instance krb5]  [Change state from uninst to normal]
+krb5 must perform actions: [Change state from stage1 to normal]

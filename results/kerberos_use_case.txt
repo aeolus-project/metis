@@ -1,0 +1,35 @@
+
+We generate the FULL G-GRAPH: 
+
+Generation nr.0: <open-ldap,0>; <krb5,0>
+Generation nr.1: <krb5,0>_1; <open-ldap,0>_1; <krb5,1>
+Generation nr.2: <krb5,1>_1; <open-ldap,0>_2; <krb5,0>_2; <open-ldap,1>
+Generation nr.3: <open-ldap,1>_1; <krb5,0>_3; <open-ldap,0>_3; <krb5,1>_2; <krb5,2>
+
+BOTTOM-UP VISIT of the G-graph. For every node we choose origin node and providers.
+
+LINEARIZATION phase
+
+The linearized paths are the following:
+
+<open-ldap,0> <open-ldap,1> 
+
+<krb5,0> <krb5,1> <krb5,2> 
+
+
+The INSTANCE LINES are the following:
+
+Instance krb5_1 : (C,0) --<krb5,0>--> (0,1) --<krb5,1>--> (1,2) --<krb5,2>--> (2,D) 
+
+Instance open-ldap_0 : (C,0) --<open-ldap,0>--> (0,1) --<open-ldap,1>--> (1,D) 
+
+Next we ADD GO (blue) and RETURN (red) EDGES. 
+
+Now we perform a TOPOLOGICAL SORT.
+
+And finally the COMPUTED PLAN is:
+
+krb5_1 must perform actions: [Create instance]
+open-ldap_0 must perform actions: [Create instance]
+krb5_1 must perform actions: [Bind port libkrb5-dev to instance open-ldap_0]  [Change state from 0 to 1]
+open-ldap_0 must perform actions: [Bind port libldap2-dev to instance krb5_1]  [Change state from 0 to 1]

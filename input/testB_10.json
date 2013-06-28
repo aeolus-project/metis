@@ -1,0 +1,236 @@
+[
+	{
+		"name" : "c0",
+		"automaton" :
+			[
+				{
+					"id" : 0,
+					"successors" : [1],
+					"provides" : [],
+					"requires" : []
+				},
+				{
+					"id" : 1,
+					"successors" : [],
+					"provides" : ["p0_2"],
+					"requires" : ["p1_1"]
+				}
+			]
+	},
+	{
+		"name" : "c1",
+		"automaton" :
+			[
+				{
+					"id" : 0,
+					"successors" : [1],
+					"provides" : [],
+					"requires" : []
+				},
+				{
+					"id" : 1,
+					"successors" : [2],
+					"provides" : ["p1_1"],
+					"requires" : ["p2_1"]
+				},
+				{
+					"id" : 2,
+					"successors" : [],
+					"provides" : ["p1_2", "p1_1"],
+					"requires" : ["p0_2"]
+				}
+			]
+	},
+	{
+		"name" : "c2",
+		"automaton" :
+			[
+				{
+					"id" : 0,
+					"successors" : [1],
+					"provides" : [],
+					"requires" : []
+				},
+				{
+					"id" : 1,
+					"successors" : [2],
+					"provides" : ["p2_1"],
+					"requires" : ["p3_1"]
+				},
+				{
+					"id" : 2,
+					"successors" : [],
+					"provides" : ["p2_2", "p2_1"],
+					"requires" : ["p1_2"]
+				}
+			]
+	},
+	{
+		"name" : "c3",
+		"automaton" :
+			[
+				{
+					"id" : 0,
+					"successors" : [1],
+					"provides" : [],
+					"requires" : []
+				},
+				{
+					"id" : 1,
+					"successors" : [2],
+					"provides" : ["p3_1"],
+					"requires" : ["p4_1"]
+				},
+				{
+					"id" : 2,
+					"successors" : [],
+					"provides" : ["p3_2", "p3_1"],
+					"requires" : ["p2_2"]
+				}
+			]
+	},
+	{
+		"name" : "c4",
+		"automaton" :
+			[
+				{
+					"id" : 0,
+					"successors" : [1],
+					"provides" : [],
+					"requires" : []
+				},
+				{
+					"id" : 1,
+					"successors" : [2],
+					"provides" : ["p4_1"],
+					"requires" : ["p5_1"]
+				},
+				{
+					"id" : 2,
+					"successors" : [],
+					"provides" : ["p4_2", "p4_1"],
+					"requires" : ["p3_2"]
+				}
+			]
+	},
+	{
+		"name" : "c5",
+		"automaton" :
+			[
+				{
+					"id" : 0,
+					"successors" : [1],
+					"provides" : [],
+					"requires" : []
+				},
+				{
+					"id" : 1,
+					"successors" : [2],
+					"provides" : ["p5_1"],
+					"requires" : ["p6_1"]
+				},
+				{
+					"id" : 2,
+					"successors" : [],
+					"provides" : ["p5_2", "p5_1"],
+					"requires" : ["p4_2"]
+				}
+			]
+	},
+	{
+		"name" : "c6",
+		"automaton" :
+			[
+				{
+					"id" : 0,
+					"successors" : [1],
+					"provides" : [],
+					"requires" : []
+				},
+				{
+					"id" : 1,
+					"successors" : [2],
+					"provides" : ["p6_1"],
+					"requires" : ["p7_1"]
+				},
+				{
+					"id" : 2,
+					"successors" : [],
+					"provides" : ["p6_2", "p6_1"],
+					"requires" : ["p5_2"]
+				}
+			]
+	},
+	{
+		"name" : "c7",
+		"automaton" :
+			[
+				{
+					"id" : 0,
+					"successors" : [1],
+					"provides" : [],
+					"requires" : []
+				},
+				{
+					"id" : 1,
+					"successors" : [2],
+					"provides" : ["p7_1"],
+					"requires" : ["p8_1"]
+				},
+				{
+					"id" : 2,
+					"successors" : [],
+					"provides" : ["p7_2", "p7_1"],
+					"requires" : ["p6_2"]
+				}
+			]
+	},
+	{
+		"name" : "c8",
+		"automaton" :
+			[
+				{
+					"id" : 0,
+					"successors" : [1],
+					"provides" : [],
+					"requires" : []
+				},
+				{
+					"id" : 1,
+					"successors" : [2],
+					"provides" : ["p8_1"],
+					"requires" : ["p9_1"]
+				},
+				{
+					"id" : 2,
+					"successors" : [],
+					"provides" : ["p8_2", "p8_1"],
+					"requires" : ["p7_2"]
+				}
+			]
+	},
+	{
+		"name" : "c9",
+		"automaton" :
+			[
+				{
+					"id" : 0,
+					"successors" : [1],
+					"provides" : [],
+					"requires" : []
+				},
+				{
+					"id" : 1,
+					"successors" : [2],
+					"provides" : ["p9_1"],
+					"requires" : []
+				},
+				{
+					"id" : 2,
+					"successors" : [],
+					"provides" : ["p9_1"],
+					"requires" : ["p8_2"]
+				}
+			]
+	}
+]

@@ -1,0 +1,74 @@
+[
+	{
+		"name" : "c0",
+		"automaton" :
+			[
+				{
+					"id" : 0,
+					"successors" : [1],
+					"provides" : [],
+					"requires" : []
+				},
+				{
+					"id" : 1,
+					"successors" : [2],
+					"provides" : ["p0_2"], <----- non deve esserci
+					"requires" : ["p1_1"] 
+				},
+				{
+					"id" : 2,
+					"successors" : [],
+					"provides" : ["p0_2"],
+					"requires" : []
+				}
+			]
+	},
+	{
+		"name" : "c1",
+		"automaton" :
+			[
+				{
+					"id" : 0,
+					"successors" : [1],
+					"provides" : [],
+					"requires" : []
+				},
+				{
+					"id" : 1,
+					"successors" : [2],
+					"provides" : ["p1_1"],
+					"requires" : ["p2_1"]
+				},
+				{
+					"id" : 2,
+					"successors" : [],
+					"provides" : ["p1_2"], <------ bisogna aggiungere anche "p1_1"
+					"requires" : ["p0_2"]
+				}
+			]
+	},
+	{
+		"name" : "c2",
+		"automaton" :
+			[
+				{
+					"id" : 0,
+					"successors" : [1],
+					"provides" : [],
+					"requires" : []
+				},
+				{
+					"id" : 1,
+					"successors" : [2],
+					"provides" : ["p2_1"],
+					"requires" : []
+				},
+				{
+					"id" : 2,
+					"successors" : [],
+					"provides" : ["p2_1"],
+					"requires" : ["p1_2"]
+				}
+			]
+	}
+]

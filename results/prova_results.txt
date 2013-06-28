@@ -1,0 +1,345 @@
+
+We generate the FULL G-GRAPH: 
+
+Generation nr.0: <C3,s0>; <C2,s0>; <C1,s0>; <C0,s0>
+Generation nr.1: <C0,s0>_1; <C1,s0>_1; <C2,s0>_1; <C3,s0>_1; <C3,s1>
+Generation nr.2: <C3,s1>_1; <C3,s0>_2; <C2,s0>_2; <C1,s0>_2; <C0,s0>_2; <C2,s1>
+Generation nr.3: <C2,s1>_1; <C0,s0>_3; <C1,s0>_3; <C2,s0>_3; <C3,s0>_3; <C3,s1>_2; <C1,s1>
+Generation nr.4: <C1,s1>_1; <C3,s1>_3; <C3,s0>_4; <C2,s0>_4; <C1,s0>_4; <C0,s0>_4; <C2,s1>_2; <C0,s1>
+Generation nr.5: <C0,s1>_1; <C2,s1>_3; <C0,s0>_5; <C1,s0>_5; <C2,s0>_5; <C3,s0>_5; <C3,s1>_4; <C1,s1>_2; <C1,s2>
+Generation nr.6: <C1,s2>_1; <C1,s1>_3; <C3,s1>_5; <C3,s0>_6; <C2,s0>_6; <C1,s0>_6; <C0,s0>_6; <C2,s1>_4; <C0,s1>_2; <C2,s2>
+Generation nr.7: <C2,s2>_1; <C0,s1>_3; <C2,s1>_5; <C0,s0>_7; <C1,s0>_7; <C2,s0>_7; <C3,s0>_7; <C3,s1>_6; <C1,s1>_4; <C1,s2>_2; <C3,s2>
+
+BOTTOM-UP VISIT of the G-graph. For every node we choose origin node and providers.
+
+LINEARIZATION phase
+
+The linearized paths are the following:
+
+<C0,s0> <C0,s1> 
+
+<C1,s0> <C1,s1> <C1,s2> 
+
+<C2,s0> <C2,s1> <C2,s2> 
+
+<C3,s0> <C3,s1> <C3,s2> 
+
+
+The INSTANCE LINES are the following:
+
+Instance c3 :
+c3 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C3,s0>--> c3 (s0,s1)
+
+c3 (s0,s1) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C3,s1>--> c3 (s1,s2)
+
+c3 (s1,s2) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C3,s2>--> c3 (s2,D)
+
+c3 (s2,D) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: { }
+
+Instance c2 :
+c2 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C2,s0>--> c2 (s0,s1)
+
+c2 (s0,s1) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C2,s1>--> c2 (s1,s2)
+
+c2 (s1,s2) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C2,s2>--> c2 (s2,D)
+
+c2 (s2,D) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: { }
+
+Instance c1 :
+c1 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C1,s0>--> c1 (s0,s1)
+
+c1 (s0,s1) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C1,s1>--> c1 (s1,s2)
+
+c1 (s1,s2) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C1,s2>--> c1 (s2,D)
+
+c1 (s2,D) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: { }
+
+Instance c0 :
+c0 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C0,s0>--> c0 (s0,s1)
+
+c0 (s0,s1) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C0,s1>--> c0 (s1,D)
+
+c0 (s1,D) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: { }
+
+Next we ADD GO (blue) and RETURN (red) EDGES. 
+
+
+Now the INSTANCE LINES WITH EDGES look like this:
+
+Instance c3 :
+c3 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C3,s0>--> c3 (s0,s1)
+
+c3 (s0,s1) nr.IN-edges =  1
+ GO EDGES: ---p3_1---> c2 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C3,s1>--> c3 (s1,s2)
+
+c3 (s1,s2) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C3,s2>--> c3 (s2,D)
+
+c3 (s2,D) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: ---p2_2---> c2 (s2,D)
+ INST EDGE: { }
+
+Instance c2 :
+c2 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C2,s0>--> c2 (s0,s1)
+
+c2 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p2_1---> c1 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C2,s1>--> c2 (s1,s2)
+
+c2 (s1,s2) nr.IN-edges =  2
+ GO EDGES: ---p2_2---> c3 (s1,s2)
+ RETURN EDGES: ---p3_1---> c3 (s2,D)
+ INST EDGE: --<C2,s2>--> c2 (s2,D)
+
+c2 (s2,D) nr.IN-edges =  3
+ GO EDGES: 
+ RETURN EDGES: ---p1_2---> c1 (s2,D)
+ INST EDGE: { }
+
+Instance c1 :
+c1 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C1,s0>--> c1 (s0,s1)
+
+c1 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p1_1---> c0 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C1,s1>--> c1 (s1,s2)
+
+c1 (s1,s2) nr.IN-edges =  3
+ GO EDGES: ---p1_2---> c2 (s1,s2)
+ RETURN EDGES: ---p2_1---> c2 (s2,D)
+ INST EDGE: --<C1,s2>--> c1 (s2,D)
+
+c1 (s2,D) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: ---p0_2---> c0 (s1,D)
+ INST EDGE: { }
+
+Instance c0 :
+c0 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C0,s0>--> c0 (s0,s1)
+
+c0 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p0_2---> c1 (s1,s2)
+ RETURN EDGES: 
+ INST EDGE: --<C0,s1>--> c0 (s1,D)
+
+c0 (s1,D) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: ---p1_1---> c1 (s1,s2)
+ INST EDGE: { }
+
+
+********************** TRUE CYCLES KEPT:
+c0 (s1,D)  |  c1 (s2,D)  |  c1 (s1,s2)  |  c2 (s2,D)  |  c2 (s1,s2)  |  c3 (s2,D)  |  c3 (s1,s2)
+
+Vertex chosen for splitting: c1 (s1,s2)
+
+The instance line to be split must be:
+Instance c1 : c1 (C,s0)  |  c1 (s0,s1)  |  c1 (s1,s2)  |  c1 (s2,D)
+
+Copy instance line:
+Instance c1' : c1' (C,s0)  |  c1' (s0,s1)  |  c1' (s1,D)
+
+Instance lines updated to: 
+Instance c1' : c1' (C,s0)  |  c1' (s0,s1)  |  c1' (s1,D)
+
+Instance c3 : c3 (C,s0)  |  c3 (s0,s1)  |  c3 (s1,s2)  |  c3 (s2,D)
+
+Instance c2 : c2 (C,s0)  |  c2 (s0,s1)  |  c2 (s1,s2)  |  c2 (s2,D)
+
+Instance c1 : c1 (C,s0)  |  c1 (s0,s1)  |  c1 (s1,s2)  |  c1 (s2,D)
+
+Instance c0 : c0 (C,s0)  |  c0 (s0,s1)  |  c0 (s1,D)
+
+REDIRECTION OF GO/BLUE and RETURN/RED edges.
+RETURN/RED edge redirected towards: ---p1_1---> c1' (s1,D)
+New GO/BLUE edge: c1' (s0,s1) ---p1_1---> c0 (s0,s1)
+Old GO/BLUE edge that has been removed: c1 (s0,s1) ---p1_1---> c0 (s0,s1)
+
+FIX EDGES to/from COPY.
+The splitted meaningful vertices are the following: c1 (C,s0)  |  c1 (s0,s1)
+added the following BLUE/GO edge: c2 (s0,s1) ---p2_1---> c1' (s0,s1)
+added the following RED/RETURN edge: c1' (s1,D) ---p2_1---> c2 (s2,D)
+
+
+********************** TRUE CYCLES KEPT:
+
+
+
+The INSTANCE LINES after splitting are the following:
+
+Instance c1' :
+c1' (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C1,s0>--> c1' (s0,s1)
+
+c1' (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p1_1---> c0 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C1,s1>--> c1' (s1,D)
+
+c1' (s1,D) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: ---p2_1---> c2 (s2,D)
+ INST EDGE: { }
+
+Instance c3 :
+c3 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C3,s0>--> c3 (s0,s1)
+
+c3 (s0,s1) nr.IN-edges =  1
+ GO EDGES: ---p3_1---> c2 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C3,s1>--> c3 (s1,s2)
+
+c3 (s1,s2) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C3,s2>--> c3 (s2,D)
+
+c3 (s2,D) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: ---p2_2---> c2 (s2,D)
+ INST EDGE: { }
+
+Instance c2 :
+c2 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C2,s0>--> c2 (s0,s1)
+
+c2 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p2_1---> c1' (s0,s1); ---p2_1---> c1 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C2,s1>--> c2 (s1,s2)
+
+c2 (s1,s2) nr.IN-edges =  2
+ GO EDGES: ---p2_2---> c3 (s1,s2)
+ RETURN EDGES: ---p3_1---> c3 (s2,D)
+ INST EDGE: --<C2,s2>--> c2 (s2,D)
+
+c2 (s2,D) nr.IN-edges =  4
+ GO EDGES: 
+ RETURN EDGES: ---p1_2---> c1 (s2,D)
+ INST EDGE: { }
+
+Instance c1 :
+c1 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C1,s0>--> c1 (s0,s1)
+
+c1 (s0,s1) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C1,s1>--> c1 (s1,s2)
+
+c1 (s1,s2) nr.IN-edges =  2
+ GO EDGES: ---p1_2---> c2 (s1,s2)
+ RETURN EDGES: ---p2_1---> c2 (s2,D)
+ INST EDGE: --<C1,s2>--> c1 (s2,D)
+
+c1 (s2,D) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: ---p0_2---> c0 (s1,D)
+ INST EDGE: { }
+
+Instance c0 :
+c0 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C0,s0>--> c0 (s0,s1)
+
+c0 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p0_2---> c1 (s1,s2)
+ RETURN EDGES: 
+ INST EDGE: --<C0,s1>--> c0 (s1,D)
+
+c0 (s1,D) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: ---p1_1---> c1' (s1,D)
+ INST EDGE: { }
+
+Now we perform a TOPOLOGICAL SORT.
+
+And finally the COMPUTED PLAN is:
+
+c1' must perform actions: [Create instance]
+c3 must perform actions: [Create instance]
+c2 must perform actions: [Create instance]
+c1 must perform actions: [Create instance]
+c0 must perform actions: [Create instance]
+c3 must perform actions: [Bind port p3_1 to instance c2]  [Change state from s0 to s1]
+c2 must perform actions: [Bind port p2_1 to instance c1']  [Bind port p2_1 to instance c1]  [Change state from s0 to s1]
+c1' must perform actions: [Bind port p1_1 to instance c0]  [Change state from s0 to s1]
+c1 must perform actions: [Change state from s0 to s1]
+c0 must perform actions: [Bind port p0_2 to instance c1]  [Change state from s0 to s1]
+c1 must perform actions: [Unbind port p2_1 from instance c2]  [Bind port p1_2 to instance c2]  [Change state from s1 to s2]
+c2 must perform actions: [Unbind port p3_1 from instance c3]  [Bind port p2_2 to instance c3]  [Change state from s1 to s2]
+c3 must perform actions: [Change state from s1 to s2]
+c3 must perform actions: [Stop]

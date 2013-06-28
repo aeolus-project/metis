@@ -1,0 +1,110 @@
+[
+	{
+		"name" : "Master",
+		"automaton" :
+			[
+				{
+					"id" : "Serving",
+					"successors" : ["ServingAuthRequest"],
+					"provides" : [],
+					"requires" : []
+				},
+				{
+					"id" : "ServingAuthRequest",
+					"successors" : ["ServingAuthGrant"],
+					"provides" : [],
+					"requires" : ["auth0"]
+				},
+				{
+					"id" : "ServingAuthGrant",
+					"successors" : ["Serving"],
+					"provides" : ["auth1"],
+					"requires" : []
+				}
+			]
+	},
+	{
+		"name" : "Slave",
+		"automaton" :
+			[
+				{
+					"id" : "Uninst",
+					"successors" : ["Inst"],
+					"provides" : [],
+					"requires" : []
+				},
+				{
+					"id" : "Inst",
+					"successors" : ["Configure"],
+					"provides" : [],
+					"requires" : []
+				},
+				{
+					"id" : "Configure",
+					"successors" : ["ReceiveDump"],
+					"provides" : [],
+					"requires" : []
+				},
+				{
+					"id" : "ReceiveDump",
+					"successors" : ["DumpDone"],
+					"provides" : [],
+					"requires" : ["dump0"]
+				},
+				{
+					"id" : "DumpDone",
+					"successors" : ["Running"],
+					"provides" : ["dump1"],
+					"requires" : []
+				},
+				{
+					"id" : "Running",
+					"successors" : ["RunningWithDump"],
+					"provides" : [],
+					"requires" : []
+				},
+				{
+					"id" : "RunningWithDump",
+					"successors" : ["RunningAuthReq"],
+					"provides" : [],
+					"requires" : []
+				},
+				{
+					"id" : "RunningAuthReq",
+					"successors" : ["RunningAuthOK"],
+					"provides" : ["auth0"],
+					"requires" : []
+				},
+				{
+					"id" : "RunningAuthOK",
+					"successors" : ["Serving"],
+					"provides" : [],
+					"requires" : ["auth1"]
+				},
+				{
+					"id" : "Serving",
+					"successors" : ["Stopped"],
+					"provides" : [],
+					"requires" : []
+				},
+				{
+					"id" : "Stopped",
+					"successors" : ["Dumping"],
+					"provides" : [],
+					"requires" : []
+				},
+				{
+					"id" : "Dumping",
+					"successors" : ["DumpingComplete"],
+					"provides" : ["dump0"],
+					"requires" : []
+				},
+				{
+					"id" : "DumpingComplete",
+					"successors" : ["Serving"],
+					"provides" : [],
+					"requires" : ["dump1"]
+				}
+			]
+	}
+]

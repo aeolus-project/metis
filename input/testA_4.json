@@ -1,0 +1,62 @@
+[
+	{
+		"u_cname" : "A",
+		"u_automaton" :
+			[
+				{
+					"u_name" : "s0",
+					"u_successors" : ["s1"],
+					"u_provides" : [],
+					"u_requires" : []
+				},
+				{
+					"u_name" : "s1",
+					"u_successors" : ["s2"],
+					"u_provides" : ["p0_1"],
+					"u_requires" : []
+				},
+				{
+					"u_name" : "s2",
+					"u_successors" : ["s3"],
+					"u_provides" : ["p0_2", "p0_1"],
+					"u_requires" : ["p1_2"]
+				},
+				{
+					"u_name" : "s3",
+					"u_successors" : [],
+					"u_provides" : ["p0_3", "p0_2"],
+					"u_requires" : ["p1_3"]
+				}
+			]
+	},
+	{
+		"u_cname" : "B",
+		"u_automaton" :
+			[
+				{
+					"u_name" : "q0",
+					"u_successors" : ["q1"],
+					"u_provides" : [],
+					"u_requires" : []
+				},
+				{
+					"u_name" : "q1",
+					"u_successors" : ["q2"],
+					"u_provides" : ["p1_2"],
+					"u_requires" : ["p0_1"]
+				},
+				{
+					"u_name" : "q2",
+					"u_successors" : ["q3"],
+					"u_provides" : ["p1_2", "p1_3"],
+					"u_requires" : ["p0_2"]
+				},
+				{
+					"u_name" : "q3",
+					"u_successors" : [],
+					"u_provides" : ["p1_3"],
+					"u_requires" : ["p0_3"]
+				}
+			]
+	}
+]

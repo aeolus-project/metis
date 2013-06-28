@@ -1,0 +1,67 @@
+
+We generate the FULL G-GRAPH: 
+
+Generation nr.0: <c4,0>; <c3,0>; <c2,0>; <c1,0>; <c0,0>
+Generation nr.1: <c0,0>_1; <c1,0>_1; <c2,0>_1; <c3,0>_1; <c4,0>_1; <c4,1>
+Generation nr.2: <c4,1>_1; <c4,0>_2; <c3,0>_2; <c2,0>_2; <c1,0>_2; <c0,0>_2; <c3,1>
+Generation nr.3: <c3,1>_1; <c0,0>_3; <c1,0>_3; <c2,0>_3; <c3,0>_3; <c4,0>_3; <c4,1>_2; <c2,1>
+Generation nr.4: <c2,1>_1; <c4,1>_3; <c4,0>_4; <c3,0>_4; <c2,0>_4; <c1,0>_4; <c0,0>_4; <c3,1>_2; <c1,1>
+Generation nr.5: <c1,1>_1; <c3,1>_3; <c0,0>_5; <c1,0>_5; <c2,0>_5; <c3,0>_5; <c4,0>_5; <c4,1>_4; <c2,1>_2; <c0,1>
+Generation nr.6: <c0,1>_1; <c2,1>_3; <c4,1>_5; <c4,0>_6; <c3,0>_6; <c2,0>_6; <c1,0>_6; <c0,0>_6; <c3,1>_4; <c1,1>_2; <c1,2>
+Generation nr.7: <c1,2>_1; <c1,1>_3; <c3,1>_5; <c0,0>_7; <c1,0>_7; <c2,0>_7; <c3,0>_7; <c4,0>_7; <c4,1>_6; <c2,1>_4; <c0,1>_2; <c2,2>
+Generation nr.8: <c2,2>_1; <c0,1>_3; <c2,1>_5; <c4,1>_7; <c4,0>_8; <c3,0>_8; <c2,0>_8; <c1,0>_8; <c0,0>_8; <c3,1>_6; <c1,1>_4; <c1,2>_2; <c3,2>
+Generation nr.9: <c3,2>_1; <c1,2>_3; <c1,1>_5; <c3,1>_7; <c0,0>_9; <c1,0>_9; <c2,0>_9; <c3,0>_9; <c4,0>_9; <c4,1>_8; <c2,1>_6; <c0,1>_4; <c2,2>_2; <c4,2>
+
+BOTTOM-UP VISIT of the G-graph. For every node we choose origin node and providers.
+
+LINEARIZATION phase
+
+The linearized paths are the following:
+
+<c0,0> <c0,1> 
+
+<c1,0> <c1,1> <c1,2> 
+
+<c2,0> <c2,1> <c2,2> 
+
+<c3,0> <c3,1> <c3,2> 
+
+<c4,0> <c4,1> <c4,2> 
+
+
+The INSTANCE LINES are the following:
+
+Instance c4_4 : (C,0) --<c4,0>--> (0,1) --<c4,1>--> (1,2) --<c4,2>--> (2,D) 
+
+Instance c3_3 : (C,0) --<c3,0>--> (0,1) --<c3,1>--> (1,2) --<c3,2>--> (2,D) 
+
+Instance c2_2 : (C,0) --<c2,0>--> (0,1) --<c2,1>--> (1,2) --<c2,2>--> (2,D) 
+
+Instance c1_1 : (C,0) --<c1,0>--> (0,1) --<c1,1>--> (1,2) --<c1,2>--> (2,D) 
+
+Instance c0_0 : (C,0) --<c0,0>--> (0,1) --<c0,1>--> (1,D) 
+
+Next we ADD GO (blue) and RETURN (red) EDGES. 
+
+Now we perform a TOPOLOGICAL SORT.
+
+And finally the COMPUTED PLAN is:
+
+c4_4 must perform actions: [Create instance]
+c3_3 must perform actions: [Create instance]
+c2_2 must perform actions: [Create instance]
+c1_1 must perform actions: [Create instance]
+c0_0 must perform actions: [Create instance]
+c4_4 must perform actions: [Bind port p4_1 to instance c3_3]  [Change state from 0 to 1]
+c3_3 must perform actions: [Bind port p3_1 to instance c2_2]  [Change state from 0 to 1]
+c2_2 must perform actions: [Bind port p2_1 to instance c1_1]  [Change state from 0 to 1]
+c1_1 must perform actions: [Bind port p1_1 to instance c0_0]  [Change state from 0 to 1]
+c0_0 must perform actions: [Bind port p0_2 to instance c1_1]  [Change state from 0 to 1]
+c1_1 must perform actions: [Unbind port p2_1 from instance c2_2]  [Bind port p1_2 to instance c2_2]  [Change state from 1 to 2]
+c2_2 must perform actions: [Unbind port p3_1 from instance c3_3]  [Bind port p2_2 to instance c3_3]  [Change state from 1 to 2]
+c3_3 must perform actions: [Unbind port p4_1 from instance c4_4]  [Bind port p3_2 to instance c4_4]  [Change state from 1 to 2]
+c4_4 must perform actions: [Change state from 1 to 2]
+c4_4 must perform actions: Stop
+c3_3 must perform actions: Stop
+c2_2 must perform actions: Stop
+Stop]

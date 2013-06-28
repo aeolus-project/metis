@@ -1,0 +1,2037 @@
+
+We generate the FULL G-GRAPH: 
+
+Generation nr.0: <C19,s0>; <C18,s0>; <C17,s0>; <C16,s0>; <C15,s0>; <C14,s0>; <C13,s0>; <C12,s0>; <C11,s0>; <C10,s0>; <C9,s0>; <C8,s0>; <C7,s0>; <C6,s0>; <C5,s0>; <C4,s0>; <C3,s0>; <C2,s0>; <C1,s0>; <C0,s0>
+Generation nr.1: <C0,s0>_1; <C1,s0>_1; <C2,s0>_1; <C3,s0>_1; <C4,s0>_1; <C5,s0>_1; <C6,s0>_1; <C7,s0>_1; <C8,s0>_1; <C9,s0>_1; <C10,s0>_1; <C11,s0>_1; <C12,s0>_1; <C13,s0>_1; <C14,s0>_1; <C15,s0>_1; <C16,s0>_1; <C17,s0>_1; <C18,s0>_1; <C19,s0>_1; <C19,s1>
+Generation nr.2: <C19,s1>_1; <C19,s0>_2; <C18,s0>_2; <C17,s0>_2; <C16,s0>_2; <C15,s0>_2; <C14,s0>_2; <C13,s0>_2; <C12,s0>_2; <C11,s0>_2; <C10,s0>_2; <C9,s0>_2; <C8,s0>_2; <C7,s0>_2; <C6,s0>_2; <C5,s0>_2; <C4,s0>_2; <C3,s0>_2; <C2,s0>_2; <C1,s0>_2; <C0,s0>_2; <C18,s1>
+Generation nr.3: <C18,s1>_1; <C0,s0>_3; <C1,s0>_3; <C2,s0>_3; <C3,s0>_3; <C4,s0>_3; <C5,s0>_3; <C6,s0>_3; <C7,s0>_3; <C8,s0>_3; <C9,s0>_3; <C10,s0>_3; <C11,s0>_3; <C12,s0>_3; <C13,s0>_3; <C14,s0>_3; <C15,s0>_3; <C16,s0>_3; <C17,s0>_3; <C18,s0>_3; <C19,s0>_3; <C19,s1>_2; <C17,s1>
+Generation nr.4: <C17,s1>_1; <C19,s1>_3; <C19,s0>_4; <C18,s0>_4; <C17,s0>_4; <C16,s0>_4; <C15,s0>_4; <C14,s0>_4; <C13,s0>_4; <C12,s0>_4; <C11,s0>_4; <C10,s0>_4; <C9,s0>_4; <C8,s0>_4; <C7,s0>_4; <C6,s0>_4; <C5,s0>_4; <C4,s0>_4; <C3,s0>_4; <C2,s0>_4; <C1,s0>_4; <C0,s0>_4; <C18,s1>_2; <C16,s1>
+Generation nr.5: <C16,s1>_1; <C18,s1>_3; <C0,s0>_5; <C1,s0>_5; <C2,s0>_5; <C3,s0>_5; <C4,s0>_5; <C5,s0>_5; <C6,s0>_5; <C7,s0>_5; <C8,s0>_5; <C9,s0>_5; <C10,s0>_5; <C11,s0>_5; <C12,s0>_5; <C13,s0>_5; <C14,s0>_5; <C15,s0>_5; <C16,s0>_5; <C17,s0>_5; <C18,s0>_5; <C19,s0>_5; <C19,s1>_4; <C17,s1>_2; <C15,s1>
+Generation nr.6: <C15,s1>_1; <C17,s1>_3; <C19,s1>_5; <C19,s0>_6; <C18,s0>_6; <C17,s0>_6; <C16,s0>_6; <C15,s0>_6; <C14,s0>_6; <C13,s0>_6; <C12,s0>_6; <C11,s0>_6; <C10,s0>_6; <C9,s0>_6; <C8,s0>_6; <C7,s0>_6; <C6,s0>_6; <C5,s0>_6; <C4,s0>_6; <C3,s0>_6; <C2,s0>_6; <C1,s0>_6; <C0,s0>_6; <C18,s1>_4; <C16,s1>_2; <C14,s1>
+Generation nr.7: <C14,s1>_1; <C16,s1>_3; <C18,s1>_5; <C0,s0>_7; <C1,s0>_7; <C2,s0>_7; <C3,s0>_7; <C4,s0>_7; <C5,s0>_7; <C6,s0>_7; <C7,s0>_7; <C8,s0>_7; <C9,s0>_7; <C10,s0>_7; <C11,s0>_7; <C12,s0>_7; <C13,s0>_7; <C14,s0>_7; <C15,s0>_7; <C16,s0>_7; <C17,s0>_7; <C18,s0>_7; <C19,s0>_7; <C19,s1>_6; <C17,s1>_4; <C15,s1>_2; <C13,s1>
+Generation nr.8: <C13,s1>_1; <C15,s1>_3; <C17,s1>_5; <C19,s1>_7; <C19,s0>_8; <C18,s0>_8; <C17,s0>_8; <C16,s0>_8; <C15,s0>_8; <C14,s0>_8; <C13,s0>_8; <C12,s0>_8; <C11,s0>_8; <C10,s0>_8; <C9,s0>_8; <C8,s0>_8; <C7,s0>_8; <C6,s0>_8; <C5,s0>_8; <C4,s0>_8; <C3,s0>_8; <C2,s0>_8; <C1,s0>_8; <C0,s0>_8; <C18,s1>_6; <C16,s1>_4; <C14,s1>_2; <C12,s1>
+Generation nr.9: <C12,s1>_1; <C14,s1>_3; <C16,s1>_5; <C18,s1>_7; <C0,s0>_9; <C1,s0>_9; <C2,s0>_9; <C3,s0>_9; <C4,s0>_9; <C5,s0>_9; <C6,s0>_9; <C7,s0>_9; <C8,s0>_9; <C9,s0>_9; <C10,s0>_9; <C11,s0>_9; <C12,s0>_9; <C13,s0>_9; <C14,s0>_9; <C15,s0>_9; <C16,s0>_9; <C17,s0>_9; <C18,s0>_9; <C19,s0>_9; <C19,s1>_8; <C17,s1>_6; <C15,s1>_4; <C13,s1>_2; <C11,s1>
+Generation nr.10: <C11,s1>_1; <C13,s1>_3; <C15,s1>_5; <C17,s1>_7; <C19,s1>_9; <C19,s0>_10; <C18,s0>_10; <C17,s0>_10; <C16,s0>_10; <C15,s0>_10; <C14,s0>_10; <C13,s0>_10; <C12,s0>_10; <C11,s0>_10; <C10,s0>_10; <C9,s0>_10; <C8,s0>_10; <C7,s0>_10; <C6,s0>_10; <C5,s0>_10; <C4,s0>_10; <C3,s0>_10; <C2,s0>_10; <C1,s0>_10; <C0,s0>_10; <C18,s1>_8; <C16,s1>_6; <C14,s1>_4; <C12,s1>_2; <C10,s1>
+Generation nr.11: <C10,s1>_1; <C12,s1>_3; <C14,s1>_5; <C16,s1>_7; <C18,s1>_9; <C0,s0>_11; <C1,s0>_11; <C2,s0>_11; <C3,s0>_11; <C4,s0>_11; <C5,s0>_11; <C6,s0>_11; <C7,s0>_11; <C8,s0>_11; <C9,s0>_11; <C10,s0>_11; <C11,s0>_11; <C12,s0>_11; <C13,s0>_11; <C14,s0>_11; <C15,s0>_11; <C16,s0>_11; <C17,s0>_11; <C18,s0>_11; <C19,s0>_11; <C19,s1>_10; <C17,s1>_8; <C15,s1>_6; <C13,s1>_4; <C11,s1>_2; <C9,s1>
+Generation nr.12: <C9,s1>_1; <C11,s1>_3; <C13,s1>_5; <C15,s1>_7; <C17,s1>_9; <C19,s1>_11; <C19,s0>_12; <C18,s0>_12; <C17,s0>_12; <C16,s0>_12; <C15,s0>_12; <C14,s0>_12; <C13,s0>_12; <C12,s0>_12; <C11,s0>_12; <C10,s0>_12; <C9,s0>_12; <C8,s0>_12; <C7,s0>_12; <C6,s0>_12; <C5,s0>_12; <C4,s0>_12; <C3,s0>_12; <C2,s0>_12; <C1,s0>_12; <C0,s0>_12; <C18,s1>_10; <C16,s1>_8; <C14,s1>_6; <C12,s1>_4; <C10,s1>_2; <C8,s1>
+Generation nr.13: <C8,s1>_1; <C10,s1>_3; <C12,s1>_5; <C14,s1>_7; <C16,s1>_9; <C18,s1>_11; <C0,s0>_13; <C1,s0>_13; <C2,s0>_13; <C3,s0>_13; <C4,s0>_13; <C5,s0>_13; <C6,s0>_13; <C7,s0>_13; <C8,s0>_13; <C9,s0>_13; <C10,s0>_13; <C11,s0>_13; <C12,s0>_13; <C13,s0>_13; <C14,s0>_13; <C15,s0>_13; <C16,s0>_13; <C17,s0>_13; <C18,s0>_13; <C19,s0>_13; <C19,s1>_12; <C17,s1>_10; <C15,s1>_8; <C13,s1>_6; <C11,s1>_4; <C9,s1>_2; <C7,s1>
+Generation nr.14: <C7,s1>_1; <C9,s1>_3; <C11,s1>_5; <C13,s1>_7; <C15,s1>_9; <C17,s1>_11; <C19,s1>_13; <C19,s0>_14; <C18,s0>_14; <C17,s0>_14; <C16,s0>_14; <C15,s0>_14; <C14,s0>_14; <C13,s0>_14; <C12,s0>_14; <C11,s0>_14; <C10,s0>_14; <C9,s0>_14; <C8,s0>_14; <C7,s0>_14; <C6,s0>_14; <C5,s0>_14; <C4,s0>_14; <C3,s0>_14; <C2,s0>_14; <C1,s0>_14; <C0,s0>_14; <C18,s1>_12; <C16,s1>_10; <C14,s1>_8; <C12,s1>_6; <C10,s1>_4; <C8,s1>_2; <C6,s1>
+Generation nr.15: <C6,s1>_1; <C8,s1>_3; <C10,s1>_5; <C12,s1>_7; <C14,s1>_9; <C16,s1>_11; <C18,s1>_13; <C0,s0>_15; <C1,s0>_15; <C2,s0>_15; <C3,s0>_15; <C4,s0>_15; <C5,s0>_15; <C6,s0>_15; <C7,s0>_15; <C8,s0>_15; <C9,s0>_15; <C10,s0>_15; <C11,s0>_15; <C12,s0>_15; <C13,s0>_15; <C14,s0>_15; <C15,s0>_15; <C16,s0>_15; <C17,s0>_15; <C18,s0>_15; <C19,s0>_15; <C19,s1>_14; <C17,s1>_12; <C15,s1>_10; <C13,s1>_8; <C11,s1>_6; <C9,s1>_4; <C7,s1>_2; <C5,s1>
+Generation nr.16: <C5,s1>_1; <C7,s1>_3; <C9,s1>_5; <C11,s1>_7; <C13,s1>_9; <C15,s1>_11; <C17,s1>_13; <C19,s1>_15; <C19,s0>_16; <C18,s0>_16; <C17,s0>_16; <C16,s0>_16; <C15,s0>_16; <C14,s0>_16; <C13,s0>_16; <C12,s0>_16; <C11,s0>_16; <C10,s0>_16; <C9,s0>_16; <C8,s0>_16; <C7,s0>_16; <C6,s0>_16; <C5,s0>_16; <C4,s0>_16; <C3,s0>_16; <C2,s0>_16; <C1,s0>_16; <C0,s0>_16; <C18,s1>_14; <C16,s1>_12; <C14,s1>_10; <C12,s1>_8; <C10,s1>_6; <C8,s1>_4; <C6,s1>_2; <C4,s1>
+Generation nr.17: <C4,s1>_1; <C6,s1>_3; <C8,s1>_5; <C10,s1>_7; <C12,s1>_9; <C14,s1>_11; <C16,s1>_13; <C18,s1>_15; <C0,s0>_17; <C1,s0>_17; <C2,s0>_17; <C3,s0>_17; <C4,s0>_17; <C5,s0>_17; <C6,s0>_17; <C7,s0>_17; <C8,s0>_17; <C9,s0>_17; <C10,s0>_17; <C11,s0>_17; <C12,s0>_17; <C13,s0>_17; <C14,s0>_17; <C15,s0>_17; <C16,s0>_17; <C17,s0>_17; <C18,s0>_17; <C19,s0>_17; <C19,s1>_16; <C17,s1>_14; <C15,s1>_12; <C13,s1>_10; <C11,s1>_8; <C9,s1>_6; <C7,s1>_4; <C5,s1>_2; <C3,s1>
+Generation nr.18: <C3,s1>_1; <C5,s1>_3; <C7,s1>_5; <C9,s1>_7; <C11,s1>_9; <C13,s1>_11; <C15,s1>_13; <C17,s1>_15; <C19,s1>_17; <C19,s0>_18; <C18,s0>_18; <C17,s0>_18; <C16,s0>_18; <C15,s0>_18; <C14,s0>_18; <C13,s0>_18; <C12,s0>_18; <C11,s0>_18; <C10,s0>_18; <C9,s0>_18; <C8,s0>_18; <C7,s0>_18; <C6,s0>_18; <C5,s0>_18; <C4,s0>_18; <C3,s0>_18; <C2,s0>_18; <C1,s0>_18; <C0,s0>_18; <C18,s1>_16; <C16,s1>_14; <C14,s1>_12; <C12,s1>_10; <C10,s1>_8; <C8,s1>_6; <C6,s1>_4; <C4,s1>_2; <C2,s1>
+Generation nr.19: <C2,s1>_1; <C4,s1>_3; <C6,s1>_5; <C8,s1>_7; <C10,s1>_9; <C12,s1>_11; <C14,s1>_13; <C16,s1>_15; <C18,s1>_17; <C0,s0>_19; <C1,s0>_19; <C2,s0>_19; <C3,s0>_19; <C4,s0>_19; <C5,s0>_19; <C6,s0>_19; <C7,s0>_19; <C8,s0>_19; <C9,s0>_19; <C10,s0>_19; <C11,s0>_19; <C12,s0>_19; <C13,s0>_19; <C14,s0>_19; <C15,s0>_19; <C16,s0>_19; <C17,s0>_19; <C18,s0>_19; <C19,s0>_19; <C19,s1>_18; <C17,s1>_16; <C15,s1>_14; <C13,s1>_12; <C11,s1>_10; <C9,s1>_8; <C7,s1>_6; <C5,s1>_4; <C3,s1>_2; <C1,s1>
+Generation nr.20: <C1,s1>_1; <C3,s1>_3; <C5,s1>_5; <C7,s1>_7; <C9,s1>_9; <C11,s1>_11; <C13,s1>_13; <C15,s1>_15; <C17,s1>_17; <C19,s1>_19; <C19,s0>_20; <C18,s0>_20; <C17,s0>_20; <C16,s0>_20; <C15,s0>_20; <C14,s0>_20; <C13,s0>_20; <C12,s0>_20; <C11,s0>_20; <C10,s0>_20; <C9,s0>_20; <C8,s0>_20; <C7,s0>_20; <C6,s0>_20; <C5,s0>_20; <C4,s0>_20; <C3,s0>_20; <C2,s0>_20; <C1,s0>_20; <C0,s0>_20; <C18,s1>_18; <C16,s1>_16; <C14,s1>_14; <C12,s1>_12; <C10,s1>_10; <C8,s1>_8; <C6,s1>_6; <C4,s1>_4; <C2,s1>_2; <C0,s1>
+Generation nr.21: <C0,s1>_1; <C2,s1>_3; <C4,s1>_5; <C6,s1>_7; <C8,s1>_9; <C10,s1>_11; <C12,s1>_13; <C14,s1>_15; <C16,s1>_17; <C18,s1>_19; <C0,s0>_21; <C1,s0>_21; <C2,s0>_21; <C3,s0>_21; <C4,s0>_21; <C5,s0>_21; <C6,s0>_21; <C7,s0>_21; <C8,s0>_21; <C9,s0>_21; <C10,s0>_21; <C11,s0>_21; <C12,s0>_21; <C13,s0>_21; <C14,s0>_21; <C15,s0>_21; <C16,s0>_21; <C17,s0>_21; <C18,s0>_21; <C19,s0>_21; <C19,s1>_20; <C17,s1>_18; <C15,s1>_16; <C13,s1>_14; <C11,s1>_12; <C9,s1>_10; <C7,s1>_8; <C5,s1>_6; <C3,s1>_4; <C1,s1>_2; <C1,s2>
+Generation nr.22: <C1,s2>_1; <C1,s1>_3; <C3,s1>_5; <C5,s1>_7; <C7,s1>_9; <C9,s1>_11; <C11,s1>_13; <C13,s1>_15; <C15,s1>_17; <C17,s1>_19; <C19,s1>_21; <C19,s0>_22; <C18,s0>_22; <C17,s0>_22; <C16,s0>_22; <C15,s0>_22; <C14,s0>_22; <C13,s0>_22; <C12,s0>_22; <C11,s0>_22; <C10,s0>_22; <C9,s0>_22; <C8,s0>_22; <C7,s0>_22; <C6,s0>_22; <C5,s0>_22; <C4,s0>_22; <C3,s0>_22; <C2,s0>_22; <C1,s0>_22; <C0,s0>_22; <C18,s1>_20; <C16,s1>_18; <C14,s1>_16; <C12,s1>_14; <C10,s1>_12; <C8,s1>_10; <C6,s1>_8; <C4,s1>_6; <C2,s1>_4; <C0,s1>_2; <C2,s2>
+Generation nr.23: <C2,s2>_1; <C0,s1>_3; <C2,s1>_5; <C4,s1>_7; <C6,s1>_9; <C8,s1>_11; <C10,s1>_13; <C12,s1>_15; <C14,s1>_17; <C16,s1>_19; <C18,s1>_21; <C0,s0>_23; <C1,s0>_23; <C2,s0>_23; <C3,s0>_23; <C4,s0>_23; <C5,s0>_23; <C6,s0>_23; <C7,s0>_23; <C8,s0>_23; <C9,s0>_23; <C10,s0>_23; <C11,s0>_23; <C12,s0>_23; <C13,s0>_23; <C14,s0>_23; <C15,s0>_23; <C16,s0>_23; <C17,s0>_23; <C18,s0>_23; <C19,s0>_23; <C19,s1>_22; <C17,s1>_20; <C15,s1>_18; <C13,s1>_16; <C11,s1>_14; <C9,s1>_12; <C7,s1>_10; <C5,s1>_8; <C3,s1>_6; <C1,s1>_4; <C1,s2>_2; <C3,s2>
+Generation nr.24: <C3,s2>_1; <C1,s2>_3; <C1,s1>_5; <C3,s1>_7; <C5,s1>_9; <C7,s1>_11; <C9,s1>_13; <C11,s1>_15; <C13,s1>_17; <C15,s1>_19; <C17,s1>_21; <C19,s1>_23; <C19,s0>_24; <C18,s0>_24; <C17,s0>_24; <C16,s0>_24; <C15,s0>_24; <C14,s0>_24; <C13,s0>_24; <C12,s0>_24; <C11,s0>_24; <C10,s0>_24; <C9,s0>_24; <C8,s0>_24; <C7,s0>_24; <C6,s0>_24; <C5,s0>_24; <C4,s0>_24; <C3,s0>_24; <C2,s0>_24; <C1,s0>_24; <C0,s0>_24; <C18,s1>_22; <C16,s1>_20; <C14,s1>_18; <C12,s1>_16; <C10,s1>_14; <C8,s1>_12; <C6,s1>_10; <C4,s1>_8; <C2,s1>_6; <C0,s1>_4; <C2,s2>_2; <C4,s2>
+Generation nr.25: <C4,s2>_1; <C2,s2>_3; <C0,s1>_5; <C2,s1>_7; <C4,s1>_9; <C6,s1>_11; <C8,s1>_13; <C10,s1>_15; <C12,s1>_17; <C14,s1>_19; <C16,s1>_21; <C18,s1>_23; <C0,s0>_25; <C1,s0>_25; <C2,s0>_25; <C3,s0>_25; <C4,s0>_25; <C5,s0>_25; <C6,s0>_25; <C7,s0>_25; <C8,s0>_25; <C9,s0>_25; <C10,s0>_25; <C11,s0>_25; <C12,s0>_25; <C13,s0>_25; <C14,s0>_25; <C15,s0>_25; <C16,s0>_25; <C17,s0>_25; <C18,s0>_25; <C19,s0>_25; <C19,s1>_24; <C17,s1>_22; <C15,s1>_20; <C13,s1>_18; <C11,s1>_16; <C9,s1>_14; <C7,s1>_12; <C5,s1>_10; <C3,s1>_8; <C1,s1>_6; <C1,s2>_4; <C3,s2>_2; <C5,s2>
+Generation nr.26: <C5,s2>_1; <C3,s2>_3; <C1,s2>_5; <C1,s1>_7; <C3,s1>_9; <C5,s1>_11; <C7,s1>_13; <C9,s1>_15; <C11,s1>_17; <C13,s1>_19; <C15,s1>_21; <C17,s1>_23; <C19,s1>_25; <C19,s0>_26; <C18,s0>_26; <C17,s0>_26; <C16,s0>_26; <C15,s0>_26; <C14,s0>_26; <C13,s0>_26; <C12,s0>_26; <C11,s0>_26; <C10,s0>_26; <C9,s0>_26; <C8,s0>_26; <C7,s0>_26; <C6,s0>_26; <C5,s0>_26; <C4,s0>_26; <C3,s0>_26; <C2,s0>_26; <C1,s0>_26; <C0,s0>_26; <C18,s1>_24; <C16,s1>_22; <C14,s1>_20; <C12,s1>_18; <C10,s1>_16; <C8,s1>_14; <C6,s1>_12; <C4,s1>_10; <C2,s1>_8; <C0,s1>_6; <C2,s2>_4; <C4,s2>_2; <C6,s2>
+Generation nr.27: <C6,s2>_1; <C4,s2>_3; <C2,s2>_5; <C0,s1>_7; <C2,s1>_9; <C4,s1>_11; <C6,s1>_13; <C8,s1>_15; <C10,s1>_17; <C12,s1>_19; <C14,s1>_21; <C16,s1>_23; <C18,s1>_25; <C0,s0>_27; <C1,s0>_27; <C2,s0>_27; <C3,s0>_27; <C4,s0>_27; <C5,s0>_27; <C6,s0>_27; <C7,s0>_27; <C8,s0>_27; <C9,s0>_27; <C10,s0>_27; <C11,s0>_27; <C12,s0>_27; <C13,s0>_27; <C14,s0>_27; <C15,s0>_27; <C16,s0>_27; <C17,s0>_27; <C18,s0>_27; <C19,s0>_27; <C19,s1>_26; <C17,s1>_24; <C15,s1>_22; <C13,s1>_20; <C11,s1>_18; <C9,s1>_16; <C7,s1>_14; <C5,s1>_12; <C3,s1>_10; <C1,s1>_8; <C1,s2>_6; <C3,s2>_4; <C5,s2>_2; <C7,s2>
+Generation nr.28: <C7,s2>_1; <C5,s2>_3; <C3,s2>_5; <C1,s2>_7; <C1,s1>_9; <C3,s1>_11; <C5,s1>_13; <C7,s1>_15; <C9,s1>_17; <C11,s1>_19; <C13,s1>_21; <C15,s1>_23; <C17,s1>_25; <C19,s1>_27; <C19,s0>_28; <C18,s0>_28; <C17,s0>_28; <C16,s0>_28; <C15,s0>_28; <C14,s0>_28; <C13,s0>_28; <C12,s0>_28; <C11,s0>_28; <C10,s0>_28; <C9,s0>_28; <C8,s0>_28; <C7,s0>_28; <C6,s0>_28; <C5,s0>_28; <C4,s0>_28; <C3,s0>_28; <C2,s0>_28; <C1,s0>_28; <C0,s0>_28; <C18,s1>_26; <C16,s1>_24; <C14,s1>_22; <C12,s1>_20; <C10,s1>_18; <C8,s1>_16; <C6,s1>_14; <C4,s1>_12; <C2,s1>_10; <C0,s1>_8; <C2,s2>_6; <C4,s2>_4; <C6,s2>_2; <C8,s2>
+Generation nr.29: <C8,s2>_1; <C6,s2>_3; <C4,s2>_5; <C2,s2>_7; <C0,s1>_9; <C2,s1>_11; <C4,s1>_13; <C6,s1>_15; <C8,s1>_17; <C10,s1>_19; <C12,s1>_21; <C14,s1>_23; <C16,s1>_25; <C18,s1>_27; <C0,s0>_29; <C1,s0>_29; <C2,s0>_29; <C3,s0>_29; <C4,s0>_29; <C5,s0>_29; <C6,s0>_29; <C7,s0>_29; <C8,s0>_29; <C9,s0>_29; <C10,s0>_29; <C11,s0>_29; <C12,s0>_29; <C13,s0>_29; <C14,s0>_29; <C15,s0>_29; <C16,s0>_29; <C17,s0>_29; <C18,s0>_29; <C19,s0>_29; <C19,s1>_28; <C17,s1>_26; <C15,s1>_24; <C13,s1>_22; <C11,s1>_20; <C9,s1>_18; <C7,s1>_16; <C5,s1>_14; <C3,s1>_12; <C1,s1>_10; <C1,s2>_8; <C3,s2>_6; <C5,s2>_4; <C7,s2>_2; <C9,s2>
+Generation nr.30: <C9,s2>_1; <C7,s2>_3; <C5,s2>_5; <C3,s2>_7; <C1,s2>_9; <C1,s1>_11; <C3,s1>_13; <C5,s1>_15; <C7,s1>_17; <C9,s1>_19; <C11,s1>_21; <C13,s1>_23; <C15,s1>_25; <C17,s1>_27; <C19,s1>_29; <C19,s0>_30; <C18,s0>_30; <C17,s0>_30; <C16,s0>_30; <C15,s0>_30; <C14,s0>_30; <C13,s0>_30; <C12,s0>_30; <C11,s0>_30; <C10,s0>_30; <C9,s0>_30; <C8,s0>_30; <C7,s0>_30; <C6,s0>_30; <C5,s0>_30; <C4,s0>_30; <C3,s0>_30; <C2,s0>_30; <C1,s0>_30; <C0,s0>_30; <C18,s1>_28; <C16,s1>_26; <C14,s1>_24; <C12,s1>_22; <C10,s1>_20; <C8,s1>_18; <C6,s1>_16; <C4,s1>_14; <C2,s1>_12; <C0,s1>_10; <C2,s2>_8; <C4,s2>_6; <C6,s2>_4; <C8,s2>_2; <C10,s2>
+Generation nr.31: <C10,s2>_1; <C8,s2>_3; <C6,s2>_5; <C4,s2>_7; <C2,s2>_9; <C0,s1>_11; <C2,s1>_13; <C4,s1>_15; <C6,s1>_17; <C8,s1>_19; <C10,s1>_21; <C12,s1>_23; <C14,s1>_25; <C16,s1>_27; <C18,s1>_29; <C0,s0>_31; <C1,s0>_31; <C2,s0>_31; <C3,s0>_31; <C4,s0>_31; <C5,s0>_31; <C6,s0>_31; <C7,s0>_31; <C8,s0>_31; <C9,s0>_31; <C10,s0>_31; <C11,s0>_31; <C12,s0>_31; <C13,s0>_31; <C14,s0>_31; <C15,s0>_31; <C16,s0>_31; <C17,s0>_31; <C18,s0>_31; <C19,s0>_31; <C19,s1>_30; <C17,s1>_28; <C15,s1>_26; <C13,s1>_24; <C11,s1>_22; <C9,s1>_20; <C7,s1>_18; <C5,s1>_16; <C3,s1>_14; <C1,s1>_12; <C1,s2>_10; <C3,s2>_8; <C5,s2>_6; <C7,s2>_4; <C9,s2>_2; <C11,s2>
+Generation nr.32: <C11,s2>_1; <C9,s2>_3; <C7,s2>_5; <C5,s2>_7; <C3,s2>_9; <C1,s2>_11; <C1,s1>_13; <C3,s1>_15; <C5,s1>_17; <C7,s1>_19; <C9,s1>_21; <C11,s1>_23; <C13,s1>_25; <C15,s1>_27; <C17,s1>_29; <C19,s1>_31; <C19,s0>_32; <C18,s0>_32; <C17,s0>_32; <C16,s0>_32; <C15,s0>_32; <C14,s0>_32; <C13,s0>_32; <C12,s0>_32; <C11,s0>_32; <C10,s0>_32; <C9,s0>_32; <C8,s0>_32; <C7,s0>_32; <C6,s0>_32; <C5,s0>_32; <C4,s0>_32; <C3,s0>_32; <C2,s0>_32; <C1,s0>_32; <C0,s0>_32; <C18,s1>_30; <C16,s1>_28; <C14,s1>_26; <C12,s1>_24; <C10,s1>_22; <C8,s1>_20; <C6,s1>_18; <C4,s1>_16; <C2,s1>_14; <C0,s1>_12; <C2,s2>_10; <C4,s2>_8; <C6,s2>_6; <C8,s2>_4; <C10,s2>_2; <C12,s2>
+Generation nr.33: <C12,s2>_1; <C10,s2>_3; <C8,s2>_5; <C6,s2>_7; <C4,s2>_9; <C2,s2>_11; <C0,s1>_13; <C2,s1>_15; <C4,s1>_17; <C6,s1>_19; <C8,s1>_21; <C10,s1>_23; <C12,s1>_25; <C14,s1>_27; <C16,s1>_29; <C18,s1>_31; <C0,s0>_33; <C1,s0>_33; <C2,s0>_33; <C3,s0>_33; <C4,s0>_33; <C5,s0>_33; <C6,s0>_33; <C7,s0>_33; <C8,s0>_33; <C9,s0>_33; <C10,s0>_33; <C11,s0>_33; <C12,s0>_33; <C13,s0>_33; <C14,s0>_33; <C15,s0>_33; <C16,s0>_33; <C17,s0>_33; <C18,s0>_33; <C19,s0>_33; <C19,s1>_32; <C17,s1>_30; <C15,s1>_28; <C13,s1>_26; <C11,s1>_24; <C9,s1>_22; <C7,s1>_20; <C5,s1>_18; <C3,s1>_16; <C1,s1>_14; <C1,s2>_12; <C3,s2>_10; <C5,s2>_8; <C7,s2>_6; <C9,s2>_4; <C11,s2>_2; <C13,s2>
+Generation nr.34: <C13,s2>_1; <C11,s2>_3; <C9,s2>_5; <C7,s2>_7; <C5,s2>_9; <C3,s2>_11; <C1,s2>_13; <C1,s1>_15; <C3,s1>_17; <C5,s1>_19; <C7,s1>_21; <C9,s1>_23; <C11,s1>_25; <C13,s1>_27; <C15,s1>_29; <C17,s1>_31; <C19,s1>_33; <C19,s0>_34; <C18,s0>_34; <C17,s0>_34; <C16,s0>_34; <C15,s0>_34; <C14,s0>_34; <C13,s0>_34; <C12,s0>_34; <C11,s0>_34; <C10,s0>_34; <C9,s0>_34; <C8,s0>_34; <C7,s0>_34; <C6,s0>_34; <C5,s0>_34; <C4,s0>_34; <C3,s0>_34; <C2,s0>_34; <C1,s0>_34; <C0,s0>_34; <C18,s1>_32; <C16,s1>_30; <C14,s1>_28; <C12,s1>_26; <C10,s1>_24; <C8,s1>_22; <C6,s1>_20; <C4,s1>_18; <C2,s1>_16; <C0,s1>_14; <C2,s2>_12; <C4,s2>_10; <C6,s2>_8; <C8,s2>_6; <C10,s2>_4; <C12,s2>_2; <C14,s2>
+Generation nr.35: <C14,s2>_1; <C12,s2>_3; <C10,s2>_5; <C8,s2>_7; <C6,s2>_9; <C4,s2>_11; <C2,s2>_13; <C0,s1>_15; <C2,s1>_17; <C4,s1>_19; <C6,s1>_21; <C8,s1>_23; <C10,s1>_25; <C12,s1>_27; <C14,s1>_29; <C16,s1>_31; <C18,s1>_33; <C0,s0>_35; <C1,s0>_35; <C2,s0>_35; <C3,s0>_35; <C4,s0>_35; <C5,s0>_35; <C6,s0>_35; <C7,s0>_35; <C8,s0>_35; <C9,s0>_35; <C10,s0>_35; <C11,s0>_35; <C12,s0>_35; <C13,s0>_35; <C14,s0>_35; <C15,s0>_35; <C16,s0>_35; <C17,s0>_35; <C18,s0>_35; <C19,s0>_35; <C19,s1>_34; <C17,s1>_32; <C15,s1>_30; <C13,s1>_28; <C11,s1>_26; <C9,s1>_24; <C7,s1>_22; <C5,s1>_20; <C3,s1>_18; <C1,s1>_16; <C1,s2>_14; <C3,s2>_12; <C5,s2>_10; <C7,s2>_8; <C9,s2>_6; <C11,s2>_4; <C13,s2>_2; <C15,s2>
+Generation nr.36: <C15,s2>_1; <C13,s2>_3; <C11,s2>_5; <C9,s2>_7; <C7,s2>_9; <C5,s2>_11; <C3,s2>_13; <C1,s2>_15; <C1,s1>_17; <C3,s1>_19; <C5,s1>_21; <C7,s1>_23; <C9,s1>_25; <C11,s1>_27; <C13,s1>_29; <C15,s1>_31; <C17,s1>_33; <C19,s1>_35; <C19,s0>_36; <C18,s0>_36; <C17,s0>_36; <C16,s0>_36; <C15,s0>_36; <C14,s0>_36; <C13,s0>_36; <C12,s0>_36; <C11,s0>_36; <C10,s0>_36; <C9,s0>_36; <C8,s0>_36; <C7,s0>_36; <C6,s0>_36; <C5,s0>_36; <C4,s0>_36; <C3,s0>_36; <C2,s0>_36; <C1,s0>_36; <C0,s0>_36; <C18,s1>_34; <C16,s1>_32; <C14,s1>_30; <C12,s1>_28; <C10,s1>_26; <C8,s1>_24; <C6,s1>_22; <C4,s1>_20; <C2,s1>_18; <C0,s1>_16; <C2,s2>_14; <C4,s2>_12; <C6,s2>_10; <C8,s2>_8; <C10,s2>_6; <C12,s2>_4; <C14,s2>_2; <C16,s2>
+Generation nr.37: <C16,s2>_1; <C14,s2>_3; <C12,s2>_5; <C10,s2>_7; <C8,s2>_9; <C6,s2>_11; <C4,s2>_13; <C2,s2>_15; <C0,s1>_17; <C2,s1>_19; <C4,s1>_21; <C6,s1>_23; <C8,s1>_25; <C10,s1>_27; <C12,s1>_29; <C14,s1>_31; <C16,s1>_33; <C18,s1>_35; <C0,s0>_37; <C1,s0>_37; <C2,s0>_37; <C3,s0>_37; <C4,s0>_37; <C5,s0>_37; <C6,s0>_37; <C7,s0>_37; <C8,s0>_37; <C9,s0>_37; <C10,s0>_37; <C11,s0>_37; <C12,s0>_37; <C13,s0>_37; <C14,s0>_37; <C15,s0>_37; <C16,s0>_37; <C17,s0>_37; <C18,s0>_37; <C19,s0>_37; <C19,s1>_36; <C17,s1>_34; <C15,s1>_32; <C13,s1>_30; <C11,s1>_28; <C9,s1>_26; <C7,s1>_24; <C5,s1>_22; <C3,s1>_20; <C1,s1>_18; <C1,s2>_16; <C3,s2>_14; <C5,s2>_12; <C7,s2>_10; <C9,s2>_8; <C11,s2>_6; <C13,s2>_4; <C15,s2>_2; <C17,s2>
+Generation nr.38: <C17,s2>_1; <C15,s2>_3; <C13,s2>_5; <C11,s2>_7; <C9,s2>_9; <C7,s2>_11; <C5,s2>_13; <C3,s2>_15; <C1,s2>_17; <C1,s1>_19; <C3,s1>_21; <C5,s1>_23; <C7,s1>_25; <C9,s1>_27; <C11,s1>_29; <C13,s1>_31; <C15,s1>_33; <C17,s1>_35; <C19,s1>_37; <C19,s0>_38; <C18,s0>_38; <C17,s0>_38; <C16,s0>_38; <C15,s0>_38; <C14,s0>_38; <C13,s0>_38; <C12,s0>_38; <C11,s0>_38; <C10,s0>_38; <C9,s0>_38; <C8,s0>_38; <C7,s0>_38; <C6,s0>_38; <C5,s0>_38; <C4,s0>_38; <C3,s0>_38; <C2,s0>_38; <C1,s0>_38; <C0,s0>_38; <C18,s1>_36; <C16,s1>_34; <C14,s1>_32; <C12,s1>_30; <C10,s1>_28; <C8,s1>_26; <C6,s1>_24; <C4,s1>_22; <C2,s1>_20; <C0,s1>_18; <C2,s2>_16; <C4,s2>_14; <C6,s2>_12; <C8,s2>_10; <C10,s2>_8; <C12,s2>_6; <C14,s2>_4; <C16,s2>_2; <C18,s2>
+Generation nr.39: <C18,s2>_1; <C16,s2>_3; <C14,s2>_5; <C12,s2>_7; <C10,s2>_9; <C8,s2>_11; <C6,s2>_13; <C4,s2>_15; <C2,s2>_17; <C0,s1>_19; <C2,s1>_21; <C4,s1>_23; <C6,s1>_25; <C8,s1>_27; <C10,s1>_29; <C12,s1>_31; <C14,s1>_33; <C16,s1>_35; <C18,s1>_37; <C0,s0>_39; <C1,s0>_39; <C2,s0>_39; <C3,s0>_39; <C4,s0>_39; <C5,s0>_39; <C6,s0>_39; <C7,s0>_39; <C8,s0>_39; <C9,s0>_39; <C10,s0>_39; <C11,s0>_39; <C12,s0>_39; <C13,s0>_39; <C14,s0>_39; <C15,s0>_39; <C16,s0>_39; <C17,s0>_39; <C18,s0>_39; <C19,s0>_39; <C19,s1>_38; <C17,s1>_36; <C15,s1>_34; <C13,s1>_32; <C11,s1>_30; <C9,s1>_28; <C7,s1>_26; <C5,s1>_24; <C3,s1>_22; <C1,s1>_20; <C1,s2>_18; <C3,s2>_16; <C5,s2>_14; <C7,s2>_12; <C9,s2>_10; <C11,s2>_8; <C13,s2>_6; <C15,s2>_4; <C17,s2>_2; <C19,s2>
+
+BOTTOM-UP VISIT of the G-graph. For every node we choose origin node and providers.
+
+LINEARIZATION phase
+
+The linearized paths are the following:
+
+<C0,s0> <C0,s1> 
+
+<C1,s0> <C1,s1> <C1,s2> 
+
+<C2,s0> <C2,s1> <C2,s2> 
+
+<C3,s0> <C3,s1> <C3,s2> 
+
+<C4,s0> <C4,s1> <C4,s2> 
+
+<C5,s0> <C5,s1> <C5,s2> 
+
+<C6,s0> <C6,s1> <C6,s2> 
+
+<C7,s0> <C7,s1> <C7,s2> 
+
+<C8,s0> <C8,s1> <C8,s2> 
+
+<C9,s0> <C9,s1> <C9,s2> 
+
+<C10,s0> <C10,s1> <C10,s2> 
+
+<C11,s0> <C11,s1> <C11,s2> 
+
+<C12,s0> <C12,s1> <C12,s2> 
+
+<C13,s0> <C13,s1> <C13,s2> 
+
+<C14,s0> <C14,s1> <C14,s2> 
+
+<C15,s0> <C15,s1> <C15,s2> 
+
+<C16,s0> <C16,s1> <C16,s2> 
+
+<C17,s0> <C17,s1> <C17,s2> 
+
+<C18,s0> <C18,s1> <C18,s2> 
+
+<C19,s0> <C19,s1> <C19,s2> 
+
+
+The INSTANCE LINES are the following:
+
+Instance c19 :
+c19 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C19,s0>--> c19 (s0,s1)
+
+c19 (s0,s1) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C19,s1>--> c19 (s1,s2)
+
+c19 (s1,s2) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C19,s2>--> c19 (s2,D)
+
+c19 (s2,D) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: { }
+
+Instance c18 :
+c18 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C18,s0>--> c18 (s0,s1)
+
+c18 (s0,s1) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C18,s1>--> c18 (s1,s2)
+
+c18 (s1,s2) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C18,s2>--> c18 (s2,D)
+
+c18 (s2,D) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: { }
+
+Instance c17 :
+c17 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C17,s0>--> c17 (s0,s1)
+
+c17 (s0,s1) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C17,s1>--> c17 (s1,s2)
+
+c17 (s1,s2) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C17,s2>--> c17 (s2,D)
+
+c17 (s2,D) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: { }
+
+Instance c16 :
+c16 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C16,s0>--> c16 (s0,s1)
+
+c16 (s0,s1) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C16,s1>--> c16 (s1,s2)
+
+c16 (s1,s2) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C16,s2>--> c16 (s2,D)
+
+c16 (s2,D) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: { }
+
+Instance c15 :
+c15 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C15,s0>--> c15 (s0,s1)
+
+c15 (s0,s1) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C15,s1>--> c15 (s1,s2)
+
+c15 (s1,s2) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C15,s2>--> c15 (s2,D)
+
+c15 (s2,D) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: { }
+
+Instance c14 :
+c14 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C14,s0>--> c14 (s0,s1)
+
+c14 (s0,s1) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C14,s1>--> c14 (s1,s2)
+
+c14 (s1,s2) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C14,s2>--> c14 (s2,D)
+
+c14 (s2,D) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: { }
+
+Instance c13 :
+c13 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C13,s0>--> c13 (s0,s1)
+
+c13 (s0,s1) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C13,s1>--> c13 (s1,s2)
+
+c13 (s1,s2) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C13,s2>--> c13 (s2,D)
+
+c13 (s2,D) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: { }
+
+Instance c12 :
+c12 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C12,s0>--> c12 (s0,s1)
+
+c12 (s0,s1) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C12,s1>--> c12 (s1,s2)
+
+c12 (s1,s2) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C12,s2>--> c12 (s2,D)
+
+c12 (s2,D) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: { }
+
+Instance c11 :
+c11 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C11,s0>--> c11 (s0,s1)
+
+c11 (s0,s1) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C11,s1>--> c11 (s1,s2)
+
+c11 (s1,s2) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C11,s2>--> c11 (s2,D)
+
+c11 (s2,D) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: { }
+
+Instance c10 :
+c10 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C10,s0>--> c10 (s0,s1)
+
+c10 (s0,s1) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C10,s1>--> c10 (s1,s2)
+
+c10 (s1,s2) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C10,s2>--> c10 (s2,D)
+
+c10 (s2,D) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: { }
+
+Instance c9 :
+c9 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C9,s0>--> c9 (s0,s1)
+
+c9 (s0,s1) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C9,s1>--> c9 (s1,s2)
+
+c9 (s1,s2) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C9,s2>--> c9 (s2,D)
+
+c9 (s2,D) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: { }
+
+Instance c8 :
+c8 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C8,s0>--> c8 (s0,s1)
+
+c8 (s0,s1) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C8,s1>--> c8 (s1,s2)
+
+c8 (s1,s2) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C8,s2>--> c8 (s2,D)
+
+c8 (s2,D) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: { }
+
+Instance c7 :
+c7 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C7,s0>--> c7 (s0,s1)
+
+c7 (s0,s1) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C7,s1>--> c7 (s1,s2)
+
+c7 (s1,s2) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C7,s2>--> c7 (s2,D)
+
+c7 (s2,D) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: { }
+
+Instance c6 :
+c6 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C6,s0>--> c6 (s0,s1)
+
+c6 (s0,s1) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C6,s1>--> c6 (s1,s2)
+
+c6 (s1,s2) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C6,s2>--> c6 (s2,D)
+
+c6 (s2,D) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: { }
+
+Instance c5 :
+c5 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C5,s0>--> c5 (s0,s1)
+
+c5 (s0,s1) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C5,s1>--> c5 (s1,s2)
+
+c5 (s1,s2) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C5,s2>--> c5 (s2,D)
+
+c5 (s2,D) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: { }
+
+Instance c4 :
+c4 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C4,s0>--> c4 (s0,s1)
+
+c4 (s0,s1) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C4,s1>--> c4 (s1,s2)
+
+c4 (s1,s2) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C4,s2>--> c4 (s2,D)
+
+c4 (s2,D) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: { }
+
+Instance c3 :
+c3 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C3,s0>--> c3 (s0,s1)
+
+c3 (s0,s1) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C3,s1>--> c3 (s1,s2)
+
+c3 (s1,s2) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C3,s2>--> c3 (s2,D)
+
+c3 (s2,D) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: { }
+
+Instance c2 :
+c2 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C2,s0>--> c2 (s0,s1)
+
+c2 (s0,s1) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C2,s1>--> c2 (s1,s2)
+
+c2 (s1,s2) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C2,s2>--> c2 (s2,D)
+
+c2 (s2,D) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: { }
+
+Instance c1 :
+c1 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C1,s0>--> c1 (s0,s1)
+
+c1 (s0,s1) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C1,s1>--> c1 (s1,s2)
+
+c1 (s1,s2) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C1,s2>--> c1 (s2,D)
+
+c1 (s2,D) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: { }
+
+Instance c0 :
+c0 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C0,s0>--> c0 (s0,s1)
+
+c0 (s0,s1) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C0,s1>--> c0 (s1,D)
+
+c0 (s1,D) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: { }
+
+Next we ADD GO (blue) and RETURN (red) EDGES. 
+
+
+Now the INSTANCE LINES WITH EDGES look like this:
+
+Instance c19 :
+c19 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C19,s0>--> c19 (s0,s1)
+
+c19 (s0,s1) nr.IN-edges =  1
+ GO EDGES: ---p19_1---> c18 (s1,s2); ---p19_1---> c18 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C19,s1>--> c19 (s1,s2)
+
+c19 (s1,s2) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C19,s2>--> c19 (s2,D)
+
+c19 (s2,D) nr.IN-edges =  3
+ GO EDGES: 
+ RETURN EDGES: ---p18_2---> c18 (s2,D)
+ INST EDGE: { }
+
+Instance c18 :
+c18 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C18,s0>--> c18 (s0,s1)
+
+c18 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p18_1---> c17 (s1,s2); ---p18_1---> c17 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C18,s1>--> c18 (s1,s2)
+
+c18 (s1,s2) nr.IN-edges =  3
+ GO EDGES: ---p18_2---> c19 (s1,s2)
+ RETURN EDGES: ---p19_1---> c19 (s2,D)
+ INST EDGE: --<C18,s2>--> c18 (s2,D)
+
+c18 (s2,D) nr.IN-edges =  4
+ GO EDGES: 
+ RETURN EDGES: ---p17_2---> c17 (s2,D); ---p19_1---> c19 (s2,D)
+ INST EDGE: { }
+
+Instance c17 :
+c17 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C17,s0>--> c17 (s0,s1)
+
+c17 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p17_1---> c16 (s1,s2); ---p17_1---> c16 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C17,s1>--> c17 (s1,s2)
+
+c17 (s1,s2) nr.IN-edges =  3
+ GO EDGES: ---p17_2---> c18 (s1,s2)
+ RETURN EDGES: ---p18_1---> c18 (s2,D)
+ INST EDGE: --<C17,s2>--> c17 (s2,D)
+
+c17 (s2,D) nr.IN-edges =  4
+ GO EDGES: 
+ RETURN EDGES: ---p16_2---> c16 (s2,D); ---p18_1---> c18 (s2,D)
+ INST EDGE: { }
+
+Instance c16 :
+c16 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C16,s0>--> c16 (s0,s1)
+
+c16 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p16_1---> c15 (s1,s2); ---p16_1---> c15 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C16,s1>--> c16 (s1,s2)
+
+c16 (s1,s2) nr.IN-edges =  5
+ GO EDGES: ---p16_2---> c17 (s1,s2)
+ RETURN EDGES: ---p17_1---> c17 (s2,D)
+ INST EDGE: --<C16,s2>--> c16 (s2,D)
+
+c16 (s2,D) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: ---p15_2---> c15 (s2,D); ---p17_1---> c17 (s2,D)
+ INST EDGE: { }
+
+Instance c15 :
+c15 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C15,s0>--> c15 (s0,s1)
+
+c15 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p15_1---> c14 (s1,s2); ---p15_1---> c14 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C15,s1>--> c15 (s1,s2)
+
+c15 (s1,s2) nr.IN-edges =  3
+ GO EDGES: ---p15_2---> c16 (s1,s2)
+ RETURN EDGES: ---p16_1---> c16 (s1,s2)
+ INST EDGE: --<C15,s2>--> c15 (s2,D)
+
+c15 (s2,D) nr.IN-edges =  4
+ GO EDGES: 
+ RETURN EDGES: ---p14_2---> c14 (s2,D); ---p16_1---> c16 (s1,s2)
+ INST EDGE: { }
+
+Instance c14 :
+c14 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C14,s0>--> c14 (s0,s1)
+
+c14 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p14_1---> c13 (s1,s2); ---p14_1---> c13 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C14,s1>--> c14 (s1,s2)
+
+c14 (s1,s2) nr.IN-edges =  3
+ GO EDGES: ---p14_2---> c15 (s1,s2)
+ RETURN EDGES: ---p15_1---> c15 (s2,D)
+ INST EDGE: --<C14,s2>--> c14 (s2,D)
+
+c14 (s2,D) nr.IN-edges =  4
+ GO EDGES: 
+ RETURN EDGES: ---p13_2---> c13 (s2,D); ---p15_1---> c15 (s2,D)
+ INST EDGE: { }
+
+Instance c13 :
+c13 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C13,s0>--> c13 (s0,s1)
+
+c13 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p13_1---> c12 (s1,s2); ---p13_1---> c12 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C13,s1>--> c13 (s1,s2)
+
+c13 (s1,s2) nr.IN-edges =  5
+ GO EDGES: ---p13_2---> c14 (s1,s2)
+ RETURN EDGES: ---p14_1---> c14 (s2,D)
+ INST EDGE: --<C13,s2>--> c13 (s2,D)
+
+c13 (s2,D) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: ---p12_2---> c12 (s2,D); ---p14_1---> c14 (s2,D)
+ INST EDGE: { }
+
+Instance c12 :
+c12 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C12,s0>--> c12 (s0,s1)
+
+c12 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p12_1---> c11 (s1,s2); ---p12_1---> c11 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C12,s1>--> c12 (s1,s2)
+
+c12 (s1,s2) nr.IN-edges =  3
+ GO EDGES: ---p12_2---> c13 (s1,s2)
+ RETURN EDGES: ---p13_1---> c13 (s1,s2)
+ INST EDGE: --<C12,s2>--> c12 (s2,D)
+
+c12 (s2,D) nr.IN-edges =  4
+ GO EDGES: 
+ RETURN EDGES: ---p11_2---> c11 (s2,D); ---p13_1---> c13 (s1,s2)
+ INST EDGE: { }
+
+Instance c11 :
+c11 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C11,s0>--> c11 (s0,s1)
+
+c11 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p11_1---> c10 (s1,s2); ---p11_1---> c10 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C11,s1>--> c11 (s1,s2)
+
+c11 (s1,s2) nr.IN-edges =  3
+ GO EDGES: ---p11_2---> c12 (s1,s2)
+ RETURN EDGES: ---p12_1---> c12 (s2,D)
+ INST EDGE: --<C11,s2>--> c11 (s2,D)
+
+c11 (s2,D) nr.IN-edges =  4
+ GO EDGES: 
+ RETURN EDGES: ---p10_2---> c10 (s2,D); ---p12_1---> c12 (s2,D)
+ INST EDGE: { }
+
+Instance c10 :
+c10 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C10,s0>--> c10 (s0,s1)
+
+c10 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p10_1---> c9 (s1,s2); ---p10_1---> c9 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C10,s1>--> c10 (s1,s2)
+
+c10 (s1,s2) nr.IN-edges =  3
+ GO EDGES: ---p10_2---> c11 (s1,s2)
+ RETURN EDGES: ---p11_1---> c11 (s2,D)
+ INST EDGE: --<C10,s2>--> c10 (s2,D)
+
+c10 (s2,D) nr.IN-edges =  4
+ GO EDGES: 
+ RETURN EDGES: ---p9_2---> c9 (s2,D); ---p11_1---> c11 (s2,D)
+ INST EDGE: { }
+
+Instance c9 :
+c9 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C9,s0>--> c9 (s0,s1)
+
+c9 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p9_1---> c8 (s1,s2); ---p9_1---> c8 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C9,s1>--> c9 (s1,s2)
+
+c9 (s1,s2) nr.IN-edges =  3
+ GO EDGES: ---p9_2---> c10 (s1,s2)
+ RETURN EDGES: ---p10_1---> c10 (s2,D)
+ INST EDGE: --<C9,s2>--> c9 (s2,D)
+
+c9 (s2,D) nr.IN-edges =  4
+ GO EDGES: 
+ RETURN EDGES: ---p8_2---> c8 (s2,D); ---p10_1---> c10 (s2,D)
+ INST EDGE: { }
+
+Instance c8 :
+c8 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C8,s0>--> c8 (s0,s1)
+
+c8 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p8_1---> c7 (s1,s2); ---p8_1---> c7 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C8,s1>--> c8 (s1,s2)
+
+c8 (s1,s2) nr.IN-edges =  3
+ GO EDGES: ---p8_2---> c9 (s1,s2)
+ RETURN EDGES: ---p9_1---> c9 (s2,D)
+ INST EDGE: --<C8,s2>--> c8 (s2,D)
+
+c8 (s2,D) nr.IN-edges =  4
+ GO EDGES: 
+ RETURN EDGES: ---p7_2---> c7 (s2,D); ---p9_1---> c9 (s2,D)
+ INST EDGE: { }
+
+Instance c7 :
+c7 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C7,s0>--> c7 (s0,s1)
+
+c7 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p7_1---> c6 (s1,s2); ---p7_1---> c6 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C7,s1>--> c7 (s1,s2)
+
+c7 (s1,s2) nr.IN-edges =  3
+ GO EDGES: ---p7_2---> c8 (s1,s2)
+ RETURN EDGES: ---p8_1---> c8 (s2,D)
+ INST EDGE: --<C7,s2>--> c7 (s2,D)
+
+c7 (s2,D) nr.IN-edges =  4
+ GO EDGES: 
+ RETURN EDGES: ---p6_2---> c6 (s2,D); ---p8_1---> c8 (s2,D)
+ INST EDGE: { }
+
+Instance c6 :
+c6 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C6,s0>--> c6 (s0,s1)
+
+c6 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p6_1---> c5 (s1,s2); ---p6_1---> c5 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C6,s1>--> c6 (s1,s2)
+
+c6 (s1,s2) nr.IN-edges =  3
+ GO EDGES: ---p6_2---> c7 (s1,s2)
+ RETURN EDGES: ---p7_1---> c7 (s2,D)
+ INST EDGE: --<C6,s2>--> c6 (s2,D)
+
+c6 (s2,D) nr.IN-edges =  4
+ GO EDGES: 
+ RETURN EDGES: ---p5_2---> c5 (s2,D); ---p7_1---> c7 (s2,D)
+ INST EDGE: { }
+
+Instance c5 :
+c5 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C5,s0>--> c5 (s0,s1)
+
+c5 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p5_1---> c4 (s1,s2); ---p5_1---> c4 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C5,s1>--> c5 (s1,s2)
+
+c5 (s1,s2) nr.IN-edges =  5
+ GO EDGES: ---p5_2---> c6 (s1,s2)
+ RETURN EDGES: ---p6_1---> c6 (s2,D)
+ INST EDGE: --<C5,s2>--> c5 (s2,D)
+
+c5 (s2,D) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: ---p4_2---> c4 (s2,D); ---p6_1---> c6 (s2,D)
+ INST EDGE: { }
+
+Instance c4 :
+c4 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C4,s0>--> c4 (s0,s1)
+
+c4 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p4_1---> c3 (s1,s2); ---p4_1---> c3 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C4,s1>--> c4 (s1,s2)
+
+c4 (s1,s2) nr.IN-edges =  3
+ GO EDGES: ---p4_2---> c5 (s1,s2)
+ RETURN EDGES: ---p5_1---> c5 (s1,s2)
+ INST EDGE: --<C4,s2>--> c4 (s2,D)
+
+c4 (s2,D) nr.IN-edges =  4
+ GO EDGES: 
+ RETURN EDGES: ---p3_2---> c3 (s2,D); ---p5_1---> c5 (s1,s2)
+ INST EDGE: { }
+
+Instance c3 :
+c3 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C3,s0>--> c3 (s0,s1)
+
+c3 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p3_1---> c2 (s1,s2); ---p3_1---> c2 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C3,s1>--> c3 (s1,s2)
+
+c3 (s1,s2) nr.IN-edges =  5
+ GO EDGES: ---p3_2---> c4 (s1,s2)
+ RETURN EDGES: ---p4_1---> c4 (s2,D)
+ INST EDGE: --<C3,s2>--> c3 (s2,D)
+
+c3 (s2,D) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: ---p2_2---> c2 (s2,D); ---p4_1---> c4 (s2,D)
+ INST EDGE: { }
+
+Instance c2 :
+c2 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C2,s0>--> c2 (s0,s1)
+
+c2 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p2_1---> c1 (s1,s2); ---p2_1---> c1 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C2,s1>--> c2 (s1,s2)
+
+c2 (s1,s2) nr.IN-edges =  3
+ GO EDGES: ---p2_2---> c3 (s1,s2)
+ RETURN EDGES: ---p3_1---> c3 (s1,s2)
+ INST EDGE: --<C2,s2>--> c2 (s2,D)
+
+c2 (s2,D) nr.IN-edges =  4
+ GO EDGES: 
+ RETURN EDGES: ---p1_2---> c1 (s2,D); ---p3_1---> c3 (s1,s2)
+ INST EDGE: { }
+
+Instance c1 :
+c1 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C1,s0>--> c1 (s0,s1)
+
+c1 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p1_1---> c0 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C1,s1>--> c1 (s1,s2)
+
+c1 (s1,s2) nr.IN-edges =  3
+ GO EDGES: ---p1_2---> c2 (s1,s2)
+ RETURN EDGES: ---p2_1---> c2 (s2,D)
+ INST EDGE: --<C1,s2>--> c1 (s2,D)
+
+c1 (s2,D) nr.IN-edges =  3
+ GO EDGES: 
+ RETURN EDGES: ---p0_2---> c0 (s1,D); ---p2_1---> c2 (s2,D)
+ INST EDGE: { }
+
+Instance c0 :
+c0 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C0,s0>--> c0 (s0,s1)
+
+c0 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p0_2---> c1 (s1,s2)
+ RETURN EDGES: 
+ INST EDGE: --<C0,s1>--> c0 (s1,D)
+
+c0 (s1,D) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: ---p1_1---> c1 (s2,D)
+ INST EDGE: { }
+
+
+********************** ORIGINAL CYCLES FOUND:
+c0 (C,s0)
+ c1 (C,s0)
+ c2 (C,s0)
+ c3 (C,s0)
+ c4 (C,s0)
+ c5 (C,s0)
+ c6 (C,s0)
+ c7 (C,s0)
+ c8 (C,s0)
+ c9 (C,s0)
+ c10 (C,s0)
+ c11 (C,s0)
+ c12 (C,s0)
+ c13 (C,s0)
+ c14 (C,s0)
+ c15 (C,s0)
+ c16 (C,s0)
+ c17 (C,s0)
+ c18 (C,s0)
+ c19 (C,s0)
+ c19 (s0,s1)
+ c18 (s0,s1)
+ c17 (s0,s1)
+ c16 (s0,s1)
+ c15 (s0,s1)
+ c14 (s0,s1)
+ c13 (s0,s1)
+ c12 (s0,s1)
+ c11 (s0,s1)
+ c10 (s0,s1)
+ c9 (s0,s1)
+ c8 (s0,s1)
+ c7 (s0,s1)
+ c6 (s0,s1)
+ c5 (s0,s1)
+ c4 (s0,s1)
+ c3 (s0,s1)
+ c2 (s0,s1)
+ c1 (s0,s1)
+ c0 (s0,s1)
+ c1 (s1,s2)
+ c2 (s1,s2)
+ c0 (s1,D)  |  c1 (s2,D)  |  c2 (s2,D)  |  c3 (s2,D)  |  c3 (s1,s2)  |  c4 (s2,D)  |  c4 (s1,s2)  |  c5 (s2,D)  |  c5 (s1,s2)  |  c6 (s2,D)  |  c6 (s1,s2)  |  c7 (s2,D)  |  c7 (s1,s2)  |  c8 (s2,D)  |  c8 (s1,s2)  |  c9 (s2,D)  |  c9 (s1,s2)  |  c10 (s2,D)  |  c10 (s1,s2)  |  c11 (s2,D)  |  c11 (s1,s2)  |  c12 (s2,D)  |  c12 (s1,s2)  |  c13 (s2,D)  |  c13 (s1,s2)  |  c14 (s2,D)  |  c14 (s1,s2)  |  c15 (s2,D)  |  c15 (s1,s2)  |  c16 (s2,D)  |  c16 (s1,s2)  |  c17 (s2,D)  |  c17 (s1,s2)  |  c18 (s2,D)  |  c18 (s1,s2)  |  c19 (s2,D)  |  c19 (s1,s2)
+
+
+********************** TRUE CYCLES KEPT:
+c0 (s1,D)  |  c1 (s2,D)  |  c2 (s2,D)  |  c3 (s2,D)  |  c3 (s1,s2)  |  c4 (s2,D)  |  c4 (s1,s2)  |  c5 (s2,D)  |  c5 (s1,s2)  |  c6 (s2,D)  |  c6 (s1,s2)  |  c7 (s2,D)  |  c7 (s1,s2)  |  c8 (s2,D)  |  c8 (s1,s2)  |  c9 (s2,D)  |  c9 (s1,s2)  |  c10 (s2,D)  |  c10 (s1,s2)  |  c11 (s2,D)  |  c11 (s1,s2)  |  c12 (s2,D)  |  c12 (s1,s2)  |  c13 (s2,D)  |  c13 (s1,s2)  |  c14 (s2,D)  |  c14 (s1,s2)  |  c15 (s2,D)  |  c15 (s1,s2)  |  c16 (s2,D)  |  c16 (s1,s2)  |  c17 (s2,D)  |  c17 (s1,s2)  |  c18 (s2,D)  |  c18 (s1,s2)  |  c19 (s2,D)  |  c19 (s1,s2)
+
+Vertex chosen for splitting: c3 (s1,s2)
+
+The instance line to be split must be:
+Instance c3 : c3 (C,s0)  |  c3 (s0,s1)  |  c3 (s1,s2)  |  c3 (s2,D)
+
+Copy instance line:
+Instance c3' : c3' (C,s0)  |  c3' (s0,s1)  |  c3' (s1,D)
+
+Instance lines updated to: 
+Instance c3' : c3' (C,s0)  |  c3' (s0,s1)  |  c3' (s1,D)
+
+Instance c19 : c19 (C,s0)  |  c19 (s0,s1)  |  c19 (s1,s2)  |  c19 (s2,D)
+
+Instance c18 : c18 (C,s0)  |  c18 (s0,s1)  |  c18 (s1,s2)  |  c18 (s2,D)
+
+Instance c17 : c17 (C,s0)  |  c17 (s0,s1)  |  c17 (s1,s2)  |  c17 (s2,D)
+
+Instance c16 : c16 (C,s0)  |  c16 (s0,s1)  |  c16 (s1,s2)  |  c16 (s2,D)
+
+Instance c15 : c15 (C,s0)  |  c15 (s0,s1)  |  c15 (s1,s2)  |  c15 (s2,D)
+
+Instance c14 : c14 (C,s0)  |  c14 (s0,s1)  |  c14 (s1,s2)  |  c14 (s2,D)
+
+Instance c13 : c13 (C,s0)  |  c13 (s0,s1)  |  c13 (s1,s2)  |  c13 (s2,D)
+
+Instance c12 : c12 (C,s0)  |  c12 (s0,s1)  |  c12 (s1,s2)  |  c12 (s2,D)
+
+Instance c11 : c11 (C,s0)  |  c11 (s0,s1)  |  c11 (s1,s2)  |  c11 (s2,D)
+
+Instance c10 : c10 (C,s0)  |  c10 (s0,s1)  |  c10 (s1,s2)  |  c10 (s2,D)
+
+Instance c9 : c9 (C,s0)  |  c9 (s0,s1)  |  c9 (s1,s2)  |  c9 (s2,D)
+
+Instance c8 : c8 (C,s0)  |  c8 (s0,s1)  |  c8 (s1,s2)  |  c8 (s2,D)
+
+Instance c7 : c7 (C,s0)  |  c7 (s0,s1)  |  c7 (s1,s2)  |  c7 (s2,D)
+
+Instance c6 : c6 (C,s0)  |  c6 (s0,s1)  |  c6 (s1,s2)  |  c6 (s2,D)
+
+Instance c5 : c5 (C,s0)  |  c5 (s0,s1)  |  c5 (s1,s2)  |  c5 (s2,D)
+
+Instance c4 : c4 (C,s0)  |  c4 (s0,s1)  |  c4 (s1,s2)  |  c4 (s2,D)
+
+Instance c3 : c3 (C,s0)  |  c3 (s0,s1)  |  c3 (s1,s2)  |  c3 (s2,D)
+
+Instance c2 : c2 (C,s0)  |  c2 (s0,s1)  |  c2 (s1,s2)  |  c2 (s2,D)
+
+Instance c1 : c1 (C,s0)  |  c1 (s0,s1)  |  c1 (s1,s2)  |  c1 (s2,D)
+
+Instance c0 : c0 (C,s0)  |  c0 (s0,s1)  |  c0 (s1,D)
+
+REDIRECTION OF GO/BLUE and RETURN/RED edges.
+RETURN/RED edge redirected towards: ---p3_1---> c3' (s1,D)
+New GO/BLUE edge: c3' (s0,s1) ---p3_1---> c2 (s1,s2)
+Old GO/BLUE edge that has been removed: c3 (s0,s1) ---p3_1---> c2 (s1,s2)
+added the following RED/RETURN edge: c3' (s1,D) ---p4_1---> c4 (s2,D)
+added the following BLUE/GO edge: c4 (s0,s1) ---p4_1---> c3' (s0,s1)
+
+
+********************** ORIGINAL CYCLES FOUND:
+c0 (C,s0)
+ c1 (C,s0)
+ c2 (C,s0)
+ c3 (C,s0)
+ c4 (C,s0)
+ c5 (C,s0)
+ c6 (C,s0)
+ c7 (C,s0)
+ c8 (C,s0)
+ c9 (C,s0)
+ c10 (C,s0)
+ c11 (C,s0)
+ c12 (C,s0)
+ c13 (C,s0)
+ c14 (C,s0)
+ c15 (C,s0)
+ c16 (C,s0)
+ c17 (C,s0)
+ c18 (C,s0)
+ c19 (C,s0)
+ c19 (s0,s1)
+ c18 (s0,s1)
+ c17 (s0,s1)
+ c16 (s0,s1)
+ c15 (s0,s1)
+ c14 (s0,s1)
+ c13 (s0,s1)
+ c12 (s0,s1)
+ c11 (s0,s1)
+ c10 (s0,s1)
+ c9 (s0,s1)
+ c8 (s0,s1)
+ c7 (s0,s1)
+ c6 (s0,s1)
+ c5 (s0,s1)
+ c4 (s0,s1)
+ c3 (s0,s1)
+ c2 (s0,s1)
+ c1 (s0,s1)
+ c0 (s0,s1)
+ c1 (s1,s2)
+ c3' (C,s0)
+ c3' (s0,s1)
+ c2 (s1,s2)
+ c3 (s1,s2)
+ c4 (s1,s2)
+ c0 (s1,D)  |  c1 (s2,D)  |  c2 (s2,D)  |  c3 (s2,D)  |  c4 (s2,D)  |  c5 (s2,D)  |  c5 (s1,s2)  |  c6 (s2,D)  |  c6 (s1,s2)  |  c7 (s2,D)  |  c7 (s1,s2)  |  c8 (s2,D)  |  c8 (s1,s2)  |  c9 (s2,D)  |  c9 (s1,s2)  |  c10 (s2,D)  |  c10 (s1,s2)  |  c11 (s2,D)  |  c11 (s1,s2)  |  c12 (s2,D)  |  c12 (s1,s2)  |  c13 (s2,D)  |  c13 (s1,s2)  |  c14 (s2,D)  |  c14 (s1,s2)  |  c15 (s2,D)  |  c15 (s1,s2)  |  c16 (s2,D)  |  c16 (s1,s2)  |  c17 (s2,D)  |  c17 (s1,s2)  |  c18 (s2,D)  |  c18 (s1,s2)  |  c19 (s2,D)  |  c19 (s1,s2)  |  c3' (s1,D)
+
+
+********************** TRUE CYCLES KEPT:
+c0 (s1,D)  |  c1 (s2,D)  |  c2 (s2,D)  |  c3 (s2,D)  |  c4 (s2,D)  |  c5 (s2,D)  |  c5 (s1,s2)  |  c6 (s2,D)  |  c6 (s1,s2)  |  c7 (s2,D)  |  c7 (s1,s2)  |  c8 (s2,D)  |  c8 (s1,s2)  |  c9 (s2,D)  |  c9 (s1,s2)  |  c10 (s2,D)  |  c10 (s1,s2)  |  c11 (s2,D)  |  c11 (s1,s2)  |  c12 (s2,D)  |  c12 (s1,s2)  |  c13 (s2,D)  |  c13 (s1,s2)  |  c14 (s2,D)  |  c14 (s1,s2)  |  c15 (s2,D)  |  c15 (s1,s2)  |  c16 (s2,D)  |  c16 (s1,s2)  |  c17 (s2,D)  |  c17 (s1,s2)  |  c18 (s2,D)  |  c18 (s1,s2)  |  c19 (s2,D)  |  c19 (s1,s2)  |  c3' (s1,D)
+
+Vertex chosen for splitting: c5 (s1,s2)
+
+The instance line to be split must be:
+Instance c5 : c5 (C,s0)  |  c5 (s0,s1)  |  c5 (s1,s2)  |  c5 (s2,D)
+
+Copy instance line:
+Instance c5' : c5' (C,s0)  |  c5' (s0,s1)  |  c5' (s1,D)
+
+Instance lines updated to: 
+Instance c5' : c5' (C,s0)  |  c5' (s0,s1)  |  c5' (s1,D)
+
+Instance c3' : c3' (C,s0)  |  c3' (s0,s1)  |  c3' (s1,D)
+
+Instance c19 : c19 (C,s0)  |  c19 (s0,s1)  |  c19 (s1,s2)  |  c19 (s2,D)
+
+Instance c18 : c18 (C,s0)  |  c18 (s0,s1)  |  c18 (s1,s2)  |  c18 (s2,D)
+
+Instance c17 : c17 (C,s0)  |  c17 (s0,s1)  |  c17 (s1,s2)  |  c17 (s2,D)
+
+Instance c16 : c16 (C,s0)  |  c16 (s0,s1)  |  c16 (s1,s2)  |  c16 (s2,D)
+
+Instance c15 : c15 (C,s0)  |  c15 (s0,s1)  |  c15 (s1,s2)  |  c15 (s2,D)
+
+Instance c14 : c14 (C,s0)  |  c14 (s0,s1)  |  c14 (s1,s2)  |  c14 (s2,D)
+
+Instance c13 : c13 (C,s0)  |  c13 (s0,s1)  |  c13 (s1,s2)  |  c13 (s2,D)
+
+Instance c12 : c12 (C,s0)  |  c12 (s0,s1)  |  c12 (s1,s2)  |  c12 (s2,D)
+
+Instance c11 : c11 (C,s0)  |  c11 (s0,s1)  |  c11 (s1,s2)  |  c11 (s2,D)
+
+Instance c10 : c10 (C,s0)  |  c10 (s0,s1)  |  c10 (s1,s2)  |  c10 (s2,D)
+
+Instance c9 : c9 (C,s0)  |  c9 (s0,s1)  |  c9 (s1,s2)  |  c9 (s2,D)
+
+Instance c8 : c8 (C,s0)  |  c8 (s0,s1)  |  c8 (s1,s2)  |  c8 (s2,D)
+
+Instance c7 : c7 (C,s0)  |  c7 (s0,s1)  |  c7 (s1,s2)  |  c7 (s2,D)
+
+Instance c6 : c6 (C,s0)  |  c6 (s0,s1)  |  c6 (s1,s2)  |  c6 (s2,D)
+
+Instance c5 : c5 (C,s0)  |  c5 (s0,s1)  |  c5 (s1,s2)  |  c5 (s2,D)
+
+Instance c4 : c4 (C,s0)  |  c4 (s0,s1)  |  c4 (s1,s2)  |  c4 (s2,D)
+
+Instance c3 : c3 (C,s0)  |  c3 (s0,s1)  |  c3 (s1,s2)  |  c3 (s2,D)
+
+Instance c2 : c2 (C,s0)  |  c2 (s0,s1)  |  c2 (s1,s2)  |  c2 (s2,D)
+
+Instance c1 : c1 (C,s0)  |  c1 (s0,s1)  |  c1 (s1,s2)  |  c1 (s2,D)
+
+Instance c0 : c0 (C,s0)  |  c0 (s0,s1)  |  c0 (s1,D)
+
+REDIRECTION OF GO/BLUE and RETURN/RED edges.
+RETURN/RED edge redirected towards: ---p5_1---> c5' (s1,D)
+New GO/BLUE edge: c5' (s0,s1) ---p5_1---> c4 (s1,s2)
+Old GO/BLUE edge that has been removed: c5 (s0,s1) ---p5_1---> c4 (s1,s2)
+added the following RED/RETURN edge: c5' (s1,D) ---p6_1---> c6 (s2,D)
+added the following BLUE/GO edge: c6 (s0,s1) ---p6_1---> c5' (s0,s1)
+
+
+********************** ORIGINAL CYCLES FOUND:
+c0 (C,s0)
+ c1 (C,s0)
+ c2 (C,s0)
+ c3 (C,s0)
+ c4 (C,s0)
+ c5 (C,s0)
+ c6 (C,s0)
+ c7 (C,s0)
+ c8 (C,s0)
+ c9 (C,s0)
+ c10 (C,s0)
+ c11 (C,s0)
+ c12 (C,s0)
+ c13 (C,s0)
+ c14 (C,s0)
+ c15 (C,s0)
+ c16 (C,s0)
+ c17 (C,s0)
+ c18 (C,s0)
+ c19 (C,s0)
+ c19 (s0,s1)
+ c18 (s0,s1)
+ c17 (s0,s1)
+ c16 (s0,s1)
+ c15 (s0,s1)
+ c14 (s0,s1)
+ c13 (s0,s1)
+ c12 (s0,s1)
+ c11 (s0,s1)
+ c10 (s0,s1)
+ c9 (s0,s1)
+ c8 (s0,s1)
+ c7 (s0,s1)
+ c6 (s0,s1)
+ c5 (s0,s1)
+ c4 (s0,s1)
+ c3 (s0,s1)
+ c2 (s0,s1)
+ c1 (s0,s1)
+ c0 (s0,s1)
+ c1 (s1,s2)
+ c3' (C,s0)
+ c3' (s0,s1)
+ c2 (s1,s2)
+ c3 (s1,s2)
+ c5' (C,s0)
+ c5' (s0,s1)
+ c4 (s1,s2)
+ c5 (s1,s2)
+ c6 (s1,s2)
+ c7 (s1,s2)
+ c8 (s1,s2)
+ c9 (s1,s2)
+ c10 (s1,s2)
+ c11 (s1,s2)
+ c12 (s1,s2)
+ c0 (s1,D)  |  c1 (s2,D)  |  c2 (s2,D)  |  c3 (s2,D)  |  c4 (s2,D)  |  c5 (s2,D)  |  c6 (s2,D)  |  c7 (s2,D)  |  c8 (s2,D)  |  c9 (s2,D)  |  c10 (s2,D)  |  c11 (s2,D)  |  c12 (s2,D)  |  c13 (s2,D)  |  c13 (s1,s2)  |  c14 (s2,D)  |  c14 (s1,s2)  |  c15 (s2,D)  |  c15 (s1,s2)  |  c16 (s2,D)  |  c16 (s1,s2)  |  c17 (s2,D)  |  c17 (s1,s2)  |  c18 (s2,D)  |  c18 (s1,s2)  |  c19 (s2,D)  |  c19 (s1,s2)  |  c3' (s1,D)  |  c5' (s1,D)
+
+
+********************** TRUE CYCLES KEPT:
+c0 (s1,D)  |  c1 (s2,D)  |  c2 (s2,D)  |  c3 (s2,D)  |  c4 (s2,D)  |  c5 (s2,D)  |  c6 (s2,D)  |  c7 (s2,D)  |  c8 (s2,D)  |  c9 (s2,D)  |  c10 (s2,D)  |  c11 (s2,D)  |  c12 (s2,D)  |  c13 (s2,D)  |  c13 (s1,s2)  |  c14 (s2,D)  |  c14 (s1,s2)  |  c15 (s2,D)  |  c15 (s1,s2)  |  c16 (s2,D)  |  c16 (s1,s2)  |  c17 (s2,D)  |  c17 (s1,s2)  |  c18 (s2,D)  |  c18 (s1,s2)  |  c19 (s2,D)  |  c19 (s1,s2)  |  c3' (s1,D)  |  c5' (s1,D)
+
+Vertex chosen for splitting: c13 (s1,s2)
+
+The instance line to be split must be:
+Instance c13 : c13 (C,s0)  |  c13 (s0,s1)  |  c13 (s1,s2)  |  c13 (s2,D)
+
+Copy instance line:
+Instance c13' : c13' (C,s0)  |  c13' (s0,s1)  |  c13' (s1,D)
+
+Instance lines updated to: 
+Instance c13' : c13' (C,s0)  |  c13' (s0,s1)  |  c13' (s1,D)
+
+Instance c5' : c5' (C,s0)  |  c5' (s0,s1)  |  c5' (s1,D)
+
+Instance c3' : c3' (C,s0)  |  c3' (s0,s1)  |  c3' (s1,D)
+
+Instance c19 : c19 (C,s0)  |  c19 (s0,s1)  |  c19 (s1,s2)  |  c19 (s2,D)
+
+Instance c18 : c18 (C,s0)  |  c18 (s0,s1)  |  c18 (s1,s2)  |  c18 (s2,D)
+
+Instance c17 : c17 (C,s0)  |  c17 (s0,s1)  |  c17 (s1,s2)  |  c17 (s2,D)
+
+Instance c16 : c16 (C,s0)  |  c16 (s0,s1)  |  c16 (s1,s2)  |  c16 (s2,D)
+
+Instance c15 : c15 (C,s0)  |  c15 (s0,s1)  |  c15 (s1,s2)  |  c15 (s2,D)
+
+Instance c14 : c14 (C,s0)  |  c14 (s0,s1)  |  c14 (s1,s2)  |  c14 (s2,D)
+
+Instance c13 : c13 (C,s0)  |  c13 (s0,s1)  |  c13 (s1,s2)  |  c13 (s2,D)
+
+Instance c12 : c12 (C,s0)  |  c12 (s0,s1)  |  c12 (s1,s2)  |  c12 (s2,D)
+
+Instance c11 : c11 (C,s0)  |  c11 (s0,s1)  |  c11 (s1,s2)  |  c11 (s2,D)
+
+Instance c10 : c10 (C,s0)  |  c10 (s0,s1)  |  c10 (s1,s2)  |  c10 (s2,D)
+
+Instance c9 : c9 (C,s0)  |  c9 (s0,s1)  |  c9 (s1,s2)  |  c9 (s2,D)
+
+Instance c8 : c8 (C,s0)  |  c8 (s0,s1)  |  c8 (s1,s2)  |  c8 (s2,D)
+
+Instance c7 : c7 (C,s0)  |  c7 (s0,s1)  |  c7 (s1,s2)  |  c7 (s2,D)
+
+Instance c6 : c6 (C,s0)  |  c6 (s0,s1)  |  c6 (s1,s2)  |  c6 (s2,D)
+
+Instance c5 : c5 (C,s0)  |  c5 (s0,s1)  |  c5 (s1,s2)  |  c5 (s2,D)
+
+Instance c4 : c4 (C,s0)  |  c4 (s0,s1)  |  c4 (s1,s2)  |  c4 (s2,D)
+
+Instance c3 : c3 (C,s0)  |  c3 (s0,s1)  |  c3 (s1,s2)  |  c3 (s2,D)
+
+Instance c2 : c2 (C,s0)  |  c2 (s0,s1)  |  c2 (s1,s2)  |  c2 (s2,D)
+
+Instance c1 : c1 (C,s0)  |  c1 (s0,s1)  |  c1 (s1,s2)  |  c1 (s2,D)
+
+Instance c0 : c0 (C,s0)  |  c0 (s0,s1)  |  c0 (s1,D)
+
+REDIRECTION OF GO/BLUE and RETURN/RED edges.
+RETURN/RED edge redirected towards: ---p13_1---> c13' (s1,D)
+New GO/BLUE edge: c13' (s0,s1) ---p13_1---> c12 (s1,s2)
+Old GO/BLUE edge that has been removed: c13 (s0,s1) ---p13_1---> c12 (s1,s2)
+added the following RED/RETURN edge: c13' (s1,D) ---p14_1---> c14 (s2,D)
+added the following BLUE/GO edge: c14 (s0,s1) ---p14_1---> c13' (s0,s1)
+
+
+********************** ORIGINAL CYCLES FOUND:
+c0 (C,s0)
+ c1 (C,s0)
+ c2 (C,s0)
+ c3 (C,s0)
+ c4 (C,s0)
+ c5 (C,s0)
+ c6 (C,s0)
+ c7 (C,s0)
+ c8 (C,s0)
+ c9 (C,s0)
+ c10 (C,s0)
+ c11 (C,s0)
+ c12 (C,s0)
+ c13 (C,s0)
+ c14 (C,s0)
+ c15 (C,s0)
+ c16 (C,s0)
+ c17 (C,s0)
+ c18 (C,s0)
+ c19 (C,s0)
+ c19 (s0,s1)
+ c18 (s0,s1)
+ c17 (s0,s1)
+ c16 (s0,s1)
+ c15 (s0,s1)
+ c14 (s0,s1)
+ c13 (s0,s1)
+ c12 (s0,s1)
+ c11 (s0,s1)
+ c10 (s0,s1)
+ c9 (s0,s1)
+ c8 (s0,s1)
+ c7 (s0,s1)
+ c6 (s0,s1)
+ c5 (s0,s1)
+ c4 (s0,s1)
+ c3 (s0,s1)
+ c2 (s0,s1)
+ c1 (s0,s1)
+ c0 (s0,s1)
+ c1 (s1,s2)
+ c3' (C,s0)
+ c3' (s0,s1)
+ c2 (s1,s2)
+ c3 (s1,s2)
+ c5' (C,s0)
+ c5' (s0,s1)
+ c4 (s1,s2)
+ c5 (s1,s2)
+ c6 (s1,s2)
+ c7 (s1,s2)
+ c8 (s1,s2)
+ c9 (s1,s2)
+ c10 (s1,s2)
+ c11 (s1,s2)
+ c13' (C,s0)
+ c13' (s0,s1)
+ c12 (s1,s2)
+ c13 (s1,s2)
+ c14 (s1,s2)
+ c15 (s1,s2)
+ c0 (s1,D)  |  c1 (s2,D)  |  c2 (s2,D)  |  c3 (s2,D)  |  c4 (s2,D)  |  c5 (s2,D)  |  c6 (s2,D)  |  c7 (s2,D)  |  c8 (s2,D)  |  c9 (s2,D)  |  c10 (s2,D)  |  c11 (s2,D)  |  c12 (s2,D)  |  c13 (s2,D)  |  c14 (s2,D)  |  c15 (s2,D)  |  c16 (s2,D)  |  c16 (s1,s2)  |  c17 (s2,D)  |  c17 (s1,s2)  |  c18 (s2,D)  |  c18 (s1,s2)  |  c19 (s2,D)  |  c19 (s1,s2)  |  c3' (s1,D)  |  c5' (s1,D)  |  c13' (s1,D)
+
+
+********************** TRUE CYCLES KEPT:
+c0 (s1,D)  |  c1 (s2,D)  |  c2 (s2,D)  |  c3 (s2,D)  |  c4 (s2,D)  |  c5 (s2,D)  |  c6 (s2,D)  |  c7 (s2,D)  |  c8 (s2,D)  |  c9 (s2,D)  |  c10 (s2,D)  |  c11 (s2,D)  |  c12 (s2,D)  |  c13 (s2,D)  |  c14 (s2,D)  |  c15 (s2,D)  |  c16 (s2,D)  |  c16 (s1,s2)  |  c17 (s2,D)  |  c17 (s1,s2)  |  c18 (s2,D)  |  c18 (s1,s2)  |  c19 (s2,D)  |  c19 (s1,s2)  |  c3' (s1,D)  |  c5' (s1,D)  |  c13' (s1,D)
+
+Vertex chosen for splitting: c16 (s1,s2)
+
+The instance line to be split must be:
+Instance c16 : c16 (C,s0)  |  c16 (s0,s1)  |  c16 (s1,s2)  |  c16 (s2,D)
+
+Copy instance line:
+Instance c16' : c16' (C,s0)  |  c16' (s0,s1)  |  c16' (s1,D)
+
+Instance lines updated to: 
+Instance c16' : c16' (C,s0)  |  c16' (s0,s1)  |  c16' (s1,D)
+
+Instance c13' : c13' (C,s0)  |  c13' (s0,s1)  |  c13' (s1,D)
+
+Instance c5' : c5' (C,s0)  |  c5' (s0,s1)  |  c5' (s1,D)
+
+Instance c3' : c3' (C,s0)  |  c3' (s0,s1)  |  c3' (s1,D)
+
+Instance c19 : c19 (C,s0)  |  c19 (s0,s1)  |  c19 (s1,s2)  |  c19 (s2,D)
+
+Instance c18 : c18 (C,s0)  |  c18 (s0,s1)  |  c18 (s1,s2)  |  c18 (s2,D)
+
+Instance c17 : c17 (C,s0)  |  c17 (s0,s1)  |  c17 (s1,s2)  |  c17 (s2,D)
+
+Instance c16 : c16 (C,s0)  |  c16 (s0,s1)  |  c16 (s1,s2)  |  c16 (s2,D)
+
+Instance c15 : c15 (C,s0)  |  c15 (s0,s1)  |  c15 (s1,s2)  |  c15 (s2,D)
+
+Instance c14 : c14 (C,s0)  |  c14 (s0,s1)  |  c14 (s1,s2)  |  c14 (s2,D)
+
+Instance c13 : c13 (C,s0)  |  c13 (s0,s1)  |  c13 (s1,s2)  |  c13 (s2,D)
+
+Instance c12 : c12 (C,s0)  |  c12 (s0,s1)  |  c12 (s1,s2)  |  c12 (s2,D)
+
+Instance c11 : c11 (C,s0)  |  c11 (s0,s1)  |  c11 (s1,s2)  |  c11 (s2,D)
+
+Instance c10 : c10 (C,s0)  |  c10 (s0,s1)  |  c10 (s1,s2)  |  c10 (s2,D)
+
+Instance c9 : c9 (C,s0)  |  c9 (s0,s1)  |  c9 (s1,s2)  |  c9 (s2,D)
+
+Instance c8 : c8 (C,s0)  |  c8 (s0,s1)  |  c8 (s1,s2)  |  c8 (s2,D)
+
+Instance c7 : c7 (C,s0)  |  c7 (s0,s1)  |  c7 (s1,s2)  |  c7 (s2,D)
+
+Instance c6 : c6 (C,s0)  |  c6 (s0,s1)  |  c6 (s1,s2)  |  c6 (s2,D)
+
+Instance c5 : c5 (C,s0)  |  c5 (s0,s1)  |  c5 (s1,s2)  |  c5 (s2,D)
+
+Instance c4 : c4 (C,s0)  |  c4 (s0,s1)  |  c4 (s1,s2)  |  c4 (s2,D)
+
+Instance c3 : c3 (C,s0)  |  c3 (s0,s1)  |  c3 (s1,s2)  |  c3 (s2,D)
+
+Instance c2 : c2 (C,s0)  |  c2 (s0,s1)  |  c2 (s1,s2)  |  c2 (s2,D)
+
+Instance c1 : c1 (C,s0)  |  c1 (s0,s1)  |  c1 (s1,s2)  |  c1 (s2,D)
+
+Instance c0 : c0 (C,s0)  |  c0 (s0,s1)  |  c0 (s1,D)
+
+REDIRECTION OF GO/BLUE and RETURN/RED edges.
+RETURN/RED edge redirected towards: ---p16_1---> c16' (s1,D)
+New GO/BLUE edge: c16' (s0,s1) ---p16_1---> c15 (s1,s2)
+Old GO/BLUE edge that has been removed: c16 (s0,s1) ---p16_1---> c15 (s1,s2)
+added the following RED/RETURN edge: c16' (s1,D) ---p17_1---> c17 (s2,D)
+added the following BLUE/GO edge: c17 (s0,s1) ---p17_1---> c16' (s0,s1)
+
+
+********************** ORIGINAL CYCLES FOUND:
+c0 (C,s0)
+ c1 (C,s0)
+ c2 (C,s0)
+ c3 (C,s0)
+ c4 (C,s0)
+ c5 (C,s0)
+ c6 (C,s0)
+ c7 (C,s0)
+ c8 (C,s0)
+ c9 (C,s0)
+ c10 (C,s0)
+ c11 (C,s0)
+ c12 (C,s0)
+ c13 (C,s0)
+ c14 (C,s0)
+ c15 (C,s0)
+ c16 (C,s0)
+ c17 (C,s0)
+ c18 (C,s0)
+ c19 (C,s0)
+ c19 (s0,s1)
+ c18 (s0,s1)
+ c17 (s0,s1)
+ c16 (s0,s1)
+ c15 (s0,s1)
+ c14 (s0,s1)
+ c13 (s0,s1)
+ c12 (s0,s1)
+ c11 (s0,s1)
+ c10 (s0,s1)
+ c9 (s0,s1)
+ c8 (s0,s1)
+ c7 (s0,s1)
+ c6 (s0,s1)
+ c5 (s0,s1)
+ c4 (s0,s1)
+ c3 (s0,s1)
+ c2 (s0,s1)
+ c1 (s0,s1)
+ c0 (s0,s1)
+ c1 (s1,s2)
+ c3' (C,s0)
+ c3' (s0,s1)
+ c2 (s1,s2)
+ c3 (s1,s2)
+ c5' (C,s0)
+ c5' (s0,s1)
+ c4 (s1,s2)
+ c5 (s1,s2)
+ c6 (s1,s2)
+ c7 (s1,s2)
+ c8 (s1,s2)
+ c9 (s1,s2)
+ c10 (s1,s2)
+ c11 (s1,s2)
+ c13' (C,s0)
+ c13' (s0,s1)
+ c12 (s1,s2)
+ c13 (s1,s2)
+ c14 (s1,s2)
+ c16' (C,s0)
+ c16' (s0,s1)
+ c15 (s1,s2)
+ c16 (s1,s2)
+ c17 (s1,s2)
+ c18 (s1,s2)
+ c19 (s1,s2)
+ c0 (s1,D)  |  c1 (s2,D)  |  c2 (s2,D)  |  c3 (s2,D)  |  c4 (s2,D)  |  c5 (s2,D)  |  c6 (s2,D)  |  c7 (s2,D)  |  c8 (s2,D)  |  c9 (s2,D)  |  c10 (s2,D)  |  c11 (s2,D)  |  c12 (s2,D)  |  c13 (s2,D)  |  c14 (s2,D)  |  c15 (s2,D)  |  c16 (s2,D)  |  c17 (s2,D)  |  c18 (s2,D)  |  c19 (s2,D)  |  c3' (s1,D)  |  c5' (s1,D)  |  c13' (s1,D)  |  c16' (s1,D)
+
+
+********************** TRUE CYCLES KEPT:
+
+
+
+The INSTANCE LINES after splitting are the following:
+
+Instance c16' :
+c16' (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C16,s0>--> c16' (s0,s1)
+
+c16' (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p16_1---> c15 (s1,s2)
+ RETURN EDGES: 
+ INST EDGE: --<C16,s1>--> c16' (s1,D)
+
+c16' (s1,D) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: ---p17_1---> c17 (s2,D)
+ INST EDGE: { }
+
+Instance c13' :
+c13' (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C13,s0>--> c13' (s0,s1)
+
+c13' (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p13_1---> c12 (s1,s2)
+ RETURN EDGES: 
+ INST EDGE: --<C13,s1>--> c13' (s1,D)
+
+c13' (s1,D) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: ---p14_1---> c14 (s2,D)
+ INST EDGE: { }
+
+Instance c5' :
+c5' (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C5,s0>--> c5' (s0,s1)
+
+c5' (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p5_1---> c4 (s1,s2)
+ RETURN EDGES: 
+ INST EDGE: --<C5,s1>--> c5' (s1,D)
+
+c5' (s1,D) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: ---p6_1---> c6 (s2,D)
+ INST EDGE: { }
+
+Instance c3' :
+c3' (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C3,s0>--> c3' (s0,s1)
+
+c3' (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p3_1---> c2 (s1,s2)
+ RETURN EDGES: 
+ INST EDGE: --<C3,s1>--> c3' (s1,D)
+
+c3' (s1,D) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: ---p4_1---> c4 (s2,D)
+ INST EDGE: { }
+
+Instance c19 :
+c19 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C19,s0>--> c19 (s0,s1)
+
+c19 (s0,s1) nr.IN-edges =  1
+ GO EDGES: ---p19_1---> c18 (s1,s2); ---p19_1---> c18 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C19,s1>--> c19 (s1,s2)
+
+c19 (s1,s2) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C19,s2>--> c19 (s2,D)
+
+c19 (s2,D) nr.IN-edges =  3
+ GO EDGES: 
+ RETURN EDGES: ---p18_2---> c18 (s2,D)
+ INST EDGE: { }
+
+Instance c18 :
+c18 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C18,s0>--> c18 (s0,s1)
+
+c18 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p18_1---> c17 (s1,s2); ---p18_1---> c17 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C18,s1>--> c18 (s1,s2)
+
+c18 (s1,s2) nr.IN-edges =  3
+ GO EDGES: ---p18_2---> c19 (s1,s2)
+ RETURN EDGES: ---p19_1---> c19 (s2,D)
+ INST EDGE: --<C18,s2>--> c18 (s2,D)
+
+c18 (s2,D) nr.IN-edges =  4
+ GO EDGES: 
+ RETURN EDGES: ---p17_2---> c17 (s2,D); ---p19_1---> c19 (s2,D)
+ INST EDGE: { }
+
+Instance c17 :
+c17 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C17,s0>--> c17 (s0,s1)
+
+c17 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p17_1---> c16' (s0,s1); ---p17_1---> c16 (s1,s2); ---p17_1---> c16 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C17,s1>--> c17 (s1,s2)
+
+c17 (s1,s2) nr.IN-edges =  3
+ GO EDGES: ---p17_2---> c18 (s1,s2)
+ RETURN EDGES: ---p18_1---> c18 (s2,D)
+ INST EDGE: --<C17,s2>--> c17 (s2,D)
+
+c17 (s2,D) nr.IN-edges =  5
+ GO EDGES: 
+ RETURN EDGES: ---p16_2---> c16 (s2,D); ---p18_1---> c18 (s2,D)
+ INST EDGE: { }
+
+Instance c16 :
+c16 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C16,s0>--> c16 (s0,s1)
+
+c16 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p16_1---> c15 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C16,s1>--> c16 (s1,s2)
+
+c16 (s1,s2) nr.IN-edges =  4
+ GO EDGES: ---p16_2---> c17 (s1,s2)
+ RETURN EDGES: ---p17_1---> c17 (s2,D)
+ INST EDGE: --<C16,s2>--> c16 (s2,D)
+
+c16 (s2,D) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: ---p15_2---> c15 (s2,D); ---p17_1---> c17 (s2,D)
+ INST EDGE: { }
+
+Instance c15 :
+c15 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C15,s0>--> c15 (s0,s1)
+
+c15 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p15_1---> c14 (s1,s2); ---p15_1---> c14 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C15,s1>--> c15 (s1,s2)
+
+c15 (s1,s2) nr.IN-edges =  3
+ GO EDGES: ---p15_2---> c16 (s1,s2)
+ RETURN EDGES: ---p16_1---> c16 (s1,s2)
+ INST EDGE: --<C15,s2>--> c15 (s2,D)
+
+c15 (s2,D) nr.IN-edges =  4
+ GO EDGES: 
+ RETURN EDGES: ---p14_2---> c14 (s2,D); ---p16_1---> c16' (s1,D)
+ INST EDGE: { }
+
+Instance c14 :
+c14 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C14,s0>--> c14 (s0,s1)
+
+c14 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p14_1---> c13' (s0,s1); ---p14_1---> c13 (s1,s2); ---p14_1---> c13 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C14,s1>--> c14 (s1,s2)
+
+c14 (s1,s2) nr.IN-edges =  3
+ GO EDGES: ---p14_2---> c15 (s1,s2)
+ RETURN EDGES: ---p15_1---> c15 (s2,D)
+ INST EDGE: --<C14,s2>--> c14 (s2,D)
+
+c14 (s2,D) nr.IN-edges =  5
+ GO EDGES: 
+ RETURN EDGES: ---p13_2---> c13 (s2,D); ---p15_1---> c15 (s2,D)
+ INST EDGE: { }
+
+Instance c13 :
+c13 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C13,s0>--> c13 (s0,s1)
+
+c13 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p13_1---> c12 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C13,s1>--> c13 (s1,s2)
+
+c13 (s1,s2) nr.IN-edges =  4
+ GO EDGES: ---p13_2---> c14 (s1,s2)
+ RETURN EDGES: ---p14_1---> c14 (s2,D)
+ INST EDGE: --<C13,s2>--> c13 (s2,D)
+
+c13 (s2,D) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: ---p12_2---> c12 (s2,D); ---p14_1---> c14 (s2,D)
+ INST EDGE: { }
+
+Instance c12 :
+c12 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C12,s0>--> c12 (s0,s1)
+
+c12 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p12_1---> c11 (s1,s2); ---p12_1---> c11 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C12,s1>--> c12 (s1,s2)
+
+c12 (s1,s2) nr.IN-edges =  3
+ GO EDGES: ---p12_2---> c13 (s1,s2)
+ RETURN EDGES: ---p13_1---> c13 (s1,s2)
+ INST EDGE: --<C12,s2>--> c12 (s2,D)
+
+c12 (s2,D) nr.IN-edges =  4
+ GO EDGES: 
+ RETURN EDGES: ---p11_2---> c11 (s2,D); ---p13_1---> c13' (s1,D)
+ INST EDGE: { }
+
+Instance c11 :
+c11 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C11,s0>--> c11 (s0,s1)
+
+c11 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p11_1---> c10 (s1,s2); ---p11_1---> c10 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C11,s1>--> c11 (s1,s2)
+
+c11 (s1,s2) nr.IN-edges =  3
+ GO EDGES: ---p11_2---> c12 (s1,s2)
+ RETURN EDGES: ---p12_1---> c12 (s2,D)
+ INST EDGE: --<C11,s2>--> c11 (s2,D)
+
+c11 (s2,D) nr.IN-edges =  4
+ GO EDGES: 
+ RETURN EDGES: ---p10_2---> c10 (s2,D); ---p12_1---> c12 (s2,D)
+ INST EDGE: { }
+
+Instance c10 :
+c10 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C10,s0>--> c10 (s0,s1)
+
+c10 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p10_1---> c9 (s1,s2); ---p10_1---> c9 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C10,s1>--> c10 (s1,s2)
+
+c10 (s1,s2) nr.IN-edges =  3
+ GO EDGES: ---p10_2---> c11 (s1,s2)
+ RETURN EDGES: ---p11_1---> c11 (s2,D)
+ INST EDGE: --<C10,s2>--> c10 (s2,D)
+
+c10 (s2,D) nr.IN-edges =  4
+ GO EDGES: 
+ RETURN EDGES: ---p9_2---> c9 (s2,D); ---p11_1---> c11 (s2,D)
+ INST EDGE: { }
+
+Instance c9 :
+c9 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C9,s0>--> c9 (s0,s1)
+
+c9 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p9_1---> c8 (s1,s2); ---p9_1---> c8 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C9,s1>--> c9 (s1,s2)
+
+c9 (s1,s2) nr.IN-edges =  3
+ GO EDGES: ---p9_2---> c10 (s1,s2)
+ RETURN EDGES: ---p10_1---> c10 (s2,D)
+ INST EDGE: --<C9,s2>--> c9 (s2,D)
+
+c9 (s2,D) nr.IN-edges =  4
+ GO EDGES: 
+ RETURN EDGES: ---p8_2---> c8 (s2,D); ---p10_1---> c10 (s2,D)
+ INST EDGE: { }
+
+Instance c8 :
+c8 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C8,s0>--> c8 (s0,s1)
+
+c8 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p8_1---> c7 (s1,s2); ---p8_1---> c7 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C8,s1>--> c8 (s1,s2)
+
+c8 (s1,s2) nr.IN-edges =  3
+ GO EDGES: ---p8_2---> c9 (s1,s2)
+ RETURN EDGES: ---p9_1---> c9 (s2,D)
+ INST EDGE: --<C8,s2>--> c8 (s2,D)
+
+c8 (s2,D) nr.IN-edges =  4
+ GO EDGES: 
+ RETURN EDGES: ---p7_2---> c7 (s2,D); ---p9_1---> c9 (s2,D)
+ INST EDGE: { }
+
+Instance c7 :
+c7 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C7,s0>--> c7 (s0,s1)
+
+c7 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p7_1---> c6 (s1,s2); ---p7_1---> c6 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C7,s1>--> c7 (s1,s2)
+
+c7 (s1,s2) nr.IN-edges =  3
+ GO EDGES: ---p7_2---> c8 (s1,s2)
+ RETURN EDGES: ---p8_1---> c8 (s2,D)
+ INST EDGE: --<C7,s2>--> c7 (s2,D)
+
+c7 (s2,D) nr.IN-edges =  4
+ GO EDGES: 
+ RETURN EDGES: ---p6_2---> c6 (s2,D); ---p8_1---> c8 (s2,D)
+ INST EDGE: { }
+
+Instance c6 :
+c6 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C6,s0>--> c6 (s0,s1)
+
+c6 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p6_1---> c5' (s0,s1); ---p6_1---> c5 (s1,s2); ---p6_1---> c5 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C6,s1>--> c6 (s1,s2)
+
+c6 (s1,s2) nr.IN-edges =  3
+ GO EDGES: ---p6_2---> c7 (s1,s2)
+ RETURN EDGES: ---p7_1---> c7 (s2,D)
+ INST EDGE: --<C6,s2>--> c6 (s2,D)
+
+c6 (s2,D) nr.IN-edges =  5
+ GO EDGES: 
+ RETURN EDGES: ---p5_2---> c5 (s2,D); ---p7_1---> c7 (s2,D)
+ INST EDGE: { }
+
+Instance c5 :
+c5 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C5,s0>--> c5 (s0,s1)
+
+c5 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p5_1---> c4 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C5,s1>--> c5 (s1,s2)
+
+c5 (s1,s2) nr.IN-edges =  4
+ GO EDGES: ---p5_2---> c6 (s1,s2)
+ RETURN EDGES: ---p6_1---> c6 (s2,D)
+ INST EDGE: --<C5,s2>--> c5 (s2,D)
+
+c5 (s2,D) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: ---p4_2---> c4 (s2,D); ---p6_1---> c6 (s2,D)
+ INST EDGE: { }
+
+Instance c4 :
+c4 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C4,s0>--> c4 (s0,s1)
+
+c4 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p4_1---> c3' (s0,s1); ---p4_1---> c3 (s1,s2); ---p4_1---> c3 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C4,s1>--> c4 (s1,s2)
+
+c4 (s1,s2) nr.IN-edges =  3
+ GO EDGES: ---p4_2---> c5 (s1,s2)
+ RETURN EDGES: ---p5_1---> c5 (s1,s2)
+ INST EDGE: --<C4,s2>--> c4 (s2,D)
+
+c4 (s2,D) nr.IN-edges =  5
+ GO EDGES: 
+ RETURN EDGES: ---p3_2---> c3 (s2,D); ---p5_1---> c5' (s1,D)
+ INST EDGE: { }
+
+Instance c3 :
+c3 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C3,s0>--> c3 (s0,s1)
+
+c3 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p3_1---> c2 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C3,s1>--> c3 (s1,s2)
+
+c3 (s1,s2) nr.IN-edges =  4
+ GO EDGES: ---p3_2---> c4 (s1,s2)
+ RETURN EDGES: ---p4_1---> c4 (s2,D)
+ INST EDGE: --<C3,s2>--> c3 (s2,D)
+
+c3 (s2,D) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: ---p2_2---> c2 (s2,D); ---p4_1---> c4 (s2,D)
+ INST EDGE: { }
+
+Instance c2 :
+c2 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C2,s0>--> c2 (s0,s1)
+
+c2 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p2_1---> c1 (s1,s2); ---p2_1---> c1 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C2,s1>--> c2 (s1,s2)
+
+c2 (s1,s2) nr.IN-edges =  3
+ GO EDGES: ---p2_2---> c3 (s1,s2)
+ RETURN EDGES: ---p3_1---> c3 (s1,s2)
+ INST EDGE: --<C2,s2>--> c2 (s2,D)
+
+c2 (s2,D) nr.IN-edges =  4
+ GO EDGES: 
+ RETURN EDGES: ---p1_2---> c1 (s2,D); ---p3_1---> c3' (s1,D)
+ INST EDGE: { }
+
+Instance c1 :
+c1 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C1,s0>--> c1 (s0,s1)
+
+c1 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p1_1---> c0 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C1,s1>--> c1 (s1,s2)
+
+c1 (s1,s2) nr.IN-edges =  3
+ GO EDGES: ---p1_2---> c2 (s1,s2)
+ RETURN EDGES: ---p2_1---> c2 (s2,D)
+ INST EDGE: --<C1,s2>--> c1 (s2,D)
+
+c1 (s2,D) nr.IN-edges =  3
+ GO EDGES: 
+ RETURN EDGES: ---p0_2---> c0 (s1,D); ---p2_1---> c2 (s2,D)
+ INST EDGE: { }
+
+Instance c0 :
+c0 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C0,s0>--> c0 (s0,s1)
+
+c0 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p0_2---> c1 (s1,s2)
+ RETURN EDGES: 
+ INST EDGE: --<C0,s1>--> c0 (s1,D)
+
+c0 (s1,D) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: ---p1_1---> c1 (s2,D)
+ INST EDGE: { }
+
+Now we perform a TOPOLOGICAL SORT.
+
+And finally the COMPUTED PLAN is:
+
+c16' must perform actions: [Create instance]
+c13' must perform actions: [Create instance]
+c5' must perform actions: [Create instance]
+c3' must perform actions: [Create instance]
+c19 must perform actions: [Create instance]
+c18 must perform actions: [Create instance]
+c17 must perform actions: [Create instance]
+c16 must perform actions: [Create instance]
+c15 must perform actions: [Create instance]
+c14 must perform actions: [Create instance]
+c13 must perform actions: [Create instance]
+c12 must perform actions: [Create instance]
+c11 must perform actions: [Create instance]
+c10 must perform actions: [Create instance]
+c9 must perform actions: [Create instance]
+c8 must perform actions: [Create instance]
+c7 must perform actions: [Create instance]
+c6 must perform actions: [Create instance]
+c5 must perform actions: [Create instance]
+c4 must perform actions: [Create instance]
+c3 must perform actions: [Create instance]
+c2 must perform actions: [Create instance]
+c1 must perform actions: [Create instance]
+c0 must perform actions: [Create instance]
+c19 must perform actions: [Bind port p19_1 to instance c18]  [Bind port p19_1 to instance c18]  [Change state from s0 to s1]
+c18 must perform actions: [Bind port p18_1 to instance c17]  [Bind port p18_1 to instance c17]  [Change state from s0 to s1]
+c17 must perform actions: [Bind port p17_1 to instance c16']  [Bind port p17_1 to instance c16]  [Bind port p17_1 to instance c16]  [Change state from s0 to s1]
+c16' must perform actions: [Bind port p16_1 to instance c15]  [Change state from s0 to s1]
+c16 must perform actions: [Bind port p16_1 to instance c15]  [Change state from s0 to s1]
+c15 must perform actions: [Bind port p15_1 to instance c14]  [Bind port p15_1 to instance c14]  [Change state from s0 to s1]
+c14 must perform actions: [Bind port p14_1 to instance c13']  [Bind port p14_1 to instance c13]  [Bind port p14_1 to instance c13]  [Change state from s0 to s1]
+c13' must perform actions: [Bind port p13_1 to instance c12]  [Change state from s0 to s1]
+c13 must perform actions: [Bind port p13_1 to instance c12]  [Change state from s0 to s1]
+c12 must perform actions: [Bind port p12_1 to instance c11]  [Bind port p12_1 to instance c11]  [Change state from s0 to s1]
+c11 must perform actions: [Bind port p11_1 to instance c10]  [Bind port p11_1 to instance c10]  [Change state from s0 to s1]
+c10 must perform actions: [Bind port p10_1 to instance c9]  [Bind port p10_1 to instance c9]  [Change state from s0 to s1]
+c9 must perform actions: [Bind port p9_1 to instance c8]  [Bind port p9_1 to instance c8]  [Change state from s0 to s1]
+c8 must perform actions: [Bind port p8_1 to instance c7]  [Bind port p8_1 to instance c7]  [Change state from s0 to s1]
+c7 must perform actions: [Bind port p7_1 to instance c6]  [Bind port p7_1 to instance c6]  [Change state from s0 to s1]
+c6 must perform actions: [Bind port p6_1 to instance c5']  [Bind port p6_1 to instance c5]  [Bind port p6_1 to instance c5]  [Change state from s0 to s1]
+c5' must perform actions: [Bind port p5_1 to instance c4]  [Change state from s0 to s1]
+c5 must perform actions: [Bind port p5_1 to instance c4]  [Change state from s0 to s1]
+c4 must perform actions: [Bind port p4_1 to instance c3']  [Bind port p4_1 to instance c3]  [Bind port p4_1 to instance c3]  [Change state from s0 to s1]
+c3' must perform actions: [Bind port p3_1 to instance c2]  [Change state from s0 to s1]
+c3 must perform actions: [Bind port p3_1 to instance c2]  [Change state from s0 to s1]
+c2 must perform actions: [Bind port p2_1 to instance c1]  [Bind port p2_1 to instance c1]  [Change state from s0 to s1]
+c1 must perform actions: [Bind port p1_1 to instance c0]  [Change state from s0 to s1]
+c0 must perform actions: [Bind port p0_2 to instance c1]  [Change state from s0 to s1]
+c1 must perform actions: [Unbind port p2_1 from instance c2]  [Bind port p1_2 to instance c2]  [Change state from s1 to s2]
+c2 must perform actions: [Unbind port p3_1 from instance c3]  [Bind port p2_2 to instance c3]  [Change state from s1 to s2]
+c3 must perform actions: [Unbind port p4_1 from instance c4]  [Bind port p3_2 to instance c4]  [Change state from s1 to s2]
+c4 must perform actions: [Unbind port p5_1 from instance c5]  [Bind port p4_2 to instance c5]  [Change state from s1 to s2]
+c5 must perform actions: [Unbind port p6_1 from instance c6]  [Bind port p5_2 to instance c6]  [Change state from s1 to s2]
+c6 must perform actions: [Unbind port p7_1 from instance c7]  [Bind port p6_2 to instance c7]  [Change state from s1 to s2]
+c7 must perform actions: [Unbind port p8_1 from instance c8]  [Bind port p7_2 to instance c8]  [Change state from s1 to s2]
+c8 must perform actions: [Unbind port p9_1 from instance c9]  [Bind port p8_2 to instance c9]  [Change state from s1 to s2]
+c9 must perform actions: [Unbind port p10_1 from instance c10]  [Bind port p9_2 to instance c10]  [Change state from s1 to s2]
+c10 must perform actions: [Unbind port p11_1 from instance c11]  [Bind port p10_2 to instance c11]  [Change state from s1 to s2]
+c11 must perform actions: [Unbind port p12_1 from instance c12]  [Bind port p11_2 to instance c12]  [Change state from s1 to s2]
+c12 must perform actions: [Unbind port p13_1 from instance c13]  [Bind port p12_2 to instance c13]  [Change state from s1 to s2]
+c13 must perform actions: [Unbind port p14_1 from instance c14]  [Bind port p13_2 to instance c14]  [Change state from s1 to s2]
+c14 must perform actions: [Unbind port p15_1 from instance c15]  [Bind port p14_2 to instance c15]  [Change state from s1 to s2]
+c15 must perform actions: [Unbind port p16_1 from instance c16]  [Bind port p15_2 to instance c16]  [Change state from s1 to s2]
+c16 must perform actions: [Unbind port p17_1 from instance c17]  [Bind port p16_2 to instance c17]  [Change state from s1 to s2]
+c17 must perform actions: [Unbind port p18_1 from instance c18]  [Bind port p17_2 to instance c18]  [Change state from s1 to s2]
+c18 must perform actions: [Unbind port p19_1 from instance c19]  [Bind port p18_2 to instance c19]  [Change state from s1 to s2]
+c19 must perform actions: [Change state from s1 to s2]

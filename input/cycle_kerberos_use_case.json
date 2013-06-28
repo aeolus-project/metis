@@ -1,0 +1,44 @@
+[
+	{
+		"u_cname" : "krb5",
+		"u_automaton" :
+			[
+				{
+					"u_name" : "uninst",
+					"u_successors" : ["stage1"],
+					"u_provides" : [],
+					"u_requires" : []
+				},
+				{
+					"u_name" : "stage1",
+					"u_successors" : ["uninst", "normal"],
+					"u_provides" : ["libkrb5-dev"],
+					"u_requires" : []
+				},
+				{
+					"u_name" : "normal",
+					"u_successors" : ["uninst"],
+					"u_provides" : ["libkrb5-dev", "all-krb5-functionalities"],
+					"u_requires" : ["libldap2-dev", "ldap-uninst-p"]
+				}
+			]
+	},
+	{
+		"u_cname" : "open-ldap",
+		"u_automaton" :
+			[
+				{
+					"u_name" : "uninst",
+					"u_successors" : ["normal"],
+					"u_provides" : ["ldap-uninst-p"],
+					"u_requires" : []
+				},
+				{
+					"u_name" : "normal",
+					"u_successors" : ["uninst"],
+					"u_provides" : ["libldap2-dev"],
+					"u_requires" : ["libkrb5-dev"]
+				}
+			]
+	}
+]

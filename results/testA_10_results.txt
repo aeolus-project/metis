@@ -1,0 +1,317 @@
+
+We generate the FULL G-GRAPH: 
+
+Generation nr.0: <B,q0>; <A,s0>
+Generation nr.1: <A,s0>_1; <B,q0>_1; <A,s1>
+Generation nr.2: <A,s1>_1; <B,q0>_2; <A,s0>_2; <B,q1>
+Generation nr.3: <B,q1>_1; <A,s0>_3; <B,q0>_3; <A,s1>_2; <A,s2>
+Generation nr.4: <A,s2>_1; <A,s1>_3; <B,q0>_4; <A,s0>_4; <B,q1>_2; <B,q2>
+Generation nr.5: <B,q2>_1; <B,q1>_3; <A,s0>_5; <B,q0>_5; <A,s1>_4; <A,s2>_2; <A,s3>
+Generation nr.6: <A,s3>_1; <A,s2>_3; <A,s1>_5; <B,q0>_6; <A,s0>_6; <B,q1>_4; <B,q2>_2; <B,q3>
+Generation nr.7: <B,q3>_1; <B,q2>_3; <B,q1>_5; <A,s0>_7; <B,q0>_7; <A,s1>_6; <A,s2>_4; <A,s3>_2; <A,s4>
+Generation nr.8: <A,s4>_1; <A,s3>_3; <A,s2>_5; <A,s1>_7; <B,q0>_8; <A,s0>_8; <B,q1>_6; <B,q2>_4; <B,q3>_2; <B,q4>
+Generation nr.9: <B,q4>_1; <B,q3>_3; <B,q2>_5; <B,q1>_7; <A,s0>_9; <B,q0>_9; <A,s1>_8; <A,s2>_6; <A,s3>_4; <A,s4>_2; <A,s5>
+Generation nr.10: <A,s5>_1; <A,s4>_3; <A,s3>_5; <A,s2>_7; <A,s1>_9; <B,q0>_10; <A,s0>_10; <B,q1>_8; <B,q2>_6; <B,q3>_4; <B,q4>_2; <B,q5>
+Generation nr.11: <B,q5>_1; <B,q4>_3; <B,q3>_5; <B,q2>_7; <B,q1>_9; <A,s0>_11; <B,q0>_11; <A,s1>_10; <A,s2>_8; <A,s3>_6; <A,s4>_4; <A,s5>_2; <A,s6>
+Generation nr.12: <A,s6>_1; <A,s5>_3; <A,s4>_5; <A,s3>_7; <A,s2>_9; <A,s1>_11; <B,q0>_12; <A,s0>_12; <B,q1>_10; <B,q2>_8; <B,q3>_6; <B,q4>_4; <B,q5>_2; <B,q6>
+Generation nr.13: <B,q6>_1; <B,q5>_3; <B,q4>_5; <B,q3>_7; <B,q2>_9; <B,q1>_11; <A,s0>_13; <B,q0>_13; <A,s1>_12; <A,s2>_10; <A,s3>_8; <A,s4>_6; <A,s5>_4; <A,s6>_2; <A,s7>
+Generation nr.14: <A,s7>_1; <A,s6>_3; <A,s5>_5; <A,s4>_7; <A,s3>_9; <A,s2>_11; <A,s1>_13; <B,q0>_14; <A,s0>_14; <B,q1>_12; <B,q2>_10; <B,q3>_8; <B,q4>_6; <B,q5>_4; <B,q6>_2; <B,q7>
+Generation nr.15: <B,q7>_1; <B,q6>_3; <B,q5>_5; <B,q4>_7; <B,q3>_9; <B,q2>_11; <B,q1>_13; <A,s0>_15; <B,q0>_15; <A,s1>_14; <A,s2>_12; <A,s3>_10; <A,s4>_8; <A,s5>_6; <A,s6>_4; <A,s7>_2; <A,s8>
+Generation nr.16: <A,s8>_1; <A,s7>_3; <A,s6>_5; <A,s5>_7; <A,s4>_9; <A,s3>_11; <A,s2>_13; <A,s1>_15; <B,q0>_16; <A,s0>_16; <B,q1>_14; <B,q2>_12; <B,q3>_10; <B,q4>_8; <B,q5>_6; <B,q6>_4; <B,q7>_2; <B,q8>
+Generation nr.17: <B,q8>_1; <B,q7>_3; <B,q6>_5; <B,q5>_7; <B,q4>_9; <B,q3>_11; <B,q2>_13; <B,q1>_15; <A,s0>_17; <B,q0>_17; <A,s1>_16; <A,s2>_14; <A,s3>_12; <A,s4>_10; <A,s5>_8; <A,s6>_6; <A,s7>_4; <A,s8>_2; <A,s9>
+Generation nr.18: <A,s9>_1; <A,s8>_3; <A,s7>_5; <A,s6>_7; <A,s5>_9; <A,s4>_11; <A,s3>_13; <A,s2>_15; <A,s1>_17; <B,q0>_18; <A,s0>_18; <B,q1>_16; <B,q2>_14; <B,q3>_12; <B,q4>_10; <B,q5>_8; <B,q6>_6; <B,q7>_4; <B,q8>_2; <B,q9>
+
+BOTTOM-UP VISIT of the G-graph. For every node we choose origin node and providers.
+
+LINEARIZATION phase
+
+The linearized paths are the following:
+
+<A,s0> <A,s1> <A,s2> <A,s3> <A,s4> <A,s5> <A,s6> <A,s7> <A,s8> <A,s9> 
+
+<B,q0> <B,q1> <B,q2> <B,q3> <B,q4> <B,q5> <B,q6> <B,q7> <B,q8> <B,q9> 
+
+
+The INSTANCE LINES are the following:
+
+Instance b :
+b (C,q0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<B,q0>--> b (q0,q1)
+
+b (q0,q1) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<B,q1>--> b (q1,q2)
+
+b (q1,q2) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<B,q2>--> b (q2,q3)
+
+b (q2,q3) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<B,q3>--> b (q3,q4)
+
+b (q3,q4) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<B,q4>--> b (q4,q5)
+
+b (q4,q5) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<B,q5>--> b (q5,q6)
+
+b (q5,q6) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<B,q6>--> b (q6,q7)
+
+b (q6,q7) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<B,q7>--> b (q7,q8)
+
+b (q7,q8) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<B,q8>--> b (q8,q9)
+
+b (q8,q9) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<B,q9>--> b (q9,D)
+
+b (q9,D) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: { }
+
+Instance a :
+a (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<A,s0>--> a (s0,s1)
+
+a (s0,s1) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<A,s1>--> a (s1,s2)
+
+a (s1,s2) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<A,s2>--> a (s2,s3)
+
+a (s2,s3) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<A,s3>--> a (s3,s4)
+
+a (s3,s4) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<A,s4>--> a (s4,s5)
+
+a (s4,s5) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<A,s5>--> a (s5,s6)
+
+a (s5,s6) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<A,s6>--> a (s6,s7)
+
+a (s6,s7) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<A,s7>--> a (s7,s8)
+
+a (s7,s8) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<A,s8>--> a (s8,s9)
+
+a (s8,s9) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<A,s9>--> a (s9,D)
+
+a (s9,D) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: { }
+
+Next we ADD GO (blue) and RETURN (red) EDGES. 
+
+
+Now the INSTANCE LINES WITH EDGES look like this:
+
+Instance b :
+b (C,q0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<B,q0>--> b (q0,q1)
+
+b (q0,q1) nr.IN-edges =  2
+ GO EDGES: ---p1_2---> a (s1,s2)
+ RETURN EDGES: 
+ INST EDGE: --<B,q1>--> b (q1,q2)
+
+b (q1,q2) nr.IN-edges =  2
+ GO EDGES: ---p1_3---> a (s2,s3)
+ RETURN EDGES: ---p0_1---> a (s2,s3)
+ INST EDGE: --<B,q2>--> b (q2,q3)
+
+b (q2,q3) nr.IN-edges =  3
+ GO EDGES: ---p1_4---> a (s3,s4)
+ RETURN EDGES: ---p0_2---> a (s3,s4)
+ INST EDGE: --<B,q3>--> b (q3,q4)
+
+b (q3,q4) nr.IN-edges =  3
+ GO EDGES: ---p1_5---> a (s4,s5)
+ RETURN EDGES: ---p0_3---> a (s4,s5)
+ INST EDGE: --<B,q4>--> b (q4,q5)
+
+b (q4,q5) nr.IN-edges =  3
+ GO EDGES: ---p1_6---> a (s5,s6)
+ RETURN EDGES: ---p0_4---> a (s5,s6)
+ INST EDGE: --<B,q5>--> b (q5,q6)
+
+b (q5,q6) nr.IN-edges =  3
+ GO EDGES: ---p1_7---> a (s6,s7)
+ RETURN EDGES: ---p0_5---> a (s6,s7)
+ INST EDGE: --<B,q6>--> b (q6,q7)
+
+b (q6,q7) nr.IN-edges =  3
+ GO EDGES: ---p1_8---> a (s7,s8)
+ RETURN EDGES: ---p0_6---> a (s7,s8)
+ INST EDGE: --<B,q7>--> b (q7,q8)
+
+b (q7,q8) nr.IN-edges =  3
+ GO EDGES: ---p1_9---> a (s8,s9)
+ RETURN EDGES: ---p0_7---> a (s8,s9)
+ INST EDGE: --<B,q8>--> b (q8,q9)
+
+b (q8,q9) nr.IN-edges =  3
+ GO EDGES: 
+ RETURN EDGES: ---p0_8---> a (s9,D)
+ INST EDGE: --<B,q9>--> b (q9,D)
+
+b (q9,D) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: ---p0_9---> a (s9,D)
+ INST EDGE: { }
+
+Instance a :
+a (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<A,s0>--> a (s0,s1)
+
+a (s0,s1) nr.IN-edges =  1
+ GO EDGES: ---p0_1---> b (q0,q1)
+ RETURN EDGES: 
+ INST EDGE: --<A,s1>--> a (s1,s2)
+
+a (s1,s2) nr.IN-edges =  2
+ GO EDGES: ---p0_2---> b (q1,q2)
+ RETURN EDGES: 
+ INST EDGE: --<A,s2>--> a (s2,s3)
+
+a (s2,s3) nr.IN-edges =  3
+ GO EDGES: ---p0_3---> b (q2,q3)
+ RETURN EDGES: ---p1_2---> b (q2,q3)
+ INST EDGE: --<A,s3>--> a (s3,s4)
+
+a (s3,s4) nr.IN-edges =  3
+ GO EDGES: ---p0_4---> b (q3,q4)
+ RETURN EDGES: ---p1_3---> b (q3,q4)
+ INST EDGE: --<A,s4>--> a (s4,s5)
+
+a (s4,s5) nr.IN-edges =  3
+ GO EDGES: ---p0_5---> b (q4,q5)
+ RETURN EDGES: ---p1_4---> b (q4,q5)
+ INST EDGE: --<A,s5>--> a (s5,s6)
+
+a (s5,s6) nr.IN-edges =  3
+ GO EDGES: ---p0_6---> b (q5,q6)
+ RETURN EDGES: ---p1_5---> b (q5,q6)
+ INST EDGE: --<A,s6>--> a (s6,s7)
+
+a (s6,s7) nr.IN-edges =  3
+ GO EDGES: ---p0_7---> b (q6,q7)
+ RETURN EDGES: ---p1_6---> b (q6,q7)
+ INST EDGE: --<A,s7>--> a (s7,s8)
+
+a (s7,s8) nr.IN-edges =  3
+ GO EDGES: ---p0_8---> b (q7,q8)
+ RETURN EDGES: ---p1_7---> b (q7,q8)
+ INST EDGE: --<A,s8>--> a (s8,s9)
+
+a (s8,s9) nr.IN-edges =  3
+ GO EDGES: ---p0_9---> b (q8,q9)
+ RETURN EDGES: ---p1_8---> b (q8,q9)
+ INST EDGE: --<A,s9>--> a (s9,D)
+
+a (s9,D) nr.IN-edges =  3
+ GO EDGES: 
+ RETURN EDGES: ---p1_9---> b (q9,D)
+ INST EDGE: { }
+
+
+********************** ORIGINAL CYCLES FOUND:
+a (C,s0)
+ a (s0,s1)
+ b (C,q0)
+ b (q0,q1)
+ a (s1,s2)
+ b (q1,q2)
+ a (s2,s3)
+ b (q2,q3)
+ a (s3,s4)
+ b (q3,q4)
+ a (s4,s5)
+ b (q4,q5)
+ a (s5,s6)
+ b (q5,q6)
+ a (s6,s7)
+ b (q6,q7)
+ a (s7,s8)
+ b (q7,q8)
+ a (s8,s9)
+ b (q8,q9)
+ a (s9,D)  |  b (q9,D)
+
+
+********************** TRUE CYCLES KEPT:
+
+
+Now we perform a TOPOLOGICAL SORT.
+
+And finally the COMPUTED PLAN is:
+
+b must perform actions: [Create instance]
+a must perform actions: [Create instance]
+a must perform actions: [Bind port p0_1 to instance b]  [Change state from s0 to s1]
+b must perform actions: [Bind port p1_2 to instance a]  [Change state from q0 to q1]
+a must perform actions: [Bind port p0_2 to instance b]  [Change state from s1 to s2]
+b must perform actions: [Unbind port p0_1 from instance a]  [Bind port p1_3 to instance a]  [Change state from q1 to q2]
+a must perform actions: [Unbind port p1_2 from instance b]  [Bind port p0_3 to instance b]  [Change state from s2 to s3]
+b must perform actions: [Unbind port p0_2 from instance a]  [Bind port p1_4 to instance a]  [Change state from q2 to q3]
+a must perform actions: [Unbind port p1_3 from instance b]  [Bind port p0_4 to instance b]  [Change state from s3 to s4]
+b must perform actions: [Unbind port p0_3 from instance a]  [Bind port p1_5 to instance a]  [Change state from q3 to q4]
+a must perform actions: [Unbind port p1_4 from instance b]  [Bind port p0_5 to instance b]  [Change state from s4 to s5]
+b must perform actions: [Unbind port p0_4 from instance a]  [Bind port p1_6 to instance a]  [Change state from q4 to q5]
+a must perform actions: [Unbind port p1_5 from instance b]  [Bind port p0_6 to instance b]  [Change state from s5 to s6]
+b must perform actions: [Unbind port p0_5 from instance a]  [Bind port p1_7 to instance a]  [Change state from q5 to q6]
+a must perform actions: [Unbind port p1_6 from instance b]  [Bind port p0_7 to instance b]  [Change state from s6 to s7]
+b must perform actions: [Unbind port p0_6 from instance a]  [Bind port p1_8 to instance a]  [Change state from q6 to q7]
+a must perform actions: [Unbind port p1_7 from instance b]  [Bind port p0_8 to instance b]  [Change state from s7 to s8]
+b must perform actions: [Unbind port p0_7 from instance a]  [Bind port p1_9 to instance a]  [Change state from q7 to q8]
+a must perform actions: [Unbind port p1_8 from instance b]  [Bind port p0_9 to instance b]  [Change state from s8 to s9]
+b must perform actions: [Unbind port p0_8 from instance a]  [Change state from q8 to q9]

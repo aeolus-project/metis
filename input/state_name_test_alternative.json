@@ -1,0 +1,50 @@
+[
+	{
+		"u_cname" : "A",
+		"u_automaton" :
+			[
+				{
+					"id" : "state0",
+					"successors" : ["state1"],
+					"provides" : [],
+					"requires" : []
+				},
+				{
+					"id" : "state1",
+					"successors" : ["state2"],
+					"provides" : ["p0_1"],
+					"requires" : []
+				},
+				{
+					"id" : "state2",
+					"successors" : [],
+					"provides" : ["p0_2", "p0_1"],
+					"requires" : ["p1_2"]
+				}
+			]
+	},
+	{
+		"u_name" : "B",
+		"u_automaton" :
+			[
+				{
+					"id" : "state0",
+					"successors" : ["state1"],
+					"provides" : [],
+					"requires" : []
+				},
+				{
+					"id" : "state1",
+					"successors" : ["state2"],
+					"provides" : ["p1_2"],
+					"requires" : ["p0_1"]
+				},
+				{
+					"id" : "state2",
+					"successors" : [],
+					"provides" : ["p1_2"],
+					"requires" : ["p0_2"]
+				}
+			]
+	}
+]

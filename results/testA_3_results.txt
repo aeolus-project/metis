@@ -1,0 +1,121 @@
+
+We generate the FULL G-GRAPH: 
+
+Generation nr.0: <B,q0>; <A,s0>
+Generation nr.1: <A,s0>_1; <B,q0>_1; <A,s1>
+Generation nr.2: <A,s1>_1; <B,q0>_2; <A,s0>_2; <B,q1>
+Generation nr.3: <B,q1>_1; <A,s0>_3; <B,q0>_3; <A,s1>_2; <A,s2>
+Generation nr.4: <A,s2>_1; <A,s1>_3; <B,q0>_4; <A,s0>_4; <B,q1>_2; <B,q2>
+
+BOTTOM-UP VISIT of the G-graph. For every node we choose origin node and providers.
+
+LINEARIZATION phase
+
+The linearized paths are the following:
+
+<A,s0> <A,s1> <A,s2> 
+
+<B,q0> <B,q1> <B,q2> 
+
+
+The INSTANCE LINES are the following:
+
+Instance b :
+b (C,q0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<B,q0>--> b (q0,q1)
+
+b (q0,q1) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<B,q1>--> b (q1,q2)
+
+b (q1,q2) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<B,q2>--> b (q2,D)
+
+b (q2,D) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: { }
+
+Instance a :
+a (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<A,s0>--> a (s0,s1)
+
+a (s0,s1) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<A,s1>--> a (s1,s2)
+
+a (s1,s2) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<A,s2>--> a (s2,D)
+
+a (s2,D) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: { }
+
+Next we ADD GO (blue) and RETURN (red) EDGES. 
+
+
+Now the INSTANCE LINES WITH EDGES look like this:
+
+Instance b :
+b (C,q0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<B,q0>--> b (q0,q1)
+
+b (q0,q1) nr.IN-edges =  2
+ GO EDGES: ---p1_2---> a (s1,s2)
+ RETURN EDGES: 
+ INST EDGE: --<B,q1>--> b (q1,q2)
+
+b (q1,q2) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: ---p0_1---> a (s2,D)
+ INST EDGE: --<B,q2>--> b (q2,D)
+
+b (q2,D) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: ---p0_2---> a (s2,D)
+ INST EDGE: { }
+
+Instance a :
+a (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<A,s0>--> a (s0,s1)
+
+a (s0,s1) nr.IN-edges =  1
+ GO EDGES: ---p0_1---> b (q0,q1)
+ RETURN EDGES: 
+ INST EDGE: --<A,s1>--> a (s1,s2)
+
+a (s1,s2) nr.IN-edges =  2
+ GO EDGES: ---p0_2---> b (q1,q2)
+ RETURN EDGES: 
+ INST EDGE: --<A,s2>--> a (s2,D)
+
+a (s2,D) nr.IN-edges =  3
+ GO EDGES: 
+ RETURN EDGES: ---p1_2---> b (q2,D)
+ INST EDGE: { }
+
+Now we perform a TOPOLOGICAL SORT.
+
+And finally the COMPUTED PLAN is:
+
+b must perform actions: [Create instance]
+a must perform actions: [Create instance]
+a must perform actions: [Bind port p0_1 to instance b]  [Change state from s0 to s1]
+b must perform actions: [Bind port p1_2 to instance a]  [Change state from q0 to q1]
+a must perform actions: [Bind port p0_2 to instance b]  [Change state from s1 to s2]
+b must perform actions: [Unbind port p0_1 from instance a]  [Change state from q1 to q2]

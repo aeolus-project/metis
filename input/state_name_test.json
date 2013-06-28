@@ -1,0 +1,50 @@
+[
+	{
+		"u_cname" : "A",
+		"u_automaton" :
+			[
+				{
+					"u_name" : "state0",
+					"u_successors" : ["state1"],
+					"u_provides" : [],
+					"u_requires" : []
+				},
+				{
+					"u_name" : "state1",
+					"u_successors" : ["state2"],
+					"u_provides" : ["p0_1"],
+					"u_requires" : []
+				},
+				{
+					"u_name" : "state2",
+					"u_successors" : [],
+					"u_provides" : ["p0_2", "p0_1"],
+					"u_requires" : ["p1_2"]
+				}
+			]
+	},
+	{
+		"u_cname" : "B",
+		"u_automaton" :
+			[
+				{
+					"u_name" : "state0",
+					"u_successors" : ["state1"],
+					"u_provides" : [],
+					"u_requires" : []
+				},
+				{
+					"u_name" : "state1",
+					"u_successors" : ["state2"],
+					"u_provides" : ["p1_2"],
+					"u_requires" : ["p0_1"]
+				},
+				{
+					"u_name" : "state2",
+					"u_successors" : [],
+					"u_provides" : ["p1_2"],
+					"u_requires" : ["p0_2"]
+				}
+			]
+	}
+]
