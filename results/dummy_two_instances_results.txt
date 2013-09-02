@@ -134,7 +134,7 @@ c2 (s1,D) nr.IN-edges =  2
  INST EDGE: { }
 
 
-********************** TRUE CYCLES KEPT:
+Found the following cycles:
 c0 (s1,D)  |  c1 (s2,D)  |  c1 (s1,s2)
 
 Vertex chosen for splitting: c1 (s1,s2)
@@ -163,10 +163,6 @@ FIX EDGES to/from COPY.
 The splitted meaningful vertices are the following: c1 (C,s0)  |  c1 (s0,s1)
 added the following BLUE/GO edge: c2 (s0,s1) ---p2_1---> c1' (s0,s1)
 added the following RED/RETURN edge: c1' (s1,D) ---p2_1---> c2 (s1,D)
-
-
-********************** TRUE CYCLES KEPT:
-
 
 
 The INSTANCE LINES after splitting are the following:

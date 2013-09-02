@@ -19,27 +19,93 @@ The linearized paths are the following:
 
 The INSTANCE LINES are the following:
 
-Instance k_1 : (C,q0) --<K,q0>--> (q0,q1) --<K,q1>--> (q1,D) 
+Instance k :
+k (C,q0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<K,q0>--> k (q0,q1)
 
-Instance r_0 : (C,s0) --<R,s0>--> (s0,s1) --<R,s1>--> (s1,s2) --<R,s2>--> (s2,D) 
+k (q0,q1) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<K,q1>--> k (q1,D)
+
+k (q1,D) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: { }
+
+Instance r :
+r (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<R,s0>--> r (s0,s1)
+
+r (s0,s1) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<R,s1>--> r (s1,s2)
+
+r (s1,s2) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<R,s2>--> r (s2,D)
+
+r (s2,D) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: { }
 
 Next we ADD GO (blue) and RETURN (red) EDGES. 
 
 
-The INSTANCE LINES are the following:
+Now the INSTANCE LINES WITH EDGES look like this:
 
-Instance k_1 : (C,q0) --<K,q0>--> (q0,q1) --<K,q1>--> (q1,D) 
+Instance k :
+k (C,q0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<K,q0>--> k (q0,q1)
 
-Instance r_0 : (C,s0) --<R,s0>--> (s0,s1) --<R,s1>--> (s1,s2) --<R,s2>--> (s2,D) 
+k (q0,q1) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<K,q1>--> k (q1,D)
+
+k (q1,D) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: ---p2---> r (s2,D)
+ INST EDGE: { }
+
+Instance r :
+r (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<R,s0>--> r (s0,s1)
+
+r (s0,s1) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<R,s1>--> r (s1,s2)
+
+r (s1,s2) nr.IN-edges =  1
+ GO EDGES: ---p2---> k (q0,q1)
+ RETURN EDGES: 
+ INST EDGE: --<R,s2>--> r (s2,D)
+
+r (s2,D) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: { }
 
 Now we perform a TOPOLOGICAL SORT.
 
 And finally the COMPUTED PLAN is:
 
-k_1 must perform actions: [Create instance]
-r_0 must perform actions: [Create instance]
-r_0 must perform actions: [Change state from s0 to s1]
-r_0 must perform actions: [Bind port p2 to instance k_1]  [Change state from s1 to s2]
-k_1 must perform actions: [Change state from q0 to q1]
-k_1 must perform actions: [Stop]
-r_0 must perform actions: [Stop]
+k must perform actions: [Create instance]
+r must perform actions: [Create instance]
+r must perform actions: [Change state from s0 to s1]
+r must perform actions: [Bind port p2 to instance k]  [Change state from s1 to s2]
+k must perform actions: [Change state from q0 to q1]
+k must perform actions: [Stop]
+r must perform actions: [Stop]

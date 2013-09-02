@@ -101,14 +101,7 @@ open-ldap (normal,D) nr.IN-edges =  2
  INST EDGE: { }
 
 
-********************** ORIGINAL CYCLES FOUND:
-open-ldap (C,uninst)
- krb5 (C,uninst)
- krb5 (uninst,stage1)
- open-ldap (normal,D)  |  open-ldap (uninst,normal)  |  krb5 (normal,D)  |  krb5 (stage1,normal)
-
-
-********************** TRUE CYCLES KEPT:
+Found the following cycles:
 open-ldap (normal,D)  |  open-ldap (uninst,normal)  |  krb5 (normal,D)  |  krb5 (stage1,normal)
 
 Vertex chosen for splitting: open-ldap (uninst,normal)
@@ -131,20 +124,8 @@ RETURN/RED edge redirected towards: ---ldap-uninst-p---> open-ldap' (uninst,D)
 New GO/BLUE edge: open-ldap' (C,uninst) ---ldap-uninst-p---> krb5 (stage1,normal)
 Old GO/BLUE edge that has been removed: open-ldap (C,uninst) ---ldap-uninst-p---> krb5 (stage1,normal)
 
-
-********************** ORIGINAL CYCLES FOUND:
-open-ldap (C,uninst)
- krb5 (C,uninst)
- krb5 (uninst,stage1)
- open-ldap (uninst,normal)
- open-ldap' (C,uninst)
- krb5 (stage1,normal)
- open-ldap (normal,D)  |  krb5 (normal,D)
- open-ldap' (uninst,D)
-
-
-********************** TRUE CYCLES KEPT:
-
+FIX EDGES to/from COPY.
+The splitted meaningful vertices are the following: open-ldap (C,uninst)
 
 
 The INSTANCE LINES after splitting are the following:

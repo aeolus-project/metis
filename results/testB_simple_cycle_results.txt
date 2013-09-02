@@ -145,17 +145,7 @@ c0 (s1,D) nr.IN-edges =  2
  INST EDGE: { }
 
 
-********************** CYCLES FOUND:
-c0 (C,s0)
- c1 (C,s0)
- c2 (C,s0)
- c2 (s0,s1)
- c1 (s0,s1)
- c0 (s0,s1)
- c0 (s1,D)  |  c1 (s2,D)  |  c1 (s1,s2)  |  c2 (s2,D)  |  c2 (s1,s2)
-
-
-********************** TRUE CYCLES KEPT:
+Found the following cycles:
 c0 (s1,D)  |  c1 (s2,D)  |  c1 (s1,s2)  |  c2 (s2,D)  |  c2 (s1,s2)
 
 Vertex chosen for splitting: c1 (s1,s2)
@@ -186,20 +176,7 @@ added the following BLUE/GO edge: c2 (s0,s1) ---p2_1---> c1' (s0,s1)
 added the following RED/RETURN edge: c1' (s1,D) ---p2_1---> c2 (s1,s2)
 
 
-********************** CYCLES FOUND:
-c0 (C,s0)
- c1 (C,s0)
- c2 (C,s0)
- c2 (s0,s1)
- c1 (s0,s1)
- c1' (C,s0)
- c1' (s0,s1)
- c0 (s0,s1)
- c1 (s1,s2)
- c0 (s1,D)  |  c1 (s2,D)  |  c2 (s2,D)  |  c2 (s1,s2)  |  c1' (s1,D)
-
-
-********************** TRUE CYCLES KEPT:
+Found the following cycles:
 c0 (s1,D)  |  c1 (s2,D)  |  c2 (s2,D)  |  c2 (s1,s2)  |  c1' (s1,D)
 
 Vertex chosen for splitting: c2 (s1,s2)
@@ -228,30 +205,6 @@ Old GO/BLUE edge that has been removed: c2 (s0,s1) ---p2_1---> c1' (s0,s1)
 
 FIX EDGES to/from COPY.
 The splitted meaningful vertices are the following: c2 (C,s0)  |  c2 (s0,s1)
-
-
-********************** CYCLES FOUND:
-c0 (C,s0)
- c1 (C,s0)
- c2 (C,s0)
- c2 (s0,s1)
- c1 (s0,s1)
- c1' (C,s0)
- c2' (C,s0)
- c2' (s0,s1)
- c1' (s0,s1)
- c0 (s0,s1)
- c1 (s1,s2)
- c2 (s1,s2)
- c2 (s2,D)
- c1 (s2,D)
- c0 (s1,D)
- c1' (s1,D)
- c2' (s1,D)
-
-
-********************** TRUE CYCLES KEPT:
-
 
 
 The INSTANCE LINES after splitting are the following:

@@ -101,15 +101,7 @@ r (s2,D) nr.IN-edges =  2
  INST EDGE: { }
 
 
-********************** ORIGINAL CYCLES FOUND:
-r (C,s0)
- r (s0,s1)
- k (C,q0)
- r (s1,s2)  |  k (q1,D)  |  k (q0,q1)
- r (s2,D)
-
-
-********************** TRUE CYCLES KEPT:
+Found the following cycles:
 r (s1,s2)  |  k (q1,D)  |  k (q0,q1)
 
 Vertex chosen for splitting: r (s1,s2)
@@ -132,22 +124,8 @@ RETURN/RED edge redirected towards: ---p1---> r' (s1,D)
 New GO/BLUE edge: r' (s0,s1) ---p1---> k (q0,q1)
 Old GO/BLUE edge that has been removed: r (s0,s1) ---p1---> k (q0,q1)
 
-
-********************** ORIGINAL CYCLES FOUND:
-r (C,s0)
- r (s0,s1)
- r (s1,s2)
- k (C,q0)
- r' (C,s0)
- r' (s0,s1)
- k (q0,q1)
- k (q1,D)
- r (s2,D)
- r' (s1,D)
-
-
-********************** TRUE CYCLES KEPT:
-
+FIX EDGES to/from COPY.
+The splitted meaningful vertices are the following: r (C,s0)  |  r (s0,s1)
 
 
 The INSTANCE LINES after splitting are the following:
