@@ -1,3 +1,12 @@
+(** This module defines the the G-graph node record and arcs. 
+		It contains five submodules (put together as they are mutually recursive):  
+     - Node
+     - Pred_arc 
+     - Copy_arc 
+     - Req_arc 
+     - Bind_arc 
+
+*)
 
 open My_datatypes
 open Datatypes_t
@@ -13,19 +22,27 @@ open Facade
 
 module Gg =
   struct
-    
+    (** A node is basically a component type in a given state. *)
     module rec Node : sig
-      (* node type, to be left abstract here *)      
+      (** Node type, to be left abstract here. *)      
       type t
-      val get_state : t -> (state_t ref)
+      
+			val get_state : t -> (state_t ref)
       val get_res_type : t -> (component_t ref)
       val get_bound_ports_nodes : t -> ((port_name * (t ref)) list)
-      (* TODO: to comment *)
+      
+			(** Set copy field. *)
       val set_copy : t -> Copy_arc.t option -> unit
+      
+			(** Set origin field. *)
       val set_origin : t -> (t ref) -> unit
+			
+			(** Add a node as a possible son of the current one. *)
       val add_son : t -> (t ref) -> unit
-      (* it creates a new node with the same fields as the original one *)
+
+      (* Create a new node with the same fields as the original one. *)
       val clone : t -> t
+
       val to_string : t -> string
       val to_string_full : t -> string
       val to_string_list : t list -> string
@@ -33,70 +50,104 @@ module Gg =
       val to_string_list_full : t list -> string
       val print_list : t list -> unit
       val print_list_full : t list -> unit
-      val build_succs_list : port_name list -> t list -> t list 
+      
+			val build_succs_list : port_name list -> t list -> t list 
       val build_succs_list_DEBUG : port_name list -> t list -> t list 
-      (* it creates an initial node  < T, q0 > *)
+      
+			(* it creates an initial node  < T, q0 > *)
       val build_initial : (component_t ref) -> t
-      (* it creates target node *)
+      
+			(* it creates target node *)
       val build_target : (component_t ref) -> string -> t
-      (* it creates a new node with the given pair < T, q > *)
+      
+			(* it creates a new node with the given pair < T, q > *)
       val build_from_pair : (component_t ref) -> state_id_t -> t
-      (* function that retrieves the ports provided by a given list of nodes *)
+      
+			(* function that retrieves the ports provided by a given list of nodes *)
       val provides_of_node_list : t list -> port_name list
-      (* just checks if a node is in the given list. N.B. it only looks at the resource type state pair <T,q> *)	
+      
+			(* just checks if a node is in the given list. N.B. it only looks at the resource type state pair <T,q> *)	
       val in_list : t -> t list -> bool
-      (* just checks if a node is not in the given list. N.B. it only looks at the resource type state pair <T,q> *)	
+      
+			(* just checks if a node is not in the given list. N.B. it only looks at the resource type state pair <T,q> *)	
       val not_in_list : t -> t list -> bool
-      (* it returns the first occurrence of the given "node" in the node list "nlist" N.B. it only looks at the resource type state pair <T,q> *)	
+      
+			(* it returns the first occurrence of the given "node" in the node list "nlist" N.B. it only looks at the resource type state pair <T,q> *)	
       val find_in_list : t -> t list -> t
-      (* dummy function to test for emptiness *)
+      
+			(* dummy function to test for emptiness *)
       val is_empty : t list -> bool
-      (* dummy function to test for emptiness *)
+      
+			(* dummy function to test for emptiness *)
       val not_empty : t list -> bool
-      (* this function takes a list and returns the list without duplicates *)
+      
+			(* this function takes a list and returns the list without duplicates *)
       val elim_duplicates : t list -> t list
-      (* this function takes a list and returns the list without duplicates *)
+      
+			(* this function takes a list and returns the list without duplicates *)
       val elim_duplicates_simple : t list -> t list
-      (* this function corresponds to set addition (no duplicates) of "node" to a given list *)
+      
+			(* this function corresponds to set addition (no duplicates) of "node" to a given list *)
       val add_no_duplicate :  t -> (t list) -> (t list)
-      (* this function simply builds a new replica R of the given node list "nlist" 
+      
+			(* this function simply builds a new replica R of the given node list "nlist" 
       where each node is set as a copy of the corresponding one in "nlist" *)
       val build_copy_nodes : t list -> t list 
-      (* this function extracts the head of a list modifying the given list to contain only the tail *)	
+      
+			(* this function extracts the head of a list modifying the given list to contain only the tail *)	
       val extract : ((t list) ref) -> t
       (* test to see if this node is in an initial state *)  
-      val is_initial : t -> bool      
+      
+			val is_initial : t -> bool      
       (* test to see if this node is the copy of someone else *)  
-      val not_a_copy : t -> bool      
-      (* TODO: implement heuristics for this choice *)
+      
+			val not_a_copy : t -> bool      
+      
+			(* TODO: implement heuristics for this choice *)
       val choose_origin: t -> t
-      (* from a given node n compute a list of nodes satsfying requirements of n *)
+      
+			(* from a given node n compute a list of nodes satsfying requirements of n *)
       val choose_providers : t -> (t list) -> ((port_name * t) list) 
-      (* this function corresponds to set addition (no duplicates) of node list to a given list *)
+      
+			(* this function corresponds to set addition (no duplicates) of node list to a given list *)
       val add_list_no_duplicate : (t list) -> (t list) -> (t list)
-      (* given a list of nodes it returns the list of nodes that are final *)  
+      
+			(* given a list of nodes it returns the list of nodes that are final *)  
       val get_finals : t list -> t list -> t list
-      (* compute the path to the origin following recursively the "origin" field *)
+      
+			(* compute the path to the origin following recursively the "origin" field *)
       val find_full_path_to_root : t -> t list
-      (* compute the path to the origin following recursively the "origin" field *)
+      
+			(* compute the path to the origin following recursively the "origin" field *)
       val find_trim_path_to_root : t -> t list
+			
 			val filter_by_comp_type : (component_t ref) -> (t list) list -> (t list) list  
-      (* find a node that matches the give pair <T,q> in a list of lists of nodes *)
+      
+			(* find a node that matches the give pair <T,q> in a list of lists of nodes *)
       val find_by_comp_state : (component_t ref) -> state_id_t -> (t list) list -> t
-      (* used to initialize instance line ID, something like "a : A" *)
+      
+			(* used to initialize instance line ID, something like "a : A" *)
       val make_id : t list -> string
-      val extract_comp_type : t list -> component_t ref
-    end = struct
-    (** a node of the G-graph  is made of :
-	    - a pair <T,q>: resource type + state 
+      
+			val extract_comp_type : t list -> component_t ref
+    
+		end = struct
+    (** A node of the G-graph  is made of :
+	    - a component type 
 	    - the current state
-	    - a list of predecessor nodes
-	    - a reference to the replica node 
-	    - boolean field colored (used in the bottom-up traversal phase)
+	    - a list of predecessor arcs
+	    - an (optional) reference to the copy node 
+	    - a list of require arcs
+	    - a list of binding arcs
+			- an origin node (the chosen father)
+			- a list of the node's sons
+			- a list of the nodes bound to the current one
 	    - card --> cardinality, i.e. the nr. of requirements (computed in construction phase)
 	    - dist --> distance, i.e. the nr. of state-change actions (computed in construction phase)
-              - fanIn --> the nr. of incoming arcs (synthesized during bottom-up traversal)
-            *)
+      - fanIn --> the nr. of incoming arcs (synthesized during bottom-up traversal)
+			- copy_index : ???
+			- is_final, tag used to identify the maximal paths
+    *)
               type t = { 
                 res_type : component_t ref; 
                 state : state_t ref;
@@ -121,16 +172,16 @@ module Gg =
               exception No_vertex_value ;;
               exception State_not_found of string ;;
             
-            (* TODO: don't know where to put them *)  
-            (* dummy function to test for emptiness *)
+            (* TODO: where is better to place these dummy functions? *)  
+            (* Test for list emptiness *)
             let is_empty nlist = (nlist = [])
-            (* dummy function to test for emptiness *)
+            (* Test for list emptiness *)
             let not_empty nlist = (not (nlist = []))
-  
+ 
+ 
   (**************************************************************)
   (*                      boilerplate code  		                *)
   (**************************************************************)
-
 
   let get_state node =
     node.state
@@ -263,44 +314,51 @@ module Gg =
   let add_node_bound_to_me node port nref =
     node.bound_to_me <- (port, nref) :: node.bound_to_me
 
-  (* test to see if this node is in an initial state *)  
+  (** Test to see if this node is in an initial state. *)  
   let is_initial node =       
     (is_initial_state !(node.state))
   
-  (* test to see if this node is a copy of someone *)  
+  (** Test to see if this node is a copy of someone. *)  
   let not_a_copy node =
    match node.copy with
       None -> true
    |  (Some nref) -> false
               
-  (* check node equality by looking only at resource type state pair *)
+  (** Check node equality by looking only at resource type state pair. *)
   let pair_eq n1 n2 =
 	  (!(n1.res_type).cname = !(n2.res_type).cname) && (n1.state = n2.state) 
   
-  (* check node dis-equality by looking only at resource type state pair *)
+  (** Check node in-equality by looking only at resource type state pair. *)
   let pair_not_eq n1 n2 =
 	  (!(n1.res_type).cname != !(n2.res_type).cname) || (n1.state != n2.state) 
   
-  (* just checks if a node is in the given list. N.B. it only looks at the resource type state pair < T, q > *)	
+  (** Check if a node is in the given list. N.B. it only looks at the resource 
+      type state pair < T, q > 
+  *)	
   let rec in_list node nlist =
 	  match nlist with
 		  [] -> false
 	  |	head :: tail -> (pair_eq node head) || (in_list node tail) 
   
-  (* just checks if a node is not in the given list. N.B. it only looks at the resource type state pair < T, q > *)	
+  (** Check if a node is not in the given list. N.B. it only looks at the 
+      resource type state pair < T, q > 
+  *)	
   let not_in_list node nlist = not(in_list node nlist) 
   
-  (* it returns the first occurrence of the given "node" in the node list "nlist" N.B. it only looks at the resource type state pair <T,q> *)	
+  (** Return the first occurrence of the given "node" in the node list "nlist". 
+      N.B. it only looks at the resource type state pair <T,q>. 
+  *)	
   let find_in_list node nlist = List.find (pair_eq node) nlist
 
-  (* check equality of pair <T,q> of a given node and provided T' and q' *)
+  (** Check equality of pair <T,q> of a given node and provided T' and q'. *)
   let eq_node_pair comp_type state_id node =
     let n_ctype = node.res_type in
     let n_ctype_name = (!n_ctype).cname in    
     let comp_type_name = (!comp_type).cname in    
     let n_state = !(node.state) in
     ((n_ctype_name = comp_type_name) && (n_state.id = state_id)) 
-  
+ 
+  (** Filter nodes of a list that match a given component type. *)
 	let filter_by_comp_type comp_type list_of_nlist =
     let eq_comp comp_t nlist =
 			let head_node = (List.hd nlist) in
@@ -312,7 +370,7 @@ module Gg =
     let filtered_list = (List.filter (eq_comp comp_type) list_of_nlist) in
     filtered_list
 
-  (* find a node that matches the give pair <T,q> in a list of lists of nodes *)
+  (** Find a node that matches the give pair <T,q> in a list of lists of nodes. *)
   let rec find_by_comp_state comp_type state_id list_of_nlist =
     let find_in_single_list ctype stateid nlist =
       (List.find (eq_node_pair ctype stateid) nlist) in
@@ -328,7 +386,9 @@ module Gg =
             Not_found -> (find_by_comp_state comp_type state_id tail) 
         end 
      
-  (* this function takes a reference to a list of nodes and returns the list with no occurrence of the given "node" *)
+  (** This function takes a reference to a list of nodes and returns the list 
+      with no occurrence of the given "node". 
+  *)
   let rec delete_all_occurrences node nlist =
 	  match nlist with
 		  [] -> []
@@ -336,16 +396,23 @@ module Gg =
 				              (delete_all_occurrences node tail) else 
 				              head :: (delete_all_occurrences node tail)
 
-  (* this function corresponds to set addition (no duplicates) of "node" to a given list *)
+  (** This function corresponds to set addition (no duplicates) of "node" to a 
+      given list. 
+  *)
   let add_no_duplicate node nlist =
     node :: (delete_all_occurrences node nlist)
   
-  (* this function takes a reference to a list and returns the list without duplicates *)
+  (** This function takes a reference to a list and returns the list without 
+      duplicates. 
+  *)
   let rec elim_duplicates nlist =
 	  match nlist with
 		  [] -> []
 	  |	head :: tail -> (add_no_duplicate head (elim_duplicates tail)) 
-			
+
+  (** This function takes a reference to a list and returns the list without 
+      duplicates. 
+  *)
 	let rec elim_duplicates_simple nodes =
 				match nodes with
 					[] -> []
@@ -357,7 +424,9 @@ module Gg =
 								head :: (elim_duplicates_simple tail)
 						end
   
-  (* this function corresponds to set addition (no duplicates) of nodes in "nlist" to a given list *)
+  (** This function corresponds to set addition (no duplicates) of nodes in 
+      "nlist" to a given list. 
+  *)
   let add_list_no_duplicate nlist1 nlist2 =
     let mergedList = nlist1 @ nlist2 in
     (elim_duplicates mergedList)
@@ -372,28 +441,30 @@ module Gg =
               else
                 raise (No_available_origin_node ("node " ^ (to_string node) ^ " has no origin!" ))
 
-  (* checks if port "req" is among the list of ports "provides" *)
+  (** Check if port "req" is among the list of ports "provides". *)
   let rec is_fulfilled req provides =
     (List.mem req provides)      
 
-  (* checks if ports "requires" are all among the list of ports "provides" *)
+  (** Check if ports "requires" are all among the list of ports "provides". *)
   let rec are_fulfilled requires provides =
 	  match requires with 
 		  [] -> true
 	  |	head :: tail -> (is_fulfilled head provides) && (are_fulfilled tail provides)
 
-  (* checks if at least a port among "requires" is not among the list of ports "provides" *)
+  (** Check if at least a port among "requires" is not among the list of ports
+      "provides". 
+  *)
   let are_not_fulfilled requires provides = 
 	  not (are_fulfilled requires provides) 
   
-(* function that retrieves the ports provided by a given node *)
-let provides_of_node node =
-  let actual_state = !(node.state) in
-  actual_state.provides  
+  (** Retrieve the ports provided by a given node. *)
+	let provides_of_node node =
+  	let actual_state = !(node.state) in
+  	actual_state.provides  
 
-(* function that retrieves the ports provided by a given list of nodes *)
-let provides_of_node_list nlist =
-	List.concat (List.map provides_of_node nlist)
+  (** Retrieve the ports provided by a given node list. *)
+	let provides_of_node_list nlist =
+		List.concat (List.map provides_of_node nlist)
 
 (* function that retrieves the ports required by a given node *)
 let requires_of_node node =
@@ -467,6 +538,7 @@ let build_initial resTypeRef =
   } in
   initialNode 
 
+
 let find_state_by_name automaton name =
 	let size = (Array.length automaton) in
 	let found_state = (ref None) in
@@ -481,7 +553,8 @@ let find_state_by_name automaton name =
 										^ "could not be found in the corresponding automaton."))
 	|	(Some state) -> state
 
-(* it creates a new node with the given pair <T,q> *)
+(** Create a new node with the given pair <T,q> where only the name of state 
+q is provided. *)
 let build_target resTypeRef target_name =
   let comp_type = !resTypeRef in
   let new_state = (find_state_by_name comp_type.automaton target_name) in  
@@ -503,7 +576,7 @@ let build_target resTypeRef target_name =
   } in
 	newNode 
 
-(* it creates a new node with the given pair <T,q> *)
+(** Create a new node with the given pair <T,q>. *) 
 let build_from_pair resTypeRef state_id =
   let comp_type = !resTypeRef in
   let new_state = (comp_type.automaton).(state_id.key) in  

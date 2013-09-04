@@ -1,13 +1,16 @@
-(* The purpos of this small module is to translate a universe as specified by 
- * the user into the representation used by the planner (where a state is 
- * identified both by a name and by a key (int) value. This value is 
- * computed and associated by means of the functions here.
- *)
+(** The purpose of this module is to translate a universe as specified by 
+    the user into the representation used by the planner (where a state is 
+    identified both by a name and by a key value). 
+    This value is computed and associated by means of the functions herein.
+*)
 
 open Facade
 open Datatypes_t
 open My_datatypes
-              
+
+(** Exception thrown when a state name doesn't correspond to any position in 
+    the given automaton.   
+*)              
 exception Position_not_found of string
 
 (** Build a state ID given a key and a name. *)
@@ -18,9 +21,9 @@ let make_state_id new_key new_name =
 			} in
 	new_state_id
 
-(** Translate a state as specified by the user into the one that fits the 
-		programs' needs. *)
-
+(** Find the position in the given automaton corresponding to the state name 
+    provided.
+*)
 let find_position_by_name name automaton =
 	let length = (Array.length automaton) in
 	let index = (ref length) in
@@ -35,6 +38,7 @@ let find_position_by_name name automaton =
 	else
 		!index 
 
+(** Apply previous function to the successors' list of a state. *)
 let translate_succs automaton successors =
 	let translate_successor automaton succ_name =
 		let succ_pos = (find_position_by_name succ_name automaton) in
@@ -44,6 +48,9 @@ let translate_succs automaton successors =
 	let succs = (List.map (translate_successor automaton) successors) in
 	succs
 
+(** Translate an automaton as specified by the user into the format used by the 
+    planner. 
+*)
 let translate_automaton user_automaton =
 	(* first transform name in ID = (key,name) *)
 	let automaton_with_ids_list = (ref []) in
@@ -68,6 +75,9 @@ let translate_automaton user_automaton =
 	res_automaton
 	
 	
+(** Translate a component as specified by the user into the format used by the 
+    planner. 
+*)
 let translate_component user_component =
 	let res_automaton = (translate_automaton user_component.u_automaton) in 
 	let res_component = {
@@ -76,6 +86,9 @@ let translate_component user_component =
 	} in
 	res_component	
 
+(** Translate a universe as specified by the user into the format used by the 
+    planner. 
+*)
 let translate user_universe =
 	let universe = (List.map translate_component user_universe) in
 	(*

@@ -1,4 +1,8 @@
 
+(** Module used to deal with state, component and universe   
+	*)
+
+
 open My_datatypes
 open Datatypes_t
 

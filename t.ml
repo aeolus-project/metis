@@ -829,12 +829,6 @@ module T =
         let tag_action = (action_from_tag vertex) in
         let bind_actions = (actions_from_go_edges vertex) in        
         let unbind_actions = (actions_from_return_edges vertex) in
-        (*
-				let all_actions = ((tag_action @ bind_actions) @ unbind_actions) in
-				*)
-				(* TODO: N.B. for the moment we ignore unbind actions: we compute them but we don't use them 
-        let all_actions = bind_actions @ tag_action in
-				*)
         let all_actions = ((unbind_actions @ bind_actions) @ tag_action) in
         all_actions
                
@@ -890,20 +884,20 @@ module T =
         let work_list = (ref start_vertices) in
         while (not_empty !work_list) do
           begin
-            let vertex = (extract_from work_list) in
+            let current_vertex = (extract_from work_list) in
             (* associate actions to vertex *)
-            let actions = (compute_actions vertex) in
-            (set_actions vertex actions);
+            let computed_actions = (compute_actions current_vertex) in
+            (set_actions current_vertex computed_actions);
             (* add to working_list the successors that have no incoming edge as
               a side effect of removing edges from vertex *)
-            let successors_refs = (get_successors vertex) in
+            let successors_refs = (get_successors current_vertex) in
 						let successors = (elim_duplicates (List.map (fun vertex_ref -> !vertex_ref) successors_refs)) in
               begin
-                (remove_edges vertex);
+                (remove_edges current_vertex);
                 let no_in_edge_succs = (List.filter has_no_in_edges successors) in
                 (add_vertices work_list no_in_edge_succs);
               end;
-            sorted_vertices := vertex :: !sorted_vertices;
+            sorted_vertices := current_vertex :: !sorted_vertices;
           end;
         done;
         !sorted_vertices 
