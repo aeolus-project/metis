@@ -10,11 +10,6 @@ open Gg
 (*					G-graph						*)
 (****************************************************************************************)
 
-(*
-module Ggraph = 
-  struct
-*)
-
 (* write my own repeat-until construct, used in function populate *)
 let repeat_until f p ~init =
   let rec loop v =
@@ -121,7 +116,7 @@ let do_while f p ~init =
 			(add_generation graph firstGen);
 			(* initialize needed structures *)
       let newNodes = (ref []) in
-			(* Loop for building and adding one generation at the time *)
+			(* Loop for building and adding one generation at a time *)
 			(repeat_until 
 				(* Loop body *)
 				(fun i ->

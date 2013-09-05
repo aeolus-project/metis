@@ -1,8 +1,12 @@
 
 open My_datatypes
 open Datatypes_t
+(*
+open Batteries
+*)
 open Facade
 open Action
+open Plan
 open Gg
 
 module T =
@@ -67,7 +71,7 @@ module T =
 			val hash : t -> int
 			val equal : t -> t -> bool
     end = struct
-      
+
 			exception No_instance_edge of string
       exception No_vertex_value
       exception No_arrival_state
@@ -109,27 +113,6 @@ module T =
         | _ -> raise (Vertex_tag_not_admitted ("found the following tag: " 
 								^ (string_of_tag vertex_tag) ^ " which is not allowed!")) 
 
-      (* Type for the actions associated to every vertex while sorting topologically 
-      type action_t =
-        Create_instance 
-      | State_change of (string * string)
-      | Bind of (string * string)
-      | Unbind of (string * string)
-      | Null_action (* TODO: used for tags of the kind (3,D) *)
-      
-      let string_of_action action =
-        match action with
-          Create_instance -> "[Create instance]" 
-        | State_change (src, dst) -> ("[Change state from " ^ src ^ " to " ^ dst ^ "]")
-        | Bind (s1, s2) -> ("[Bind port " ^ s1 ^ " to instance "^ s2 ^ "]") 
-        | Unbind (s1, s2) -> ("[Unbind port " ^ s1 ^ " from instance "^ s2 ^ "]") 
-        | Null_action -> "[Stop]"
-      
-      let string_of_actions_list actions_list =
-        let string_list = (List.map string_of_action actions_list) in
-        (String.concat " " string_list)
-			*)
-      
       type t = {
         id : string;      
 				comp_type_name : string; 
@@ -143,7 +126,9 @@ module T =
         mutable actions : Action.t list 
       }
 
+
 			let get_go_edges vertex = vertex.go_edges
+			
 			let get_return_edges vertex = vertex.return_edges
 
 			let finalize_vertex_tag vertex =
@@ -266,7 +251,7 @@ module T =
         (print_endline string_repr)
 
       let actions_to_string actions =
-        let string_list = (List.map string_of_action actions) in
+        let string_list = (List.map Action.string_of_action actions) in
         let string_repr = (String.concat "  " string_list) in
         string_repr
 
@@ -882,6 +867,32 @@ module T =
 								head :: (elim_duplicates tail)
 						end
       
+
+			(**************************************************)
+      (*                  	Plan Synthesis              *)  
+      (**************************************************)
+      
+			let add_initial_vertex stack plan vertex =
+				let new_action = (New (vertex.id, vertex.comp_type_name)) in
+				(Plan.add plan new_action);	
+				(Stack.push vertex stack)
+
+			let synthesize_plan vertices =
+				(* initialize data structures *)
+				let plan = (Plan.make 100) in 
+				(* let to_visit = (BatStack.create ()) in *)
+				let to_visit = Stack.create () in
+				let finished = (ref false) in
+        (**)
+				let start_vertices = (List.filter has_no_in_edges !vertices) in
+					(List.iter (add_initial_vertex to_visit plan) start_vertices);
+				plan
+
+
+
+
+
+
       (**************************************************)
       (*                  Topological sort              *)  
       (**************************************************)
@@ -926,7 +937,7 @@ module T =
             (* associate actions to vertex *)
             let actions = (compute_actions vertex) in
             (set_actions vertex actions);
-            let actions_string = (string_of_actions_list actions) in
+            let actions_string = (Action.string_of_actions_list actions) in
             print_endline ("the actions computed are: " ^ actions_string);
             (* add to working_list the successors that have no incoming edge as
               a side effect of removing edges from vertex *)
