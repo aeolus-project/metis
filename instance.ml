@@ -29,7 +29,7 @@ open T
 
 	(* special kind of equality used in the splitting process 
 	 * it checks that the two instances:
-	 *   - are fo the same component type
+	 *   - are of the same component type
 	 *   - have equal vertices (for this we only look at their tag, like (s,s') )
 	 *)
 	let eq i1 i2 =

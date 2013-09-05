@@ -2,6 +2,7 @@
 open My_datatypes
 open Datatypes_t
 open Facade
+open Action
 open Gg
 
 module T =
@@ -108,7 +109,7 @@ module T =
         | _ -> raise (Vertex_tag_not_admitted ("found the following tag: " 
 								^ (string_of_tag vertex_tag) ^ " which is not allowed!")) 
 
-      (* Type for the actions associated to every vertex while sorting topologically *)      
+      (* Type for the actions associated to every vertex while sorting topologically 
       type action_t =
         Create_instance 
       | State_change of (string * string)
@@ -127,7 +128,7 @@ module T =
       let string_of_actions_list actions_list =
         let string_list = (List.map string_of_action actions_list) in
         (String.concat " " string_list)
-
+			*)
       
       type t = {
         id : string;      
@@ -138,7 +139,7 @@ module T =
         mutable return_edges : Dep_edge.t list;
         mutable inst_edge : Inst_edge.t option;
         (* actions are associated to every vertex while sorting topologically *)      
-        mutable actions : action_t list 
+        mutable actions : Action.t list 
       }
 
 			let get_go_edges vertex = vertex.go_edges
@@ -779,7 +780,7 @@ module T =
       let action_from_tag vertex =
         match vertex.tag with
           Initial (Create, state_id) -> 
-              [Create_instance] 
+              [New] 
         | Trans (state_id_1, state_id_2) -> 
               [State_change (state_id_1.value, state_id_2.value)]  
         | Final (state_id, Delete) -> 
