@@ -36,9 +36,9 @@ module T =
       val print_list : t list -> unit
       val print_simple_list : t list -> unit
       val print_actions : Buffer.t ref -> t list -> unit
-      val make_create : state_id_t -> string-> t
-      val make_delete : state_id_t -> string-> t
-      val make : state_id_t -> state_id_t -> string -> t
+      val make_create : state_id_t -> string-> (component_t ref) -> t
+      val make_delete : state_id_t -> string-> (component_t ref) -> t
+      val make : state_id_t -> state_id_t -> string -> (component_t ref) -> t
       val set_inst_edge : t -> t -> (Gg.Node.t ref) -> unit
       val get_inst_edge : t -> Inst_edge.t 
       val has_inst_edge : t -> bool
@@ -132,6 +132,7 @@ module T =
       
       type t = {
         id : string;      
+				comp_type_name : string; 
         (* a tag of the kind (0,1) or (C,0) for creation or (i,D) for destruction *)
         mutable tag : vertex_tag_t;
         mutable nr_in_edges : int;
@@ -328,9 +329,10 @@ module T =
 					| (Some edge) -> !(Inst_edge.get_dest edge)
       
 			(* a_state should always be (State 0) *)  
-      let make_create a_state inst_id =
+      let make_create a_state inst_id comp_type =
         let create_vertex = {
           id = inst_id;      
+					comp_type_name = (!comp_type).cname;      
           tag = (Initial (Create, a_state));
           nr_in_edges = 0;
           go_edges = [];
@@ -343,9 +345,10 @@ module T =
      (* N.B. we already initialize field nr_in_edges to 1 because we know that
       * when we make a vertex of this kind there is an instance edge pointing to
       * it *) 
-      let make_delete a_state inst_id =
+      let make_delete a_state inst_id comp_type =
         let delete_vertex = {
           id = inst_id;      
+					comp_type_name = (!comp_type).cname;      
           tag = (Final (a_state, Delete));
           nr_in_edges = 1;
           go_edges = [];
@@ -358,9 +361,10 @@ module T =
      (* N.B. we already initialize field nr_in_edges to 1 because we know that
       * when we make a vertex of this kind there is an instance edge pointing to
       * it *)
-      let make src_state dst_state inst_id =
+      let make src_state dst_state inst_id comp_type =
         let new_vertex = {
-          id = inst_id;      
+          id = inst_id;
+					comp_type_name = (!comp_type).cname;      
           tag = (Trans (src_state, dst_state));
           nr_in_edges = 1;
           go_edges = [];
@@ -473,6 +477,7 @@ module T =
 				while (neq_id_tag vertex !current_vertex) do
 					let new_vertex = {
 						id = (!current_vertex.id ^ "'");
+						comp_type_name = !current_vertex.comp_type_name;
           	tag = !current_vertex.tag;
           	nr_in_edges = 0;
           	go_edges = [];
@@ -503,6 +508,7 @@ module T =
 				 *)
 				let new_vertex = {
 					id = (!current_vertex.id ^ "'");
+					comp_type_name = !current_vertex.comp_type_name;
           tag = !current_vertex.tag;
           nr_in_edges = 1;
           go_edges = [];
@@ -536,6 +542,7 @@ module T =
 					print_endline (" current_vertex = " ^ (to_string_with_id !current_vertex));
 					let new_vertex = {
 						id = (!current_vertex.id ^ "'");
+						comp_type_name = !current_vertex.comp_type_name;
           	tag = !current_vertex.tag;
           	nr_in_edges = 0;
           	go_edges = [];
@@ -569,6 +576,7 @@ module T =
 				 *)
 				let new_vertex = {
 					id = (!current_vertex.id ^ "'");
+					comp_type_name = !current_vertex.comp_type_name;
           tag = !current_vertex.tag;
           nr_in_edges = 1;
           go_edges = [];
@@ -780,18 +788,18 @@ module T =
       let action_from_tag vertex =
         match vertex.tag with
           Initial (Create, state_id) -> 
-              [New] 
+              [New (vertex.id, vertex.comp_type_name)] 
         | Trans (state_id_1, state_id_2) -> 
-              [State_change (state_id_1.value, state_id_2.value)]  
+              [State_change (vertex.id, state_id_1.value, state_id_2.value)]  
         | Final (state_id, Delete) -> 
-              [Null_action] (* TODO: for the moment we leave it unspecified *) 
+              [(Del vertex.id)] (* TODO: for the moment we leave it unspecified *) 
 
       let old_actions_from_return_edges vertex =
         let action_from_single_edge edge =
           begin      
             let port = (Dep_edge.get_port edge) in
             let dest_id = (Dep_edge.get_dest_id edge) in     
-            let bind_action = (Unbind (port, dest_id)) in
+            let bind_action = (Unbind (port, dest_id, vertex.id)) in
             bind_action
           end
         in  
@@ -806,7 +814,7 @@ module T =
           		begin      
             		let port = (Dep_edge.get_port edge) in
             		let dest_id = (Dep_edge.get_dest_id edge) in     
-            		let bind_action = (Unbind (port, dest_id)) in
+            		let bind_action = (Unbind (port, dest_id, vertex.id)) in
             		bind_action
           		end
         		in  
@@ -819,7 +827,7 @@ module T =
           begin
             let port = (Dep_edge.get_port edge) in
             let dest_id = (Dep_edge.get_dest_id edge) in     
-            let bind_action = (Bind (port, dest_id)) in
+            let bind_action = (Bind (port, vertex.id, dest_id)) in
             bind_action
           end  
         in  
