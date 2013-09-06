@@ -2,6 +2,7 @@
 open My_datatypes
 open Datatypes_t
 open Generation
+open My_loops
 open Facade
 open Gg
 
@@ -9,22 +10,6 @@ open Gg
 (****************************************************************************************)
 (*					G-graph						*)
 (****************************************************************************************)
-
-(* write my own repeat-until construct, used in function populate *)
-let repeat_until f p ~init =
-  let rec loop v =
-    let v = f v in
-    if not(p v) then loop v
-  in
-  loop init
-
-(* write my own do-while construct *)
-let do_while f p ~init =
-  let rec loop v =
-    let v = f v in
-    if p v then loop v
-  in
-  loop init
 
 
       type t = {

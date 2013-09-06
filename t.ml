@@ -4,6 +4,7 @@ open Datatypes_t
 (*
 open Batteries
 *)
+open My_loops
 open Facade
 open Action
 open Plan
@@ -55,6 +56,7 @@ module T =
 			val compute_all_succs : t -> t list
       val find_in_list_by_state : state_id_t -> t list -> t
       val top_sort : t list -> t list
+      val synthesize_plan : (t list) ref -> Plan.t
       val top_sort_DEBUG : t list -> t list
 			val copy_vertices_until : (t list) ref -> t -> t list -> t list
 			val copy_vertices_until_DEBUG : (t list) ref -> t -> t list -> t list
@@ -385,6 +387,11 @@ module T =
 			
 			let remove_go_edge vertex edge =
 				vertex.go_edges <- (Dep_edge.remove_edge edge vertex.go_edges);
+				let dest_vertex = !(Dep_edge.get_dest edge) in
+				dest_vertex.nr_in_edges <- (dest_vertex.nr_in_edges - 1)
+			
+			let remove_return_edge vertex edge =
+				vertex.go_edges <- (Dep_edge.remove_edge edge vertex.return_edges);
 				let dest_vertex = !(Dep_edge.get_dest edge) in
 				dest_vertex.nr_in_edges <- (dest_vertex.nr_in_edges - 1)
 
@@ -877,15 +884,44 @@ module T =
 				(Plan.add plan new_action);	
 				(Stack.push vertex stack)
 
+			let aux_fun plan stack srcVertex returnEdge =
+				let dstVertex = !(Dep_edge.get_dest returnEdge) in
+				let port = (Dep_edge.get_port returnEdge) in
+				let unbindAct = Unbind (port, srcVertex.id, dstVertex.id) in (* TODO: to verify correctness*)
+				(* add unbind action to plan *)
+				(Plan.add plan unbindAct);
+				(* remove edge *)
+				(remove_return_edge srcVertex returnEdge);
+				(* if dest. vertex has no more incoming edges it can be pushed onto toVisit stack *)
+				if (has_no_in_edges dstVertex) then 
+					(Stack.push dstVertex stack)
+
 			let synthesize_plan vertices =
 				(* initialize data structures *)
 				let plan = (Plan.make 100) in 
 				(* let to_visit = (BatStack.create ()) in *)
-				let to_visit = Stack.create () in
+				let toVisit = Stack.create () in
 				let finished = (ref false) in
-        (**)
-				let start_vertices = (List.filter has_no_in_edges !vertices) in
-					(List.iter (add_initial_vertex to_visit plan) start_vertices);
+        (* all initial vertices are pushed on the toVisit stack *)
+				let startVertices = (List.filter has_no_in_edges !vertices) in
+					(List.iter (add_initial_vertex toVisit plan) startVertices);
+				(* Main loop *)
+				(repeat_until 
+					(* Loop body *)
+					(fun i ->
+          	begin 
+							i := !i + 1;
+							let currentVertex = (Stack.pop toVisit) in
+							(print_endline (to_string_with_id currentVertex)); 
+							(* 
+							(print_endline (to_string_with_id currentVertex)); 
+							*)
+							(List.iter (aux_fun plan toVisit currentVertex) currentVertex.return_edges);
+							i
+          	end)
+					(* Loop condition: stop when we reach a fixpoint (no new nodes are added) or we find target *)
+					(fun i -> (Stack.is_empty toVisit)) 
+      	~init:(ref 0));
 				plan
 
 

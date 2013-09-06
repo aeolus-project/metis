@@ -128,6 +128,15 @@ let () =
     		(Instance.print_list file_buffer new_instance_lines)
 			end;
 
+		(T.Vertex.synthesize_plan all_vertices); 	
+(*	
+		(print_endline "\nNow we GENERATE the PLAN.");
+		(Printf.bprintf !file_buffer "%s\n" "\nNow we GENERATE the PLAN.");
+		let plan = (T.Vertex.synthesize_plan all_vertices) in ();
+		(print_endline "\nThe COMPUTED PLAN is:\n");
+		(Printf.bprintf !file_buffer "%s\n" "\nAnd finally the COMPUTED PLAN is:\n");
+    (T.Vertex.print_plan file_buffer plan);
+*)
     
 		let vertices_to_sort = !all_vertices in ();
 		(* proceed with the topological sorting *)
@@ -139,15 +148,6 @@ let () =
 		(print_endline "\nThe COMPUTED PLAN is:\n");
 		(Printf.bprintf !file_buffer "%s\n" "\nAnd finally the COMPUTED PLAN is:\n");
     (T.Vertex.print_actions file_buffer sorted_vertices);
-
-(*	
-		(print_endline "\nNow we GENERATE the PLAN.");
-		(Printf.bprintf !file_buffer "%s\n" "\nNow we GENERATE the PLAN.");
-		let plan = (T.Vertex.synthesize_plan all_vertices) in ();
-		(print_endline "\nThe COMPUTED PLAN is:\n");
-		(Printf.bprintf !file_buffer "%s\n" "\nAnd finally the COMPUTED PLAN is:\n");
-    (T.Vertex.print_plan file_buffer plan);
-*)
 
 
 		(Buffer.output_buffer !output_channel !file_buffer);
