@@ -2,7 +2,7 @@
 
 all:
 	ocamlbuild -classic-display -use-ocamlfind amin_planner.native
-	#ocamlbuild -classic-display -use-ocamlfind plan.native
+	#ocamlbuild -classic-display -use-ocamlfind -libs batteries amin_planner.native
 
 debug:
 	ocamlbuild -classic-display -use-ocamlfind amin_planner_DEBUG.native

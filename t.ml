@@ -56,11 +56,11 @@ module T =
 			val compute_all_succs : t -> t list
       val find_in_list_by_state : state_id_t -> t list -> t
       val top_sort : t list -> t list
-      val synthesize_plan : (t list) ref -> Plan.t
+			val synthesize_plan : (t list) ref -> string -> string -> Plan.t
+			val synthesize_plan_DEBUG : (t list) ref -> string -> string -> Plan.t
       val top_sort_DEBUG : t list -> t list
 			val copy_vertices_until : (t list) ref -> t -> t list -> t list
 			val copy_vertices_until_DEBUG : (t list) ref -> t -> t list -> t list
-			(*val find_split_vertex : t list -> t *)
 			val find_split_edge : t list -> Dep_edge.t  
 			val extract_src_from_tag : t -> state_id_t
 			val find_in_list_by_go_edge : Dep_edge.t -> t list -> t
@@ -113,6 +113,12 @@ module T =
         match vertex_tag with
         	Trans (state_id_1, state_id_2) -> state_id_1 
         | Final (state_id, Delete) -> state_id  
+        | _ -> raise (Vertex_tag_not_admitted ("found the following tag: " 
+								^ (string_of_tag vertex_tag) ^ " which is not allowed!")) 
+			
+			let extract_tag_dst_name vertex_tag = 
+        match vertex_tag with
+        	Trans (state_id_1, state_id_2) -> state_id_2.value 
         | _ -> raise (Vertex_tag_not_admitted ("found the following tag: " 
 								^ (string_of_tag vertex_tag) ^ " which is not allowed!")) 
 
@@ -885,12 +891,29 @@ module T =
 							else 
 								head :: (elim_duplicates tail)
 						end
-      
+     
+
+ 
 
 			(**************************************************)
       (*                  	Plan Synthesis              *)  
       (**************************************************)
+  		
+			(** This function takes a list of vertices and a vertex and removes it 
+					from the list. 
+  		*)
+			let rec remove_from_list vertex vlist =
+						match vlist with
+							[] -> []
+						| head :: tail -> 
+								begin
+									if (eq_id_tag vertex head) then
+										tail
+									else 
+										head :: (remove_from_list vertex tail)
+								end
       
+			(** deal with [initial vertices] (i.e. with no incoming edges) *)
 			let add_initial_vertex stack plan vertex =
 				let new_action = (New (vertex.id, vertex.comp_type_name)) in
 				(Plan.add plan new_action);	
@@ -900,12 +923,12 @@ module T =
 			let process_ret_edge plan stack srcVertex returnEdge =
 				let dstVertex = !(Dep_edge.get_dest returnEdge) in
 				let port = (Dep_edge.get_port returnEdge) in
-				let unbindAct = Unbind (port, dstVertex.id, srcVertex.id) in 
+				let unbindAct = Unbind (port, dstVertex.id, srcVertex.id) in (* unbind action is performed by requirer *)
 				(* add unbind action to plan *)
 				(Plan.add plan unbindAct);
 				(* remove edge *)
 				(remove_return_edge srcVertex returnEdge);
-				(* if dest. vertex has no more incoming edges it can be pushed onto toVisit stack *)
+				(* if dest. vertex has no more incoming edges push it onto stack toVisit *)
 				if (has_no_in_edges dstVertex) then 
 					(Stack.push dstVertex stack)
 			
@@ -913,12 +936,12 @@ module T =
 			let process_go_edge plan stack srcVertex goEdge =
 				let dstVertex = !(Dep_edge.get_dest goEdge) in
 				let port = (Dep_edge.get_port goEdge) in
-				let bindAct = Bind (port, srcVertex.id, dstVertex.id) in 
+				let bindAct = Bind (port, srcVertex.id, dstVertex.id) in (* bind action is performed by provider *)
 				(* add bind action to plan *)
 				(Plan.add plan bindAct);
 				(* remove edge *)
 				(remove_go_edge srcVertex goEdge);
-				(* if dest. vertex has no more incoming edges it can be pushed onto toVisit stack *)
+				(* if dest. vertex has no more incoming edges push it onto stack toVisit *)
 				if (has_no_in_edges dstVertex) then 
 					(Stack.push dstVertex stack)
 
@@ -940,50 +963,139 @@ module T =
 						(Stack.push successor stack)
 				end
 
-			let synthesize_plan vertices =
+			(** compute a deployment plan *)
+			let synthesize_plan vertices targetComponent targetState =
 				(* initialize data structures *)
 				let plan = (Plan.make 100) in 
-				(* let to_visit = (BatStack.create ()) in *)
 				let toVisit = Stack.create () in
 				let finished = (ref false) in
         (* all initial vertices are pushed on the toVisit stack *)
 				let startVertices = (List.filter has_no_in_edges !vertices) in
 					(List.iter (add_initial_vertex toVisit plan) startVertices);
-				(* Main loop *)
+				(* External loop *)
 				(repeat_until 
-					(* Loop body *)
+					(* External loop body *)
 					(fun i ->
           	begin 
 							i := !i + 1;
-							let currentVertex = (Stack.pop toVisit) in
-							(* (print_endline (to_string_with_id currentVertex)); *)
-							(* deal with return/red edges *)
-							(List.iter (process_ret_edge plan toVisit currentVertex) currentVertex.return_edges);
-							if (is_final currentVertex) then
-							begin
-								let deleteAct = (Del currentVertex.id) in
-								(Plan.add plan deleteAct)
-							end else begin
-								(* deal with go/blue edges *)
-								(List.iter (process_go_edge plan toVisit currentVertex) currentVertex.go_edges);
-								if (is_not_initial currentVertex) then
-									let stateChangeAct = (compute_state_change_act currentVertex) in
-									(Plan.add plan stateChangeAct);
-								(* deal with instance successor *)
-								(process_inst_edge plan toVisit currentVertex)
-							end;
-							(* if we reach the target node *)
-							if (currentVertex.id = targetType) && (get_succ_id = targetState) then
-								finished := true;
-							(* delete current vertex from vertices list *)
-							(remove_from_list currentVertex !vertices); 
+							(* Inner loop *)
+							(repeat_until 
+								(* Inner loop body *)
+								(fun j ->
+          				begin 
+										j := !j + 1;
+										let currentVertex = (Stack.pop toVisit) in
+										(* (print_endline (to_string_with_id currentVertex)); *)
+										(* deal with return/red edges *)
+										(List.iter (process_ret_edge plan toVisit currentVertex) currentVertex.return_edges);
+										if (is_final currentVertex) then
+										begin
+											let deleteAct = (Del currentVertex.id) in
+											(Plan.add plan deleteAct)
+										end else begin
+											(* deal with go/blue edges *)
+											(List.iter (process_go_edge plan toVisit currentVertex) currentVertex.go_edges);
+											if (is_not_initial currentVertex) then
+												let stateChangeAct = (compute_state_change_act currentVertex) in
+												(Plan.add plan stateChangeAct);
+											(* deal with instance successor *)
+											(process_inst_edge plan toVisit currentVertex)
+										end;
+										(* if we reach the target node *)
+										if (currentVertex.comp_type_name = targetComponent) && 
+												((extract_tag_dst_name currentVertex.tag) = targetState) then 
+											finished := true;
+										(* delete current vertex from vertices list *)
+										vertices := (remove_from_list currentVertex !vertices); 
+										j
+          				end)
+								(* Inner loop condition: stop when we reach a fixpoint (no new nodes are added) or we find target *)
+								(fun j -> ((Stack.is_empty toVisit) || !finished)) 
+      					~init:(ref 0));
+							if !finished = false then
+								(* let vertex = (duplicate vertices) in 
+										(Stack.push vertex toVisit); *)
+								(print_endline "\n Need instance duplication "); 	
 							i
           	end)
-					(* Loop condition: stop when we reach a fixpoint (no new nodes are added) or we find target *)
-					(fun i -> ((Stack.is_empty toVisit) || (!finished))) 
+				(* External loop condition *)
+					(fun i -> !finished) 
       	~init:(ref 0));
 				plan
 
+			(** compute a deployment plan DEBUG version *)
+			let synthesize_plan_DEBUG vertices targetComponent targetState =
+				(* initialize data structures *)
+				let plan = (Plan.make 100) in 
+				let toVisit = Stack.create () in
+				let finished = (ref false) in
+        (* all initial vertices are pushed on the toVisit stack *)
+				let startVertices = (List.filter has_no_in_edges !vertices) in
+					(List.iter (add_initial_vertex toVisit plan) startVertices);
+				(* External loop *)
+				(repeat_until 
+					(* External loop body *)
+					(fun i ->
+          	begin
+							(print_endline ("External loop iteration nr." ^ (string_of_int !i)));
+							i := !i + 1;
+							(* Inner loop *)
+							(repeat_until 
+								(* Inner loop body *)
+								(fun j ->
+          				begin 
+										(print_endline ("Internal loop iteration nr." ^ (string_of_int !j)));
+										(print_endline ("Plan: " ^ (Plan.to_string plan)));
+										j := !j + 1;
+										let currentVertex = (Stack.pop toVisit) in
+										(print_endline ("Vertex popped: " ^ (to_string_with_id currentVertex))); 
+										(* deal with return/red edges *)
+										(print_endline "Deal with return/red edges");
+										(List.iter (process_ret_edge plan toVisit currentVertex) currentVertex.return_edges);
+										if (is_final currentVertex) then
+										begin
+											(print_endline "Current vertex is final: we add a Del action to the plan.");
+											let deleteAct = (Del currentVertex.id) in
+											(Plan.add plan deleteAct)
+										end else begin
+											(* deal with go/blue edges *)
+											(print_endline "Deal with go/blue edges");
+											(List.iter (process_go_edge plan toVisit currentVertex) currentVertex.go_edges);
+											if (is_not_initial currentVertex) then
+												begin
+													let stateChangeAct = (compute_state_change_act currentVertex) in
+													(Plan.add plan stateChangeAct);
+													(print_endline ("It's an intermediate vertex => add action " 
+															^ (Action.string_of_action stateChangeAct) ^ " to the plan."))
+												end;
+											(* deal with instance successor *)
+											(print_endline "Deal with successor vertex.");
+											(process_inst_edge plan toVisit currentVertex)
+										end;
+										(* if we reach the target node *)
+										if (currentVertex.comp_type_name = targetComponent) && 
+												((extract_tag_dst_name currentVertex.tag) = targetState) then
+											begin 
+												(print_endline "Target has been REACHED.");
+												finished := true
+											end;
+										(* delete current vertex from vertices list *)
+										vertices := (remove_from_list currentVertex !vertices); 
+										j
+          				end)
+								(* Inner loop condition: stop when we reach a fixpoint (no new nodes are added) or we find target *)
+								(fun j -> ((Stack.is_empty toVisit) || !finished)) 
+      					~init:(ref 0));
+							if !finished = false then
+								(* let vertex = (duplicate vertices) in 
+										(Stack.push vertex toVisit); *)
+								(print_endline "\n Need instance duplication "); 	
+							i
+          	end)
+				(* External loop condition *)
+					(fun i -> !finished) 
+      	~init:(ref 0));
+				plan
 
 
 
