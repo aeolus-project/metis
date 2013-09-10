@@ -130,7 +130,7 @@ let () =
 
 		let plan_vertices = !all_vertices in
 		let plan = (T.Vertex.synthesize_plan_DEBUG (ref plan_vertices) !target_component_name !target_state) in
-		(Plan.print plan); 	
+		(print_string "\n The computed "); (Plan.print plan); 	
 (*	
 		(print_endline "\nNow we GENERATE the PLAN.");
 		(Printf.bprintf !file_buffer "%s\n" "\nNow we GENERATE the PLAN.");

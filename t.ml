@@ -118,7 +118,8 @@ module T =
 			
 			let extract_tag_dst_name vertex_tag = 
         match vertex_tag with
-        	Trans (state_id_1, state_id_2) -> state_id_2.value 
+          Initial (Create, state_id) -> state_id.value  
+        |	Trans (state_id_1, state_id_2) -> state_id_2.value 
         | _ -> raise (Vertex_tag_not_admitted ("found the following tag: " 
 								^ (string_of_tag vertex_tag) ^ " which is not allowed!")) 
 
@@ -1047,7 +1048,6 @@ module T =
           				begin 
 										(print_endline ("\n***************** Internal loop iteration j = " ^ (string_of_int !j)));
 										(print_endline ("Plan BEFORE: " ^ (Plan.to_string plan)));
-										(Plan.print_length plan);
 										j := !j + 1;
 										let currentVertex = (Stack.pop toVisit) in
 										(print_endline ("Vertex popped: " ^ (to_string_with_id currentVertex))); 
@@ -1084,7 +1084,6 @@ module T =
 										(* delete current vertex from vertices list *)
 										vertices := (remove_from_list currentVertex !vertices); 
 										(print_endline ("Plan AFTER: " ^ (Plan.to_string plan)));
-										(Plan.print_length plan);
 										j
           				end)
 								(* Inner loop condition: stop when we reach a fixpoint (no new nodes are added) or we find target *)
