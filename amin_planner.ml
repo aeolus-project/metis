@@ -118,6 +118,19 @@ let () =
     let all_vertices = (ref (Instance.list_to_vertices instance_lines)) in ();
     (*(T.Vertex.print_list all_vertices); *)
 	
+		let plan_vertices = !all_vertices in
+		let plan = (T.Vertex.synthesize_plan_DEBUG (ref plan_vertices) !target_component_name !target_state) in
+		(print_string "\nThe computed "); (Plan.print plan); 	
+(*	
+		(print_endline "\nNow we GENERATE the PLAN.");
+		(Printf.bprintf !file_buffer "%s\n" "\nNow we GENERATE the PLAN.");
+		let plan = (T.Vertex.synthesize_plan all_vertices) in ();
+		(print_endline "\nThe COMPUTED PLAN is:\n");
+		(Printf.bprintf !file_buffer "%s\n" "\nAnd finally the COMPUTED PLAN is:\n");
+    (T.Vertex.print_plan file_buffer plan);
+*)
+
+(* Old Topological sort  
 		(* eliminate cycles if there are *)
 		let cycles = (My_scc.find_cycles !all_vertices file_buffer) in
 		if cycles != [] then
@@ -128,19 +141,6 @@ let () =
     		(Instance.print_list file_buffer new_instance_lines)
 			end;
 
-		let plan_vertices = !all_vertices in
-		let plan = (T.Vertex.synthesize_plan_DEBUG (ref plan_vertices) !target_component_name !target_state) in
-		(print_string "\n The computed "); (Plan.print plan); 	
-(*	
-		(print_endline "\nNow we GENERATE the PLAN.");
-		(Printf.bprintf !file_buffer "%s\n" "\nNow we GENERATE the PLAN.");
-		let plan = (T.Vertex.synthesize_plan all_vertices) in ();
-		(print_endline "\nThe COMPUTED PLAN is:\n");
-		(Printf.bprintf !file_buffer "%s\n" "\nAnd finally the COMPUTED PLAN is:\n");
-    (T.Vertex.print_plan file_buffer plan);
-*)
-
-(* Old Topological sort *)   
 		let vertices_to_sort = !all_vertices in ();
 		(* proceed with the topological sorting *)
 		(Printf.bprintf !file_buffer "%s\n" "\nNow we perform a TOPOLOGICAL SORT.");
@@ -151,8 +151,8 @@ let () =
 		(print_endline "\nThe COMPUTED PLAN is:\n");
 		(Printf.bprintf !file_buffer "%s\n" "\nAnd finally the COMPUTED PLAN is:\n");
     (T.Vertex.print_actions file_buffer sorted_vertices);
+*)
 
 		(Buffer.output_buffer !output_channel !file_buffer);
 		(close_out !output_channel);
   end
-

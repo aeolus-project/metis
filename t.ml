@@ -86,6 +86,7 @@ module T =
 			exception No_red_edges_in_cycle of string
 			exception Vertex_not_in_list of string
 			exception Position_not_found of string
+			exception No_candidates_for_duplication
      
       (* Types for the tag associated to every vertex *)      
       type create_tag_t = Create
@@ -894,7 +895,84 @@ module T =
 						end
      
 
- 
+
+      (**************************************************)
+      (*                  	Duplication		              *)  
+      (**************************************************)
+
+			(* TODO: must be moved to a better place *)
+			let rec set_minus list1 list2 =
+				match list1 with
+					[] -> []
+				| head :: tail -> 
+						begin
+							if (List.memq head list2) then
+								(set_minus tail list2)
+							else 
+								head :: (set_minus tail list2)
+						end
+			
+			(** Mark vertices that are reached through an instance edge or a go/blue edge. *)	
+			let mark_wrong marked_vertices vertex =
+				let inst_and_go_succs_refs = (get_inst_succ vertex) @  (get_go_succs vertex) in
+				let inst_and_go_succs = (List.map (fun x -> !x) inst_and_go_succs_refs) in
+				marked_vertices := (elim_duplicates (!marked_vertices @ inst_and_go_succs)) 
+				
+			(** Find vertex to duplicate. 
+					Choose among the list of vertices with only incoming return/red edges. *) 
+			let find_duplicate_vertex vertices =
+				let marked_vertices = (ref []) in
+				(List.iter (mark_wrong marked_vertices) !vertices);
+				let candidates = (set_minus !vertices !marked_vertices) in
+				if candidates = [] then
+					raise No_candidates_for_duplication
+				else 
+					let duplicate_vertex = (List.hd candidates) in
+					duplicate_vertex
+
+			let make_dupl_instance vertex	=
+				let inst_id = (vertex.id ^ "'") in
+				let inst_src_state = (extract_tag_src vertex.tag) in  
+        let new_vertex = {
+          id = inst_id;      
+					comp_type_name = vertex.comp_type_cname;      
+          tag = (Final (inst_src_state, Delete));
+          nr_in_edges = 0;
+          go_edges = [];
+          return_edges = [];
+          inst_edge = None;
+          actions = [];
+        } in
+				new_vertex
+
+			let rec find_return_predecessors vertex vertices =
+				let predecessor_pairs = (ref []) in 
+				match !vertices with
+					[] -> []
+				| head :: tail -> 
+						begin
+							let return_edge = (find_edge head vertex) in
+							match return_edge with 
+								(Some edge) -> predecessor_pairs := !predecessor_pairs :: (head, edge)  
+							|	None -> ()
+							(find_return_predecessors vertex tail)
+						end
+
+			let duplicate vertices plan =
+				(* find instance to duplicate *)
+				let duplicate_vertex = (find_duplicate_vertex vertices) in
+				print_endline ("\nChosen vertex for splitting = " ^ (to_string_with_id duplicate_vertex));
+				(* build duplicate vertex *)
+				let new_vertex = (make_dupl_instance duplicate_vertex) in
+				(* add new vertex to vertices list *)
+				vertices := !vertices :: new_vertex;
+				(* for all vertices pointing to <i,x,y> move return/red edge to new instance <i',x,e> *)
+				let return_verts_edges_pred_pairs = (find_return_predecessors duplicate_vertex vertices) in
+				(List.iter (manage_return_edges new_vertex) return_verts_edges_pred_pairs);
+				(* fix plan to deal with new instance i' *)
+				(adjust_plan plan new_vertex);
+				duplicate_vertex
+
 
 			(**************************************************)
       (*                  	Plan Synthesis              *)  
@@ -1017,7 +1095,7 @@ module T =
 							if !finished = false then
 								(* let vertex = (duplicate vertices) in 
 										(Stack.push vertex toVisit); *)
-								(print_endline "\n Need instance duplication "); 	
+								(print_endline "\n ************************* NEED INSTANCE DUPLICATION *************************** "); 	
 							i
           	end)
 				(* External loop condition *)
@@ -1054,8 +1132,7 @@ module T =
 										(* deal with return/red edges *)
 										(print_endline "Deal with return/red edges");
 										(List.iter (process_ret_edge plan toVisit currentVertex) currentVertex.return_edges);
-										if (is_final currentVertex) then
-										begin
+										if (is_final currentVertex) then begin
 											(print_endline "Current vertex is final: we add a Del action to the plan.");
 											let deleteAct = (Del currentVertex.id) in
 											(Plan.add plan deleteAct)
@@ -1063,8 +1140,7 @@ module T =
 											(* deal with go/blue edges *)
 											(print_endline "Deal with go/blue edges");
 											(List.iter (process_go_edge plan toVisit currentVertex) currentVertex.go_edges);
-											if (is_not_initial currentVertex) then
-												begin
+											if (is_not_initial currentVertex) then begin
 													let stateChangeAct = (compute_state_change_act currentVertex) in
 													(Plan.add plan stateChangeAct);
 													(print_endline ("It's an intermediate vertex => add action " 
@@ -1076,10 +1152,9 @@ module T =
 										end;
 										(* if we reach the target node *)
 										if (currentVertex.comp_type_name = targetComponent) && 
-												((extract_tag_dst_name currentVertex.tag) = targetState) then
-											begin 
-												(print_endline "Target has been REACHED.");
-												finished := true
+												((extract_tag_dst_name currentVertex.tag) = targetState) then begin 
+													(print_endline "Target has been REACHED.");
+													finished := true
 											end;
 										(* delete current vertex from vertices list *)
 										vertices := (remove_from_list currentVertex !vertices); 
@@ -1089,10 +1164,11 @@ module T =
 								(* Inner loop condition: stop when we reach a fixpoint (no new nodes are added) or we find target *)
 								(fun j -> ((Stack.is_empty toVisit) || !finished)) 
       					~init:(ref 0));
-							if !finished = false then
-								(* let vertex = (duplicate vertices) in 
-										(Stack.push vertex toVisit); *)
-								(print_endline "\n Need instance duplication "); 	
+							if !finished = false then begin
+								(print_endline "\n ************************* NEED INSTANCE DUPLICATION *************************** "); 
+								let vertex = (duplicate vertices) in 
+										(Stack.push vertex toVisit) 
+							end;	
 							i
           	end)
 				(* External loop condition *)
@@ -1100,6 +1176,8 @@ module T =
       	~init:(ref 0));
 				plan
 
+			
+				
 
 
 
