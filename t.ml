@@ -919,7 +919,7 @@ module T =
 				marked_vertices := (elim_duplicates (!marked_vertices @ inst_and_go_succs)) 
 				
 			(** Find vertex to duplicate. 
-					Choose among the list of vertices with only incoming return/red edges. *) 
+					Choose among the list of [vertices] with only incoming return/red edges. *) 
 			let find_duplicate_vertex vertices =
 				let marked_vertices = (ref []) in
 				(List.iter (mark_wrong marked_vertices) !vertices);
@@ -930,12 +930,13 @@ module T =
 					let duplicate_vertex = (List.hd candidates) in
 					duplicate_vertex
 
+			(** Build an instance (vertex) that is a copy of the original one [vertex]. *)
 			let make_dupl_instance vertex	=
 				let inst_id = (vertex.id ^ "'") in
 				let inst_src_state = (extract_tag_src vertex.tag) in  
         let new_vertex = {
           id = inst_id;      
-					comp_type_name = vertex.comp_type_cname;      
+					comp_type_name = vertex.comp_type_name;      
           tag = (Final (inst_src_state, Delete));
           nr_in_edges = 0;
           go_edges = [];
@@ -945,18 +946,84 @@ module T =
         } in
 				new_vertex
 
+			(** Among all return edges of [src_vertex] find the one, if there is, 
+					that points to [dst_vertex]. *)
+			let find_return_edge src_vertex dst_vertex =
+				let points_to edge = (dst_vertex == !(Dep_edge.get_dest edge)) in
+				try
+					let result_edge = (List.find points_to src_vertex.return_edges) in
+					(Some result_edge)
+				with
+				| Not_found -> None
+
+			(** Among [vertices] find all vertices (and corresponding return edges) that 
+					point to [vertex]. *)
 			let rec find_return_predecessors vertex vertices =
-				let predecessor_pairs = (ref []) in 
-				match !vertices with
+				match vertices with
 					[] -> []
 				| head :: tail -> 
 						begin
-							let return_edge = (find_edge head vertex) in
+							let return_edge = (find_return_edge head vertex) in
 							match return_edge with 
-								(Some edge) -> predecessor_pairs := !predecessor_pairs :: (head, edge)  
-							|	None -> ()
-							(find_return_predecessors vertex tail)
+								(Some edge) -> 
+									(head, edge) :: (find_return_predecessors vertex tail)
+							|	None -> 
+									(find_return_predecessors vertex tail)
 						end
+
+			(** Return edge is redirected towards [new_vertex]. *)
+			let manage_return_edges new_vertex vertex_edge_pair =
+				let old_dst = (fst vertex_edge_pair) in
+				let edge = (snd vertex_edge_pair) in 
+				(Dep_edge.set_dest edge (ref new_vertex));
+				old_dst.nr_in_edges <- (old_dst.nr_in_edges - 1);
+				new_vertex.nr_in_edges <- (new_vertex.nr_in_edges + 1)
+			
+			(** Scan the whole [plan] and substitute and or add corresponding actions 
+					to the original instance that is being duplicated. *)
+			(* TODO: to be deleted when the following version is tested
+			let adjust_plan plan orig_inst_ID new_inst_ID =
+				for j = ((Plan.length plan) - 1) downto 0 do
+					let action = (Plan.get_action plan j) in
+					match action with
+  				| Bind (port, provider, requirer) -> if provider = orig_inst_ID then
+																										(Plan.set_action plan j (Bind (port, new_inst_ID, requirer)))
+																									else if requirer = orig_inst_ID then
+  																									(Plan.insert_action plan j (Bind (port, provider, new_inst_ID)))
+																									else 
+																										()
+  				| Unbind (port, provider, requirer) -> if provider = orig_inst_ID then
+																										(Plan.set_action plan j (Unbind (port, new_inst_ID, requirer)))
+																									else if requirer = orig_inst_ID then
+  																									(Plan.insert_action plan j (Unbind (port, provider, new_inst_ID)))
+																									else 
+																										()
+	  			|	New (orig_inst_ID, comp_type_name) -> (Plan.insert_action plan j (New (new_inst_ID, comp_type_name))) 
+  				| State_change (orig_inst_ID, src, dst) -> (Plan.insert_action plan j (State_change (orig_inst_ID, src, dst)))
+  				| (Del inst_name) -> ()
+				done
+			*)
+
+			(** Scan the whole [plan] and substitute and or add corresponding actions 
+					to the original instance that is being duplicated. *)
+			let adjust_plan plan orig_inst_ID new_inst_ID =
+				for j = ((Plan.length plan) - 1) downto 0 do
+					let action = (Plan.get_action plan j) in
+					match action with
+  				| Bind (port, provider, requirer) when provider = orig_inst_ID ->
+																			(Plan.set_action plan j (Bind (port, new_inst_ID, requirer)))
+  				| Bind (port, provider, requirer) when requirer = orig_inst_ID ->
+  																		(Plan.insert_action plan j (Bind (port, provider, new_inst_ID)))
+  				| Unbind (port, provider, requirer) when provider = orig_inst_ID ->
+																			(Plan.set_action plan j (Unbind (port, new_inst_ID, requirer)))
+  				| Unbind (port, provider, requirer) when requirer = orig_inst_ID ->
+  																		(Plan.insert_action plan j (Unbind (port, provider, new_inst_ID)))
+	  			|	New (inst_ID, comp_type_name) when inst_ID = orig_inst_ID -> 
+																			(Plan.insert_action plan j (New (new_inst_ID, comp_type_name))) 
+  				| State_change (inst_ID, src, dst) when inst_ID = orig_inst_ID -> 
+																			(Plan.insert_action plan j (State_change (orig_inst_ID, src, dst)))
+  				| _ -> ()
+				done
 
 			let duplicate vertices plan =
 				(* find instance to duplicate *)
@@ -964,13 +1031,17 @@ module T =
 				print_endline ("\nChosen vertex for splitting = " ^ (to_string_with_id duplicate_vertex));
 				(* build duplicate vertex *)
 				let new_vertex = (make_dupl_instance duplicate_vertex) in
+				print_endline ("\nBuilt the following new vertex = " ^ (to_string_with_id duplicate_vertex));
 				(* add new vertex to vertices list *)
-				vertices := !vertices :: new_vertex;
+				vertices := new_vertex :: !vertices;
 				(* for all vertices pointing to <i,x,y> move return/red edge to new instance <i',x,e> *)
-				let return_verts_edges_pred_pairs = (find_return_predecessors duplicate_vertex vertices) in
+				let return_verts_edges_pred_pairs = (find_return_predecessors duplicate_vertex !vertices) in
 				(List.iter (manage_return_edges new_vertex) return_verts_edges_pred_pairs);
 				(* fix plan to deal with new instance i' *)
-				(adjust_plan plan new_vertex);
+				let orig_inst_id = duplicate_vertex.id in
+				let new_inst_id = new_vertex.id in
+				(adjust_plan plan orig_inst_id new_inst_id);
+				(* return duplicate vertex *)
 				duplicate_vertex
 
 
@@ -1166,7 +1237,7 @@ module T =
       					~init:(ref 0));
 							if !finished = false then begin
 								(print_endline "\n ************************* NEED INSTANCE DUPLICATION *************************** "); 
-								let vertex = (duplicate vertices) in 
+								let vertex = (duplicate vertices plan) in 
 										(Stack.push vertex toVisit) 
 							end;	
 							i
