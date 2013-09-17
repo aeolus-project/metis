@@ -273,7 +273,7 @@ module T =
         (print_endline string_repr)
 
       let actions_to_string actions =
-        let string_list = (List.map Action.string_of_action actions) in
+        let string_list = (List.map Action.to_string actions) in
         let string_repr = (String.concat "  " string_list) in
         string_repr
 
@@ -922,11 +922,19 @@ module T =
 					Choose among the list of [vertices] with only incoming return/red edges. *) 
 			let find_duplicate_vertex vertices =
 				let marked_vertices = (ref []) in
+				(* TODO: do we need explicit looping or can we just iterate? need to ask an Ocaml programmer
 				(List.iter (mark_wrong marked_vertices) !vertices);
+				*)
+				let vertices_array = (Array.of_list !vertices) in
+				for i = 0 to ((Array.length vertices_array) - 1) do
+					let current_vertex = vertices_array.(i) in
+					(mark_wrong marked_vertices current_vertex)
+				done;
 				let candidates = (set_minus !vertices !marked_vertices) in
 				if candidates = [] then
 					raise No_candidates_for_duplication
 				else 
+					(print_endline ("The list of candidates is the folowing one: " ^ (to_string_list candidates)));
 					let duplicate_vertex = (List.hd candidates) in
 					duplicate_vertex
 
@@ -979,8 +987,6 @@ module T =
 				old_dst.nr_in_edges <- (old_dst.nr_in_edges - 1);
 				new_vertex.nr_in_edges <- (new_vertex.nr_in_edges + 1)
 			
-			(** Scan the whole [plan] and substitute and or add corresponding actions 
-					to the original instance that is being duplicated. *)
 			(* TODO: to be deleted when the following version is tested
 			let adjust_plan plan orig_inst_ID new_inst_ID =
 				for j = ((Plan.length plan) - 1) downto 0 do
@@ -1004,7 +1010,7 @@ module T =
 				done
 			*)
 
-			(** Scan the whole [plan] and substitute and or add corresponding actions 
+			(** Scan the whole [plan] and substitute or add corresponding actions 
 					to the original instance that is being duplicated. *)
 			let adjust_plan plan orig_inst_ID new_inst_ID =
 				for j = ((Plan.length plan) - 1) downto 0 do
@@ -1049,8 +1055,8 @@ module T =
       (*                  	Plan Synthesis              *)  
       (**************************************************)
   		
-			(** This function takes a list of vertices and a vertex and removes it 
-					from the list. 
+			(** This function takes a list of vertices [vlist] and a vertex [vertex] 
+					and removes it from the list. 
   		*)
 			let rec remove_from_list vertex vlist =
 						match vlist with
@@ -1063,14 +1069,14 @@ module T =
 										head :: (remove_from_list vertex tail)
 								end
       
-			(** deal with [initial vertices] (i.e. with no incoming edges) *)
+			(** Deal with [initial vertices] (i.e. with no incoming edges) *)
 			let add_initial_vertex stack plan vertex =
 				let new_action = (New (vertex.id, vertex.comp_type_name)) in
 				(Plan.add plan new_action);
-				(print_endline ("Added action " ^ (Action.string_of_action new_action) ^ " to the plan."));	
+				(print_endline ("Added action " ^ (Action.to_string new_action) ^ " to the plan."));	
 				(Stack.push vertex stack)
 
-			(** deal with [return edges] (the red ones) *)
+			(** Deal with [return edges] (the red ones) *)
 			let process_ret_edge plan stack srcVertex returnEdge =
 				let dstVertex = !(Dep_edge.get_dest returnEdge) in
 				let port = (Dep_edge.get_port returnEdge) in
@@ -1079,11 +1085,11 @@ module T =
 				(Plan.add plan unbindAct);
 				(* remove edge *)
 				(remove_return_edge srcVertex returnEdge);
-				(* if dest. vertex has no more incoming edges push it onto stack toVisit *)
+				(* if destination vertex has no more incoming edges push it onto stack toVisit *)
 				if (has_no_in_edges dstVertex) then 
 					(Stack.push dstVertex stack)
 			
-			(** deal with [go edges] (the blue ones) *)
+			(** Deal with [go edges] (the blue ones) *)
 			let process_go_edge plan stack srcVertex goEdge =
 				let dstVertex = !(Dep_edge.get_dest goEdge) in
 				let port = (Dep_edge.get_port goEdge) in
@@ -1096,16 +1102,16 @@ module T =
 				if (has_no_in_edges dstVertex) then 
 					(Stack.push dstVertex stack)
 
-			(** compute a state change action corresponding to a vertex *)
+			(** Compute a state change action corresponding to a vertex *)
 			let compute_state_change_act vertex =
 				let id = vertex.id in
-				let transPair = (get_transition_from_tag vertex.tag) in
-				let srcState = (fst transPair) in
-				let dstState = (snd transPair) in
-				let stateChangeAct = State_change (id, srcState, dstState) in 
-				stateChangeAct
+				let trans_pair = (get_transition_from_tag vertex.tag) in
+				let src_state = (fst trans_pair) in
+				let dst_state = (snd trans_pair) in
+				let state_change_act = State_change (id, src_state, dst_state) in 
+				state_change_act 
 
-			(** deal with the [instance edge] *)
+			(** Deal with the [instance edge] *)
 			let process_inst_edge plan stack vertex =
 				if (is_not_final vertex) then begin
 					let successor = (get_succ vertex) in
@@ -1114,7 +1120,7 @@ module T =
 						(Stack.push successor stack)
 				end
 
-			(** compute a deployment plan *)
+			(** Compute a deployment plan *)
 			let synthesize_plan vertices targetComponent targetState =
 				(* initialize data structures *)
 				let plan = (Plan.make 100) in 
@@ -1163,10 +1169,11 @@ module T =
 								(* Inner loop condition: stop when we reach a fixpoint (no new nodes are added) or we find target *)
 								(fun j -> ((Stack.is_empty toVisit) || !finished)) 
       					~init:(ref 0));
-							if !finished = false then
-								(* let vertex = (duplicate vertices) in 
-										(Stack.push vertex toVisit); *)
+							if !finished = false then begin
 								(print_endline "\n ************************* NEED INSTANCE DUPLICATION *************************** "); 	
+								let vertex = (duplicate vertices plan) in 
+										(Stack.push vertex toVisit)
+							end; 
 							i
           	end)
 				(* External loop condition *)
@@ -1174,7 +1181,7 @@ module T =
       	~init:(ref 0));
 				plan
 
-			(** compute a deployment plan DEBUG version *)
+			(** Compute a deployment plan DEBUG version *)
 			let synthesize_plan_DEBUG vertices targetComponent targetState =
 				(* initialize data structures *)
 				let plan = (Plan.make 100) in 
@@ -1215,7 +1222,7 @@ module T =
 													let stateChangeAct = (compute_state_change_act currentVertex) in
 													(Plan.add plan stateChangeAct);
 													(print_endline ("It's an intermediate vertex => add action " 
-															^ (Action.string_of_action stateChangeAct) ^ " to the plan."))
+															^ (Action.to_string stateChangeAct) ^ " to the plan."))
 												end;
 											(* deal with instance successor *)
 											(print_endline "Deal with successor vertex.");
@@ -1235,6 +1242,8 @@ module T =
 								(* Inner loop condition: stop when we reach a fixpoint (no new nodes are added) or we find target *)
 								(fun j -> ((Stack.is_empty toVisit) || !finished)) 
       					~init:(ref 0));
+							(* If we finished without reaching target => there are unvisited 
+									vertices (couldn't be visited in topological order) => need duplication *)
 							if !finished = false then begin
 								(print_endline "\n ************************* NEED INSTANCE DUPLICATION *************************** "); 
 								let vertex = (duplicate vertices plan) in 
@@ -1249,10 +1258,6 @@ module T =
 
 			
 				
-
-
-
-
       (**************************************************)
       (*                  Topological sort              *)  
       (**************************************************)
