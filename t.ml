@@ -856,22 +856,24 @@ module T =
       (*******************************************************)
       (*                Dealing with Edge Removal            *)  
       (*******************************************************)
-      (* TODO: for the moment we simply decrease the nr. of incoming edges
-       * without actually removing the edges *)
-      let remove_inst_edge vertex =
+      
+			let remove_inst_edge vertex =
         let inst_successor = (get_inst_succ vertex) in
         match inst_successor with
           [] -> ()
-        | [inst_succ_vertex] -> (decrease_nr_in_edges !inst_succ_vertex)
-        | _ -> raise Abnormal_inst_succ_list  
-        
+        | [inst_succ_vertex] -> 
+						(decrease_nr_in_edges !inst_succ_vertex); vertex.inst_edge <- None 
+        | _ -> raise Abnormal_inst_succ_list
+			
       let remove_go_edges vertex =
         let go_successors = (get_go_succs vertex) in
-        (List.iter ref_decrease_nr_in_edges go_successors)      
+        (List.iter ref_decrease_nr_in_edges go_successors);
+				vertex.go_edges <- []      
       
       let remove_return_edges vertex =
         let return_successors = (get_return_succs vertex) in
-        (List.iter ref_decrease_nr_in_edges return_successors)      
+        (List.iter ref_decrease_nr_in_edges return_successors); 
+				vertex.return_edges <- []      
 
       let remove_edges vertex =
         begin
@@ -879,6 +881,23 @@ module T =
           (remove_go_edges vertex);
           (remove_return_edges vertex)
         end
+
+
+      (*********************************************************)
+			(* TODO: utility functions to be moved to a better place *)
+      (*********************************************************)
+		
+			(** Set-minus operation between two lists. *)	
+			let rec set_minus list1 list2 =
+				match list1 with
+					[] -> []
+				| head :: tail -> 
+						begin
+							if (List.memq head list2) then
+								(set_minus tail list2)
+							else 
+								head :: (set_minus tail list2)
+						end
 
 			let vertex_in_list vertex vertices =
 				(List.exists (eq_id_tag vertex) vertices)
@@ -900,17 +919,6 @@ module T =
       (*                  	Duplication		              *)  
       (**************************************************)
 
-			(* TODO: must be moved to a better place *)
-			let rec set_minus list1 list2 =
-				match list1 with
-					[] -> []
-				| head :: tail -> 
-						begin
-							if (List.memq head list2) then
-								(set_minus tail list2)
-							else 
-								head :: (set_minus tail list2)
-						end
 			
 			(** Mark vertices that are reached through an instance edge or a go/blue edge. *)	
 			let mark_wrong marked_vertices vertex =
@@ -922,7 +930,7 @@ module T =
 					Choose among the list of [vertices] with only incoming return/red edges. *) 
 			let find_duplicate_vertex vertices =
 				let marked_vertices = (ref []) in
-				(* TODO: do we need explicit looping or can we just iterate? need to ask an Ocaml programmer
+				(* TODO: do we need an explicit loop or can we just iterate? need to ask an Ocaml programmer
 				(List.iter (mark_wrong marked_vertices) !vertices);
 				*)
 				let vertices_array = (Array.of_list !vertices) in
