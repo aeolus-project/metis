@@ -189,3 +189,296 @@ c0 (s1,D) nr.IN-edges =  2
  GO EDGES: 
  RETURN EDGES: ---p1_1---> c1 (s1,s2)
  INST EDGE: { }
+
+
+---------------------- PLAN SYNTHESIS START ----------------------
+Added action [Create instance c3:C3] to the plan.
+Added action [Create instance c2:C2] to the plan.
+Added action [Create instance c1:C1] to the plan.
+Added action [Create instance c0:C0] to the plan.
+External loop iteration i = 0
+Internal loop iteration j = 0
+Plan BEFORE: 
+ Act. nr.1 : [Create instance c3:C3]
+ Act. nr.2 : [Create instance c2:C2]
+ Act. nr.3 : [Create instance c1:C1]
+ Act. nr.4 : [Create instance c0:C0]
+Vertex popped: c0 (C,s0)
+Deal with return/red edges
+Deal with go/blue edges
+Deal with successor vertex.
+Vertex removed: c0 (C,s0)
+Internal loop iteration j = 1
+Plan BEFORE: 
+ Act. nr.1 : [Create instance c3:C3]
+ Act. nr.2 : [Create instance c2:C2]
+ Act. nr.3 : [Create instance c1:C1]
+ Act. nr.4 : [Create instance c0:C0]
+Vertex popped: c1 (C,s0)
+Deal with return/red edges
+Deal with go/blue edges
+Deal with successor vertex.
+Vertex removed: c1 (C,s0)
+Internal loop iteration j = 2
+Plan BEFORE: 
+ Act. nr.1 : [Create instance c3:C3]
+ Act. nr.2 : [Create instance c2:C2]
+ Act. nr.3 : [Create instance c1:C1]
+ Act. nr.4 : [Create instance c0:C0]
+Vertex popped: c2 (C,s0)
+Deal with return/red edges
+Deal with go/blue edges
+Deal with successor vertex.
+Vertex removed: c2 (C,s0)
+Internal loop iteration j = 3
+Plan BEFORE: 
+ Act. nr.1 : [Create instance c3:C3]
+ Act. nr.2 : [Create instance c2:C2]
+ Act. nr.3 : [Create instance c1:C1]
+ Act. nr.4 : [Create instance c0:C0]
+Vertex popped: c3 (C,s0)
+Deal with return/red edges
+Deal with go/blue edges
+Deal with successor vertex.
+INST Edge: PUSH vertex: c3 (s0,s1)
+STACK = 
+c3 (s0,s1) | 
+
+Vertex removed: c3 (C,s0)
+Internal loop iteration j = 4
+Plan BEFORE: 
+ Act. nr.1 : [Create instance c3:C3]
+ Act. nr.2 : [Create instance c2:C2]
+ Act. nr.3 : [Create instance c1:C1]
+ Act. nr.4 : [Create instance c0:C0]
+Vertex popped: c3 (s0,s1)
+Deal with return/red edges
+Deal with go/blue edges
+GO Edge: PUSH vertex: c2 (s0,s1)
+STACK = 
+c2 (s0,s1) | 
+
+It's an intermediate vertex => add action [c3 : change state from s0 to s1] to the plan.
+Deal with successor vertex.
+Vertex removed: c3 (s0,s1)
+Internal loop iteration j = 5
+Plan BEFORE: 
+ Act. nr.1 : [Create instance c3:C3]
+ Act. nr.2 : [Create instance c2:C2]
+ Act. nr.3 : [Create instance c1:C1]
+ Act. nr.4 : [Create instance c0:C0]
+ Act. nr.5 : [c3 : bind port p3_1 to instance c2]
+ Act. nr.6 : [c3 : change state from s0 to s1]
+Vertex popped: c2 (s0,s1)
+Deal with return/red edges
+Deal with go/blue edges
+GO Edge: PUSH vertex: c1 (s0,s1)
+STACK = 
+c1 (s0,s1) | 
+
+It's an intermediate vertex => add action [c2 : change state from s0 to s1] to the plan.
+Deal with successor vertex.
+Vertex removed: c2 (s0,s1)
+Internal loop iteration j = 6
+Plan BEFORE: 
+ Act. nr.1 : [Create instance c3:C3]
+ Act. nr.2 : [Create instance c2:C2]
+ Act. nr.3 : [Create instance c1:C1]
+ Act. nr.4 : [Create instance c0:C0]
+ Act. nr.5 : [c3 : bind port p3_1 to instance c2]
+ Act. nr.6 : [c3 : change state from s0 to s1]
+ Act. nr.7 : [c2 : bind port p2_1 to instance c1]
+ Act. nr.8 : [c2 : change state from s0 to s1]
+Vertex popped: c1 (s0,s1)
+Deal with return/red edges
+Deal with go/blue edges
+GO Edge: PUSH vertex: c0 (s0,s1)
+STACK = 
+c0 (s0,s1) | 
+
+It's an intermediate vertex => add action [c1 : change state from s0 to s1] to the plan.
+Deal with successor vertex.
+Vertex removed: c1 (s0,s1)
+Internal loop iteration j = 7
+Plan BEFORE: 
+ Act. nr.1 : [Create instance c3:C3]
+ Act. nr.2 : [Create instance c2:C2]
+ Act. nr.3 : [Create instance c1:C1]
+ Act. nr.4 : [Create instance c0:C0]
+ Act. nr.5 : [c3 : bind port p3_1 to instance c2]
+ Act. nr.6 : [c3 : change state from s0 to s1]
+ Act. nr.7 : [c2 : bind port p2_1 to instance c1]
+ Act. nr.8 : [c2 : change state from s0 to s1]
+ Act. nr.9 : [c1 : bind port p1_1 to instance c0]
+ Act. nr.10 : [c1 : change state from s0 to s1]
+Vertex popped: c0 (s0,s1)
+Deal with return/red edges
+Deal with go/blue edges
+It's an intermediate vertex => add action [c0 : change state from s0 to s1] to the plan.
+Deal with successor vertex.
+Vertex removed: c0 (s0,s1)
+
+ ************************* NEED INSTANCE DUPLICATION *************************** 
+The list of candidates is the folowing one: c1 (s1,s2)
+
+Chosen vertex for splitting = c1 (s1,s2)
+
+Built the following new vertex = c1' (s1,D)
+
+Vertex c0 (s1,D) has no more incoming edges => is added to the to_visit stack.
+External loop iteration i = 1
+Internal loop iteration j = 0
+Plan BEFORE: 
+ Act. nr.1 : [Create instance c3:C3]
+ Act. nr.2 : [Create instance c2:C2]
+ Act. nr.3 : [Create instance c1':C1]
+ Act. nr.4 : [Create instance c1:C1]
+ Act. nr.5 : [Create instance c0:C0]
+ Act. nr.6 : [c3 : bind port p3_1 to instance c2]
+ Act. nr.7 : [c3 : change state from s0 to s1]
+ Act. nr.8 : [c2 : bind port p2_1 to instance c1']
+ Act. nr.9 : [c2 : bind port p2_1 to instance c1]
+ Act. nr.10 : [c2 : change state from s0 to s1]
+ Act. nr.11 : [c1' : bind port p1_1 to instance c0]
+ Act. nr.12 : [c1' : change state from s0 to s1]
+ Act. nr.13 : [c1 : change state from s0 to s1]
+ Act. nr.14 : [c0 : bind port p0_2 to instance c1']
+ Act. nr.15 : [c0 : bind port p0_2 to instance c1]
+ Act. nr.16 : [c0 : change state from s0 to s1]
+Vertex popped: c1 (s1,s2)
+Deal with return/red edges
+Deal with go/blue edges
+It's an intermediate vertex => add action [c1 : change state from s1 to s2] to the plan.
+Deal with successor vertex.
+Vertex removed: c1 (s1,s2)
+Internal loop iteration j = 1
+Plan BEFORE: 
+ Act. nr.1 : [Create instance c3:C3]
+ Act. nr.2 : [Create instance c2:C2]
+ Act. nr.3 : [Create instance c1':C1]
+ Act. nr.4 : [Create instance c1:C1]
+ Act. nr.5 : [Create instance c0:C0]
+ Act. nr.6 : [c3 : bind port p3_1 to instance c2]
+ Act. nr.7 : [c3 : change state from s0 to s1]
+ Act. nr.8 : [c2 : bind port p2_1 to instance c1']
+ Act. nr.9 : [c2 : bind port p2_1 to instance c1]
+ Act. nr.10 : [c2 : change state from s0 to s1]
+ Act. nr.11 : [c1' : bind port p1_1 to instance c0]
+ Act. nr.12 : [c1' : change state from s0 to s1]
+ Act. nr.13 : [c1 : change state from s0 to s1]
+ Act. nr.14 : [c0 : bind port p0_2 to instance c1']
+ Act. nr.15 : [c0 : bind port p0_2 to instance c1]
+ Act. nr.16 : [c0 : change state from s0 to s1]
+ Act. nr.17 : [c1 : unbind port p2_1 from instance c2]
+ Act. nr.18 : [c1 : change state from s1 to s2]
+Vertex popped: c0 (s1,D)
+Deal with return/red edges
+RETURN Edge: PUSH vertex: c1' (s1,D)
+STACK = 
+c1' (s1,D) | 
+
+Current vertex is final: we add a Del action to the plan.
+Vertex removed: c0 (s1,D)
+Internal loop iteration j = 2
+Plan BEFORE: 
+ Act. nr.1 : [Create instance c3:C3]
+ Act. nr.2 : [Create instance c2:C2]
+ Act. nr.3 : [Create instance c1':C1]
+ Act. nr.4 : [Create instance c1:C1]
+ Act. nr.5 : [Create instance c0:C0]
+ Act. nr.6 : [c3 : bind port p3_1 to instance c2]
+ Act. nr.7 : [c3 : change state from s0 to s1]
+ Act. nr.8 : [c2 : bind port p2_1 to instance c1']
+ Act. nr.9 : [c2 : bind port p2_1 to instance c1]
+ Act. nr.10 : [c2 : change state from s0 to s1]
+ Act. nr.11 : [c1' : bind port p1_1 to instance c0]
+ Act. nr.12 : [c1' : change state from s0 to s1]
+ Act. nr.13 : [c1 : change state from s0 to s1]
+ Act. nr.14 : [c0 : bind port p0_2 to instance c1']
+ Act. nr.15 : [c0 : bind port p0_2 to instance c1]
+ Act. nr.16 : [c0 : change state from s0 to s1]
+ Act. nr.17 : [c1 : unbind port p2_1 from instance c2]
+ Act. nr.18 : [c1 : change state from s1 to s2]
+ Act. nr.19 : [c0 : unbind port p1_1 from instance c1']
+ Act. nr.20 : [c0 : stop]
+Vertex popped: c1' (s1,D)
+Deal with return/red edges
+Current vertex is final: we add a Del action to the plan.
+Vertex removed: c1' (s1,D)
+
+ ************************* NEED INSTANCE DUPLICATION *************************** 
+The list of candidates is the folowing one: c2 (s1,s2)
+
+Chosen vertex for splitting = c2 (s1,s2)
+
+Built the following new vertex = c2' (s1,D)
+External loop iteration i = 2
+Internal loop iteration j = 0
+Plan BEFORE: 
+ Act. nr.1 : [Create instance c3:C3]
+ Act. nr.2 : [Create instance c2':C2]
+ Act. nr.3 : [Create instance c2:C2]
+ Act. nr.4 : [Create instance c1':C1]
+ Act. nr.5 : [Create instance c1:C1]
+ Act. nr.6 : [Create instance c0:C0]
+ Act. nr.7 : [c3 : bind port p3_1 to instance c2']
+ Act. nr.8 : [c3 : bind port p3_1 to instance c2]
+ Act. nr.9 : [c3 : change state from s0 to s1]
+ Act. nr.10 : [c2' : bind port p2_1 to instance c1']
+ Act. nr.11 : [c2' : bind port p2_1 to instance c1]
+ Act. nr.12 : [c2' : change state from s0 to s1]
+ Act. nr.13 : [c2 : change state from s0 to s1]
+ Act. nr.14 : [c1' : bind port p1_1 to instance c0]
+ Act. nr.15 : [c1' : change state from s0 to s1]
+ Act. nr.16 : [c1 : change state from s0 to s1]
+ Act. nr.17 : [c0 : bind port p0_2 to instance c1']
+ Act. nr.18 : [c0 : bind port p0_2 to instance c1]
+ Act. nr.19 : [c0 : change state from s0 to s1]
+ Act. nr.20 : [c1 : unbind port p2_1 from instance c2']
+ Act. nr.21 : [c1 : change state from s1 to s2]
+ Act. nr.22 : [c0 : unbind port p1_1 from instance c1']
+ Act. nr.23 : [c0 : stop]
+ Act. nr.24 : [c1' : stop]
+Vertex popped: c2 (s1,s2)
+Deal with return/red edges
+Deal with go/blue edges
+It's an intermediate vertex => add action [c2 : change state from s1 to s2] to the plan.
+Deal with successor vertex.
+Vertex removed: c2 (s1,s2)
+
+ ************************* NEED INSTANCE DUPLICATION *************************** 
+The list of candidates is the folowing one: c3 (s1,s2)
+
+Chosen vertex for splitting = c3 (s1,s2)
+
+Built the following new vertex = c3' (s1,D)
+
+The computed PLAN: 
+ Act. nr.1 : [Create instance c3':C3]
+ Act. nr.2 : [Create instance c3:C3]
+ Act. nr.3 : [Create instance c2':C2]
+ Act. nr.4 : [Create instance c2:C2]
+ Act. nr.5 : [Create instance c1':C1]
+ Act. nr.6 : [Create instance c1:C1]
+ Act. nr.7 : [Create instance c0:C0]
+ Act. nr.8 : [c3' : bind port p3_1 to instance c2']
+ Act. nr.9 : [c3' : bind port p3_1 to instance c2]
+ Act. nr.10 : [c3' : change state from s0 to s1]
+ Act. nr.11 : [c3 : change state from s0 to s1]
+ Act. nr.12 : [c2' : bind port p2_1 to instance c1']
+ Act. nr.13 : [c2' : bind port p2_1 to instance c1]
+ Act. nr.14 : [c2' : change state from s0 to s1]
+ Act. nr.15 : [c2 : change state from s0 to s1]
+ Act. nr.16 : [c1' : bind port p1_1 to instance c0]
+ Act. nr.17 : [c1' : change state from s0 to s1]
+ Act. nr.18 : [c1 : change state from s0 to s1]
+ Act. nr.19 : [c0 : bind port p0_2 to instance c1']
+ Act. nr.20 : [c0 : bind port p0_2 to instance c1]
+ Act. nr.21 : [c0 : change state from s0 to s1]
+ Act. nr.22 : [c1 : unbind port p2_1 from instance c2']
+ Act. nr.23 : [c1 : change state from s1 to s2]
+ Act. nr.24 : [c0 : unbind port p1_1 from instance c1']
+ Act. nr.25 : [c0 : stop]
+ Act. nr.26 : [c1' : stop]
+ Act. nr.27 : [c2 : unbind port p3_1 from instance c3']
+ Act. nr.28 : [c2 : change state from s1 to s2]

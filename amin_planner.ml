@@ -119,7 +119,9 @@ let () =
     (*(T.Vertex.print_list all_vertices); *)
 	
 		let plan_vertices = !all_vertices in
-		let plan = (T.Vertex.synthesize_plan_DEBUG (ref plan_vertices) !target_component_name !target_state) in
+		(Printf.bprintf !file_buffer "\n\n%s\n" "---------------------- PLAN SYNTHESIS START ----------------------");
+		let plan = (T.Vertex.synthesize_plan_DEBUG (ref plan_vertices) !target_component_name !target_state file_buffer) in
+		(Printf.bprintf !file_buffer "\n%s\n" ("The computed PLAN: " ^ (Plan.to_string plan)));
 		(print_string "\nThe computed "); (Plan.print plan); 	
 (*	
 		(print_endline "\nNow we GENERATE the PLAN.");
