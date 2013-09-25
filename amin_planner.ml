@@ -116,8 +116,10 @@ let () =
 		
 		(*print_endline "\nNow we merge all vertices together for topological sorting.";*)
     let all_vertices = (ref (Instance.list_to_vertices instance_lines)) in ();
-    (*(T.Vertex.print_list all_vertices); *)
-	
+		(*
+		(print_string "\nThe VERTICES are the following:"); (T.Vertex.print_list !all_vertices); 
+		*)
+
 		let plan_vertices = !all_vertices in
 		(Printf.bprintf !file_buffer "\n\n%s\n" "---------------------- PLAN SYNTHESIS START ----------------------");
 		let plan = (T.Vertex.synthesize_plan_DEBUG (ref plan_vertices) !target_component_name !target_state file_buffer) in

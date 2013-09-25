@@ -408,14 +408,20 @@ module T =
 				dest_vertex.nr_in_edges <- (dest_vertex.nr_in_edges + 1)
 			
 			let remove_go_edge vertex edge =
+				(print_endline "REMOVE GO EDGE");
 				vertex.go_edges <- (Dep_edge.remove_edge edge vertex.go_edges);
-				let dest_vertex = !(Dep_edge.get_dest edge) in
-				dest_vertex.nr_in_edges <- (dest_vertex.nr_in_edges - 1)
+				let dest_vertex = !(Dep_edge.get_dest edge) in 
+				dest_vertex.nr_in_edges <- (dest_vertex.nr_in_edges - 1);
+				(print_endline ("Removed GO edge " ^ (to_string_with_id vertex) ^ (Dep_edge.to_string edge)));
+				(print_endline ("Destination vertex " ^ (to_string_with_id dest_vertex) ^ " has now nr_in_edges = " ^ (string_of_int dest_vertex.nr_in_edges)))
 			
 			let remove_return_edge vertex edge =
-				vertex.go_edges <- (Dep_edge.remove_edge edge vertex.return_edges);
+				(print_endline "REMOVE RETURN EDGE");
+				vertex.return_edges <- (Dep_edge.remove_edge edge vertex.return_edges);
 				let dest_vertex = !(Dep_edge.get_dest edge) in
-				dest_vertex.nr_in_edges <- (dest_vertex.nr_in_edges - 1)
+				dest_vertex.nr_in_edges <- (dest_vertex.nr_in_edges - 1);
+				(print_endline ("Removed RETURN vertex " ^ (to_string_with_id vertex) ^ (Dep_edge.to_string edge)));
+				(print_endline ("Destination vertex " ^ (to_string_with_id dest_vertex) ^ " has now nr_in_edges = " ^ (string_of_int dest_vertex.nr_in_edges)))
 
       (* this function simply extracts a value of type Vertex.t from an option *)    
       let extract_vertex opt_vertex_ref =
@@ -914,6 +920,20 @@ module T =
 							else 
 								head :: (elim_duplicates tail)
 						end
+			
+			(** This function takes a list of vertices [vlist] and a vertex [vertex] 
+					and removes it from the list. 
+  		*)
+			let rec remove_from_list vertex vlist =
+						match vlist with
+							[] -> []
+						| head :: tail -> 
+								begin
+									if (eq_id_tag vertex head) then
+										tail
+									else 
+										head :: (remove_from_list vertex tail)
+								end
      
 			let print_stack stack file_buffer =
 				let print_vertex vertex =
@@ -922,8 +942,14 @@ module T =
 				in 
 				(print_string "STACK = ");
 				(Printf.bprintf !file_buffer "%s\n" "STACK = ");
+				(Printf.bprintf !file_buffer "%s\n" "STACK = ");
+				if (Stack.is_empty stack) then begin
+					(Printf.bprintf !file_buffer "[]");
+					(print_string "[]")
+				end else begin
 				(Stack.iter print_vertex stack);
-				(print_endline "");
+				(print_endline "")
+				end;
 				(Printf.bprintf !file_buffer "%s\n" "")
 
 
@@ -956,8 +982,8 @@ module T =
 				if candidates = [] then
 					raise No_candidates_for_duplication
 				else 
-					(print_endline ("The list of candidates is the folowing one: " ^ (to_string_list candidates)));
-					(Printf.bprintf !file_buffer "%s\n" ("The list of candidates is the folowing one: " ^ (to_string_list candidates)));
+					(print_endline ("The list of candidates is the following one: " ^ (to_string_list candidates)));
+					(Printf.bprintf !file_buffer "%s\n" ("The list of candidates is the following one: " ^ (to_string_list candidates)));
 					let duplicate_vertex = (List.hd candidates) in
 					duplicate_vertex
 
@@ -979,6 +1005,7 @@ module T =
 
 			(** Among all return edges of [src_vertex] find the one, if there is, 
 					that points to [dst_vertex]. *)
+			(* TODO: there could be more than one return edge pointing to the same dst_vertex *)
 			let find_return_edge src_vertex dst_vertex =
 				let points_to edge = (dst_vertex == !(Dep_edge.get_dest edge)) in
 				try
@@ -989,6 +1016,7 @@ module T =
 
 			(** Among [vertices] find all the ones (and corresponding return edges) that 
 					point to [vertex]. *)
+			(* TODO: there could be more than one return edge pointing to the same dst_vertex *)
 			let rec find_return_predecessors vertex vertices =
 				match vertices with
 					[] -> []
@@ -996,13 +1024,15 @@ module T =
 						begin
 							let return_edge = (find_return_edge head vertex) in
 							match return_edge with 
-								(Some edge) -> 
-									(head, edge) :: (find_return_predecessors vertex tail)
+								(Some edge) ->
+									(* (head, edge) :: (find_return_predecessors vertex tail)*)
+									edge :: (find_return_predecessors vertex tail)
 							|	None -> 
 									(find_return_predecessors vertex tail)
 						end
 
 			(** Return edge is redirected towards [new_vertex]. *)
+			(*
 			let manage_return_edges new_vertex to_visit_stack file_buffer vertex_edge_pair =
 				let old_dst = (fst vertex_edge_pair) in
 				let edge = (snd vertex_edge_pair) in 
@@ -1014,7 +1044,14 @@ module T =
 					(Stack.push old_dst to_visit_stack)
 				end;
 				new_vertex.nr_in_edges <- (new_vertex.nr_in_edges + 1)
-			
+			*)
+
+			(** Return edge is redirected towards [new_vertex]. *)
+			let manage_return_edges duplicate_vertex new_vertex to_visit_stack file_buffer points_to_edge =
+				(Dep_edge.set_dest points_to_edge (ref new_vertex));
+				duplicate_vertex.nr_in_edges <- (duplicate_vertex .nr_in_edges - 1);
+				new_vertex.nr_in_edges <- (new_vertex.nr_in_edges + 1)
+
 			(** Scan the whole [plan] and substitute or add corresponding actions 
 					to the original instance that is being duplicated. *)
 			let adjust_plan plan orig_inst_ID new_inst_ID =
@@ -1048,12 +1085,14 @@ module T =
 				(* add new vertex to vertices list *)
 				vertices := new_vertex :: !vertices;
 				(* for all vertices pointing to <i,x,y> move return/red edge to new instance <i',x,e> *)
-				let return_verts_edges_pred_pairs = (find_return_predecessors duplicate_vertex !vertices) in
-				(List.iter (manage_return_edges new_vertex to_visit_stack file_buffer) return_verts_edges_pred_pairs);
+				let points_to_return_edges = (find_return_predecessors duplicate_vertex !vertices) in
+				(List.iter (manage_return_edges duplicate_vertex new_vertex to_visit_stack file_buffer) points_to_return_edges);
 				(* fix plan to deal with new instance i' *)
 				let orig_inst_id = duplicate_vertex.id in
 				let new_inst_id = new_vertex.id in
 				(adjust_plan plan orig_inst_id new_inst_id);
+				(* remove duplicated vertex from original list of vertices *)
+				vertices := (remove_from_list duplicate_vertex !vertices);
 				(* return duplicate vertex *)
 				duplicate_vertex
 
@@ -1062,19 +1101,6 @@ module T =
       (*                  	Plan Synthesis              *)  
       (**************************************************)
   		
-			(** This function takes a list of vertices [vlist] and a vertex [vertex] 
-					and removes it from the list. 
-  		*)
-			let rec remove_from_list vertex vlist =
-						match vlist with
-							[] -> []
-						| head :: tail -> 
-								begin
-									if (eq_id_tag vertex head) then
-										tail
-									else 
-										head :: (remove_from_list vertex tail)
-								end
       
 			(** Deal with [initial vertices] (i.e. with no incoming edges) *)
 			let add_initial_vertex stack plan file_buffer vertex =
@@ -1103,6 +1129,7 @@ module T =
 
 			(** Deal with [go edges] (the blue ones) *)
 			let process_go_edge plan stack src_vertex file_buffer go_edge =
+				(print_endline "PROCESS GO EDGE");
 				let dst_vertex = !(Dep_edge.get_dest go_edge) in
 				let port = (Dep_edge.get_port go_edge) in
 				let bind_act = Bind (port, src_vertex.id, dst_vertex.id) in (* bind action is performed by provider *)
@@ -1228,17 +1255,23 @@ module T =
 								(fun j ->
           				begin 
 										(print_endline ("\n***************** Internal loop iteration j = " ^ (string_of_int !j)));
+										(print_string "VERTICES = "); (print_simple_list !vertices);
+										(print_stack toVisit file_buffer);
 										(print_endline ("Plan BEFORE: " ^ (Plan.to_string plan)));
-										(Printf.bprintf !file_buffer "%s\n" ("Internal loop iteration j = " ^ (string_of_int !j)));
+										(Printf.bprintf !file_buffer "\n*********************** %s\n" ("Internal loop iteration j = " ^ (string_of_int !j)));
 										(Printf.bprintf !file_buffer "%s\n" ("Plan BEFORE: " ^ (Plan.to_string plan)));
 										j := !j + 1;
 										let currentVertex = (Stack.pop toVisit) in
-										(print_endline ("Vertex popped: " ^ (to_string_with_id currentVertex))); 
+										(print_endline ("Vertex popped: " ^ (to_string_full currentVertex))); 
 										(Printf.bprintf !file_buffer "%s\n" ("Vertex popped: " ^ (to_string_with_id currentVertex))); 
+										if currentVertex.go_edges = [] then
+											(print_endline "<<<<<<<<<<<<<<<<< BEFORE Empty List of GO edges >>>>>>>>>>>>>>>>");
 										(* deal with return/red edges *)
 										(print_endline "Deal with return/red edges");
 										(Printf.bprintf !file_buffer "%s\n" "Deal with return/red edges");
 										(List.iter (process_ret_edge plan toVisit currentVertex file_buffer) currentVertex.return_edges);
+										if currentVertex.go_edges = [] then
+											(print_endline "<<<<<<<<<<<<<<<<< AFTER Empty List of GO edges >>>>>>>>>>>>>>>>");
 										if (is_final currentVertex) then begin
 											(print_endline "Current vertex is final: we add a Del action to the plan.");
 											(Printf.bprintf !file_buffer "%s\n" "Current vertex is final: we add a Del action to the plan.");
@@ -1247,8 +1280,11 @@ module T =
 										end else begin
 											(* deal with go/blue edges *)
 											(print_endline "Deal with go/blue edges");
-										(Printf.bprintf !file_buffer "%s\n" "Deal with go/blue edges");
-											(List.iter (process_go_edge plan toVisit currentVertex file_buffer) currentVertex.go_edges);
+											(Printf.bprintf !file_buffer "%s\n" "Deal with go/blue edges");
+											if currentVertex.go_edges = [] then
+												(print_endline "<<<<<<<<<<<<<<<<< Empty List of GO edges >>>>>>>>>>>>>>>>")
+											else
+												(List.iter (process_go_edge plan toVisit currentVertex file_buffer) currentVertex.go_edges);
 											if (is_not_initial currentVertex) then begin
 													let stateChangeAct = (compute_state_change_act currentVertex) in
 													(Plan.add plan stateChangeAct);
@@ -1286,8 +1322,15 @@ module T =
 							if !finished = false then begin
 								(print_endline "\n ************************* NEED INSTANCE DUPLICATION *************************** "); 
 								(Printf.bprintf !file_buffer "%s\n" "\n ************************* NEED INSTANCE DUPLICATION *************************** "); 
-								let vertex = (duplicate vertices plan toVisit file_buffer) in 
-										(Stack.push vertex toVisit) 
+								let vertex = (duplicate vertices plan toVisit file_buffer) in begin
+									(print_endline ("DUPLICATED Vertex: " ^ (to_string_full vertex)));
+									if vertex.nr_in_edges = 0 then begin
+										(Stack.push vertex toVisit);
+										(Printf.bprintf !file_buffer "%s\n" (">>>>>>>>>>>>>>> PUSH duplicated vertex: " ^ (to_string_with_id vertex)));
+										(print_endline (">>>>>>>>>>>>>>> PUSH duplicated vertex: " ^ (to_string_with_id vertex)));
+										(print_stack toVisit file_buffer) 
+									end; 
+								end;
 							end;	
 							i
           	end)

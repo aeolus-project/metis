@@ -108,6 +108,10 @@ open T
   let print_list file_buffer instances_list =
 		let string_repr = (to_string_list_full instances_list) in
 		(Buffer.add_string !file_buffer (string_repr ^ "\n"))
+		(*
+		(print_string "\nINSTANCE LINES WITH EDGES:\n");
+		(print_endline string_repr)
+		*)
 
   let make component_type inst_id  =
     let new_instance = { 
