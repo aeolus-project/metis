@@ -37,7 +37,7 @@
 					"u_name" : "s2",
 					"u_successors" : [],
 					"u_provides" : ["p1_2"],
-					"u_requires" : ["p0_2"]
+					"u_requires" : ["p0_2" , "p2_1"]
 				}
 			]
 	},

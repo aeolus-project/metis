@@ -936,7 +936,7 @@ module T =
 			let print_stack stack file_buffer =
 				let print_vertex vertex =
 					(print_string ((to_string_with_id vertex) ^ " | ")); 
-					(Printf.bprintf !file_buffer "%s\n" ((to_string_with_id vertex) ^ " | "))
+					(Printf.bprintf !file_buffer "%s" ((to_string_with_id vertex) ^ " | "))
 				in 
 				(print_string "STACK = ");
 				(Printf.bprintf !file_buffer "%s\n" "STACK = ");
