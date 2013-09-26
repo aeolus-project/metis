@@ -352,7 +352,6 @@ Vertex removed: c0 (s0,s1)
 The list of candidates is the following one: c1 (s1,s2)
 Chosen vertex for splitting = c1 (s1,s2)
 Built the following new vertex = c1' (s1,D)
-Remove duplicated vertex = c1 (s1,s2)
 Pushed duplicated vertex: c1 (s1,s2)
 STACK = 
 c1 (s1,s2) | 

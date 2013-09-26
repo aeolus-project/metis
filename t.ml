@@ -1074,9 +1074,6 @@ module T =
 				let orig_inst_id = duplicate_vertex.id in
 				let new_inst_id = new_vertex.id in
 				(adjust_plan plan orig_inst_id new_inst_id);
-				(* remove duplicated vertex from original list of vertices *)
-				(Printf.bprintf !file_buffer "%s\n" ("Remove duplicated vertex = " ^ (to_string_with_id duplicate_vertex)));
-				vertices := (remove_from_list duplicate_vertex !vertices);
 				(* return duplicate vertex *)
 				duplicate_vertex
 
