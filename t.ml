@@ -1022,7 +1022,6 @@ module T =
 							let return_edge = (find_return_edge head vertex) in
 							match return_edge with 
 								(Some edge) ->
-									(* (head, edge) :: (find_return_predecessors vertex tail)*)
 									edge :: (find_return_predecessors vertex tail)
 							|	None -> 
 									(find_return_predecessors vertex tail)

@@ -234,8 +234,6 @@ open T
 		let maximal_paths = (keep_max_paths ct_list paths) in
 		maximal_paths 
 		
-
-  
 	(* here we use iteration instead of recursion to add an index for unique instance line (and hence vertex) ID *)
   let build_instance_lines list_of_nlist =
     let aux_fun nlist =
