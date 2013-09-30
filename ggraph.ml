@@ -94,7 +94,7 @@ open Gg
       let reverse_generations = List.rev graph.generations in
       (set_generations graph reverse_generations) 
 		
-		(* generate the G-graph *)
+		(* generate the whole G-graph with alla generations *)
     let populate graph =
 			(* first build initial generation *)
 			let firstGen = (build_initial_gen graph) in 

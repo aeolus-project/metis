@@ -122,17 +122,9 @@ let () =
 
 		let plan_vertices = !all_vertices in
 		(Printf.bprintf !file_buffer "\n\n%s\n" "---------------------- PLAN SYNTHESIS START ----------------------");
-		let plan = (T.Vertex.synthesize_plan_DEBUG (ref plan_vertices) !target_component_name !target_state file_buffer) in
-		(Printf.bprintf !file_buffer "\n%s\n" ("The computed PLAN: " ^ (Plan.to_string plan)));
+		let plan = (T.Vertex.synthesize_plan (ref plan_vertices) !target_component_name !target_state file_buffer) in
+		(Printf.bprintf !file_buffer "\n%s\n" ("The computed PLAN is: " ^ (Plan.to_string plan)));
 		(print_string "\nThe computed "); (Plan.print plan); 	
-(*	
-		(print_endline "\nNow we GENERATE the PLAN.");
-		(Printf.bprintf !file_buffer "%s\n" "\nNow we GENERATE the PLAN.");
-		let plan = (T.Vertex.synthesize_plan all_vertices) in ();
-		(print_endline "\nThe COMPUTED PLAN is:\n");
-		(Printf.bprintf !file_buffer "%s\n" "\nAnd finally the COMPUTED PLAN is:\n");
-    (T.Vertex.print_plan file_buffer plan);
-*)
 
 (* Old Topological sort  
 		(* eliminate cycles if there are *)

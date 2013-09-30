@@ -56,11 +56,9 @@ module T =
 			val compute_all_succs : t -> t list
       val find_in_list_by_state : state_id_t -> t list -> t
       val top_sort : t list -> t list
-			(*
-			val synthesize_plan : (t list) ref -> string -> string -> Plan.t
-			*)
-			val synthesize_plan_DEBUG : (t list) ref -> string -> string -> Buffer.t ref -> Plan.t
       val top_sort_DEBUG : t list -> t list
+			val synthesize_plan : (t list) ref -> string -> string -> Buffer.t ref -> Plan.t
+			val synthesize_plan_DEBUG : (t list) ref -> string -> string -> Buffer.t ref -> Plan.t
 			val copy_vertices_until : (t list) ref -> t -> t list -> t list
 			val copy_vertices_until_DEBUG : (t list) ref -> t -> t list -> t list
 			val find_split_edge : t list -> Dep_edge.t  
@@ -144,7 +142,6 @@ module T =
         (* actions are associated to every vertex while sorting topologically *)      
         mutable actions : Action.t list 
       }
-
 
 			let get_go_edges vertex = vertex.go_edges
 			
@@ -1086,7 +1083,9 @@ module T =
 			let add_initial_vertex stack plan file_buffer vertex =
 				let new_action = (New (vertex.id, vertex.comp_type_name)) in
 				(Plan.add plan new_action);
-				(print_endline ("Added action " ^ (Action.to_string new_action) ^ " to the plan."));	
+				(*
+				(print_endline ("Added action " ^ (Action.to_string new_action) ^ " to the plan."));
+				*)
 				(Printf.bprintf !file_buffer "%s\n" ("Added action " ^ (Action.to_string new_action) ^ " to the plan."));	
 				(Stack.push vertex stack)
 
@@ -1100,8 +1099,10 @@ module T =
 				(* remove edge *)
 				(remove_return_edge src_vertex return_edge);
 				(* if destination vertex has no more incoming edges push it onto stack toVisit *)
-				if (has_no_in_edges dst_vertex) then begin 
+				if (has_no_in_edges dst_vertex) then begin
+					(* 
 					(print_endline ("RETURN Edge: PUSH vertex: " ^ (to_string_with_id dst_vertex))); 
+					*)
 					(Printf.bprintf !file_buffer "%s\n" ("RETURN Edge: PUSH vertex: " ^ (to_string_with_id dst_vertex))); 
 					(Stack.push dst_vertex stack);
 					(print_stack stack file_buffer)
@@ -1118,7 +1119,9 @@ module T =
 				(remove_go_edge src_vertex go_edge);
 				(* if dest. vertex has no more incoming edges push it onto stack toVisit *)
 				if (has_no_in_edges dst_vertex) then begin
+					(*
 					(print_endline ("GO Edge: PUSH vertex: " ^ (to_string_with_id dst_vertex))); 
+					*)
 					(Printf.bprintf !file_buffer "%s\n" ("GO Edge: PUSH vertex: " ^ (to_string_with_id dst_vertex))); 
 					(Stack.push dst_vertex stack);
 					(print_stack stack file_buffer)
@@ -1130,7 +1133,9 @@ module T =
 					let successor = (get_succ vertex) in
 					(remove_inst_edge vertex);
 					if (has_no_in_edges successor) then begin
+						(*
 						(print_endline ("INST Edge: PUSH vertex: " ^ (to_string_with_id successor))); 
+						*)
 						(Printf.bprintf !file_buffer "%s\n" ("INST Edge: PUSH vertex: " ^ (to_string_with_id successor))); 
 						(Stack.push successor stack);
 					(print_stack stack file_buffer)
@@ -1145,6 +1150,87 @@ module T =
 				let dst_state = (snd trans_pair) in
 				let state_change_act = State_change (id, src_state, dst_state) in 
 				state_change_act 
+			
+			(** Compute a deployment plan *)
+			let synthesize_plan vertices targetComponent targetState file_buffer =
+				(* initialize data structures *)
+				let plan = (Plan.make 100) in 
+				let toVisit = Stack.create () in
+				let finished = (ref false) in
+        (* all initial vertices are pushed on the toVisit stack *)
+				let startVertices = (List.filter has_no_in_edges !vertices) in
+					(List.iter (add_initial_vertex toVisit plan file_buffer) startVertices);
+				(* External loop *)
+				(repeat_until 
+					(* External loop body *)
+					(fun i ->
+          	begin
+							(Printf.bprintf !file_buffer "%s\n" ("External loop iteration i = " ^ (string_of_int !i)));
+							i := !i + 1;
+							(* Inner loop *)
+							(repeat_until 
+								(* Inner loop body *)
+								(fun j ->
+          				begin 
+										(Printf.bprintf !file_buffer "\n*********************** %s\n" ("Internal loop iteration j = " ^ (string_of_int !j)));
+										(Printf.bprintf !file_buffer "%s\n" ("Plan BEFORE: " ^ (Plan.to_string plan)));
+										j := !j + 1;
+										let currentVertex = (Stack.pop toVisit) in
+										(Printf.bprintf !file_buffer "%s\n" ("Vertex popped: " ^ (to_string_with_id currentVertex))); 
+										(print_stack toVisit file_buffer);
+										(* deal with return/red edges *)
+										(Printf.bprintf !file_buffer "%s\n" "Deal with return/red edges");
+										(List.iter (process_ret_edge plan toVisit currentVertex file_buffer) currentVertex.return_edges);
+										if (is_final currentVertex) then begin
+											(Printf.bprintf !file_buffer "%s\n" "Current vertex is final: we add a Del action to the plan.");
+											let deleteAct = (Del currentVertex.id) in
+											(Plan.add plan deleteAct)
+										end else begin
+											(* deal with go/blue edges *)
+											(Printf.bprintf !file_buffer "%s\n" "Deal with go/blue edges");
+											(List.iter (process_go_edge plan toVisit currentVertex file_buffer) currentVertex.go_edges);
+											if (is_not_initial currentVertex) then begin
+													let stateChangeAct = (compute_state_change_act currentVertex) in
+													(Plan.add plan stateChangeAct);
+													(Printf.bprintf !file_buffer "%s\n" ("It's an intermediate vertex => add action " 
+															^ (Action.to_string stateChangeAct) ^ " to the plan."))
+												end;
+											(* deal with instance successor *)
+											(Printf.bprintf !file_buffer "%s\n" "Deal with successor vertex.");
+											(process_inst_edge plan toVisit file_buffer currentVertex)
+										end;
+										(* if we reach the target node *)
+										if (currentVertex.comp_type_name = targetComponent) && 
+												((extract_tag_dst_name currentVertex.tag) = targetState) then begin 
+													(Printf.bprintf !file_buffer "%s\n" "Target has been REACHED.");
+													finished := true
+											end;
+										(* delete current vertex from vertices list *)
+										vertices := (remove_from_list currentVertex !vertices); 
+										(Printf.bprintf !file_buffer "%s\n" ("Vertex removed: " ^ (to_string_with_id currentVertex))); 
+										j
+          				end)
+								(* Inner loop condition: stop when we reach a fixpoint (no new nodes are added) or we find target *)
+								(fun j -> ((Stack.is_empty toVisit) || !finished)) 
+      					~init:(ref 0));
+							(* If we finished without reaching target => there are unvisited 
+									vertices (couldn't be visited in topological order) => need duplication *)
+							if !finished = false then begin
+								(Printf.bprintf !file_buffer "%s\n" "\n ************************* NEED INSTANCE DUPLICATION *************************** "); 
+								let vertex = (duplicate vertices plan toVisit file_buffer) in begin
+									if vertex.nr_in_edges = 0 then begin
+										(Stack.push vertex toVisit);
+										(Printf.bprintf !file_buffer "%s\n" ("Pushed duplicated vertex: " ^ (to_string_with_id vertex)));
+										(print_stack toVisit file_buffer) 
+									end; 
+								end;
+							end;	
+							i
+          	end)
+					(* External loop condition *)
+					(fun i -> !finished)
+      	~init:(ref 0));
+				plan
 
 			(** Compute a deployment plan DEBUG version *)
 			let synthesize_plan_DEBUG vertices targetComponent targetState file_buffer =
@@ -1219,9 +1305,6 @@ module T =
 										j
           				end)
 								(* Inner loop condition: stop when we reach a fixpoint (no new nodes are added) or we find target *)
-								(*
-								(fun j -> ((Stack.is_empty toVisit) || !finished) || (!j > 6)) 
-								*)
 								(fun j -> ((Stack.is_empty toVisit) || !finished)) 
       					~init:(ref 0));
 							(* If we finished without reaching target => there are unvisited 
@@ -1241,10 +1324,7 @@ module T =
 							end;	
 							i
           	end)
-				(* External loop condition *)
-				(*
-					(fun i -> !finished || (!i > 2))
-				*)
+					(* External loop condition *)
 					(fun i -> !finished)
       	~init:(ref 0));
 				plan

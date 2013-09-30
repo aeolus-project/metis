@@ -206,10 +206,7 @@ Plan BEFORE:
  Act. nr.4 : [Create instance c0:C0]
 Vertex popped: c0 (C,s0)
 STACK = 
-c1 (C,s0) | 
-c2 (C,s0) | 
-c3 (C,s0) | 
-
+c1 (C,s0) | c2 (C,s0) | c3 (C,s0) | 
 Deal with return/red edges
 Deal with go/blue edges
 Deal with successor vertex.
@@ -223,9 +220,7 @@ Plan BEFORE:
  Act. nr.4 : [Create instance c0:C0]
 Vertex popped: c1 (C,s0)
 STACK = 
-c2 (C,s0) | 
-c3 (C,s0) | 
-
+c2 (C,s0) | c3 (C,s0) | 
 Deal with return/red edges
 Deal with go/blue edges
 Deal with successor vertex.
@@ -240,7 +235,6 @@ Plan BEFORE:
 Vertex popped: c2 (C,s0)
 STACK = 
 c3 (C,s0) | 
-
 Deal with return/red edges
 Deal with go/blue edges
 Deal with successor vertex.
@@ -261,7 +255,6 @@ Deal with successor vertex.
 INST Edge: PUSH vertex: c3 (s0,s1)
 STACK = 
 c3 (s0,s1) | 
-
 Vertex removed: c3 (C,s0)
 
 *********************** Internal loop iteration j = 4
@@ -278,7 +271,6 @@ Deal with go/blue edges
 GO Edge: PUSH vertex: c2 (s0,s1)
 STACK = 
 c2 (s0,s1) | 
-
 It's an intermediate vertex => add action [c3 : change state from s0 to s1] to the plan.
 Deal with successor vertex.
 Vertex removed: c3 (s0,s1)
@@ -299,7 +291,6 @@ Deal with go/blue edges
 GO Edge: PUSH vertex: c1 (s0,s1)
 STACK = 
 c1 (s0,s1) | 
-
 It's an intermediate vertex => add action [c2 : change state from s0 to s1] to the plan.
 Deal with successor vertex.
 Vertex removed: c2 (s0,s1)
@@ -322,7 +313,6 @@ Deal with go/blue edges
 GO Edge: PUSH vertex: c0 (s0,s1)
 STACK = 
 c0 (s0,s1) | 
-
 It's an intermediate vertex => add action [c1 : change state from s0 to s1] to the plan.
 Deal with successor vertex.
 Vertex removed: c1 (s0,s1)
@@ -355,7 +345,6 @@ Built the following new vertex = c1' (s1,D)
 Pushed duplicated vertex: c1 (s1,s2)
 STACK = 
 c1 (s1,s2) | 
-
 External loop iteration i = 1
 
 *********************** Internal loop iteration j = 0
@@ -384,7 +373,6 @@ Deal with go/blue edges
 GO Edge: PUSH vertex: c2 (s1,s2)
 STACK = 
 c2 (s1,s2) | 
-
 It's an intermediate vertex => add action [c1 : change state from s1 to s2] to the plan.
 Deal with successor vertex.
 Vertex removed: c1 (s1,s2)
@@ -418,7 +406,6 @@ Deal with go/blue edges
 GO Edge: PUSH vertex: c3 (s1,s2)
 STACK = 
 c3 (s1,s2) | 
-
 It's an intermediate vertex => add action [c2 : change state from s1 to s2] to the plan.
 Deal with successor vertex.
 Vertex removed: c2 (s1,s2)
@@ -457,7 +444,6 @@ Deal with successor vertex.
 INST Edge: PUSH vertex: c3 (s2,D)
 STACK = 
 c3 (s2,D) | 
-
 Target has been REACHED.
 Vertex removed: c3 (s1,s2)
 
