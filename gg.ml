@@ -129,6 +129,9 @@ module Gg =
 			(* used to initialize instance line ID, something like "a : A" *)
       val make_id : t list -> string
       
+			(** Deal with same node reached by different paths: compactified into a single representative with all possible predecessors. *)
+			val unify_successors : t list -> t list
+      
 			val extract_comp_type : t list -> component_t ref
     
 		end = struct
@@ -166,6 +169,7 @@ module Gg =
               }
               
               exception No_available_origin_node of string ;;
+              exception No_available_copy_node of string ;;
               exception No_available_provider of string ;;
               exception Impossible_to_extract_node of string ;;
               exception Empty_copy_arc of string ;;
@@ -305,6 +309,12 @@ module Gg =
     match node.origin with
       (Some node_ref) -> !node_ref
     | None -> raise (No_available_origin_node ("node " ^ (to_string node) ^ " has no origin!" ))
+  
+	(* this function extracts the copy node from the copy field *)  
+  let get_copy_node node =
+    match node.copy with
+      (Some copy_arc) -> !(Copy_arc.get_dest copy_arc)
+    | None -> raise (No_available_copy_node ("node " ^ (to_string node) ^ " has no copy!" ))
 
   (* TODO: comment *) 
   let add_son node nref =
@@ -318,7 +328,13 @@ module Gg =
   let is_initial node =       
     (is_initial_state !(node.state))
   
-  (** Test to see if this node is a copy of someone. *)  
+	(** Test to see if this node is not a copy of someone else. *)  
+  let is_a_copy node =
+   match node.copy with
+      None -> false
+   |  (Some nref) -> true
+  
+  (** Test to see if this node is not a copy of someone else. *)  
   let not_a_copy node =
    match node.copy with
       None -> true
@@ -831,6 +847,93 @@ let extract_comp_type nlist =
   let first_node = (List.hd nlist) in
   let comp_type = first_node.res_type in
   comp_type
+			
+(** Set-minus operation between two lists. *)	
+(*
+let rec set_minus list1 list2 =
+	match list1 with
+		[] -> []
+	| head :: tail -> 
+			begin
+				if (List.memq head list2) then
+					(set_minus tail list2)
+				else 
+					head :: (set_minus tail list2)
+				end
+*)
+
+(** Extract the minimum value from a list of values *)
+let rec find_min guess values =
+	match values with
+		[] -> guess
+	| head :: tail ->
+			if head < guess then
+				(find_min head tail)
+			else
+				(find_min guess tail)
+
+(** Find the minimum cardinality among the predecessors of [node]. *)
+let find_min_cardinality node =
+	let pred_nodes = (List.map (fun arc -> !(Pred_arc.get_dest arc)) node.preds) in
+	let cardinalities = (List.map (fun node -> node.card) pred_nodes) in
+	let first_cardinality = (List.hd cardinalities) in
+	let min_cardinality = (find_min first_cardinality cardinalities) in
+	min_cardinality
+			
+(** Find the minimum distance among the predecessors of [node]. *)
+let find_min_distance node =
+	let pred_nodes = (List.map (fun arc -> !(Pred_arc.get_dest arc)) node.preds) in
+	let distances = (List.map (fun node -> node.dist) pred_nodes) in
+	let first_distance = (List.hd distances) in
+	let min_distance = (find_min first_distance distances) in
+	min_distance
+
+(** Elect a single representative for all successors with same pair <T,q>. *)
+let compactify nodes =
+	let pred_arcs_list = (ref []) in
+  List.iter 
+  ( fun node -> pred_arcs_list := node.preds @ !pred_arcs_list )
+  nodes;
+	(* as a representative we simply pick the first node and update its preds field *)
+	let representative_node = (List.hd nodes) in
+	representative_node.preds <- !pred_arcs_list;
+	(* set cardinality to the minimum cardinality value among all predecessors *)
+	let min_cardinality = (find_min_cardinality representative_node) in
+	representative_node.card <- min_cardinality + (List.length representative_node.require_arcs);
+	(* if representative is not a copy set distance to the minimum distance value among all predecessors *)
+	if (List.exists is_a_copy nodes) then 
+		let copied_node = (List.find is_a_copy nodes) in
+		let copy_node = (get_copy_node copied_node) in
+		representative_node.dist <- copy_node.dist
+	else
+		representative_node.dist <- (find_min_distance representative_node);
+	representative_node
+
+(** Take a list with repeated nodes and take a single successor for each group 
+		of nodes that are equal w.r.t. <T,q>. *)
+let unify_successors nodes =
+	let unified_nodes = (ref []) in
+	for i = 0 to ((List.length nodes) - 1) do
+		let node = (List.nth nodes i) in
+			(* if I didn't take this node into account *)
+			if (not_in_list node !unified_nodes) then
+				let all_successors = (List.filter (pair_eq node) nodes) in
+				(* elect a single representative for all successors with same pair <T,q> *)
+				let single_representative = (compactify all_successors) in
+				unified_nodes := single_representative :: !unified_nodes 
+	done;
+	!unified_nodes
+
+(** Check to see if [node] is reachable by a new path w.r.t. the corresponding 
+		node in current nodes. *)
+(*
+let has_new_path node current_nodes =
+	let same_node = (List.find (pair_eq node) current_nodes) in
+	if (List.length node.preds) != (List.length same_node.preds) then
+		true
+	else
+		false
+*)
         
 end
 

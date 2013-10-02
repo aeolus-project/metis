@@ -434,11 +434,11 @@ module T =
       let eq_state_vertex astate vertex =
         try
           begin      
-          let vertex_state = (get_arrival_state vertex) in
-          if (astate = vertex_state) then
-            true
-          else
-            false
+          	let vertex_state = (get_arrival_state vertex) in
+          	if (astate = vertex_state) then
+            	true
+          	else
+            	false
           end  
         with
           Final_vertex_has_no_arrival_state -> false 

@@ -36,10 +36,29 @@ let create_with_index i =
 let create_with_index_and_nodes i inodes = 
   { index = i; nodes = inodes }
 
+(* New version that computes and updates cardinality and distance info *)
+let compute_new_nodes currentGen =
+  let currentNodes = currentGen.nodes in 
+	let provides = (Gg.Node.provides_of_node_list currentNodes) in 
+	(* for every node in current generation compute its successors whose requires are fulfilled by current provides *)
+  let successorsList = (Gg.Node.build_succs_list provides currentNodes) in
+	(* same node reached by different paths is compactified into a single representative with all possible predecessors *)
+	let successors = (Gg.Node.unify_successors successorsList) in
+	(* compute the "really" new nodes *)
+	let newNodes = (List.filter (fun node -> Gg.Node.not_in_list node currentNodes) successors) in
+	(* these nodes are already in current generations but we might have to update cardunality/distance info *)
+	(*
+	let oldNodes = (GG.Node.set_minus successors newNodes) in
+	(* focus on the ones that are reachable from new path(s) *)
+	let oldNodesWithNewPath = (List.filter (fun node -> Gg.Node.has_new_path node currentNodes) oldNodes) in
+	(List.iter (GG.Node.update_card_dist currentNodes) oldNodesWithNewPath); 	
+	*)
+  newNodes
+
 (* This method computes the new nodes originated from the ones in the current 
 	generation. It returns the list of new nodes that are not in the current 
 	generation. *)
-let compute_new_nodes currentGen =
+let old_compute_new_nodes currentGen =
   let currentNodes = currentGen.nodes in 
 	let provides = (Gg.Node.provides_of_node_list currentNodes) in 
 	(* for every node in current generation compute its successors whose requires are fulfilled by current provides *)
@@ -56,7 +75,6 @@ let compute_new_nodes_DEBUG currentGen =
 	let newNodesWithDupl = (List.filter (fun node -> Gg.Node.not_in_list node currentNodes) successorsList) in
 	let newNodes = (Gg.Node.elim_duplicates_simple newNodesWithDupl) in
   newNodes
-
 
 let to_string gen =
 	let init_string = ("Generation nr." ^ (string_of_int gen.index) ^ ": ") in

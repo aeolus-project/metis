@@ -447,7 +447,7 @@ c3 (s2,D) |
 Target has been REACHED.
 Vertex removed: c3 (s1,s2)
 
-The computed PLAN: 
+The computed PLAN is: 
  Act. nr.1 : [Create instance c3:C3]
  Act. nr.2 : [Create instance c2:C2]
  Act. nr.3 : [Create instance c1':C1]
