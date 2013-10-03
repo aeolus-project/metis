@@ -17,6 +17,8 @@ open Gg
         mutable target : Gg.Node.t;
         mutable generations : (Generation.t list);	
       }
+              
+			exception Different_new_nodes of string ;;
 
       let print_generations_a generations_array =
         let length = (Array.length generations_array) in
@@ -132,7 +134,7 @@ open Gg
        * generations => need to reverse generations *)
       (reverse_generations graph) 
 		
-		(* generate the G-graph *)
+		(* generate the G-graph DEBUG version *)
     let populate_DEBUG graph file_buffer =
 			(* first build initial generation *)
 			let firstGen = (build_initial_gen graph) in (add_generation graph firstGen);
@@ -167,6 +169,51 @@ open Gg
  							  (set_target graph (Gg.Node.find_in_list graph.target !newNodes));
 							  print_endline ("target updated to " ^ (Gg.Node.to_string_full graph.target)) 
 							end;
+						i
+          end)
+				(* Loop condition: stop when we reach a fixpoint (no new nodes are added) or we find target *)
+				(fun i -> (Gg.Node.is_empty !newNodes) || (Gg.Node.in_list graph.target !newNodes)) 
+      ~init:(ref 0));
+       (* alignment of generations index and index of the list containing
+       * generations => need to reverse generations *)
+      (reverse_generations graph) 
+		
+		(* generate the G-graph, version for checking the new nodes computation *)
+    let populate_CHECK graph file_buffer =
+			(* first build initial generation *)
+			let firstGen = (build_initial_gen graph) in (add_generation graph firstGen);
+			(* initialize needed structures *)
+      let newNodes_check = (ref []) in
+      let newNodes = (ref []) in
+			(* Loop for building and adding one generation at the time *)
+			(repeat_until 
+				(* Loop body *)
+				(fun i ->
+          begin 
+						i := !i + 1;
+						(* extract current generation *)
+            let currentGen = (List.hd graph.generations) in 
+            let currentIndex = (Generation.get_index currentGen) in
+            let newGen = (Generation.create_with_index (currentIndex+1)) in
+						(* compute nodes not in previous generation *)
+            newNodes_check := (Generation.compute_new_nodes currentGen); 
+            newNodes := (Generation.old_compute_new_nodes currentGen);
+						if (Gg.Node.list_neq !newNodes_check !newNodes) then begin  
+							let msg1 = "\n\n ##################### NEW NODES DIFFER #############################" in
+							let msg2 = ("\n************************** New nodes according to NEW COMPUTATION: " ^ (Gg.Node.to_string_list !newNodes_check)) in
+							let msg3 = ("\n****************************************************** New nodes: " ^ (Gg.Node.to_string_list !newNodes)) in
+							let error_msg = msg1 ^ msg2 ^ msg3 in
+							raise (Different_new_nodes error_msg) 
+						end;
+            (* build copy nodes and arcs to previous generation *)
+						let copyNodes = (Gg.Node.build_copy_nodes (Generation.get_nodes currentGen)) in
+						(* new generation nodes = fresh nodes + replica nodes (of nodes in current gen.) *)
+            let allNodes = (copyNodes @ !newNodes) in
+						(Generation.set_nodes newGen allNodes);
+						(* add new generation to the G-graph *)
+						(add_generation graph newGen);
+						if (Gg.Node.in_list graph.target !newNodes) then
+ 							(set_target graph (Gg.Node.find_in_list graph.target !newNodes));
 						i
           end)
 				(* Loop condition: stop when we reach a fixpoint (no new nodes are added) or we find target *)

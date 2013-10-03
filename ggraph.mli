@@ -29,6 +29,7 @@ module type GGRAPH =
 		  (* generate the G-graph *)
       val populate : t -> unit
       val populate_DEBUG : t -> Buffer.t ref -> unit
+      val populate_CHECK : t -> Buffer.t ref -> unit
       (* working with an array of generations, instead of the full graph *)
       val visit : t -> (Gg.Node.t list) array
       val linearize : (Gg.Node.t list) array -> Gg.Node.t -> (Gg.Node.t list) list

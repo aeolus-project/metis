@@ -66,6 +66,9 @@ module Gg =
 			(* function that retrieves the ports provided by a given list of nodes *)
       val provides_of_node_list : t list -> port_name list
       
+			(* Check equality of two list of nodes. N.B. it only looks at the resource type state pair <T,q>. *)	
+      val list_neq : t list -> t list -> bool
+			
 			(* just checks if a node is in the given list. N.B. it only looks at the resource type state pair <T,q> *)	
       val in_list : t -> t list -> bool
       
@@ -347,7 +350,24 @@ module Gg =
   (** Check node in-equality by looking only at resource type state pair. *)
   let pair_not_eq n1 n2 =
 	  (!(n1.res_type).cname != !(n2.res_type).cname) || (n1.state != n2.state) 
-  
+
+	
+	let rec list_neq_aux nlist1 nlist2 =
+		match nlist1 with
+			[] -> false
+		| head :: tail ->
+			((not (pair_eq head (List.hd nlist2))) 
+				|| (list_neq_aux tail (List.tl nlist2))) 
+
+	(** Check equality of two list of nodes *) 
+	let list_neq nlist1 nlist2 =
+		let length1 = (List.length nlist1) in 
+		let length2 = (List.length nlist2) in 
+		if length1 != length2 then 
+			true
+		else
+			(list_neq_aux nlist1 nlist2)
+
   (** Check if a node is in the given list. N.B. it only looks at the resource 
       type state pair < T, q > 
   *)	

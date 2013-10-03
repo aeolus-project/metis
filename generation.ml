@@ -5,10 +5,7 @@ open Gg
 (********************************************************)
 (*			Generation			*)
 (********************************************************)
-(*
-module Generation = 
-  struct
-*)          
+
 (* an indexed generation is simply a list of nodes plus a level index *)
       type t = {
         index : int; 
@@ -91,6 +88,10 @@ let to_string_full gen =
 let print file_buffer gen = 
 	let string_repr = (to_string gen) in
 	(Buffer.add_string !file_buffer (string_repr ^ "\n"))
+
+let print_on_screen gen = 
+	let string_repr = (to_string gen) in
+	(print_endline string_repr)
 	 
 let print_full gen = 
   print_endline (to_string_full gen)
