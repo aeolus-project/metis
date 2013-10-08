@@ -41,9 +41,9 @@ module T =
       val print_list : t list -> unit
       val print_simple_list : t list -> unit
       val print_actions : Buffer.t ref -> t list -> unit
-      val make_create : state_id_t -> string-> (component_t ref) -> t
-      val make_delete : state_id_t -> string-> (component_t ref) -> t
-      val make : state_id_t -> state_id_t -> string -> (component_t ref) -> t
+      val make_create : state_id_t -> string-> (component_t ref) -> int -> t
+      val make_delete : state_id_t -> string-> (component_t ref) -> int -> t
+      val make : state_id_t -> state_id_t -> string -> (component_t ref) -> int -> t
       val set_inst_edge : t -> t -> (Gg.Node.t ref) -> unit
       val get_inst_edge : t -> Inst_edge.t 
       val has_inst_edge : t -> bool
@@ -135,6 +135,8 @@ module T =
 				comp_type_name : string; 
         (* a tag of the kind (0,1) or (C,0) for creation or (i,D) for destruction *)
         mutable tag : vertex_tag_t;
+				(* used to keep track of the identity of different duplicates *)
+				mutable duplicates_nr : int;
         mutable nr_in_edges : int;
         mutable go_edges : Dep_edge.t list;
         mutable return_edges : Dep_edge.t list;
@@ -335,11 +337,12 @@ module T =
 					| (Some edge) -> !(Inst_edge.get_dest edge)
       
 			(* a_state should always be (State 0) *)  
-      let make_create a_state inst_id comp_type =
+      let make_create a_state inst_id comp_type dupl_nr =
         let create_vertex = {
           id = inst_id;      
 					comp_type_name = (!comp_type).cname;      
           tag = (Initial (Create, a_state));
+					duplicates_nr = dupl_nr;
           nr_in_edges = 0;
           go_edges = [];
           return_edges = [];
@@ -351,11 +354,12 @@ module T =
      (* N.B. we already initialize field nr_in_edges to 1 because we know that
       * when we make a vertex of this kind there is an instance edge pointing to
       * it *) 
-      let make_delete a_state inst_id comp_type =
+      let make_delete a_state inst_id comp_type dupl_nr =
         let delete_vertex = {
           id = inst_id;      
 					comp_type_name = (!comp_type).cname;      
           tag = (Final (a_state, Delete));
+					duplicates_nr = dupl_nr;
           nr_in_edges = 1;
           go_edges = [];
           return_edges = [];
@@ -367,11 +371,12 @@ module T =
      (* N.B. we already initialize field nr_in_edges to 1 because we know that
       * when we make a vertex of this kind there is an instance edge pointing to
       * it *)
-      let make src_state dst_state inst_id comp_type =
+      let make src_state dst_state inst_id comp_type dupl_nr =
         let new_vertex = {
           id = inst_id;
 					comp_type_name = (!comp_type).cname;      
           tag = (Trans (src_state, dst_state));
+					duplicates_nr = dupl_nr;
           nr_in_edges = 1;
           go_edges = [];
           return_edges = [];
@@ -494,6 +499,7 @@ module T =
 						id = (!current_vertex.id ^ "'");
 						comp_type_name = !current_vertex.comp_type_name;
           	tag = !current_vertex.tag;
+						duplicates_nr = !current_vertex.duplicates_nr;
           	nr_in_edges = 0;
           	go_edges = [];
           	return_edges = [];
@@ -525,6 +531,7 @@ module T =
 					id = (!current_vertex.id ^ "'");
 					comp_type_name = !current_vertex.comp_type_name;
           tag = !current_vertex.tag;
+					duplicates_nr = !current_vertex.duplicates_nr;
           nr_in_edges = 1;
           go_edges = [];
           return_edges = [];
@@ -559,6 +566,7 @@ module T =
 						id = (!current_vertex.id ^ "'");
 						comp_type_name = !current_vertex.comp_type_name;
           	tag = !current_vertex.tag;
+						duplicates_nr = !current_vertex.duplicates_nr;
           	nr_in_edges = 0;
           	go_edges = [];
           	return_edges = [];
@@ -593,6 +601,7 @@ module T =
 					id = (!current_vertex.id ^ "'");
 					comp_type_name = !current_vertex.comp_type_name;
           tag = !current_vertex.tag;
+					duplicates_nr = !current_vertex.duplicates_nr;
           nr_in_edges = 1;
           go_edges = [];
           return_edges = [];
@@ -981,14 +990,43 @@ module T =
 					let duplicate_vertex = (List.hd candidates) in
 					duplicate_vertex
 
+			(** Forge a new instance ID from an original one plus the number of times it has been duplicated. *)
+			let compute_id original_id duplicates_nr = 
+				let new_id = ref original_id in
+				for i = 0 to (duplicates_nr - 1) do
+					new_id := !new_id ^ "'"
+				done;
+				!new_id 
+
+			(** Update field [duplicates_nr] in all successors of a given [vertex]. *)
+			let rec update_dupl_nr_succs vertex	updated_value =
+        match vertex.inst_edge with 
+          None -> ()
+        | (Some edge) ->
+												begin
+        									let successor = !(Inst_edge.get_dest edge) in
+              						successor.duplicates_nr <- updated_value;
+													(update_dupl_nr_succs successor	updated_value)
+												end
+			
+			(** Update field [duplicates_nr] of the given [vertex] and all its successors. *)
+			let update_duplicates_nr vertex =
+				let updated_value = vertex.duplicates_nr + 1 in
+				vertex.duplicates_nr <- updated_value;
+				(update_dupl_nr_succs vertex updated_value)
+
 			(** Build an instance (vertex) that is a copy of the original one [vertex]. *)
 			let make_dupl_instance vertex	=
-				let inst_id = (vertex.id ^ "'") in
+				(* update nr of duplicates in original vertex *)
+				(update_duplicates_nr vertex);
+				(* synthesize the instance ID by using also the duplicates nr *)
+				let inst_id = (compute_id vertex.id (vertex.duplicates_nr)) in
 				let inst_src_state = (extract_tag_src vertex.tag) in  
         let new_vertex = {
           id = inst_id;      
 					comp_type_name = vertex.comp_type_name;      
           tag = (Final (inst_src_state, Delete));
+					duplicates_nr = vertex.duplicates_nr;
           nr_in_edges = 0;
           go_edges = [];
           return_edges = [];

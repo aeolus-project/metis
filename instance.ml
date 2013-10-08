@@ -132,12 +132,13 @@ open T
     | [head] ->
         begin
           let inst_id = instance_line.id in      
+          let dupl_nr = instance_line.duplicates_nr in      
           let head_state = (Gg.Node.get_state head) in      
           let head_state_id = (get_state_id !head_state) in
-          let delete_vertex = (T.Vertex.make_delete head_state_id inst_id comp_type) in
+          let delete_vertex = (T.Vertex.make_delete head_state_id inst_id comp_type dupl_nr) in
           (* abnormal case of an initial node without any evolution *)      
           if (Gg.Node.is_initial head) then begin
-            let create_vertex = (T.Vertex.make_create head_state_id inst_id comp_type) in
+            let create_vertex = (T.Vertex.make_create head_state_id inst_id comp_type dupl_nr) in
             (T.Vertex.set_inst_edge create_vertex delete_vertex (ref head));
             (add_vertex instance_line create_vertex)
           (* must be final node *)  
@@ -152,15 +153,16 @@ open T
     | head :: tail ->
         begin
           let inst_id = instance_line.id in      
+          let dupl_nr = instance_line.duplicates_nr in      
           let head_of_tail = (List.hd tail) in       
           let head_state = (Gg.Node.get_state head) in       
           let head_state_id = (get_state_id !head_state) in       
           let head_of_tail_state = (Gg.Node.get_state head_of_tail) in       
           let head_of_tail_state_id = (get_state_id !head_of_tail_state) in       
-          let new_vertex = (T.Vertex.make head_state_id head_of_tail_state_id inst_id comp_type) in
+          let new_vertex = (T.Vertex.make head_state_id head_of_tail_state_id inst_id comp_type dupl_nr) in
           (* initial node case *)
           if (Gg.Node.is_initial head) then begin
-            let create_vertex = (T.Vertex.make_create head_state_id inst_id comp_type) in
+            let create_vertex = (T.Vertex.make_create head_state_id inst_id comp_type dupl_nr) in
             (T.Vertex.set_inst_edge create_vertex new_vertex (ref head));
             (add_vertex instance_line create_vertex)
           (* standard case inner nodes *)
