@@ -43,13 +43,6 @@ let compute_new_nodes currentGen =
 	let successors = (Gg.Node.unify_successors successorsList) in
 	(* compute the "really" new nodes *)
 	let newNodes = (List.filter (fun node -> Gg.Node.not_in_list node currentNodes) successors) in
-	(* these nodes are already in current generations but we might have to update cardunality/distance info *)
-	(*
-	let oldNodes = (GG.Node.set_minus successors newNodes) in
-	(* focus on the ones that are reachable from new path(s) *)
-	let oldNodesWithNewPath = (List.filter (fun node -> Gg.Node.has_new_path node currentNodes) oldNodes) in
-	(List.iter (GG.Node.update_card_dist currentNodes) oldNodesWithNewPath); 	
-	*)
   newNodes
 
 (* This method computes the new nodes originated from the ones in the current 
