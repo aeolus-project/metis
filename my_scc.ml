@@ -112,9 +112,12 @@ end = struct
 	let find_cycles vertices file_buffer = 
 		let sccs = (compute_scc_list vertices) in
 		let true_cycles_list = (List.filter true_cycle sccs) in
-		if true_cycles_list  != [] then
-		(Printf.bprintf !file_buffer "%s\n" 
-			("\n\nFound the following cycles:\n" ^ (string_of_cycles true_cycles_list)));
+		if true_cycles_list  != [] then begin
+			let cycles_string_repr = (string_of_cycles true_cycles_list) in
+			(Printf.bprintf !file_buffer "%s\n" 
+				("\n\nFound the following cycles:\n" ^ cycles_string_repr));
+			(print_endline ("\n\nFound the following cycles:\n" ^ cycles_string_repr))
+		end;
 		true_cycles_list
 	
 	let fix_copy_edges splitted_inst duplicate_inst instances file_buffer vertex =
