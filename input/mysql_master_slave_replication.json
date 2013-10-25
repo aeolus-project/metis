@@ -1,0 +1,92 @@
+[
+	{
+		"u_cname" : "Application",
+		"u_automaton" :
+			[
+				{
+					"u_name" : "Uninst",
+					"u_successors" : ["Inst"],
+					"u_provides" : [],
+					"u_requires" : []
+				},
+				{
+					"u_name" : "Inst",
+					"u_successors" : ["Uninst"],
+					"u_provides" : [],
+					"u_requires" : ["mysql", "s_mysql"]
+				}
+			]
+	},
+	{
+		"u_cname" : "Master",
+		"u_automaton" :
+			[
+				{
+					"u_name" : "Uninst",
+					"u_successors" : ["Inst"],
+					"u_provides" : [],
+					"u_requires" : []
+				},
+				{
+					"u_name" : "Inst",
+					"u_successors" : ["Uninst", "Serving"],
+					"u_provides" : [],
+					"u_requires" : []
+				},
+				{
+					"u_name" : "Serving",
+					"u_successors" : ["Inst", "Auth"],
+					"u_provides" : ["mysql"],
+					"u_requires" : []
+				},
+				{
+					"u_name" : "Auth",
+					"u_successors" : ["Serving", "Dump"],
+					"u_provides" : [],
+					"u_requires" : ["slave_ip"]
+				},
+				{
+					"u_name" : "Dump",
+					"u_successors" : ["Auth", "MasterServing"],
+					"u_provides" : ["dump"],
+					"u_requires" : []
+				},
+				{
+					"u_name" : "MasterServing",
+					"u_successors" : ["Dump"],
+					"u_provides" : ["mysql"],
+					"u_requires" : []
+				}
+			]
+	},
+	{
+		"u_cname" : "Slave",
+		"u_automaton" :
+			[
+				{
+					"u_name" : "Uninst",
+					"u_successors" : ["Inst"],
+					"u_provides" : [],
+					"u_requires" : []
+				},
+				{
+					"u_name" : "Inst",
+					"u_successors" : ["Uninst", "ReceiveDump"],
+					"u_provides" : ["slave_ip"],
+					"u_requires" : []
+				},
+				{
+					"u_name" : "ReceiveDump",
+					"u_successors" : ["Inst", "Serving"],
+					"u_provides" : [],
+					"u_requires" : ["dump"]
+				},
+				{
+					"u_name" : "Serving",
+					"u_successors" : ["ReceiveDump"],
+					"u_provides" : ["s_mysql"],
+					"u_requires" : []
+				}
+			]
+	}
+]
