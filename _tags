@@ -1,0 +1,2 @@
+<*.ml{i,}>: package(ocamlgraph),package(atdgen),package(batteries)
+<*.native>: package(ocamlgraph),package(atdgen),package(batteries)
