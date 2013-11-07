@@ -539,22 +539,9 @@ let choose_providers node nlist =
   providersList  
   
 (* this function computes the cardinality (i.e. the nr. of requires) of a component type and a state *)  
-let compute_component_card state origin_node =
+let compute_cardinality state origin_node =
   let current_state_card = (List.length state.requires) in
 	let card = current_state_card + origin_node.card in
-  card
-
-(* this function computes the cardinality (i.e. the nr. of requires) of a component type in its initial state *)
-(* TODO: remove as initial state has no required port, by definition *)
-(*
-let compute_card_init_state compType =
-	(compute_component_card (compType.automaton).(0))
-*)
-
-(* this function computes the cardinality (i.e. the nr. of requires) of a node *)
-let compute_card node =
-  let actual_state = !(node.state) in
-  let card = (List.length actual_state.requires) in
   card
 
 (* it creates a new node with the given pair <T,q> *)
@@ -690,7 +677,7 @@ let build_succs node =
 				succNode.dist <- node.dist + 1;
         let succ_state = ((!resType).automaton).(succ_state_id.key) in 
 				(* compute successor's cardinality *)
-				succNode.card <- (compute_component_card succ_state node);
+				succNode.card <- (compute_cardinality succ_state node);
 				(* finally add current node to the successors' list *)	
 				successorsList := succNode :: (!successorsList);
 				(*print_endline ("just created node " ^ (to_string succNode)
