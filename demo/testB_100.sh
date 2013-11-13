@@ -1,3 +1,3 @@
 #/bin/bash
 
-../_build/amin_planner.native -u ../input/testB_100_duplication.json -c C99 -s s2 -o ../results/testB_100_duplication_results.txt
+../metis.native -u ../input/testB_100_duplication.json -c C99 -s s2 -o ../results/testB_100_duplication_results.txt

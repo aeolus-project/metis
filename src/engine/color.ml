@@ -26,4 +26,13 @@ module G = struct
 		List.fold_right f succs
 end
 
+module C = Coloring.Make(G)
+  
+module H = Hashtbl.Make(G.V)
+
+module Color : sig
+	val color : Vertex.t list -> int -> int  
+end = struct
+
+end	
 

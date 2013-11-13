@@ -1,2 +1,9 @@
-<*.ml{i,}>: package(ocamlgraph),package(atdgen),package(batteries)
-<*.native>: package(ocamlgraph),package(atdgen),package(batteries)
+<src/*.{ml,mli,native}>:package(ocamlgraph),package(atdgen),package(batteries)
+<src>:include
+
+<src/datatypes/*.{ml,mli,native}>:package(ocamlgraph),package(atdgen),package(batteries)
+<src/datatypes>:include
+
+<src/engine/*.{ml,mli,native}>:package(ocamlgraph),package(atdgen),package(batteries)
+<src/engine>:include
+

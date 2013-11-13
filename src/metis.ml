@@ -119,7 +119,7 @@ let () =
 		(* (print_string "\nThe VERTICES are the following:"); (T.Vertex.print_list !all_vertices); *)
 
 		let plan_vertices = !all_vertices in
-		(Printf.bprintf !file_buffer "\n\n%s\n" "---------------------- PLAN SYNTHESIS START ----------------------");
+		(Printf.bprintf !file_buffer "\n\n%s\n" "----------------------- PLAN SYNTHESIS START -----------------------");
 		let plan = (T.Vertex.synthesize_plan (ref plan_vertices) !target_component_name !target_state file_buffer) in
 		(Printf.bprintf !file_buffer "\n%s\n" ("The computed PLAN is: " ^ (Plan.to_string plan)));
 		(print_string "\nThe computed "); (Plan.print plan); 	
