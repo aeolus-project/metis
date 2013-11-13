@@ -1,6 +1,6 @@
 metis
 =======
 
-METIS - Modern Engineered Tool for Installaing Software systems
+METIS - Modern Engineered Tool for Installing Software systems
 
 This project develops a tool for the automatic synthesis of deployment plans.
