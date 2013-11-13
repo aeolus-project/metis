@@ -1,7 +1,7 @@
 
 In order to compile the tool simply type "make".
 
-To obtain basic information about using the tool type "./amin_planner -help".
+To obtain basic information about using the tool type "./metis.native -help".
 
 For simple examples of use see the test scripts "test*.bash" in the "demo" 
 subdirectory.
