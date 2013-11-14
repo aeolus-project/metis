@@ -235,7 +235,7 @@ open Gg
     
     (* this function is used to choose providers nodes for the requires of
      * "node". It adds arcs to current generation and providers to next working
-     * set *)
+     * set. *)
     let handle_providers node current_gen prev_wset graph =
       (* search for providers in the previous generation *)
       let current_gen_index = (Generation.get_index current_gen) in      
@@ -288,6 +288,7 @@ open Gg
       (* for now first nodes list is made of nodes found in the last working set, i.e. prevWset, ok?  *)	
       (set_nth_nlist generations_array !prev_wset 0)
 
+    (* Bottom-up visit for component selection *)
     let visit graph = 
 			(*print_endline ("\n ----------------- START BOTTOM-UP VISIT ------------------------- ");*)
       let generations_array = (init_gen_array graph) in
@@ -304,6 +305,8 @@ open Gg
 			  begin	
 					let workingSet = (ref workSets.(l)) in
           prevWset := workSets.(l-1);
+          (* compute the fanIn field of nodes in previous generation *)
+					(Gg.Node.compute_fanIn prevWset workingSet); 
           let currentGen = (Generation.create_with_index l) in
 					(* Loop *)
 					(repeat_until 
@@ -328,7 +331,7 @@ open Gg
                  (* else need to find_in_list parent and (maybe) providers for fulfilling the requires *)
 								    (*print_endline ((Gg.Node.to_string nodeToExamine) ^ " is NOT an initial node => need to look for parent");	*)
                     (* the extracted node becomes part of the new graph *) 
-                    Generation.add_node currentGen nodeToExamine;      
+                    (Generation.add_node currentGen nodeToExamine);      
                     (handle_origin nodeToExamine prevWset);
 										(*print_endline ("next working set after adding ORIGIN: " ^ "{ " ^ (Gg.Node.to_string_list !prevWset) ^ " }");	*)
                     (* if is not a copy then choose provider *)
@@ -339,13 +342,12 @@ open Gg
                     end;  
                   end;
                   workSets.(l-1) <- !prevWset;
-                  (* TODO: based on parent choice start synthesizing the fanIn field of nodes in previous generation *) 
                   (*
                   print_endline ("current generation: " ^  (Generation.to_string currentGen));
 									print_endline ("next working set, at level nr." ^ (string_of_int (l-1)) ^ " : " ^ "{ " ^ (Gg.Node.to_string_list !prevWset) ^ " }");
                   *)  
 									i)
-							(* Loop condition: stop when there are no more unexaminied nodes *)
+							(* Loop condition: stop when there are no more unexamined nodes *)
 							(fun i -> (Gg.Node.is_empty !workingSet)) 
             ~init:(ref 0));
             (*(add_generation newGraph currentGen);*)

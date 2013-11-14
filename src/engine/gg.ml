@@ -136,6 +136,9 @@ module Gg =
 			val unify_successors : t list -> t list
       
 			val extract_comp_type : t list -> component_t ref
+
+			(** Computes the fanIn value of a list of nodes and sets the corresponding field. *)
+			val compute_fanIn : (t list) ref -> (t list) ref -> unit  
     
 		end = struct
     (** A node of the G-graph  is made of :
@@ -178,6 +181,7 @@ module Gg =
               exception Empty_copy_arc of string ;;
               exception No_vertex_value ;;
               exception State_not_found of string ;;
+              exception No_available_origins of string ;;
             
             (* TODO: where is better to place these dummy functions? *)  
             (* Test for list emptiness *)
@@ -466,8 +470,43 @@ module Gg =
   let add_list_no_duplicate nlist1 nlist2 =
     let mergedList = nlist1 @ nlist2 in
     (elim_duplicates mergedList)
+
+	(** Find the nodes with maximum fanIn value. *)
+	let find_max_fanIn_nodes nodes =
+		let nodes_array = (Array.of_list nodes)
+		let compare_fanIn n1 n2 = (compare n1.fanIn n2.fanIn) in
+		let sorted_nodes = (Array.fast_sort compare_fanIn nodes) in
+		let size = (Array.length nodes_array) in
+		let node_max_fanIn = nodes_array.(size-1) in
+		let max_fanIn_value = node_max_fanIn.fanIn in
+		let has_eq_value value node = (node.fanIn == value) in 
+		let max_fanIn_nodes = (List.filter (has_eq_value max_fanIn_value) nodes) in 
+		max_fanIn_nodes
+	
+	(** Find the nodes with minimum cardinality value. *)
+	let find_min_card_nodes nodes =
+		let nodes_array = (Array.of_list nodes)
+		let compare_card n1 n2 = (compare n1.card n2.card) in
+		let sorted_nodes = (Array.fast_sort compare_card nodes) in
+		let node_min_card = nodes_array.(0) in
+		let min_card_value = node_min_card.card in
+		let has_eq_value value node = (node.card == value) in 
+		let min_card_nodes = (List.filter (has_eq_value min_card_value) nodes) in 
+		min_card_nodes
+	
+	(** Find the nodes with minimum distance value. *)
+	let find_min_dist_nodes nodes =
+		let nodes_array = (Array.of_list nodes)
+		let compare_dist n1 n2 = (compare n1.dist n2.dist) in
+		let sorted_nodes = (Array.fast_sort compare_dist nodes) in
+		let node_min_dist = nodes_array.(0) in
+		let min_dist_value = node_min_dist.dist in
+		let has_eq_value value node = (node.dist == value) in 
+		let min_dist_nodes = (List.filter (has_eq_value min_dist_value) nodes) in 
+		min_dist_nodes
     
- (* TODO: implement heuristics for this choice *)
+ 	(** Choose origin node relying on heuristics. *)
+	(*
   let choose_origin node =
     match node.copy with 
       (Some copy_arc) -> !(Copy_arc.get_dest copy_arc)
@@ -476,8 +515,67 @@ module Gg =
                 !(Pred_arc.get_dest pred_arc)
               else
                 raise (No_available_origin_node ("node " ^ (to_string node) ^ " has no origin!" ))
+	*)
+  let choose_origin node prevWset =
+		let get_pred pred_arc = !(Pred_arc.get_dest pred_arc) in
+		let predecessors = (List.map get_pred node.preds) in
+		let copy_list = match node.copy with
+    		(Some copy_arc) -> [!(Copy_arc.get_dest copy_arc)]
+    	| None -> [] in
+		let potential_origins = copy_list @ predecessors in
+		let max_fanIn_nodes = (find_max_fanIn_nodes potential_origins) in
+		let origin = match max_fanIn_nodes with
+				[] ->	raise (No_available_origins ("Node " ^ (to_string node) ^ " has no potential origin nodes with max fanIn value!"))
+			|	[single_node] -> single_node
+			| (head :: tail) as origins -> 
+				begin match (find_min_card_nodes origins) with
+						[] ->	raise (No_available_origins ("Node " ^ (to_string node) ^ " has no potential origin nodes with min cardinality value!"))
+					|	[single_node] -> single_node
+					| (head :: tail) as new_origins -> 
+						if copy_list != [] then
+							(List.hd copy_list) 
+						else
+							begin match (find_min_dist_nodes new_origins) with
+								[] ->	raise (No_available_origins ("Node " ^ (to_string node) ^ " has no potential origin nodes with min distance value!"))
+							|	[single_node] -> single_node
+							| head :: tail -> head
+							end
+				end
+																		  
+											
+  
 
-  (** Check if port "req" is among the list of ports "provides". *)
+
+	(** Check if port "req" is among the list of ports "provides". *)
+  let rec is_fulfilled req provides =
+    (List.mem req provides)      
+
+  (** Check if ports "requires" are all among the list of ports "provides". *)
+  let rec are_fulfilled requires provides =
+	  match requires with 
+		  [] -> true
+	  |	head :: tail -> (is_fulfilled head provides) && (are_fulfilled tail provides)
+
+  (** Check if at least a port among "requires" is not among the list of ports
+      "provides". 
+  *)
+  let are_not_fulfilled requires provides = 
+	  not (are_fulfilled requires provides) 
+  
+  (** Retrieve the ports provided by a given node. *)
+	let provides_of_node node =
+  	let actual_state = !(node.state) in
+  	actual_state.provides  
+
+  (** Retrieve the ports provided by a given node list. *)
+					
+				end
+																		  
+											
+  
+
+
+	(** Check if port "req" is among the list of ports "provides". *)
   let rec is_fulfilled req provides =
     (List.mem req provides)      
 
@@ -543,6 +641,20 @@ let compute_cardinality state origin_node =
   let current_state_card = (List.length state.requires) in
 	let card = current_state_card + origin_node.card in
   card
+
+(** Computes the fanIn value of a single node and sets its corresponding field. *)
+let compute_node_fanIn requires node =
+	let provides = (provides_of_node node) in
+	let is_among req_ports prov_port = (List.memq prov_port req_ports) in
+	let potential_provides = (List.filter (is_among requires) provides) in
+	let fanIn = (List.length potential_provides) in
+	node.fanIn <- fanIn;
+	node
+			
+(** Computes the fanIn value of a [selected_nodes] and sets the corresponding field. *)
+let compute_fanIn prevWset selected_nodes =
+	let all_requires = (requires_of_node_list !selected_nodes) in
+	prevWset := (List.map (compute_node_fanIn all_requires) !prevWset)  
 
 (* it creates a new node with the given pair <T,q> *)
 let build_initial resTypeRef =
