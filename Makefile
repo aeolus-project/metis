@@ -1,7 +1,7 @@
 
 
 all:
-	ocamlbuild -classic-display -use-ocamlfind metis.native
+	ocamlbuild -no-hygiene -classic-display -use-ocamlfind metis.native
 
 clean:
 	ocamlbuild -clean
