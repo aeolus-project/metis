@@ -908,14 +908,23 @@ let compactify nodes =
 	(* set cardinality to the minimum cardinality value among all predecessors *)
 	let min_cardinality = (find_min_cardinality representative_node) in
 	representative_node.card <- min_cardinality + (List.length representative_node.require_arcs);
-	(* if representative is not a copy set distance to the minimum distance value among all predecessors *)
+	(* if representative is not a copy, set distance to the minimum distance value among all predecessors *)
+	(*
 	if (List.exists is_a_copy nodes) then 
 		let copied_node = (List.find is_a_copy nodes) in
 		let copy_node = (get_copy_node copied_node) in
 		representative_node.dist <- copy_node.dist
 	else
 		representative_node.dist <- (find_min_distance representative_node);
-	representative_node
+	*)
+	try
+		let copied_node = (List.find is_a_copy nodes) in
+		let copy_node = (get_copy_node copied_node) in
+		representative_node.dist <- copy_node.dist;
+		representative_node;
+	with Not_found -> 
+		representative_node.dist <- (find_min_distance representative_node);
+		representative_node
 
 (** Take a list with repeated nodes and take a single successor for each group 
 		of nodes that are equal w.r.t. <T,q>. *)
