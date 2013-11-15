@@ -106,8 +106,8 @@ module Gg =
       
 			val not_a_copy : t -> bool      
       
-			(* TODO: implement heuristics for this choice *)
-      val choose_origin: t -> t
+ 			(** Choose origin node relying on heuristics. *)
+			val choose_origin: t -> t
       
 			(* from a given node n compute a list of nodes satsfying requirements of n *)
       val choose_providers : t -> (t list) -> ((port_name * t) list) 
@@ -139,6 +139,10 @@ module Gg =
 
 			(** Computes the fanIn value of a list of nodes and sets the corresponding field. *)
 			val compute_fanIn : (t list) ref -> (t list) ref -> unit  
+			
+			(** Function used to update the fanIn value of peer nodes (nodes in the same 
+					generation) once a node is chosen as origin or as provider *)		
+			val update_fanIn : t -> t list -> unit
     
 		end = struct
     (** A node of the G-graph  is made of :
@@ -471,110 +475,6 @@ module Gg =
     let mergedList = nlist1 @ nlist2 in
     (elim_duplicates mergedList)
 
-	(** Find the nodes with maximum fanIn value. *)
-	let find_max_fanIn_nodes nodes =
-		let nodes_array = (Array.of_list nodes)
-		let compare_fanIn n1 n2 = (compare n1.fanIn n2.fanIn) in
-		let sorted_nodes = (Array.fast_sort compare_fanIn nodes) in
-		let size = (Array.length nodes_array) in
-		let node_max_fanIn = nodes_array.(size-1) in
-		let max_fanIn_value = node_max_fanIn.fanIn in
-		let has_eq_value value node = (node.fanIn == value) in 
-		let max_fanIn_nodes = (List.filter (has_eq_value max_fanIn_value) nodes) in 
-		max_fanIn_nodes
-	
-	(** Find the nodes with minimum cardinality value. *)
-	let find_min_card_nodes nodes =
-		let nodes_array = (Array.of_list nodes)
-		let compare_card n1 n2 = (compare n1.card n2.card) in
-		let sorted_nodes = (Array.fast_sort compare_card nodes) in
-		let node_min_card = nodes_array.(0) in
-		let min_card_value = node_min_card.card in
-		let has_eq_value value node = (node.card == value) in 
-		let min_card_nodes = (List.filter (has_eq_value min_card_value) nodes) in 
-		min_card_nodes
-	
-	(** Find the nodes with minimum distance value. *)
-	let find_min_dist_nodes nodes =
-		let nodes_array = (Array.of_list nodes)
-		let compare_dist n1 n2 = (compare n1.dist n2.dist) in
-		let sorted_nodes = (Array.fast_sort compare_dist nodes) in
-		let node_min_dist = nodes_array.(0) in
-		let min_dist_value = node_min_dist.dist in
-		let has_eq_value value node = (node.dist == value) in 
-		let min_dist_nodes = (List.filter (has_eq_value min_dist_value) nodes) in 
-		min_dist_nodes
-    
- 	(** Choose origin node relying on heuristics. *)
-	(*
-  let choose_origin node =
-    match node.copy with 
-      (Some copy_arc) -> !(Copy_arc.get_dest copy_arc)
-    | None -> if (not_empty node.preds) then
-                let pred_arc = (List.hd node.preds) in   
-                !(Pred_arc.get_dest pred_arc)
-              else
-                raise (No_available_origin_node ("node " ^ (to_string node) ^ " has no origin!" ))
-	*)
-  let choose_origin node prevWset =
-		let get_pred pred_arc = !(Pred_arc.get_dest pred_arc) in
-		let predecessors = (List.map get_pred node.preds) in
-		let copy_list = match node.copy with
-    		(Some copy_arc) -> [!(Copy_arc.get_dest copy_arc)]
-    	| None -> [] in
-		let potential_origins = copy_list @ predecessors in
-		let max_fanIn_nodes = (find_max_fanIn_nodes potential_origins) in
-		let origin = match max_fanIn_nodes with
-				[] ->	raise (No_available_origins ("Node " ^ (to_string node) ^ " has no potential origin nodes with max fanIn value!"))
-			|	[single_node] -> single_node
-			| (head :: tail) as origins -> 
-				begin match (find_min_card_nodes origins) with
-						[] ->	raise (No_available_origins ("Node " ^ (to_string node) ^ " has no potential origin nodes with min cardinality value!"))
-					|	[single_node] -> single_node
-					| (head :: tail) as new_origins -> 
-						if copy_list != [] then
-							(List.hd copy_list) 
-						else
-							begin match (find_min_dist_nodes new_origins) with
-								[] ->	raise (No_available_origins ("Node " ^ (to_string node) ^ " has no potential origin nodes with min distance value!"))
-							|	[single_node] -> single_node
-							| head :: tail -> head
-							end
-				end
-																		  
-											
-  
-
-
-	(** Check if port "req" is among the list of ports "provides". *)
-  let rec is_fulfilled req provides =
-    (List.mem req provides)      
-
-  (** Check if ports "requires" are all among the list of ports "provides". *)
-  let rec are_fulfilled requires provides =
-	  match requires with 
-		  [] -> true
-	  |	head :: tail -> (is_fulfilled head provides) && (are_fulfilled tail provides)
-
-  (** Check if at least a port among "requires" is not among the list of ports
-      "provides". 
-  *)
-  let are_not_fulfilled requires provides = 
-	  not (are_fulfilled requires provides) 
-  
-  (** Retrieve the ports provided by a given node. *)
-	let provides_of_node node =
-  	let actual_state = !(node.state) in
-  	actual_state.provides  
-
-  (** Retrieve the ports provided by a given node list. *)
-					
-				end
-																		  
-											
-  
-
-
 	(** Check if port "req" is among the list of ports "provides". *)
   let rec is_fulfilled req provides =
     (List.mem req provides)      
@@ -600,18 +500,101 @@ module Gg =
 	let provides_of_node_list nlist =
 		List.concat (List.map provides_of_node nlist)
 
-(* function that retrieves the ports required by a given node *)
-let requires_of_node node =
-  let actual_state = !(node.state) in
-  actual_state.requires
+	(** Retrieve the ports required by a given node. *)
+	let requires_of_node node =
+  	let actual_state = !(node.state) in
+  	actual_state.requires
 
-(* function that retrieves the ports required by a given list of nodes *)
-let requires_of_node_list nlist =
-	List.concat (List.map requires_of_node nlist)
+	(** Retrieve the ports required by a given list of nodes. *)
+	let requires_of_node_list nlist =
+		List.concat (List.map requires_of_node nlist)
 
-(* this function filters the nodes from node list "nlist" that satisfy the given "require" *)
-let filter_port_providers require nlist =
-	(List.filter (fun node -> (is_fulfilled require (provides_of_node node))) nlist)
+	(** Filter the nodes from node list [nlist] that satisfy the given [require]. *)
+	let filter_port_providers require nlist =
+		(List.filter (fun node -> (is_fulfilled require (provides_of_node node))) nlist)
+	
+	
+	let update_fanIn_single provides node =
+		let aux node provide =
+			let node_provides = (provides_of_node node) in
+			if (List.memq provide node_provides) then
+				node.fanIn <- node.fanIn - 1;
+		in (List.iter (aux node) provides)
+
+	(** Function used to update the fanIn value of peer nodes (nodes in the same 
+			generation) once a node is chosen as origin or as provider *)		
+	let update_fanIn node nodes =
+		let provides = (provides_of_node node) in
+		(List.iter (update_fanIn_single provides) nodes)  	
+
+	(** Find the nodes with maximum fanIn value. *)
+	let find_max_fanIn_nodes nodes =
+		let nodes_array = (Array.of_list nodes) in
+		let compare_fanIn n1 n2 = (compare n1.fanIn n2.fanIn) in
+		(* sorted in increasing order *)
+		(Array.fast_sort compare_fanIn nodes_array);
+		let size = (Array.length nodes_array) in
+		let node_max_fanIn = nodes_array.(size-1) in
+		(* keep a list of nodes with same/max fanIn value *)
+		let max_fanIn_value = node_max_fanIn.fanIn in
+		let has_eq_value value node = (node.fanIn == value) in 
+		let max_fanIn_nodes = (List.filter (has_eq_value max_fanIn_value) nodes) in 
+		max_fanIn_nodes
+	
+	(** Find the nodes with minimum cardinality value. *)
+	let find_min_card_nodes nodes =
+		let nodes_array = (Array.of_list nodes) in
+		let compare_card n1 n2 = (compare n1.card n2.card) in
+		(* sorted in increasing order *)
+		(Array.fast_sort compare_card nodes_array);
+		let node_min_card = nodes_array.(0) in
+		(* keep a list of nodes with same/min card value *)
+		let min_card_value = node_min_card.card in
+		let has_eq_value value node = (node.card == value) in 
+		let min_card_nodes = (List.filter (has_eq_value min_card_value) nodes) in 
+		min_card_nodes
+	
+	(** Find the nodes with minimum distance value. *)
+	let find_min_dist_nodes nodes =
+		let nodes_array = (Array.of_list nodes) in
+		let compare_dist n1 n2 = (compare n1.dist n2.dist) in
+		(* sorted in increasing order *)
+		(Array.fast_sort compare_dist nodes_array);
+		let node_min_dist = nodes_array.(0) in
+		(* keep a list of nodes with same/min dist value *)
+		let min_dist_value = node_min_dist.dist in
+		let has_eq_value value node = (node.dist == value) in 
+		let min_dist_nodes = (List.filter (has_eq_value min_dist_value) nodes) in 
+		min_dist_nodes
+    
+ 	(** Choose origin node relying on heuristics. *)
+  let choose_origin node =
+		let get_pred pred_arc = !(Pred_arc.get_dest pred_arc) in
+		let predecessors = (List.map get_pred node.preds) in
+		let copy_list = match node.copy with
+    		(Some copy_arc) -> [!(Copy_arc.get_dest copy_arc)]
+    	| None -> [] in
+		let potential_origins = copy_list @ predecessors in
+		let max_fanIn_nodes = (find_max_fanIn_nodes potential_origins) in
+		let origin = match max_fanIn_nodes with
+				[] ->	raise (No_available_origins ("Node " ^ (to_string node) ^ " has no potential origin nodes with max fanIn value!"))
+			|	[single_node] -> single_node
+			| (head :: tail) as origins -> 
+				begin match (find_min_card_nodes origins) with
+						[] ->	raise (No_available_origins ("Node " ^ (to_string node) ^ " has no potential origin nodes with min cardinality value!"))
+					|	[single_node] -> single_node
+					| (head :: tail) as new_origins -> 
+						if copy_list != [] then
+							(List.hd copy_list) 
+						else
+							begin match (find_min_dist_nodes new_origins) with
+								[] ->	raise (No_available_origins ("Node " ^ (to_string node) ^ " has no potential origin nodes with min distance value!"))
+							|	[single_node] -> single_node
+							| head :: tail -> head
+							end
+				end in
+		origin
+		
 
 (* TODO: implement heuristics for this choice *)
 (* N.B. we use Bind arcs *)

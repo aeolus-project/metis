@@ -254,6 +254,7 @@ open Gg
      * working set *)
     let handle_origin node prev_wset =
 		  let origin = (Gg.Node.choose_origin node) in
+			(Gg.Node.update_fanIn origin !prev_wset);
       (* origin is now father of node *)
       (Gg.Node.set_origin node (ref origin));
       (* node is now among the sons of origin *)
