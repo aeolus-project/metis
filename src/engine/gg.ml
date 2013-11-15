@@ -186,6 +186,7 @@ module Gg =
               exception No_vertex_value ;;
               exception State_not_found of string ;;
               exception No_available_origins of string ;;
+              exception No_available_providers of string ;;
             
             (* TODO: where is better to place these dummy functions? *)  
             (* Test for list emptiness *)
@@ -596,8 +597,42 @@ module Gg =
 		origin
 		
 
-(* TODO: implement heuristics for this choice *)
+ 	(** Choose provider of port [require] from the list of nodes [nlist], relying 
+			on heuristics. *)
 (* N.B. we use Bind arcs *)
+let new_choose_port_provider node require nlist =
+	let providers = (filter_port_providers require nlist) in	
+	match providers with 
+		[] -> raise (No_available_provider ("No provider available for require " ^ require))
+	|	_ -> 
+      begin
+				let max_fanIn_nodes = (find_max_fanIn_nodes providers) in
+				let provider = match max_fanIn_nodes with
+						[] ->	raise (No_available_providers ("Node " ^ (to_string node) ^ " has no potential providers with max fanIn value!"))
+					|	[single_node] -> single_node
+					| (head :: tail) as same_fanIn_providers -> 
+						begin match (find_min_card_nodes same_fanIn_providers) with
+								[] ->	raise (No_available_providers ("Node " ^ (to_string node) ^ " has no potential providers with min cardinality value!"))
+							|	[single_node] -> single_node
+							| (head :: tail) as same_card_providers -> 
+									begin match (find_min_dist_nodes same_card_providers) with
+											[] ->	raise (No_available_providers ("Node " ^ (to_string node) ^ " has no potential providers with min distance value!"))
+										|	[single_node] -> single_node
+										| head :: tail -> head
+									end
+						end 
+				in
+        (* keep track in provider of the choice made *)      
+        (add_node_bound_to_me provider require (ref node));     
+        (* build an explicit binding to the provider *)      
+        let bind_arc = (Bind_arc.make require (ref provider)) in       
+        (add_bind_arc node bind_arc);
+				(* update accordingly the fanIn field of nodes at the same level *)
+				(update_fanIn provider nlist);
+        (require, provider)
+      end
+
+(* TODO: to delete *)
 let choose_port_provider node require nlist =
 	let providers_list = (filter_port_providers require nlist) in	
 	match providers_list with 
@@ -612,7 +647,7 @@ let choose_port_provider node require nlist =
         (require, head)
       end
 
-(* TODO: comment*)
+ 	(** Choose providers relying on heuristics. *)
 let choose_providers node nlist =
   let requiresList = (requires_of_node node) in      
   let choose_provider require = (choose_port_provider node require nlist) in

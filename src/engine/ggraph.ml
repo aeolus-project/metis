@@ -233,9 +233,9 @@ open Gg
       (Generation.add_node current_gen init_node);
 			prev_wset := (Gg.Node.add_no_duplicate copy_parent !prev_wset)
     
-    (* this function is used to choose providers nodes for the requires of
-     * "node". It adds arcs to current generation and providers to next working
-     * set. *)
+    (** Function used to choose providers nodes for the requires of
+     		[node]. It adds arcs to current generation and providers to next working
+     		set. *)
     let handle_providers node current_gen prev_wset graph =
       (* search for providers in the previous generation *)
       let current_gen_index = (Generation.get_index current_gen) in      
@@ -250,9 +250,10 @@ open Gg
       (* all chosen providers must enter into previous working set *) 
 			prev_wset := (Gg.Node.add_list_no_duplicate providers !prev_wset)
 
-    (* this function chooses a parent node for "node" and adds it the next 
-     * working set *)
+    (** This function chooses a parent node for [node] and adds it to the next 
+    		working set. *)
     let handle_origin node prev_wset =
+			(* origin choice + update accordingly the fanIn field of nodes at the same level *)
 		  let origin = (Gg.Node.choose_origin node) in
 			(Gg.Node.update_fanIn origin !prev_wset);
       (* origin is now father of node *)
