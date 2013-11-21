@@ -96,7 +96,7 @@ let () =
 	(Ggraph.print_generations ggraph file_buffer);
 	(Printf.bprintf !file_buffer "%s\n" ("\nBOTTOM-UP VISIT of the G-graph. "
     ^ "For every node we choose origin node and providers."));
-  let polished_array = (Ggraph.visit ggraph) in
+  let polished_array = (Ggraph.visit file_buffer ggraph) in
   begin
     let target = (Ggraph.get_target ggraph) in
 		(Printf.bprintf !file_buffer "%s\n" "\nLINEARIZATION phase");

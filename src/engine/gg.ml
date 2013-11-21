@@ -632,7 +632,7 @@ let new_choose_port_provider node require nlist =
         (require, provider)
       end
 
-(* TODO: to delete *)
+(* TODO: to be deleted when new version is debugged *)
 let choose_port_provider node require nlist =
 	let providers_list = (filter_port_providers require nlist) in	
 	match providers_list with 
