@@ -107,10 +107,10 @@ module Gg =
 			val not_a_copy : t -> bool      
       
  			(** Choose origin node relying on heuristics. *)
-			val choose_origin: t -> t
+			val choose_origin: Buffer.t ref -> t -> t
       
 			(* from a given node n compute a list of nodes satsfying requirements of n *)
-      val choose_providers : t -> (t list) -> ((port_name * t) list) 
+      val choose_providers : Buffer.t ref -> t -> (t list) -> ((port_name * t) list) 
       
 			(* this function corresponds to set addition (no duplicates) of node list to a given list *)
       val add_list_no_duplicate : (t list) -> (t list) -> (t list)
@@ -138,11 +138,13 @@ module Gg =
 			val extract_comp_type : t list -> component_t ref
 
 			(** Computes the fanIn value of a list of nodes and sets the corresponding field. *)
-			val compute_fanIn : (t list) ref -> (t list) ref -> unit  
+			val compute_fanIn : Buffer.t ref -> t list -> (t list) ref -> unit  
+			
+			val print_fanIn : Buffer.t ref -> t list -> unit  
 			
 			(** Function used to update the fanIn value of peer nodes (nodes in the same 
 					generation) once a node is chosen as origin or as provider *)		
-			val update_fanIn : t -> t list -> unit
+			val update_fanIn : Buffer.t ref -> t -> t list -> unit
     
 		end = struct
     (** A node of the G-graph  is made of :
@@ -187,6 +189,8 @@ module Gg =
               exception State_not_found of string ;;
               exception No_available_origins of string ;;
               exception No_available_providers of string ;;
+              exception Empty_list_of_nodes ;;
+              exception No_selected_nodes ;;
             
             (* TODO: where is better to place these dummy functions? *)  
             (* Test for list emptiness *)
@@ -228,6 +232,9 @@ module Gg =
   (**************************************************************)
   (*    Utility functions for string conversion and printing		*)
   (**************************************************************)
+
+	let print_to_file file_buffer s =
+		(Buffer.add_string !file_buffer (s ^ "\n"))
   
   let to_string node = 
     let copy_index_string = if (node.copy_index = 0) then 
@@ -514,19 +521,22 @@ module Gg =
 	let filter_port_providers require nlist =
 		(List.filter (fun node -> (is_fulfilled require (provides_of_node node))) nlist)
 	
-	
-	let update_fanIn_single provides node =
+	let update_fanIn_single file_buffer provides node =
 		let aux node provide =
 			let node_provides = (provides_of_node node) in
-			if (List.memq provide node_provides) then
-				node.fanIn <- node.fanIn - 1;
+			if (List.mem provide node_provides) then 
+				if node.fanIn > 0 then begin
+					node.fanIn <- node.fanIn - 1;
+					(print_to_file file_buffer ("Update fanIn : fanIn[" ^ (to_string node) 
+						^ "] <- " ^ (string_of_int node.fanIn) ^ " (due to provide " ^ provide ^ ")"));
+				end;
 		in (List.iter (aux node) provides)
 
 	(** Function used to update the fanIn value of peer nodes (nodes in the same 
 			generation) once a node is chosen as origin or as provider *)		
-	let update_fanIn node nodes =
+	let update_fanIn file_buffer node nodes =
 		let provides = (provides_of_node node) in
-		(List.iter (update_fanIn_single provides) nodes)  	
+		(List.iter (update_fanIn_single file_buffer provides) nodes)  	
 
 	(** Find the nodes with maximum fanIn value. *)
 	let find_max_fanIn_nodes nodes =
@@ -569,7 +579,7 @@ module Gg =
 		min_dist_nodes
     
  	(** Choose origin node relying on heuristics. *)
-  let choose_origin node =
+  let choose_origin file_buffer node =
 		let get_pred pred_arc = !(Pred_arc.get_dest pred_arc) in
 		let predecessors = (List.map get_pred node.preds) in
 		let copy_list = match node.copy with
@@ -579,28 +589,28 @@ module Gg =
 		let max_fanIn_nodes = (find_max_fanIn_nodes potential_origins) in
 		let origin = match max_fanIn_nodes with
 				[] ->	raise (No_available_origins ("Node " ^ (to_string node) ^ " has no potential origin nodes with max fanIn value!"))
-			|	[single_node] -> single_node
+			|	[single_node] -> (print_to_file file_buffer ((to_string single_node) ^ " chosen with max fanIn value")); single_node
 			| (head :: tail) as origins -> 
 				begin match (find_min_card_nodes origins) with
 						[] ->	raise (No_available_origins ("Node " ^ (to_string node) ^ " has no potential origin nodes with min cardinality value!"))
-					|	[single_node] -> single_node
+					|	[single_node] -> (print_to_file file_buffer ((to_string single_node) ^ " chosen with min cardinality value")); single_node
 					| (head :: tail) as new_origins -> 
-						if copy_list != [] then
-							(List.hd copy_list) 
-						else
+						if copy_list != [] then begin
+							let copy_origin = (List.hd copy_list) in
+							(print_to_file file_buffer ((to_string copy_origin) ^ " chosen as a copy")); copy_origin
+						end else
 							begin match (find_min_dist_nodes new_origins) with
 								[] ->	raise (No_available_origins ("Node " ^ (to_string node) ^ " has no potential origin nodes with min distance value!"))
-							|	[single_node] -> single_node
+							|	[single_node] -> (print_to_file file_buffer ((to_string single_node) ^ " chosen with min distance value")); single_node
 							| head :: tail -> head
 							end
 				end in
 		origin
 		
-
  	(** Choose provider of port [require] from the list of nodes [nlist], relying 
 			on heuristics. *)
 (* N.B. we use Bind arcs *)
-let new_choose_port_provider node require nlist =
+let new_choose_port_provider file_buffer node require nlist =
 	let providers = (filter_port_providers require nlist) in	
 	match providers with 
 		[] -> raise (No_available_provider ("No provider available for require " ^ require))
@@ -609,15 +619,15 @@ let new_choose_port_provider node require nlist =
 				let max_fanIn_nodes = (find_max_fanIn_nodes providers) in
 				let provider = match max_fanIn_nodes with
 						[] ->	raise (No_available_providers ("Node " ^ (to_string node) ^ " has no potential providers with max fanIn value!"))
-					|	[single_node] -> single_node
+					|	[single_node] -> (print_to_file file_buffer ((to_string single_node) ^ " chosen with max fanIn value")); single_node
 					| (head :: tail) as same_fanIn_providers -> 
 						begin match (find_min_card_nodes same_fanIn_providers) with
 								[] ->	raise (No_available_providers ("Node " ^ (to_string node) ^ " has no potential providers with min cardinality value!"))
-							|	[single_node] -> single_node
+							|	[single_node] -> (print_to_file file_buffer ((to_string single_node) ^ " chosen with min cardinality value")); single_node
 							| (head :: tail) as same_card_providers -> 
 									begin match (find_min_dist_nodes same_card_providers) with
 											[] ->	raise (No_available_providers ("Node " ^ (to_string node) ^ " has no potential providers with min distance value!"))
-										|	[single_node] -> single_node
+										|	[single_node] -> (print_to_file file_buffer ((to_string single_node) ^ " chosen with min distance value")); single_node
 										| head :: tail -> head
 									end
 						end 
@@ -628,12 +638,12 @@ let new_choose_port_provider node require nlist =
         let bind_arc = (Bind_arc.make require (ref provider)) in       
         (add_bind_arc node bind_arc);
 				(* update accordingly the fanIn field of nodes at the same level *)
-				(update_fanIn provider nlist);
+				(update_fanIn file_buffer provider nlist);
         (require, provider)
       end
 
 (* TODO: to be deleted when new version is debugged *)
-let choose_port_provider node require nlist =
+let choose_port_provider file_buffer node require nlist =
 	let providers_list = (filter_port_providers require nlist) in	
 	match providers_list with 
 		[] -> raise (No_available_provider ("No provider available for require " ^ require))
@@ -648,9 +658,9 @@ let choose_port_provider node require nlist =
       end
 
  	(** Choose providers relying on heuristics. *)
-let choose_providers node nlist =
+let choose_providers file_buffer node nlist =
   let requiresList = (requires_of_node node) in      
-  let choose_provider require = (choose_port_provider node require nlist) in
+  let choose_provider require = (new_choose_port_provider file_buffer node require nlist) in
   let providersList = (List.map choose_provider requiresList) in
   providersList  
   
@@ -661,18 +671,42 @@ let compute_cardinality state origin_node =
   card
 
 (** Computes the fanIn value of a single node and sets its corresponding field. *)
-let compute_node_fanIn requires node =
+let compute_node_fanIn file_buffer requires node =
 	let provides = (provides_of_node node) in
-	let is_among req_ports prov_port = (List.memq prov_port req_ports) in
+	let is_among req_ports prov_port = (List.mem prov_port req_ports) in
 	let potential_provides = (List.filter (is_among requires) provides) in
 	let fanIn = (List.length potential_provides) in
-	node.fanIn <- fanIn;
-	node
+	(*
+	if fanIn = 0 then begin
+		(print_to_file file_buffer ("For node " ^ (to_string node)));
+		let requires_str = (String.concat " | " requires) in
+		(print_to_file file_buffer ("Requires: " ^ requires_str));
+		let provides_str = (String.concat " | " provides) in
+		(print_to_file file_buffer ("Provides: " ^ provides_str));
+		let potential_provides_str = (String.concat " | " potential_provides) in
+		(print_to_file file_buffer ("Potential provides: " ^ potential_provides_str));
+	end;
+	*)
+	let string_repr = ("fanIn[" ^ (to_string node) ^ "] := " ^ (string_of_int fanIn)) in
+	(print_to_file file_buffer string_repr);
+	node.fanIn <- fanIn
 			
 (** Computes the fanIn value of a [selected_nodes] and sets the corresponding field. *)
-let compute_fanIn prevWset selected_nodes =
+let compute_fanIn file_buffer prevNodes selected_nodes =
+	if !selected_nodes = [] then
+		raise No_selected_nodes;
 	let all_requires = (requires_of_node_list !selected_nodes) in
-	prevWset := (List.map (compute_node_fanIn all_requires) !prevWset)  
+	let string_repr = (String.concat " | " all_requires) in
+	(print_to_file file_buffer ("Total requires: " ^ string_repr));
+	(List.iter (compute_node_fanIn file_buffer all_requires) prevNodes)  
+
+let print_fanIn file_buffer nodes =
+	if nodes = [] then
+		raise Empty_list_of_nodes;
+	let to_string_with_fanIn node = ((to_string node) ^ ", fanIn = " ^ (string_of_int node.fanIn)) in
+	let string_list = (List.map to_string_with_fanIn nodes) in
+	let string_repr = (String.concat " | " string_list) in
+	(print_to_file file_buffer ("Nodes with fanIn values:\n" ^ string_repr))
 
 (* it creates a new node with the given pair <T,q> *)
 let build_initial resTypeRef =
