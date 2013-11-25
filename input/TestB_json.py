@@ -94,7 +94,8 @@ def printMiddle(stream,num):
     stream.write('\t\t\t\t\t"u_name" : "s2",\n')
     stream.write('\t\t\t\t\t"u_successors" : [],\n')
     stream.write('\t\t\t\t\t"u_provides" : ["p' + str(num) + '_2", "p' + str(num) + '_1"],\n')
-    stream.write('\t\t\t\t\t"u_requires" : ["p' + str(num-1) + '_2"]\n')
+    #stream.write('\t\t\t\t\t"u_requires" : ["p' + str(num-1) + '_2"]\n')
+    stream.write('\t\t\t\t\t"u_requires" : ["p' + str(num-1) + '_2" , "p' + str(num+1) + '_1"]\n')
     stream.write('\t\t\t\t}\n')
 
     stream.write('\t\t\t]\n') 

@@ -37,7 +37,7 @@
 					"u_name" : "s2",
 					"u_successors" : [],
 					"u_provides" : ["p1_2", "p1_1"],
-					"u_requires" : ["p0_2"]
+					"u_requires" : ["p0_2" , "p2_1"]
 				}
 			]
 	},
@@ -61,7 +61,7 @@
 					"u_name" : "s2",
 					"u_successors" : [],
 					"u_provides" : ["p2_2", "p2_1"],
-					"u_requires" : ["p1_2"]
+					"u_requires" : ["p1_2" , "p3_1"]
 				}
 			]
 	},
@@ -85,7 +85,7 @@
 					"u_name" : "s2",
 					"u_successors" : [],
 					"u_provides" : ["p3_2", "p3_1"],
-					"u_requires" : ["p2_2"]
+					"u_requires" : ["p2_2" , "p4_1"]
 				}
 			]
 	},

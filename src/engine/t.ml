@@ -1008,11 +1008,11 @@ module T =
         match vertex.inst_edge with 
           None -> ()
         | (Some edge) ->
-												begin
-        									let successor = !(Inst_edge.get_dest edge) in
-              						successor.duplicates_nr <- updated_value;
-													(update_dupl_nr_succs successor	updated_value)
-												end
+						begin
+        			let successor = !(Inst_edge.get_dest edge) in
+            	successor.duplicates_nr <- updated_value;
+							(update_dupl_nr_succs successor	updated_value)
+						end
 			
 			(** Update field [duplicates_nr] of the given [vertex] and all its successors. *)
 			let update_duplicates_nr vertex =
