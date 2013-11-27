@@ -12,6 +12,257 @@ Generation nr.7: <B,q3>_1; <B,q2>_3; <B,q1>_5; <A,s0>_7; <B,q0>_7; <A,s1>_6; <A,
 Generation nr.8: <A,s4>_1; <A,s3>_3; <A,s2>_5; <A,s1>_7; <B,q0>_8; <A,s0>_8; <B,q1>_6; <B,q2>_4; <B,q3>_2; <B,q4>
 
 BOTTOM-UP VISIT of the G-graph. For every node we choose origin node and providers.
+Total requires: p0_4
+fanIn[<B,q3>_1] := 0
+fanIn[<B,q2>_3] := 0
+fanIn[<B,q1>_5] := 0
+fanIn[<A,s0>_7] := 0
+fanIn[<B,q0>_7] := 0
+fanIn[<A,s1>_6] := 0
+fanIn[<A,s2>_4] := 0
+fanIn[<A,s3>_2] := 0
+fanIn[<A,s4>] := 1
+Nodes with fanIn values:
+<B,q3>_1, fanIn = 0 | <B,q2>_3, fanIn = 0 | <B,q1>_5, fanIn = 0 | <A,s0>_7, fanIn = 0 | <B,q0>_7, fanIn = 0 | <A,s1>_6, fanIn = 0 | <A,s2>_4, fanIn = 0 | <A,s3>_2, fanIn = 0 | <A,s4>, fanIn = 1
+
+ ----------------- BOTTOM-UP VISIT LEVEL nr. 8 CYCLE execution nr. 1 ----------------
+node to be examined: <B,q4>
+<B,q4> is NOT an initial node => need to look for parent
+<B,q3>_1 chosen with max fanIn value
+origin node chosen: <B,q3>_1
+<B,q4> is NOT a copy => must take care of providers
+<A,s4> chosen with max fanIn value
+Update fanIn : fanIn[<A,s4>] <- 0 (due to provide p0_4)
+list of chosen providers: <A,s4> 
+current generation: Generation nr.8: <B,q4>
+next working set, at level nr.7 : { <A,s4> <B,q3>_1  }
+Nodes with fanIn values:
+<B,q3>_1, fanIn = 0 | <B,q2>_3, fanIn = 0 | <B,q1>_5, fanIn = 0 | <A,s0>_7, fanIn = 0 | <B,q0>_7, fanIn = 0 | <A,s1>_6, fanIn = 0 | <A,s2>_4, fanIn = 0 | <A,s3>_2, fanIn = 0 | <A,s4>, fanIn = 0
+Total requires: p1_4 | p0_3
+fanIn[<A,s3>_1] := 1
+fanIn[<A,s2>_3] := 0
+fanIn[<A,s1>_5] := 0
+fanIn[<B,q0>_6] := 0
+fanIn[<A,s0>_6] := 0
+fanIn[<B,q1>_4] := 0
+fanIn[<B,q2>_2] := 0
+fanIn[<B,q3>] := 1
+Nodes with fanIn values:
+<A,s3>_1, fanIn = 1 | <A,s2>_3, fanIn = 0 | <A,s1>_5, fanIn = 0 | <B,q0>_6, fanIn = 0 | <A,s0>_6, fanIn = 0 | <B,q1>_4, fanIn = 0 | <B,q2>_2, fanIn = 0 | <B,q3>, fanIn = 1
+
+ ----------------- BOTTOM-UP VISIT LEVEL nr. 7 CYCLE execution nr. 1 ----------------
+node to be examined: <A,s4>
+<A,s4> is NOT an initial node => need to look for parent
+<A,s3>_1 chosen with max fanIn value
+origin node chosen: <A,s3>_1
+Update fanIn : fanIn[<A,s3>_1] <- 0 (due to provide p0_3)
+<A,s4> is NOT a copy => must take care of providers
+<B,q3> chosen with max fanIn value
+Update fanIn : fanIn[<B,q3>] <- 0 (due to provide p1_3)
+list of chosen providers: <B,q3> 
+current generation: Generation nr.7: <A,s4>
+next working set, at level nr.6 : { <B,q3> <A,s3>_1  }
+Nodes with fanIn values:
+<A,s3>_1, fanIn = 0 | <A,s2>_3, fanIn = 0 | <A,s1>_5, fanIn = 0 | <B,q0>_6, fanIn = 0 | <A,s0>_6, fanIn = 0 | <B,q1>_4, fanIn = 0 | <B,q2>_2, fanIn = 0 | <B,q3>, fanIn = 0
+
+ ----------------- BOTTOM-UP VISIT LEVEL nr. 7 CYCLE execution nr. 2 ----------------
+node to be examined: <B,q3>_1
+<B,q3>_1 is NOT an initial node => need to look for parent
+<B,q3> chosen as a copy
+origin node chosen: <B,q3>
+current generation: Generation nr.7: <B,q3>_1; <A,s4>
+next working set, at level nr.6 : { <B,q3> <A,s3>_1  }
+Nodes with fanIn values:
+<A,s3>_1, fanIn = 0 | <A,s2>_3, fanIn = 0 | <A,s1>_5, fanIn = 0 | <B,q0>_6, fanIn = 0 | <A,s0>_6, fanIn = 0 | <B,q1>_4, fanIn = 0 | <B,q2>_2, fanIn = 0 | <B,q3>, fanIn = 0
+Total requires: p0_3 | p1_3
+fanIn[<B,q2>_1] := 1
+fanIn[<B,q1>_3] := 0
+fanIn[<A,s0>_5] := 0
+fanIn[<B,q0>_5] := 0
+fanIn[<A,s1>_4] := 0
+fanIn[<A,s2>_2] := 0
+fanIn[<A,s3>] := 1
+Nodes with fanIn values:
+<B,q2>_1, fanIn = 1 | <B,q1>_3, fanIn = 0 | <A,s0>_5, fanIn = 0 | <B,q0>_5, fanIn = 0 | <A,s1>_4, fanIn = 0 | <A,s2>_2, fanIn = 0 | <A,s3>, fanIn = 1
+
+ ----------------- BOTTOM-UP VISIT LEVEL nr. 6 CYCLE execution nr. 1 ----------------
+node to be examined: <B,q3>
+<B,q3> is NOT an initial node => need to look for parent
+<B,q2>_1 chosen with max fanIn value
+origin node chosen: <B,q2>_1
+Update fanIn : fanIn[<B,q2>_1] <- 0 (due to provide p1_2)
+<B,q3> is NOT a copy => must take care of providers
+<A,s3> chosen with max fanIn value
+Update fanIn : fanIn[<A,s3>] <- 0 (due to provide p0_3)
+list of chosen providers: <A,s3> 
+current generation: Generation nr.6: <B,q3>
+next working set, at level nr.5 : { <A,s3> <B,q2>_1  }
+Nodes with fanIn values:
+<B,q2>_1, fanIn = 0 | <B,q1>_3, fanIn = 0 | <A,s0>_5, fanIn = 0 | <B,q0>_5, fanIn = 0 | <A,s1>_4, fanIn = 0 | <A,s2>_2, fanIn = 0 | <A,s3>, fanIn = 0
+
+ ----------------- BOTTOM-UP VISIT LEVEL nr. 6 CYCLE execution nr. 2 ----------------
+node to be examined: <A,s3>_1
+<A,s3>_1 is NOT an initial node => need to look for parent
+<A,s3> chosen as a copy
+origin node chosen: <A,s3>
+current generation: Generation nr.6: <A,s3>_1; <B,q3>
+next working set, at level nr.5 : { <A,s3> <B,q2>_1  }
+Nodes with fanIn values:
+<B,q2>_1, fanIn = 0 | <B,q1>_3, fanIn = 0 | <A,s0>_5, fanIn = 0 | <B,q0>_5, fanIn = 0 | <A,s1>_4, fanIn = 0 | <A,s2>_2, fanIn = 0 | <A,s3>, fanIn = 0
+Total requires: p1_3 | p0_2
+fanIn[<A,s2>_1] := 1
+fanIn[<A,s1>_3] := 0
+fanIn[<B,q0>_4] := 0
+fanIn[<A,s0>_4] := 0
+fanIn[<B,q1>_2] := 0
+fanIn[<B,q2>] := 1
+Nodes with fanIn values:
+<A,s2>_1, fanIn = 1 | <A,s1>_3, fanIn = 0 | <B,q0>_4, fanIn = 0 | <A,s0>_4, fanIn = 0 | <B,q1>_2, fanIn = 0 | <B,q2>, fanIn = 1
+
+ ----------------- BOTTOM-UP VISIT LEVEL nr. 5 CYCLE execution nr. 1 ----------------
+node to be examined: <A,s3>
+<A,s3> is NOT an initial node => need to look for parent
+<A,s2>_1 chosen with max fanIn value
+origin node chosen: <A,s2>_1
+Update fanIn : fanIn[<A,s2>_1] <- 0 (due to provide p0_2)
+<A,s3> is NOT a copy => must take care of providers
+<B,q2> chosen with max fanIn value
+Update fanIn : fanIn[<B,q2>] <- 0 (due to provide p1_2)
+list of chosen providers: <B,q2> 
+current generation: Generation nr.5: <A,s3>
+next working set, at level nr.4 : { <B,q2> <A,s2>_1  }
+Nodes with fanIn values:
+<A,s2>_1, fanIn = 0 | <A,s1>_3, fanIn = 0 | <B,q0>_4, fanIn = 0 | <A,s0>_4, fanIn = 0 | <B,q1>_2, fanIn = 0 | <B,q2>, fanIn = 0
+
+ ----------------- BOTTOM-UP VISIT LEVEL nr. 5 CYCLE execution nr. 2 ----------------
+node to be examined: <B,q2>_1
+<B,q2>_1 is NOT an initial node => need to look for parent
+<B,q2> chosen as a copy
+origin node chosen: <B,q2>
+current generation: Generation nr.5: <B,q2>_1; <A,s3>
+next working set, at level nr.4 : { <B,q2> <A,s2>_1  }
+Nodes with fanIn values:
+<A,s2>_1, fanIn = 0 | <A,s1>_3, fanIn = 0 | <B,q0>_4, fanIn = 0 | <A,s0>_4, fanIn = 0 | <B,q1>_2, fanIn = 0 | <B,q2>, fanIn = 0
+Total requires: p0_2 | p1_2
+fanIn[<B,q1>_1] := 1
+fanIn[<A,s0>_3] := 0
+fanIn[<B,q0>_3] := 0
+fanIn[<A,s1>_2] := 0
+fanIn[<A,s2>] := 1
+Nodes with fanIn values:
+<B,q1>_1, fanIn = 1 | <A,s0>_3, fanIn = 0 | <B,q0>_3, fanIn = 0 | <A,s1>_2, fanIn = 0 | <A,s2>, fanIn = 1
+
+ ----------------- BOTTOM-UP VISIT LEVEL nr. 4 CYCLE execution nr. 1 ----------------
+node to be examined: <B,q2>
+<B,q2> is NOT an initial node => need to look for parent
+<B,q1>_1 chosen with max fanIn value
+origin node chosen: <B,q1>_1
+Update fanIn : fanIn[<B,q1>_1] <- 0 (due to provide p1_2)
+<B,q2> is NOT a copy => must take care of providers
+<A,s2> chosen with max fanIn value
+Update fanIn : fanIn[<A,s2>] <- 0 (due to provide p0_2)
+list of chosen providers: <A,s2> 
+current generation: Generation nr.4: <B,q2>
+next working set, at level nr.3 : { <A,s2> <B,q1>_1  }
+Nodes with fanIn values:
+<B,q1>_1, fanIn = 0 | <A,s0>_3, fanIn = 0 | <B,q0>_3, fanIn = 0 | <A,s1>_2, fanIn = 0 | <A,s2>, fanIn = 0
+
+ ----------------- BOTTOM-UP VISIT LEVEL nr. 4 CYCLE execution nr. 2 ----------------
+node to be examined: <A,s2>_1
+<A,s2>_1 is NOT an initial node => need to look for parent
+<A,s2> chosen as a copy
+origin node chosen: <A,s2>
+current generation: Generation nr.4: <A,s2>_1; <B,q2>
+next working set, at level nr.3 : { <A,s2> <B,q1>_1  }
+Nodes with fanIn values:
+<B,q1>_1, fanIn = 0 | <A,s0>_3, fanIn = 0 | <B,q0>_3, fanIn = 0 | <A,s1>_2, fanIn = 0 | <A,s2>, fanIn = 0
+Total requires: p1_2 | p0_1
+fanIn[<A,s1>_1] := 1
+fanIn[<B,q0>_2] := 0
+fanIn[<A,s0>_2] := 0
+fanIn[<B,q1>] := 1
+Nodes with fanIn values:
+<A,s1>_1, fanIn = 1 | <B,q0>_2, fanIn = 0 | <A,s0>_2, fanIn = 0 | <B,q1>, fanIn = 1
+
+ ----------------- BOTTOM-UP VISIT LEVEL nr. 3 CYCLE execution nr. 1 ----------------
+node to be examined: <A,s2>
+<A,s2> is NOT an initial node => need to look for parent
+<A,s1>_1 chosen with max fanIn value
+origin node chosen: <A,s1>_1
+Update fanIn : fanIn[<A,s1>_1] <- 0 (due to provide p0_1)
+<A,s2> is NOT a copy => must take care of providers
+<B,q1> chosen with max fanIn value
+Update fanIn : fanIn[<B,q1>] <- 0 (due to provide p1_2)
+list of chosen providers: <B,q1> 
+current generation: Generation nr.3: <A,s2>
+next working set, at level nr.2 : { <B,q1> <A,s1>_1  }
+Nodes with fanIn values:
+<A,s1>_1, fanIn = 0 | <B,q0>_2, fanIn = 0 | <A,s0>_2, fanIn = 0 | <B,q1>, fanIn = 0
+
+ ----------------- BOTTOM-UP VISIT LEVEL nr. 3 CYCLE execution nr. 2 ----------------
+node to be examined: <B,q1>_1
+<B,q1>_1 is NOT an initial node => need to look for parent
+<B,q1> chosen as a copy
+origin node chosen: <B,q1>
+current generation: Generation nr.3: <B,q1>_1; <A,s2>
+next working set, at level nr.2 : { <B,q1> <A,s1>_1  }
+Nodes with fanIn values:
+<A,s1>_1, fanIn = 0 | <B,q0>_2, fanIn = 0 | <A,s0>_2, fanIn = 0 | <B,q1>, fanIn = 0
+Total requires: p0_1
+fanIn[<A,s0>_1] := 0
+fanIn[<B,q0>_1] := 0
+fanIn[<A,s1>] := 1
+Nodes with fanIn values:
+<A,s0>_1, fanIn = 0 | <B,q0>_1, fanIn = 0 | <A,s1>, fanIn = 1
+
+ ----------------- BOTTOM-UP VISIT LEVEL nr. 2 CYCLE execution nr. 1 ----------------
+node to be examined: <B,q1>
+<B,q1> is NOT an initial node => need to look for parent
+<B,q0>_1 chosen with max fanIn value
+origin node chosen: <B,q0>_1
+<B,q1> is NOT a copy => must take care of providers
+<A,s1> chosen with max fanIn value
+Update fanIn : fanIn[<A,s1>] <- 0 (due to provide p0_1)
+list of chosen providers: <A,s1> 
+current generation: Generation nr.2: <B,q1>
+next working set, at level nr.1 : { <A,s1> <B,q0>_1  }
+Nodes with fanIn values:
+<A,s0>_1, fanIn = 0 | <B,q0>_1, fanIn = 0 | <A,s1>, fanIn = 0
+
+ ----------------- BOTTOM-UP VISIT LEVEL nr. 2 CYCLE execution nr. 2 ----------------
+node to be examined: <A,s1>_1
+<A,s1>_1 is NOT an initial node => need to look for parent
+<A,s1> chosen as a copy
+origin node chosen: <A,s1>
+current generation: Generation nr.2: <A,s1>_1; <B,q1>
+next working set, at level nr.1 : { <A,s1> <B,q0>_1  }
+Nodes with fanIn values:
+<A,s0>_1, fanIn = 0 | <B,q0>_1, fanIn = 0 | <A,s1>, fanIn = 0
+Total requires: 
+fanIn[<B,q0>] := 0
+fanIn[<A,s0>] := 0
+Nodes with fanIn values:
+<B,q0>, fanIn = 0 | <A,s0>, fanIn = 0
+
+ ----------------- BOTTOM-UP VISIT LEVEL nr. 1 CYCLE execution nr. 1 ----------------
+node to be examined: <A,s1>
+<A,s1> is NOT an initial node => need to look for parent
+<A,s0> chosen with max fanIn value
+origin node chosen: <A,s0>
+<A,s1> is NOT a copy => must take care of providers
+list of chosen providers: 
+current generation: Generation nr.1: <A,s1>
+next working set, at level nr.0 : { <A,s0>  }
+Nodes with fanIn values:
+<B,q0>, fanIn = 0 | <A,s0>, fanIn = 0
+
+ ----------------- BOTTOM-UP VISIT LEVEL nr. 1 CYCLE execution nr. 2 ----------------
+node to be examined: <B,q0>_1
+<B,q0>_1 is an initial node => no need to look for parent and providers
+current generation: Generation nr.1: <B,q0>_1; <A,s1>
+next working set, at level nr.0 : { <B,q0> <A,s0>  }
+Nodes with fanIn values:
+<B,q0>, fanIn = 0 | <A,s0>, fanIn = 0
 
 LINEARIZATION phase
 
@@ -154,20 +405,248 @@ a (s4,D) nr.IN-edges =  3
  INST EDGE: { }
 
 
-Found teh following cycles:
+----------------------- PLAN SYNTHESIS START -----------------------
+Added action [Create instance b:B] to the plan.
+Added action [Create instance a:A] to the plan.
+External loop iteration i = 0
 
+*********************** Internal loop iteration j = 0
+Plan BEFORE: 
+ Plan[1] = [Create instance b:B]
+ Plan[2] = [Create instance a:A]
+Vertex popped: a (C,s0)
+STACK = 
+b (C,q0) | 
+Deal with successor vertex.
+INST Edge: PUSH vertex: a (s0,s1)
+STACK = 
+a (s0,s1) | b (C,q0) | 
+Vertex removed: a (C,s0)
 
-Now we perform a TOPOLOGICAL SORT.
+*********************** Internal loop iteration j = 1
+Plan BEFORE: 
+ Plan[1] = [Create instance b:B]
+ Plan[2] = [Create instance a:A]
+Vertex popped: a (s0,s1)
+STACK = 
+b (C,q0) | 
+It's an intermediate vertex => add action [a : change state from s0 to s1] to the plan.
+Deal with go/blue edges
+Deal with return/red edges
+Deal with successor vertex.
+Vertex removed: a (s0,s1)
 
-And finally the COMPUTED PLAN is:
+*********************** Internal loop iteration j = 2
+Plan BEFORE: 
+ Plan[1] = [Create instance b:B]
+ Plan[2] = [Create instance a:A]
+ Plan[3] = [a : change state from s0 to s1]
+ Plan[4] = [a : bind port p0_1 to instance b]
+Vertex popped: b (C,q0)
+STACK = 
+[]
+Deal with successor vertex.
+INST Edge: PUSH vertex: b (q0,q1)
+STACK = 
+b (q0,q1) | 
+Vertex removed: b (C,q0)
 
-b must perform actions: [Create instance]
-a must perform actions: [Create instance]
-a must perform actions: [Bind port p0_1 to instance b]  [Change state from s0 to s1]
-b must perform actions: [Bind port p1_2 to instance a]  [Change state from q0 to q1]
-a must perform actions: [Bind port p0_2 to instance b]  [Change state from s1 to s2]
-b must perform actions: [Unbind port p0_1 from instance a]  [Bind port p1_3 to instance a]  [Change state from q1 to q2]
-a must perform actions: [Unbind port p1_2 from instance b]  [Bind port p0_3 to instance b]  [Change state from s2 to s3]
-b must perform actions: [Unbind port p0_2 from instance a]  [Bind port p1_4 to instance a]  [Change state from q2 to q3]
-a must perform actions: [Unbind port p1_3 from instance b]  [Bind port p0_4 to instance b]  [Change state from s3 to s4]
-b must perform actions: [Unbind port p0_3 from instance a]  [Change state from q3 to q4]
+*********************** Internal loop iteration j = 3
+Plan BEFORE: 
+ Plan[1] = [Create instance b:B]
+ Plan[2] = [Create instance a:A]
+ Plan[3] = [a : change state from s0 to s1]
+ Plan[4] = [a : bind port p0_1 to instance b]
+Vertex popped: b (q0,q1)
+STACK = 
+[]
+It's an intermediate vertex => add action [b : change state from q0 to q1] to the plan.
+Deal with go/blue edges
+GO Edge: PUSH vertex: a (s1,s2)
+STACK = 
+a (s1,s2) | 
+Deal with return/red edges
+Deal with successor vertex.
+Vertex removed: b (q0,q1)
+
+*********************** Internal loop iteration j = 4
+Plan BEFORE: 
+ Plan[1] = [Create instance b:B]
+ Plan[2] = [Create instance a:A]
+ Plan[3] = [a : change state from s0 to s1]
+ Plan[4] = [a : bind port p0_1 to instance b]
+ Plan[5] = [b : change state from q0 to q1]
+ Plan[6] = [b : bind port p1_2 to instance a]
+Vertex popped: a (s1,s2)
+STACK = 
+[]
+It's an intermediate vertex => add action [a : change state from s1 to s2] to the plan.
+Deal with go/blue edges
+GO Edge: PUSH vertex: b (q1,q2)
+STACK = 
+b (q1,q2) | 
+Deal with return/red edges
+Deal with successor vertex.
+Vertex removed: a (s1,s2)
+
+*********************** Internal loop iteration j = 5
+Plan BEFORE: 
+ Plan[1] = [Create instance b:B]
+ Plan[2] = [Create instance a:A]
+ Plan[3] = [a : change state from s0 to s1]
+ Plan[4] = [a : bind port p0_1 to instance b]
+ Plan[5] = [b : change state from q0 to q1]
+ Plan[6] = [b : bind port p1_2 to instance a]
+ Plan[7] = [a : change state from s1 to s2]
+ Plan[8] = [a : bind port p0_2 to instance b]
+Vertex popped: b (q1,q2)
+STACK = 
+[]
+It's an intermediate vertex => add action [b : change state from q1 to q2] to the plan.
+Deal with go/blue edges
+Deal with return/red edges
+RETURN Edge: PUSH vertex: a (s2,s3)
+STACK = 
+a (s2,s3) | 
+Deal with successor vertex.
+Vertex removed: b (q1,q2)
+
+*********************** Internal loop iteration j = 6
+Plan BEFORE: 
+ Plan[1] = [Create instance b:B]
+ Plan[2] = [Create instance a:A]
+ Plan[3] = [a : change state from s0 to s1]
+ Plan[4] = [a : bind port p0_1 to instance b]
+ Plan[5] = [b : change state from q0 to q1]
+ Plan[6] = [b : bind port p1_2 to instance a]
+ Plan[7] = [a : change state from s1 to s2]
+ Plan[8] = [a : bind port p0_2 to instance b]
+ Plan[9] = [b : change state from q1 to q2]
+ Plan[10] = [b : bind port p1_3 to instance a]
+ Plan[11] = [b : unbind port p0_1 from instance a]
+Vertex popped: a (s2,s3)
+STACK = 
+[]
+It's an intermediate vertex => add action [a : change state from s2 to s3] to the plan.
+Deal with go/blue edges
+Deal with return/red edges
+RETURN Edge: PUSH vertex: b (q2,q3)
+STACK = 
+b (q2,q3) | 
+Deal with successor vertex.
+Vertex removed: a (s2,s3)
+
+*********************** Internal loop iteration j = 7
+Plan BEFORE: 
+ Plan[1] = [Create instance b:B]
+ Plan[2] = [Create instance a:A]
+ Plan[3] = [a : change state from s0 to s1]
+ Plan[4] = [a : bind port p0_1 to instance b]
+ Plan[5] = [b : change state from q0 to q1]
+ Plan[6] = [b : bind port p1_2 to instance a]
+ Plan[7] = [a : change state from s1 to s2]
+ Plan[8] = [a : bind port p0_2 to instance b]
+ Plan[9] = [b : change state from q1 to q2]
+ Plan[10] = [b : bind port p1_3 to instance a]
+ Plan[11] = [b : unbind port p0_1 from instance a]
+ Plan[12] = [a : change state from s2 to s3]
+ Plan[13] = [a : bind port p0_3 to instance b]
+ Plan[14] = [a : unbind port p1_2 from instance b]
+Vertex popped: b (q2,q3)
+STACK = 
+[]
+It's an intermediate vertex => add action [b : change state from q2 to q3] to the plan.
+Deal with go/blue edges
+Deal with return/red edges
+RETURN Edge: PUSH vertex: a (s3,s4)
+STACK = 
+a (s3,s4) | 
+Deal with successor vertex.
+Vertex removed: b (q2,q3)
+
+*********************** Internal loop iteration j = 8
+Plan BEFORE: 
+ Plan[1] = [Create instance b:B]
+ Plan[2] = [Create instance a:A]
+ Plan[3] = [a : change state from s0 to s1]
+ Plan[4] = [a : bind port p0_1 to instance b]
+ Plan[5] = [b : change state from q0 to q1]
+ Plan[6] = [b : bind port p1_2 to instance a]
+ Plan[7] = [a : change state from s1 to s2]
+ Plan[8] = [a : bind port p0_2 to instance b]
+ Plan[9] = [b : change state from q1 to q2]
+ Plan[10] = [b : bind port p1_3 to instance a]
+ Plan[11] = [b : unbind port p0_1 from instance a]
+ Plan[12] = [a : change state from s2 to s3]
+ Plan[13] = [a : bind port p0_3 to instance b]
+ Plan[14] = [a : unbind port p1_2 from instance b]
+ Plan[15] = [b : change state from q2 to q3]
+ Plan[16] = [b : bind port p1_4 to instance a]
+ Plan[17] = [b : unbind port p0_2 from instance a]
+Vertex popped: a (s3,s4)
+STACK = 
+[]
+It's an intermediate vertex => add action [a : change state from s3 to s4] to the plan.
+Deal with go/blue edges
+Deal with return/red edges
+RETURN Edge: PUSH vertex: b (q3,q4)
+STACK = 
+b (q3,q4) | 
+Deal with successor vertex.
+Vertex removed: a (s3,s4)
+
+*********************** Internal loop iteration j = 9
+Plan BEFORE: 
+ Plan[1] = [Create instance b:B]
+ Plan[2] = [Create instance a:A]
+ Plan[3] = [a : change state from s0 to s1]
+ Plan[4] = [a : bind port p0_1 to instance b]
+ Plan[5] = [b : change state from q0 to q1]
+ Plan[6] = [b : bind port p1_2 to instance a]
+ Plan[7] = [a : change state from s1 to s2]
+ Plan[8] = [a : bind port p0_2 to instance b]
+ Plan[9] = [b : change state from q1 to q2]
+ Plan[10] = [b : bind port p1_3 to instance a]
+ Plan[11] = [b : unbind port p0_1 from instance a]
+ Plan[12] = [a : change state from s2 to s3]
+ Plan[13] = [a : bind port p0_3 to instance b]
+ Plan[14] = [a : unbind port p1_2 from instance b]
+ Plan[15] = [b : change state from q2 to q3]
+ Plan[16] = [b : bind port p1_4 to instance a]
+ Plan[17] = [b : unbind port p0_2 from instance a]
+ Plan[18] = [a : change state from s3 to s4]
+ Plan[19] = [a : bind port p0_4 to instance b]
+ Plan[20] = [a : unbind port p1_3 from instance b]
+Vertex popped: b (q3,q4)
+STACK = 
+[]
+It's an intermediate vertex => add action [b : change state from q3 to q4] to the plan.
+Deal with go/blue edges
+Deal with return/red edges
+Deal with successor vertex.
+Target has been REACHED.
+Vertex removed: b (q3,q4)
+
+The computed PLAN is: 
+ Plan[1] = [Create instance b:B]
+ Plan[2] = [Create instance a:A]
+ Plan[3] = [a : change state from s0 to s1]
+ Plan[4] = [a : bind port p0_1 to instance b]
+ Plan[5] = [b : change state from q0 to q1]
+ Plan[6] = [b : bind port p1_2 to instance a]
+ Plan[7] = [a : change state from s1 to s2]
+ Plan[8] = [a : bind port p0_2 to instance b]
+ Plan[9] = [b : change state from q1 to q2]
+ Plan[10] = [b : bind port p1_3 to instance a]
+ Plan[11] = [b : unbind port p0_1 from instance a]
+ Plan[12] = [a : change state from s2 to s3]
+ Plan[13] = [a : bind port p0_3 to instance b]
+ Plan[14] = [a : unbind port p1_2 from instance b]
+ Plan[15] = [b : change state from q2 to q3]
+ Plan[16] = [b : bind port p1_4 to instance a]
+ Plan[17] = [b : unbind port p0_2 from instance a]
+ Plan[18] = [a : change state from s3 to s4]
+ Plan[19] = [a : bind port p0_4 to instance b]
+ Plan[20] = [a : unbind port p1_3 from instance b]
+ Plan[21] = [b : change state from q3 to q4]
+ Plan[22] = [b : unbind port p0_3 from instance a]
