@@ -281,7 +281,7 @@ open T
         end
 
    (* it scans the instance line of "vertex" looking for the farthest vertex
-    * providing the same "port"*) 
+    * providing the same "port" *) 
    let rec find_latest_provider vertex port =
     if (T.Vertex.has_successor vertex) then
       begin         
@@ -356,7 +356,7 @@ open T
     	let return_dst_vertex = (find_latest_provider !start_return_dst_vertex bound_port) in
     	let return_edge = (T.Dep_edge.make_return (ref return_dst_vertex) bound_port) in
     	(T.Vertex.add_return_edge !return_src_vertex return_edge);
-			(* each of the two edges refernces the other, its twin *)
+			(* each of the two edges references the other, its twin *)
 			(T.Dep_edge.set_twin go_edge return_edge);
 			(T.Dep_edge.set_twin return_edge go_edge)
 
@@ -380,10 +380,52 @@ open T
 
   (* this function adds go (blue) and return (red) edges.
   * "inst_lines" is a list of instances 
-  * "paths_list" is a list of (list of nodes)
   * *)    
   let list_add_dep_edges inst_lines =
     (List.iter (instance_add_dep_edges inst_lines) inst_lines) 
+
+   
+	(** it scans the instance line of "vertex" looking for the farthest vertex
+     	with an outgoing go/blue arc with the the same "port" *) 
+  let rec find_farthest_edge vertex edge =
+  	if (T.Vertex.has_successor vertex) then
+      begin         
+        let inst_edge = (T.Vertex.get_inst_edge vertex) in
+				let state = !(T.Inst_edge.get_state inst_edge) in
+        if (List.mem port state.provides) then
+          begin        
+            let next_vertex = (T.Inst_edge.get_dest inst_edge) in
+            (find_latest_provider !next_vertex port)
+          end
+        else
+          vertex  
+      end
+    else
+    	vertex   
+    
+	let edge_fix_enclosing vertex go_edge =
+		let farthest_go_edge = (find_farthest_edge vertex go_edge) in
+		(* check that there are no surprises, i.e. that the destination nodes belong to the same instance line *)		
+		let go_edge_dst = !(T.Dep_edge.get_dest go_edge) in
+		let farthest_go_edge_dst = !(T.Dep_edge.get_dest farthest_go_edge) in
+		if (T.Vertex.not_on_same_instance go_edge farthest_go_edge) then
+			raise 
+		(* make the farthest return edge twin of the original one and vice versa *) 
+		let farthest_twin = (T.Dep_edge.get_twin farthest_go_edge) in
+		(T.Dep_edge.set_twin go_edge farthest_twin);  	
+		(T.Dep_edge.set_twin farthest_twin go_edge)  	
+
+	let vertex_fix_enclosing_edges vertex =        
+		(List.iter (edge_fix_enclosing vertex) vertex.go_edges) 
+		
+
+	(** Deal with pair of edges that overlap *)
+  let fix_enclosing_edges_pairs inst_lines = 
+  	let instance_fix_enclosing_edges instance = 
+    	(List.iter vertex_fix_enclosing_edges instance.vertices) in        
+		(List.iter instance_fix_enclosing_edges inst_lines) 
+
+
 
 	(* given a list of vertices it builds the pair (head, tail) *)
 	let to_head_tail_pair instance_line =

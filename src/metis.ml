@@ -111,9 +111,11 @@ let () =
     (Instance.print_list file_buffer instance_lines);
 		(Printf.bprintf !file_buffer "%s\n" "\nNext we ADD GO (blue) and RETURN (red) EDGES. ");
     (Instance.list_add_dep_edges instance_lines);
+		(* deal with enclosing edges, e.g. g1 g1' r1 r1' should become g1 r1' *)	
+    (Instance.fix_enclosing_edges_pairs instance_lines);
 		(Printf.bprintf !file_buffer "%s\n" "\n\nNow the INSTANCE LINES WITH EDGES look like this:\n");
     (Instance.print_list file_buffer instance_lines);
-		
+
 		(*print_endline "\nNow we merge all vertices together for topological sorting.";*)
     let all_vertices = (ref (Instance.list_to_vertices instance_lines)) in ();
 		(* (print_string "\nThe VERTICES are the following:"); (T.Vertex.print_list !all_vertices); *)
