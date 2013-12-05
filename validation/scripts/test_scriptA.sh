@@ -4,7 +4,7 @@
 
 # Absolute path of the output file, which will contain a list of records of 
 # the form: ...|...
-RESULTS="results.log"
+RESULTS="./results/testA_results.log"
 
 # Auxiliary files
 TMP_PDDL='tmp_pddl_file'
@@ -18,17 +18,15 @@ ERRORS='errors.log'
 # Time-out
 TIME_OUT=130
 
-#cmd_gen="python  ../encoding/TestA.py"
 cmd_gen="python  ../encoding/generate_pddl_testA.py"
-cmd_plan="../tools/plan_metric-ff aeolus.pddl $TMP_PDDL"
+cmd_plan="../tools/plan_metric-ff -o ../encoding/aeolus.pddl -f $TMP_PDDL"
 #cmd_plan="../tools/plan_mp aeolus.pddl $TMP_PDDL"
 
 
 # Lower the priority of the i/o operations.
-renice -n 19 $$
-ionice -c 3 -p $$
+#renice -n 19 $$
+#ionice -c 3 -p $$
 
-#for i in {4..7..1} 
 for i in {4..5..1} 
 do
   cmd_gen_aux="$cmd_gen $i"
