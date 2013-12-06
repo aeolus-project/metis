@@ -2,16 +2,13 @@
 
 # Run solvers on a given list of instances.
 
-# Absolute path of the input file, which contains the jobs to be executed; 
-# each job has the form: solver_name|instance_qualified_name
-#JOBS="/home/phd-students/amadini/jobs_list"
-
 # Absolute path of the output file, which will contain a list of records of 
-# the form: solver|instance|host_name|return code|info|time.
-RESULTS="./results/testB_results.log"
+# the form: ...|...
+RESULTS="./results/metis_testA_dupl_results.log"
 
 # Auxiliary files
 TMP_PDDL='tmp_pddl_file'
+TMP_RESULTS='tmp_results_file'
 TMP='tmp_file'
 OUT='out_tmp_file'
 ERR='err_tmp_file'
@@ -22,22 +19,23 @@ ERRORS='errors.log'
 # Time-out
 TIME_OUT=130
 
-cmd_gen="python  ../encoding/generate_pddl_testB.py"
-cmd_plan="../tools/plan_metric-ff -o ../encoding/aeolus.pddl -f $TMP_PDDL"
-#cmd_plan="../tools/plan_mp ../encoding/aeolus.pddl $TMP_PDDL"
-
+cmd_gen="python ./TestA_json_duplication.py"
+cmd_plan="../../metis.native"
 
 # Lower the priority of the i/o operations.
-renice -n 19 $$
-ionice -c 3 -p $$
+#renice -n 19 $$
+#ionice -c 3 -p $$
 
-for i in {3..4..1}
+#for i in {25..575..25} 
+for i in {5..15..5} 
 do
-  cmd_gen_aux="$cmd_gen $i"
+  cmd_gen_aux="$cmd_gen -s $i -o $TMP_PDDL"
+  last_state=$(expr $i - 1)
+  cmd_plan_aux="$cmd_plan -u $TMP_PDDL -c B -s q$last_state -o $TMP_RESULTS"
   echo "generate file ($cmd_gen_aux)"
   $cmd_gen_aux > $TMP_PDDL
-  echo "solving ($cmd_plan)"
-  time -p (timeout $TIME_OUT $cmd_plan 1>$OUT 2>$ERR) 2>$TMP
+  echo "solving ($cmd_plan_aux)"
+  time -p (timeout $TIME_OUT $cmd_plan_aux 1>$OUT 2>$ERR) 2>$TMP
   ret=$?
   time_real=`cat $TMP | awk -v s=0.0 'NR==1 {print $2}'`
   time=`cat $TMP | awk -v s=0.0 'NR > 1 {s += $2} END {print s}'`

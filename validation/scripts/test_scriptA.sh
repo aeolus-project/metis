@@ -20,14 +20,14 @@ TIME_OUT=130
 
 cmd_gen="python  ../encoding/generate_pddl_testA.py"
 cmd_plan="../tools/plan_metric-ff -o ../encoding/aeolus.pddl -f $TMP_PDDL"
-#cmd_plan="../tools/plan_mp aeolus.pddl $TMP_PDDL"
+#cmd_plan="../tools/plan_mp ../encoding/aeolus.pddl $TMP_PDDL"
 
 
 # Lower the priority of the i/o operations.
 #renice -n 19 $$
 #ionice -c 3 -p $$
 
-for i in {4..5..1} 
+for i in {4..10..1} 
 do
   cmd_gen_aux="$cmd_gen $i"
   echo "generate file ($cmd_gen_aux)"

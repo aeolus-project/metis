@@ -4,10 +4,11 @@
 
 # Absolute path of the output file, which will contain a list of records of 
 # the form: ...|...
-RESULTS="results.log"
+RESULTS="./results/metis_testB_dupl_results.log"
 
 # Auxiliary files
 TMP_PDDL='tmp_pddl_file'
+TMP_RESULTS='tmp_results_file'
 TMP='tmp_file'
 OUT='out_tmp_file'
 ERR='err_tmp_file'
@@ -18,20 +19,19 @@ ERRORS='errors.log'
 # Time-out
 TIME_OUT=130
 
-cmd_gen="python  ../test_generator/TestB_json.py"
-#cmd_plan="plan_metric-ff aeolus.pddl $TMP_PDDL"
-cmd_plan="../planning/amin_planner -u $TMP_PDDL"
-
+cmd_gen="python ./TestB_json_duplication.py"
+cmd_plan="../../metis.native"
 
 # Lower the priority of the i/o operations.
-renice -n 19 $$
-ionice -c 3 -p $$
+#renice -n 19 $$
+#ionice -c 3 -p $$
 
-for i in {825..900..25} 
+#for i in {825..900..25} 
+for i in {5..15..5} 
 do
-  cmd_gen_aux="$cmd_gen -s $i"
+  cmd_gen_aux="$cmd_gen -s $i -o $TMP_PDDL"
   last_component=$(expr $i - 1)
-  cmd_plan_aux="$cmd_plan -c C$last_component -s s2"
+  cmd_plan_aux="$cmd_plan -u $TMP_PDDL -c C$last_component -s s2 -o $TMP_RESULTS"
   echo "generate file ($cmd_gen_aux)"
   $cmd_gen_aux > $TMP_PDDL
   echo "solving ($cmd_plan_aux)"
