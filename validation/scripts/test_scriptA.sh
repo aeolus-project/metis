@@ -6,6 +6,10 @@
 # the form: ...|...
 RESULTS="./results/testA_results.log"
 
+#INIT_VAL=$1
+#FINAL_VAL=$2
+#STEP=$3
+
 # Auxiliary files
 TMP_PDDL='tmp_pddl_file'
 TMP='tmp_file'
@@ -18,7 +22,7 @@ ERRORS='errors.log'
 # Time-out
 TIME_OUT=130
 
-cmd_gen="python  ../encoding/generate_pddl_testA.py"
+cmd_gen="python ../encoding/generate_pddl_testA.py"
 cmd_plan="../tools/plan_metric-ff -o ../encoding/aeolus.pddl -f $TMP_PDDL"
 #cmd_plan="../tools/plan_mp ../encoding/aeolus.pddl $TMP_PDDL"
 
@@ -28,6 +32,8 @@ cmd_plan="../tools/plan_metric-ff -o ../encoding/aeolus.pddl -f $TMP_PDDL"
 #ionice -c 3 -p $$
 
 for i in {4..10..1} 
+#for i in {$1..$2..$3} 
+#for i in {$INIT_VAL..$FINAL_VAL..$STEP} 
 do
   cmd_gen_aux="$cmd_gen $i"
   echo "generate file ($cmd_gen_aux)"

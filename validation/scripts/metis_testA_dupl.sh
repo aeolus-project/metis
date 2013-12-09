@@ -14,10 +14,10 @@ OUT='out_tmp_file'
 ERR='err_tmp_file'
 
 # Errors log file.
-ERRORS='errors.log'
+ERRORS='errors_testA_dupl.log'
 
 # Time-out
-TIME_OUT=130
+TIME_OUT=600
 
 cmd_gen="python ./TestA_json_duplication.py"
 cmd_plan="../../metis.native"
@@ -27,7 +27,8 @@ cmd_plan="../../metis.native"
 #ionice -c 3 -p $$
 
 #for i in {25..575..25} 
-for i in {5..15..5} 
+#for i in {5..15..5} 
+for i in {5..300..25} 
 do
   cmd_gen_aux="$cmd_gen -s $i -o $TMP_PDDL"
   last_state=$(expr $i - 1)
