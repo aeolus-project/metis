@@ -27,7 +27,7 @@ cmd_plan="../../metis.native"
 #ionice -c 3 -p $$
 
 #for i in {25..575..25} 
-for i in {5..1000..25} 
+for i in {5..515..10} 
 do
   cmd_gen_aux="$cmd_gen -s $i -o $TMP_PDDL"
   last_state=$(expr $i - 1)

@@ -17,7 +17,7 @@ ERR='err_tmp_file'
 ERRORS='errors.log'
 
 # Time-out
-TIME_OUT=600
+TIME_OUT=130
 
 cmd_gen="python ./TestB_json.py"
 cmd_plan="../../metis.native"
@@ -27,7 +27,7 @@ cmd_plan="../../metis.native"
 #ionice -c 3 -p $$
 
 #for i in {5..15..5} 
-for i in {210..290..10} 
+for i in {5..235..10} 
 do
   cmd_gen_aux="$cmd_gen -s $i -o $TMP_PDDL"
   last_component=$(expr $i - 1)
