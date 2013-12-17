@@ -1070,7 +1070,7 @@ module T =
 			(** Return edge is redirected towards [new_vertex]. *)
 			let manage_return_edges duplicate_vertex new_vertex to_visit_stack file_buffer points_to_edge =
 				(Dep_edge.set_dest points_to_edge (ref new_vertex));
-				duplicate_vertex.nr_in_edges <- (duplicate_vertex .nr_in_edges - 1);
+				duplicate_vertex.nr_in_edges <- (duplicate_vertex.nr_in_edges - 1);
 				new_vertex.nr_in_edges <- (new_vertex.nr_in_edges + 1)
 
 			(** Scan the whole [plan] and substitute or add corresponding actions 

@@ -7,7 +7,7 @@ import sys, getopt
 import random
 import math
 
-delete_arcs = 0.2
+delete_arcs = 0.0
 
 def printHeader(stream,numStates,numNodes):
     stream.write("(define (problem TestA" + str(numStates) + "client_server)\n")

@@ -4,7 +4,7 @@
 
 # Absolute path of the output file, which will contain a list of records of 
 # the form: ...|...
-RESULTS="./results/metis_testA_dupl_results.log"
+RESULTS="./results/metis_testA_dupl_results_NEW.log"
 
 # Auxiliary files
 TMP_PDDL='tmp_pddl_file'
@@ -28,7 +28,8 @@ cmd_plan="../../metis.native"
 
 #for i in {25..575..25} 
 #for i in {5..15..5} 
-for i in {5..235..10} 
+#for i in {5..235..10} 
+for i in {5..150..10} 
 do
   cmd_gen_aux="$cmd_gen -s $i -o $TMP_PDDL"
   last_state=$(expr $i - 1)
