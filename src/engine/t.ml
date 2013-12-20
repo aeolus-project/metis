@@ -44,6 +44,7 @@ module T =
       val make_create : state_id_t -> string-> (component_t ref) -> int -> t
       val make_delete : state_id_t -> string-> (component_t ref) -> int -> t
       val make : state_id_t -> state_id_t -> string -> (component_t ref) -> int -> t
+			val not_on_same_instance: t -> t -> bool
       val set_inst_edge : t -> t -> (Gg.Node.t ref) -> unit
       val get_inst_edge : t -> Inst_edge.t 
       val has_inst_edge : t -> bool
@@ -66,8 +67,10 @@ module T =
 			val find_in_list_by_go_edge : Dep_edge.t -> t list -> t
 			val find_by_tag : vertex_tag_t -> t list -> t
 			val remove_go_edge : t -> Dep_edge.t -> unit
+			val remove_return_edge : t -> Dep_edge.t -> unit
 			val find_in_blue_edges_vertices : t -> t list -> (Dep_edge.t * t) list
 			val find_position : int ref -> t -> t list -> int 
+			val find_go_edge_by_port : port_name -> t -> (Dep_edge.t option)
 			(* need the following functions to use Ocamlgraph library *)	
 			val compare : t -> t -> int
 			val hash : t -> int
@@ -87,6 +90,7 @@ module T =
 			exception Vertex_not_in_list of string
 			exception Position_not_found of string
 			exception No_candidates_for_duplication
+			exception Too_many_matching_go_edges of string
      
       (* Types for the tag associated to every vertex *)      
       type create_tag_t = Create
@@ -627,8 +631,24 @@ module T =
 				print_endline ("\n Final new_vertices = { "	^ (to_string_list (List.rev !new_vertices)) ^ " }");
 				(List.rev !new_vertices)
 
+			(** Check if [vertex1] and [vertex2] belong to the same instance line. 
+					It suffices to check that they have the same id. *)
+			let not_on_same_instance vertex1 vertex2 =
+				(vertex1.id <> vertex2.id)
 
- 
+			(** Among the outgoing edges of [vertex], find the go/blue one that is 
+					labeled with the given [port].
+					An exception is raised if there is no matching edge or if there is more 
+					than one (this is an error). *)
+			let find_go_edge_by_port port vertex =
+				let matching_go_edges = 
+					(List.filter (Dep_edge.match_port port) vertex.go_edges) in
+				match matching_go_edges with
+					[] -> None
+				|	[singleton] -> (Some singleton)
+				| _ -> raise (Too_many_matching_go_edges 
+						("Vertex " ^ (to_string_with_id vertex) ^ " has " 
+						^ (string_of_int (List.length matching_go_edges)) ^ " GO edges that match port " ^ port)) 
 			
 			(******************************************************)
 			(* 			functions needed to use Ocamlgraph library		*)
@@ -1185,7 +1205,6 @@ module T =
 				let state_change_act = State_change (id, src_state, dst_state) in 
 				state_change_act 
 			
-			
 			(** Compute a deployment plan *)
 			let synthesize_plan vertices targetComponent targetState file_buffer =
 				(* initialize data structures *)
@@ -1488,7 +1507,7 @@ module T =
         done;
         !sorted_vertices 
 
-      (*  Topological sort used for debugging many prints to see what happens *)  
+      (*  Topological sort used for debugging, many prints to see what happens *)  
       let top_sort_DEBUG vertices =
         let sorted_vertices = (ref []) in
         let start_vertices = (List.filter has_no_in_edges vertices) in
@@ -1650,6 +1669,7 @@ module T =
 			val set_twin : t -> t -> unit
 			val set_mutual_twins : t -> t -> unit
 			val get_twin : t -> t ref
+			val match_port : port_name -> t -> bool
 			val remove_edge : t -> (t list) -> (t list) 
 			val duplicate_red_edges : Vertex.t -> (t list) -> Buffer.t ref -> (t list)
 			val duplicate_blue_edges : Vertex.t ref -> (t * Vertex.t) list -> Buffer.t ref -> (t list)
@@ -1737,6 +1757,9 @@ module T =
 				|	(Some edge_ref) -> edge_ref
 
 			let get_twin = extract_twin
+      
+			let match_port port edge =
+        (port = edge.port)
 
 			let rec remove_edge edge edge_list =
 				match edge_list with
