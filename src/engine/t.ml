@@ -221,6 +221,9 @@ module T =
       let set_actions vertex new_actions =
         vertex.actions <- new_actions
       
+			let add_action vertex new_action =
+        vertex.actions <- new_action :: vertex.actions 
+      
       let get_id vertex =
         vertex.id
       
@@ -1162,18 +1165,18 @@ module T =
 
 			(** Deal with [return edges] (the red ones) *)
 			let process_ret_edge plan stack src_vertex file_buffer return_edge =
+				(* we ignore Unbind actions: we simply remove the red edge 
 				let dst_vertex = !(Dep_edge.get_dest return_edge) in
 				let port = (Dep_edge.get_port return_edge) in
 				let unbind_act = Unbind (port, dst_vertex.id, src_vertex.id) in (* unbind action is performed by requirer *)
 				(* add unbind action to plan *)
 				(Plan.add plan unbind_act);
+				*)
 				(* remove edge *)
 				(remove_return_edge src_vertex return_edge);
 				(* if destination vertex has no more incoming edges push it onto stack toVisit *)
+				let dst_vertex = !(Dep_edge.get_dest return_edge) in
 				if (has_no_in_edges dst_vertex) then begin
-					(* 
-					(print_endline ("RETURN Edge: PUSH vertex: " ^ (to_string_with_id dst_vertex))); 
-					*)
 					(Printf.bprintf !file_buffer "%s\n" ("RETURN Edge: PUSH vertex: " ^ (to_string_with_id dst_vertex))); 
 					(Stack.push dst_vertex stack);
 					(print_stack stack file_buffer)
@@ -1185,7 +1188,8 @@ module T =
 				let port = (Dep_edge.get_port go_edge) in
 				let bind_act = Bind (port, src_vertex.id, dst_vertex.id) in (* bind action is performed by provider *)
 				(* add bind action to plan *)
-				(Plan.add plan bind_act);
+				(*(Plan.add plan bind_act);*)
+				(add_action dst_vertex bind_act);
 				(* remove edge *)
 				(remove_go_edge src_vertex go_edge);
 				(* if dest. vertex has no more incoming edges push it onto stack toVisit *)
@@ -1215,6 +1219,9 @@ module T =
 				let dst_state = (snd trans_pair) in
 				let state_change_act = State_change (id, src_state, dst_state) in 
 				state_change_act 
+											
+			let process_method_invocation plan file_buffer action =
+				(Plan.add plan action)
 			
 			(** Compute a deployment plan *)
 			let synthesize_plan vertices targetComponent targetState file_buffer =
@@ -1259,6 +1266,8 @@ module T =
 											(Plan.add plan deleteAct)
 										(* inner node case *)
 										end else begin
+											(* deal with method invocation actions *)
+											(List.iter (process_method_invocation plan file_buffer) currentVertex.actions);
 											(* add stateChange action *)
 											let stateChangeAct = (compute_state_change_act currentVertex) in
 											(Plan.add plan stateChangeAct);

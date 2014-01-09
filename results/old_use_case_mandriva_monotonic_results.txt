@@ -552,8 +552,147 @@ mysql (Active,D) nr.IN-edges =  1
  RETURN EDGES: 
  INST EDGE: { }
 
-Next we ADD GO (blue) and RETURN (red) EDGES. 
+Next we ADD GO (blue) and RETURN (red) EDGES.
 
+Instance varnish :
+varnish (C,NotInstalled) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Varnish,NotInstalled>--> varnish (NotInstalled,Installed)
+
+varnish (NotInstalled,Installed) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Varnish,Installed>--> varnish (Installed,Configured)
+
+varnish (Installed,Configured) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Varnish,Configured>--> varnish (Configured,Active)
+
+varnish (Configured,Active) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: ---get_site---> wordpress (Active,D)
+ INST EDGE: --<Varnish,Active>--> varnish (Active,D)
+
+varnish (Active,D) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: ---Wordpress.start---> wordpress (Active,D)
+ INST EDGE: { }
+
+Instance wordpress :
+wordpress (C,NotInstalled) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Wordpress,NotInstalled>--> wordpress (NotInstalled,Installed)
+
+wordpress (NotInstalled,Installed) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Wordpress,Installed>--> wordpress (Installed,Template)
+
+wordpress (Installed,Template) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Wordpress,Template>--> wordpress (Template,Configured)
+
+wordpress (Template,Configured) nr.IN-edges =  2
+ GO EDGES: ---get_site---> varnish (Installed,Configured)
+ RETURN EDGES: 
+ INST EDGE: --<Wordpress,Configured>--> wordpress (Configured,Active)
+
+wordpress (Configured,Active) nr.IN-edges =  3
+ GO EDGES: ---Wordpress.start---> varnish (Configured,Active)
+ RETURN EDGES: ---Mysql.addDatabase---> mysql (Active,D)
+ INST EDGE: --<Wordpress,Active>--> wordpress (Active,D)
+
+wordpress (Active,D) nr.IN-edges =  3
+ GO EDGES: 
+ RETURN EDGES: ---Httpd.start---> httpd (Active,D); ---Httpd.get_documentRoot---> httpd (Active,D)
+ INST EDGE: { }
+
+Instance httpd :
+httpd (C,NotInstalled) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Httpd,NotInstalled>--> httpd (NotInstalled,Installed)
+
+httpd (NotInstalled,Installed) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Httpd,Installed>--> httpd (Installed,Configured)
+
+httpd (Installed,Configured) nr.IN-edges =  1
+ GO EDGES: ---Httpd.get_documentRoot---> wordpress (Configured,Active)
+ RETURN EDGES: 
+ INST EDGE: --<Httpd,Configured>--> httpd (Configured,Active)
+
+httpd (Configured,Active) nr.IN-edges =  1
+ GO EDGES: ---Httpd.start---> wordpress (Configured,Active)
+ RETURN EDGES: 
+ INST EDGE: --<Httpd,Active>--> httpd (Active,D)
+
+httpd (Active,D) nr.IN-edges =  3
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: { }
+
+Instance mysql :
+mysql (C,NotInstalled) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Mysql,NotInstalled>--> mysql (NotInstalled,Installed)
+
+mysql (NotInstalled,Installed) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Mysql,Installed>--> mysql (Installed,SetRootPassword)
+
+mysql (Installed,SetRootPassword) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Mysql,SetRootPassword>--> mysql (SetRootPassword,Configured)
+
+mysql (SetRootPassword,Configured) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Mysql,Configured>--> mysql (Configured,Active)
+
+mysql (Configured,Active) nr.IN-edges =  1
+ GO EDGES: ---Mysql.addDatabase---> wordpress (Template,Configured)
+ RETURN EDGES: 
+ INST EDGE: --<Mysql,Active>--> mysql (Active,D)
+
+mysql (Active,D) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: { }
+
+Next we FIX ENCLOSING GO (blue) and RETURN (red) EDGES.
+################# Fix enclosing edges for vertex wordpress (Template,Configured) and GO edge ---get_site---> varnish (Installed,Configured)
+Pairs found from the given vertex: { }
+Pairs found from successors of the given vertex: { }
+Total set of pairs found: { }
+
+################# Fix enclosing edges for vertex wordpress (Configured,Active) and GO edge ---Wordpress.start---> varnish (Configured,Active)
+Pairs found from the given vertex: { }
+Pairs found from successors of the given vertex: { }
+Total set of pairs found: { }
+
+################# Fix enclosing edges for vertex httpd (Installed,Configured) and GO edge ---Httpd.get_documentRoot---> wordpress (Configured,Active)
+Pairs found from the given vertex: { }
+Pairs found from successors of the given vertex: { }
+Total set of pairs found: { }
+
+################# Fix enclosing edges for vertex httpd (Configured,Active) and GO edge ---Httpd.start---> wordpress (Configured,Active)
+Pairs found from the given vertex: { }
+Pairs found from successors of the given vertex: { }
+Total set of pairs found: { }
+
+################# Fix enclosing edges for vertex mysql (Configured,Active) and GO edge ---Mysql.addDatabase---> wordpress (Template,Configured)
+Pairs found from the given vertex: { }
+Pairs found from successors of the given vertex: { }
+Total set of pairs found: { }
 
 Now the INSTANCE LINES WITH EDGES look like this:
 
