@@ -1,0 +1,8 @@
+******** ERROR in processing python ./TestB_json_duplication.py -s 230 -o tmp_pddl_file ********
+Fatal error: exception Out_of_memory
+******** ERROR in processing python ./TestB_json_duplication.py -s 255 -o tmp_pddl_file ********
+Fatal error: exception Out_of_memory
+******** ERROR in processing python ./TestB_json_duplication.py -s 280 -o tmp_pddl_file ********
+Fatal error: exception Out_of_memory
+******** ERROR in processing python ./TestB_json_duplication.py -s 235 -o tmp_pddl_file ********
+Fatal error: exception Out_of_memory
