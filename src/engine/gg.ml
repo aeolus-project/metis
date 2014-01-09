@@ -44,6 +44,7 @@ module Gg =
       val clone : t -> t
 
       val to_string : t -> string
+      val to_string_with_bindings : t -> string
       val to_string_full : t -> string
       val to_string_list : t list -> string
       val to_string_list_of_list : (t list) list -> string
@@ -268,7 +269,13 @@ module Gg =
   let bindings_to_string node =
     let bind_string_list = (List.map Bind_arc.to_string node.bindings) in
     (String.concat ", " bind_string_list)    
-  
+ 
+	let to_string_with_bindings node =
+		let node_str = (to_string node) in
+		let bindings_str = (bindings_to_string node) in
+		let string_repr = node_str ^ " has BINDINGS: " ^ bindings_str in
+		string_repr
+ 
   let rec to_string_list nlist =
 	  match nlist with 
 		  [] -> ""
