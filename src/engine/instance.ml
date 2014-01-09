@@ -11,10 +11,12 @@ open T
 (********************************************************************)
 
 	exception Empty_vertices
+	exception No_pairs
 	exception Go_edge_not_found of string
 	exception No_corresponding_vertex of string
 	exception Instance_not_found of string
 	exception Dest_vertices_not_on_same_instance of string
+	exception Vertex_not_found of string
 
   type t = {
     comp_type : component_t ref;     
@@ -370,6 +372,10 @@ open T
         let node = !edge_tag in
         let bound_port_node_pairs = (Gg.Node.get_bound_ports_nodes node) in
 				(*
+				let string_repr = (Gg.Node.to_string_with_bindings node) in
+				(print_endline string_repr);
+				*)
+				(*
         (List.iter (add_go_return_edge_DEBUG instance_lines vertex) bound_port_node_pairs) 
 				*)
         (List.iter (add_go_return_edge instance_lines vertex) bound_port_node_pairs) 
@@ -379,99 +385,10 @@ open T
   let instance_add_dep_edges instance_lines instance =
     (List.iter (vertex_add_dep_edges instance_lines) instance.vertices)        
 
-  (* this function adds go (blue) and return (red) edges.
-  * "inst_lines" is a list of instances 
-  * *)    
+  (** this function adds go (blue) and return (red) edges.
+  		[inst_lines] is a list of instances. *)    
   let list_add_dep_edges inst_lines =
     (List.iter (instance_add_dep_edges inst_lines) inst_lines) 
-
-
-	(****************************************************)
-	(*								FIX OVERLAPPING EDGES							*)
-	(****************************************************)
-
-
-	(** Scan the instance line of [vertex] looking for the farthest vertex
-     	with an outgoing go/blue arc with the the same [port]. *) 
-	let rec find_farthest_vertex_edge vertex go_edge go_edges_to_remove =
-  	if (T.Vertex.has_successor vertex) then
-			begin
-				let succ = (T.Vertex.get_succ vertex) in
-				let port = (T.Dep_edge.get_port go_edge) in
-				let matching_go_edge = (T.Vertex.find_go_edge_by_port port succ) in
-				match matching_go_edge with
-					None -> (* stop search *)
-						(vertex, go_edge)
-				| (Some edge) -> 
-						begin
-							(* add current vertex and edge to the list *)
-							go_edges_to_remove := (succ, edge) :: !go_edges_to_remove;
-							(find_farthest_vertex_edge succ edge go_edges_to_remove)
-						end
-			end
-		else
-			(vertex, go_edge)
-				
-	let rec remove_go_and_twin_edges orig_go_edge farthest_twin go_edges_to_remove =
-		match go_edges_to_remove with
-			[] -> ()
-		| head :: tail ->
-			begin
-				let vertex = (fst head) in	
-				let go_edge = (snd head) in
-				let twin_edge = !(T.Dep_edge.get_twin go_edge) in
-				(* remove go/blue edge if it's not the leftmost one *)
-				if (go_edge != orig_go_edge) then
-					(T.Vertex.remove_go_edge vertex go_edge);
-				(* remove return/red edge if it's not the rightmost one *)
-				if (twin_edge != farthest_twin) then begin
-					(* first find origin vertex of twin_edge *)
-					let go_edge_dst = !(T.Dep_edge.get_dest go_edge) in
-					let succ = (T.Vertex.get_succ go_edge_dst) in
-					(T.Vertex.remove_return_edge succ twin_edge)
-				end;
-				(remove_go_and_twin_edges orig_go_edge farthest_twin tail)
-			end
-
-	(** Deal with pair of edges that overlap on all go edges of a vertex. *)
-	let edge_fix_enclosing vertex go_edge =
-		(*  keep track of the go edges visited in order to remove them in the end *)
-		let go_edges_to_remove = (ref []) in
-		let farthest_vertex_edge_pair = 
-			(find_farthest_vertex_edge vertex go_edge go_edges_to_remove) in
-		let farthest_vertex = (fst farthest_vertex_edge_pair) in 
-		let farthest_go_edge = (snd farthest_vertex_edge_pair) in
-		(* check that there are no surprises, i.e. that the destination nodes belong to the same instance line *)		
-		let go_edge_dst = !(T.Dep_edge.get_dest go_edge) in
-		let farthest_go_edge_dst = !(T.Dep_edge.get_dest farthest_go_edge) in
-		if (T.Vertex.not_on_same_instance go_edge_dst farthest_go_edge_dst) then
-			raise (Dest_vertices_not_on_same_instance (
-				(T.Vertex.to_string_with_id go_edge_dst) ^ " and " ^ 
-				(T.Vertex.to_string_with_id farthest_go_edge_dst) ^ "lie on different instance lines.")); 
-		(* if the farthest vertex coincides with the original vertex do nothing *)
-		if (T.Vertex.eq_id_tag vertex farthest_vertex) then 
-			()
-		else begin
-			(* make the farthest return edge twin of the original one and vice versa *) 
-			let farthest_twin = !(T.Dep_edge.get_twin farthest_go_edge) in
-			(T.Dep_edge.set_twin go_edge farthest_twin);  	
-			(T.Dep_edge.set_twin farthest_twin go_edge);
-			(* remove all other edges go/blue and return/red ones *)
-			(remove_go_and_twin_edges go_edge farthest_twin !go_edges_to_remove)
-		end
- 
-	(** Deal with pair of edges that overlap on all go edges of a vertex. *)
-	let vertex_fix_enclosing_edges vertex =
-		let go_edges = (T.Vertex.get_go_edges vertex) in
-		(List.iter (edge_fix_enclosing vertex) go_edges) 
-		
-	(** Deal with pair of edges that overlap on all instance lines. *)
-  let fix_enclosing_edges_pairs inst_lines = 
-  	let instance_fix_enclosing_edges instance = 
-    	(List.iter vertex_fix_enclosing_edges instance.vertices) in        
-		(List.iter instance_fix_enclosing_edges inst_lines) 
-
-
 
 
 	(* given a list of vertices it builds the pair (head, tail) *)
@@ -480,7 +397,7 @@ open T
 			[] -> raise Empty_vertices
 		|	head :: tail -> (head, tail)
   
-(* instance_lines is a list of instances *)  
+	(* instance_lines is a list of instances *)  
   (* given a list of instances we extract a single list of vertices *)  
   let list_to_vertices instance_lines =
 		let head_tail_pairs = (List.map to_head_tail_pair instance_lines) in
@@ -496,9 +413,6 @@ open T
     let vertices_lists = (List.map get_vertices instance_lines) in
     let merged_vertices = (List.flatten vertices_lists) in
     merged_vertices    
-
-
-
 
 	
 	let find_src_by_go_edge instance go_edge =
@@ -586,3 +500,263 @@ open T
 		(find_ready_iline_aux vertex filtered_instances)
 	*)
 
+
+
+	(****************************************************)
+	(*								FIX OVERLAPPING EDGES							*)
+	(****************************************************)
+
+	(* Simply check if [edge] is tagged with same name as [port]. *)
+	let same_port port edge =
+		let edge_port = (T.Dep_edge.get_port edge) in
+		(port = edge_port)
+		
+	(* Simply check if destination vertex of [edge] is on the same [instance]. *)
+	let same_instance instance edge =
+		let edge_dst = !(T.Dep_edge.get_dest edge) in
+		let dst_instance = (T.Vertex.get_id edge_dst) in
+		(instance = dst_instance)
+
+	(** Compute the position of [vertex] in the instance line [instance] starting 
+			from the initial one [pos]. *)
+	let compute_vertex_position pos instance vertex =
+		let rec compute_vertex_position_aux pos vertices vertex =
+			match vertices with
+				[] -> raise (Vertex_not_found ("vertex " ^ (T.Vertex.to_string vertex) 
+								^ " could not be found on instance " ^ (T.Vertex.get_id vertex)))  
+			| head :: tail -> begin
+					if (T.Vertex.eq_id_tag head vertex) then
+						!pos
+					else begin
+						pos := !pos + 1;
+						(compute_vertex_position_aux pos tail vertex)
+					end		
+				end
+		in
+		(compute_vertex_position_aux pos instance.vertices vertex)
+
+	(** Check if [vertex] is farther down on [instance] w.r.t. destination vertex 
+		of [edge]. *)
+	let farther_dest instance vertex edge =
+		let position = (ref 0) in
+		let original_dst_pos = (compute_vertex_position position instance vertex) in
+		position := 0;
+		let edge_dst = !(T.Dep_edge.get_dest edge) in
+		let edge_dst_pos = (compute_vertex_position position instance edge_dst) in
+		(edge_dst_pos > original_dst_pos)  
+		
+	(** Scan original [vertex] looking for all outgoing go/blue edges with the 
+			 same port and destination farher down w.r.t. the original destination. *) 
+	let find_out_edges inst_lines vertex orig_go_edge =
+		(* first, keep only edges with same port tag *)
+		let all_out_go_edges = (T.Vertex.get_go_edges vertex) in
+		let port = (T.Dep_edge.get_port orig_go_edge) in
+		let all_out_go_edges_same_port = (List.filter (same_port port) all_out_go_edges) in
+		(* then, keep only edges with destination on same instance line as the original one *)
+		let go_edge_dst = !(T.Dep_edge.get_dest orig_go_edge) in
+		let dst_instance_id = (T.Vertex.get_id go_edge_dst) in
+		let all_out_go_edges_same_instance = (List.filter (same_instance dst_instance_id) all_out_go_edges_same_port) in
+		(* finally, select edges with destination farther down w.r.t. the original one *)
+		let dst_instance = (find_by_id dst_instance_id !inst_lines) in
+		let all_out_go_edges_farther_dest = (List.filter (farther_dest dst_instance go_edge_dst) all_out_go_edges_same_instance) in
+		let make_edge_src_pair src_vertex edge = (src_vertex, edge) in
+		let out_edges_same_vertex = (List.map (make_edge_src_pair vertex) all_out_go_edges_farther_dest) in
+ 		out_edges_same_vertex 
+
+	(** Scan the instance line of [vertex] looking for vertices farther down the instance line
+     	with outgoing go/blue arc(s) tagged by the same port as [go_edge]. *) 
+	let find_farther_vertex_edge_pairs vertex go_edge =
+		let pairs = (ref []) in
+		let current_vertex = (ref vertex) in
+		let port = (T.Dep_edge.get_port go_edge) in
+		let go_edge_dst = !(T.Dep_edge.get_dest go_edge) in
+		let dst_instance_id = (T.Vertex.get_id go_edge_dst) in
+		let i = (ref 1) in
+		(* scan all successors of the given vertex *)
+  	while (T.Vertex.has_successor !current_vertex) do
+			begin
+				(*(print_endline ("\nLoop iteration nr. " ^ (string_of_int !i)));*)
+				(* consider only edges tagged with same port as go_edge *)
+				let successor = (T.Vertex.get_succ !current_vertex) in
+				let go_edges_same_port = (T.Vertex.filter_go_edges_by_port port successor) in
+				(* consider only edges with destination on the same instance line as the one of go_edge *)
+				let go_edges_same_instance = (List.filter (same_instance dst_instance_id) go_edges_same_port) in
+				if go_edges_same_instance <> [] then 
+					begin
+						(* add current vertex and all its outgoing edges to the list *)
+						let make_edge_src_pair src_vertex edge = (src_vertex, edge) in
+						let new_pairs = (List.map (make_edge_src_pair successor) go_edges_same_instance) in
+						pairs := new_pairs @ !pairs 
+					end;
+				i := !i + 1;
+				current_vertex := successor
+			end
+		done;
+		!pairs
+
+	(** Delete unnecessary dependency edges: remove each blue/go edge  and its 
+			corresponding twin. *) 
+	let rec remove_go_and_twin_edges go_edges_to_remove =
+		match go_edges_to_remove with
+			[] -> () 
+		| head :: tail -> begin
+				let vertex = (fst head) in	
+				let go_edge = (snd head) in
+				let twin_edge = !(T.Dep_edge.get_twin go_edge) in
+				(* remove go/blue edge *)
+				(T.Vertex.remove_go_edge vertex go_edge);
+				(* remove return/red edge *)
+				(* first find origin vertex of twin_edge *)
+				let go_edge_dst = !(T.Dep_edge.get_dest go_edge) in
+				let succ = (T.Vertex.get_succ go_edge_dst) in
+				(T.Vertex.remove_return_edge succ twin_edge);
+				(remove_go_and_twin_edges tail) 
+			end
+
+	(** Utility function that among the instance lines [inst_lines] finds the one
+			that contains the destination of [edge]. *)
+	let find_instance_by_edge inst_lines edge =
+		let edge_dst = !(T.Dep_edge.get_dest edge) in
+		let dst_instance_id = (T.Vertex.get_id edge_dst) in
+		let dst_instance = (find_by_id dst_instance_id !inst_lines) in
+		dst_instance
+
+	(** Take a vertex-edge pair (v,e) and build a pair ((v,e), pos) where pos = dst(e) 
+		is the destination's position. *)
+	let make_vertex_pos_pair instance vertex_edge_pair =
+	  let edge = (snd vertex_edge_pair) in
+		let edge_dst = !(T.Dep_edge.get_dest edge) in
+		let init_pos = (ref 0) in
+		let dst_position = (compute_vertex_position init_pos instance edge_dst) in
+		(vertex_edge_pair, dst_position)
+	
+	(** Ad-hoc comparison function: vertex with farther destination position get to
+		 the head of the list. *)
+	let compare_pos pair1 pair2 =
+		let pos1 = (snd pair1) in 
+		let pos2 = (snd pair2) in 
+		let result = (compare pos1 pos2) in
+		let revert_result = (ref 0) in
+		if result != 0 then 
+			revert_result := ~-result;
+		!revert_result
+
+	(** Among the vertex-edge pairs [vertex_edge_pairs] find the one with the 
+			destination vertex farthest away down the instance line [instance]. *)
+	let find_farthest instance vertex_edge_pairs =
+		if vertex_edge_pairs = [] then
+			raise No_pairs
+		else begin
+			let vertex_position_pairs = (List.map (make_vertex_pos_pair instance) 
+				vertex_edge_pairs) in
+			let sorted_vertex_position_pairs = 
+				(List.fast_sort compare_pos vertex_position_pairs) in
+			let farthest_vertex_edge_pos_pair = (List.hd sorted_vertex_position_pairs) in
+			let farthest_vertex_edge_pair = (fst farthest_vertex_edge_pos_pair) in 
+			farthest_vertex_edge_pair 
+		end
+
+	(** Remove a vertex-edge pair from a list of such pairs. *)
+	let rec remove_pair vertex_edge_pair pair_list =
+		let eq_vertex_edge pair1 pair2 =
+			let vertex1 = (fst pair1) and vertex2 = (fst pair2) in
+			let edge1 = (snd pair1) and edge2 = (snd pair2) in
+			((T.Vertex.eq_id_tag vertex1 vertex2) && (T.Dep_edge.eq edge1 edge2)) in
+		match pair_list with
+		  [] -> []
+		| head :: tail -> begin
+				if (eq_vertex_edge head vertex_edge_pair) then
+					(remove_pair vertex_edge_pair tail)
+				else
+					head :: (remove_pair vertex_edge_pair tail)
+			end
+
+	(** Utility function for string representation of a vertex-edge pair. *) 
+	let string_of_pair vertex_edge_pair =
+		let vertex = (fst vertex_edge_pair) in
+		let edge = (snd vertex_edge_pair) in
+		let vertex_str = (T.Vertex.to_string_with_id vertex) in 
+		let edge_str = (T.Dep_edge.to_string edge) in
+		let string_repr = ("(" ^ vertex_str ^ ", " ^ edge_str ^ ")") in
+		string_repr
+
+	(** Utility function for string representation of a list of vertex-edge pairs. *) 
+	let string_of_pair_list vertex_edge_pairs =
+		let string_repr = ref "{ }" in
+		if vertex_edge_pairs <> [] then begin
+			let string_list = (List.map string_of_pair vertex_edge_pairs) in
+    	string_repr := (String.concat "  |  " string_list)
+		end;
+		!string_repr
+	
+	(** Deal with pair of edges that overlap on all go edges of a vertex. *)
+	let edge_fix_enclosing file_buffer inst_lines vertex go_edge =
+		(Printf.bprintf !file_buffer "%s\n" ("\n################# Fix enclosing edges for vertex " 
+			^ (T.Vertex.to_string_with_id vertex) ^ " and GO edge " ^ (T.Dep_edge.to_string go_edge)));
+		let farther_pairs_same_vertex = (find_out_edges inst_lines vertex go_edge) in
+		(Printf.bprintf !file_buffer "%s\n" ("Pairs found from the given vertex: " 
+			^ (string_of_pair_list farther_pairs_same_vertex)));
+		let farther_pairs = (find_farther_vertex_edge_pairs vertex go_edge) in  
+		(Printf.bprintf !file_buffer "%s\n" ("Pairs found from successors of the given vertex: " 
+			^ (string_of_pair_list farther_pairs))); 
+		let all_vertex_edge_pairs = farther_pairs_same_vertex @ farther_pairs in
+		(Printf.bprintf !file_buffer "%s\n" ("Total set of pairs found: " 
+			^ (string_of_pair_list all_vertex_edge_pairs))); 
+		(* find vertex with farthest destination *)
+		let dst_instance = (find_instance_by_edge inst_lines go_edge) in
+		let farthest_vertex_edge_pair = ref (vertex, go_edge) in
+		try begin 
+			farthest_vertex_edge_pair := (find_farthest dst_instance all_vertex_edge_pairs);
+			(Printf.bprintf !file_buffer "%s\n" ("Farthest vertex: " 
+				^ (string_of_pair !farthest_vertex_edge_pair)));
+			(*  keep track of the go edges visited in order to remove them in the end *)
+			let go_edges_to_remove = (remove_pair !farthest_vertex_edge_pair all_vertex_edge_pairs) in
+			(Printf.bprintf !file_buffer "%s\n" ("Edges to be removed: " 
+				^ (string_of_pair_list go_edges_to_remove))); 
+			let farthest_vertex = (fst !farthest_vertex_edge_pair) in 
+			let farthest_go_edge = (snd !farthest_vertex_edge_pair) in
+			(* check that there are no surprises, i.e. that the destination nodes belong to the same instance line *)		
+			let go_edge_dst = !(T.Dep_edge.get_dest go_edge) in
+			let farthest_go_edge_dst = !(T.Dep_edge.get_dest farthest_go_edge) in
+			if (T.Vertex.not_on_same_instance go_edge_dst farthest_go_edge_dst) then
+				raise (Dest_vertices_not_on_same_instance (
+					(T.Vertex.to_string_with_id go_edge_dst) ^ " and " ^ 
+					(T.Vertex.to_string_with_id farthest_go_edge_dst) ^ "lie on different instance lines.")) 
+			else begin
+				(Printf.bprintf !file_buffer "%s\n" "Apply EDGE FIXING");
+				let orig_twin = !(T.Dep_edge.get_twin go_edge) in	
+				let orig_twin_src = (T.Vertex.get_succ go_edge_dst) in
+				(Printf.bprintf !file_buffer "%s\n" ("Orig twin edge: " 
+					^ (T.Dep_edge.to_string orig_twin) ^ " from " 
+					^ (T.Vertex.to_string_with_id orig_twin_src)));
+				(* make the farthest return edge twin of the original one and vice versa *) 
+				let farthest_twin = !(T.Dep_edge.get_twin farthest_go_edge) in
+				let farthest_twin_src = (T.Vertex.get_succ farthest_go_edge_dst) in
+				(Printf.bprintf !file_buffer "%s\n" ("Farthest twin edge: " 
+					^ (T.Dep_edge.to_string farthest_twin) ^ " from " 
+					^ (T.Vertex.to_string_with_id farthest_twin_src)));
+				(T.Dep_edge.set_twin go_edge farthest_twin);  	
+				(T.Dep_edge.set_twin farthest_twin go_edge);
+				(* remove the farthest go/blue edge from the farthest vertex *)
+				(T.Vertex.remove_go_edge farthest_vertex farthest_go_edge);
+				(* remove the (return/red) twin edge of the original go_edge *)
+				(T.Vertex.remove_return_edge orig_twin_src orig_twin);
+				(* remove all other edges go/blue and return/red ones *)
+				(remove_go_and_twin_edges go_edges_to_remove);
+				(Printf.bprintf !file_buffer "%s\n" ("Instance lines AFTER fixing enclosing edges: " 
+					^ (to_string_list_full !inst_lines)))
+			end
+		end
+		with No_pairs -> (print_endline ("DO NOTHING because farthest edge is the SAME as the original edge " ^ (T.Dep_edge.to_string go_edge)))
+		
+	(** Deal with pair of edges that overlap on all go edges of [vertex]. *)
+	let vertex_fix_enclosing_edges file_buffer inst_lines vertex =
+		let go_edges = (T.Vertex.get_go_edges vertex) in
+		(List.iter (edge_fix_enclosing file_buffer inst_lines vertex) go_edges) 
+		
+	(** Deal with pair of edges that overlap on all instance lines. *)
+  let fix_enclosing_edges_pairs file_buffer inst_lines = 
+  	let instance_fix_enclosing_edges file_buffer ref_inst_lines instance = 
+    	(List.iter (vertex_fix_enclosing_edges file_buffer ref_inst_lines) instance.vertices) in        
+		(List.iter (instance_fix_enclosing_edges file_buffer (ref inst_lines)) inst_lines)
+ 

@@ -618,10 +618,7 @@ c0 (s1,D) nr.IN-edges =  1
  RETURN EDGES: 
  INST EDGE: { }
 
-Next we ADD GO (blue) and RETURN (red) EDGES. 
-
-
-Now the INSTANCE LINES WITH EDGES look like this:
+Next we ADD GO (blue) and RETURN (red) EDGES.
 
 Instance c4 :
 c4 (C,s0) nr.IN-edges =  0
@@ -700,6 +697,476 @@ c1 (s0,s1) nr.IN-edges =  2
 c1 (s1,s2) nr.IN-edges =  3
  GO EDGES: ---p1_2---> c2 (s1,s2)
  RETURN EDGES: ---p2_1---> c2 (s2,D)
+ INST EDGE: --<C1,s2>--> c1 (s2,D)
+
+c1 (s2,D) nr.IN-edges =  3
+ GO EDGES: 
+ RETURN EDGES: ---p0_2---> c0 (s1,D); ---p2_1---> c2 (s2,D)
+ INST EDGE: { }
+
+Instance c0 :
+c0 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C0,s0>--> c0 (s0,s1)
+
+c0 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p0_2---> c1 (s1,s2)
+ RETURN EDGES: 
+ INST EDGE: --<C0,s1>--> c0 (s1,D)
+
+c0 (s1,D) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: ---p1_1---> c1 (s2,D)
+ INST EDGE: { }
+
+Next we FIX ENCLOSING GO (blue) and RETURN (red) EDGES.
+################# Fix enclosing edges for vertex c4 (s0,s1) and GO edge ---p4_1---> c3 (s1,s2)
+Pairs found from the given vertex: { }
+Pairs found from successors of the given vertex: { }
+Total set of pairs found: { }
+
+################# Fix enclosing edges for vertex c4 (s0,s1) and GO edge ---p4_1---> c3 (s0,s1)
+Pairs found from the given vertex: (c4 (s0,s1), ---p4_1---> c3 (s1,s2))
+Pairs found from successors of the given vertex: { }
+Total set of pairs found: (c4 (s0,s1), ---p4_1---> c3 (s1,s2))
+Farthest vertex: (c4 (s0,s1), ---p4_1---> c3 (s1,s2))
+Edges to be removed: { }
+Apply EDGE FIXING
+Orig twin edge: ---p4_1---> c4 (s2,D) from c3 (s1,s2)
+Farthest twin edge: ---p4_1---> c4 (s2,D) from c3 (s2,D)
+Instance lines AFTER fixing enclosing edges: Instance c4 :
+c4 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C4,s0>--> c4 (s0,s1)
+
+c4 (s0,s1) nr.IN-edges =  1
+ GO EDGES: ---p4_1---> c3 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C4,s1>--> c4 (s1,s2)
+
+c4 (s1,s2) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C4,s2>--> c4 (s2,D)
+
+c4 (s2,D) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: ---p3_2---> c3 (s2,D)
+ INST EDGE: { }
+
+Instance c3 :
+c3 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C3,s0>--> c3 (s0,s1)
+
+c3 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p3_1---> c2 (s1,s2); ---p3_1---> c2 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C3,s1>--> c3 (s1,s2)
+
+c3 (s1,s2) nr.IN-edges =  2
+ GO EDGES: ---p3_2---> c4 (s1,s2)
+ RETURN EDGES: 
+ INST EDGE: --<C3,s2>--> c3 (s2,D)
+
+c3 (s2,D) nr.IN-edges =  4
+ GO EDGES: 
+ RETURN EDGES: ---p2_2---> c2 (s2,D); ---p4_1---> c4 (s2,D)
+ INST EDGE: { }
+
+Instance c2 :
+c2 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C2,s0>--> c2 (s0,s1)
+
+c2 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p2_1---> c1 (s1,s2); ---p2_1---> c1 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C2,s1>--> c2 (s1,s2)
+
+c2 (s1,s2) nr.IN-edges =  3
+ GO EDGES: ---p2_2---> c3 (s1,s2)
+ RETURN EDGES: ---p3_1---> c3 (s2,D)
+ INST EDGE: --<C2,s2>--> c2 (s2,D)
+
+c2 (s2,D) nr.IN-edges =  4
+ GO EDGES: 
+ RETURN EDGES: ---p1_2---> c1 (s2,D); ---p3_1---> c3 (s2,D)
+ INST EDGE: { }
+
+Instance c1 :
+c1 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C1,s0>--> c1 (s0,s1)
+
+c1 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p1_1---> c0 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C1,s1>--> c1 (s1,s2)
+
+c1 (s1,s2) nr.IN-edges =  3
+ GO EDGES: ---p1_2---> c2 (s1,s2)
+ RETURN EDGES: ---p2_1---> c2 (s2,D)
+ INST EDGE: --<C1,s2>--> c1 (s2,D)
+
+c1 (s2,D) nr.IN-edges =  3
+ GO EDGES: 
+ RETURN EDGES: ---p0_2---> c0 (s1,D); ---p2_1---> c2 (s2,D)
+ INST EDGE: { }
+
+Instance c0 :
+c0 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C0,s0>--> c0 (s0,s1)
+
+c0 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p0_2---> c1 (s1,s2)
+ RETURN EDGES: 
+ INST EDGE: --<C0,s1>--> c0 (s1,D)
+
+c0 (s1,D) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: ---p1_1---> c1 (s2,D)
+ INST EDGE: { }
+
+################# Fix enclosing edges for vertex c3 (s0,s1) and GO edge ---p3_1---> c2 (s1,s2)
+Pairs found from the given vertex: { }
+Pairs found from successors of the given vertex: { }
+Total set of pairs found: { }
+
+################# Fix enclosing edges for vertex c3 (s0,s1) and GO edge ---p3_1---> c2 (s0,s1)
+Pairs found from the given vertex: (c3 (s0,s1), ---p3_1---> c2 (s1,s2))
+Pairs found from successors of the given vertex: { }
+Total set of pairs found: (c3 (s0,s1), ---p3_1---> c2 (s1,s2))
+Farthest vertex: (c3 (s0,s1), ---p3_1---> c2 (s1,s2))
+Edges to be removed: { }
+Apply EDGE FIXING
+Orig twin edge: ---p3_1---> c3 (s2,D) from c2 (s1,s2)
+Farthest twin edge: ---p3_1---> c3 (s2,D) from c2 (s2,D)
+Instance lines AFTER fixing enclosing edges: Instance c4 :
+c4 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C4,s0>--> c4 (s0,s1)
+
+c4 (s0,s1) nr.IN-edges =  1
+ GO EDGES: ---p4_1---> c3 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C4,s1>--> c4 (s1,s2)
+
+c4 (s1,s2) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C4,s2>--> c4 (s2,D)
+
+c4 (s2,D) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: ---p3_2---> c3 (s2,D)
+ INST EDGE: { }
+
+Instance c3 :
+c3 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C3,s0>--> c3 (s0,s1)
+
+c3 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p3_1---> c2 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C3,s1>--> c3 (s1,s2)
+
+c3 (s1,s2) nr.IN-edges =  2
+ GO EDGES: ---p3_2---> c4 (s1,s2)
+ RETURN EDGES: 
+ INST EDGE: --<C3,s2>--> c3 (s2,D)
+
+c3 (s2,D) nr.IN-edges =  3
+ GO EDGES: 
+ RETURN EDGES: ---p2_2---> c2 (s2,D); ---p4_1---> c4 (s2,D)
+ INST EDGE: { }
+
+Instance c2 :
+c2 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C2,s0>--> c2 (s0,s1)
+
+c2 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p2_1---> c1 (s1,s2); ---p2_1---> c1 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C2,s1>--> c2 (s1,s2)
+
+c2 (s1,s2) nr.IN-edges =  2
+ GO EDGES: ---p2_2---> c3 (s1,s2)
+ RETURN EDGES: 
+ INST EDGE: --<C2,s2>--> c2 (s2,D)
+
+c2 (s2,D) nr.IN-edges =  4
+ GO EDGES: 
+ RETURN EDGES: ---p1_2---> c1 (s2,D); ---p3_1---> c3 (s2,D)
+ INST EDGE: { }
+
+Instance c1 :
+c1 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C1,s0>--> c1 (s0,s1)
+
+c1 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p1_1---> c0 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C1,s1>--> c1 (s1,s2)
+
+c1 (s1,s2) nr.IN-edges =  3
+ GO EDGES: ---p1_2---> c2 (s1,s2)
+ RETURN EDGES: ---p2_1---> c2 (s2,D)
+ INST EDGE: --<C1,s2>--> c1 (s2,D)
+
+c1 (s2,D) nr.IN-edges =  3
+ GO EDGES: 
+ RETURN EDGES: ---p0_2---> c0 (s1,D); ---p2_1---> c2 (s2,D)
+ INST EDGE: { }
+
+Instance c0 :
+c0 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C0,s0>--> c0 (s0,s1)
+
+c0 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p0_2---> c1 (s1,s2)
+ RETURN EDGES: 
+ INST EDGE: --<C0,s1>--> c0 (s1,D)
+
+c0 (s1,D) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: ---p1_1---> c1 (s2,D)
+ INST EDGE: { }
+
+################# Fix enclosing edges for vertex c3 (s1,s2) and GO edge ---p3_2---> c4 (s1,s2)
+Pairs found from the given vertex: { }
+Pairs found from successors of the given vertex: { }
+Total set of pairs found: { }
+
+################# Fix enclosing edges for vertex c2 (s0,s1) and GO edge ---p2_1---> c1 (s1,s2)
+Pairs found from the given vertex: { }
+Pairs found from successors of the given vertex: { }
+Total set of pairs found: { }
+
+################# Fix enclosing edges for vertex c2 (s0,s1) and GO edge ---p2_1---> c1 (s0,s1)
+Pairs found from the given vertex: (c2 (s0,s1), ---p2_1---> c1 (s1,s2))
+Pairs found from successors of the given vertex: { }
+Total set of pairs found: (c2 (s0,s1), ---p2_1---> c1 (s1,s2))
+Farthest vertex: (c2 (s0,s1), ---p2_1---> c1 (s1,s2))
+Edges to be removed: { }
+Apply EDGE FIXING
+Orig twin edge: ---p2_1---> c2 (s2,D) from c1 (s1,s2)
+Farthest twin edge: ---p2_1---> c2 (s2,D) from c1 (s2,D)
+Instance lines AFTER fixing enclosing edges: Instance c4 :
+c4 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C4,s0>--> c4 (s0,s1)
+
+c4 (s0,s1) nr.IN-edges =  1
+ GO EDGES: ---p4_1---> c3 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C4,s1>--> c4 (s1,s2)
+
+c4 (s1,s2) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C4,s2>--> c4 (s2,D)
+
+c4 (s2,D) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: ---p3_2---> c3 (s2,D)
+ INST EDGE: { }
+
+Instance c3 :
+c3 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C3,s0>--> c3 (s0,s1)
+
+c3 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p3_1---> c2 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C3,s1>--> c3 (s1,s2)
+
+c3 (s1,s2) nr.IN-edges =  2
+ GO EDGES: ---p3_2---> c4 (s1,s2)
+ RETURN EDGES: 
+ INST EDGE: --<C3,s2>--> c3 (s2,D)
+
+c3 (s2,D) nr.IN-edges =  3
+ GO EDGES: 
+ RETURN EDGES: ---p2_2---> c2 (s2,D); ---p4_1---> c4 (s2,D)
+ INST EDGE: { }
+
+Instance c2 :
+c2 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C2,s0>--> c2 (s0,s1)
+
+c2 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p2_1---> c1 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C2,s1>--> c2 (s1,s2)
+
+c2 (s1,s2) nr.IN-edges =  2
+ GO EDGES: ---p2_2---> c3 (s1,s2)
+ RETURN EDGES: 
+ INST EDGE: --<C2,s2>--> c2 (s2,D)
+
+c2 (s2,D) nr.IN-edges =  3
+ GO EDGES: 
+ RETURN EDGES: ---p1_2---> c1 (s2,D); ---p3_1---> c3 (s2,D)
+ INST EDGE: { }
+
+Instance c1 :
+c1 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C1,s0>--> c1 (s0,s1)
+
+c1 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p1_1---> c0 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C1,s1>--> c1 (s1,s2)
+
+c1 (s1,s2) nr.IN-edges =  2
+ GO EDGES: ---p1_2---> c2 (s1,s2)
+ RETURN EDGES: 
+ INST EDGE: --<C1,s2>--> c1 (s2,D)
+
+c1 (s2,D) nr.IN-edges =  3
+ GO EDGES: 
+ RETURN EDGES: ---p0_2---> c0 (s1,D); ---p2_1---> c2 (s2,D)
+ INST EDGE: { }
+
+Instance c0 :
+c0 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C0,s0>--> c0 (s0,s1)
+
+c0 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p0_2---> c1 (s1,s2)
+ RETURN EDGES: 
+ INST EDGE: --<C0,s1>--> c0 (s1,D)
+
+c0 (s1,D) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: ---p1_1---> c1 (s2,D)
+ INST EDGE: { }
+
+################# Fix enclosing edges for vertex c2 (s1,s2) and GO edge ---p2_2---> c3 (s1,s2)
+Pairs found from the given vertex: { }
+Pairs found from successors of the given vertex: { }
+Total set of pairs found: { }
+
+################# Fix enclosing edges for vertex c1 (s0,s1) and GO edge ---p1_1---> c0 (s0,s1)
+Pairs found from the given vertex: { }
+Pairs found from successors of the given vertex: { }
+Total set of pairs found: { }
+
+################# Fix enclosing edges for vertex c1 (s1,s2) and GO edge ---p1_2---> c2 (s1,s2)
+Pairs found from the given vertex: { }
+Pairs found from successors of the given vertex: { }
+Total set of pairs found: { }
+
+################# Fix enclosing edges for vertex c0 (s0,s1) and GO edge ---p0_2---> c1 (s1,s2)
+Pairs found from the given vertex: { }
+Pairs found from successors of the given vertex: { }
+Total set of pairs found: { }
+
+Now the INSTANCE LINES WITH EDGES look like this:
+
+Instance c4 :
+c4 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C4,s0>--> c4 (s0,s1)
+
+c4 (s0,s1) nr.IN-edges =  1
+ GO EDGES: ---p4_1---> c3 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C4,s1>--> c4 (s1,s2)
+
+c4 (s1,s2) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C4,s2>--> c4 (s2,D)
+
+c4 (s2,D) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: ---p3_2---> c3 (s2,D)
+ INST EDGE: { }
+
+Instance c3 :
+c3 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C3,s0>--> c3 (s0,s1)
+
+c3 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p3_1---> c2 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C3,s1>--> c3 (s1,s2)
+
+c3 (s1,s2) nr.IN-edges =  2
+ GO EDGES: ---p3_2---> c4 (s1,s2)
+ RETURN EDGES: 
+ INST EDGE: --<C3,s2>--> c3 (s2,D)
+
+c3 (s2,D) nr.IN-edges =  3
+ GO EDGES: 
+ RETURN EDGES: ---p2_2---> c2 (s2,D); ---p4_1---> c4 (s2,D)
+ INST EDGE: { }
+
+Instance c2 :
+c2 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C2,s0>--> c2 (s0,s1)
+
+c2 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p2_1---> c1 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C2,s1>--> c2 (s1,s2)
+
+c2 (s1,s2) nr.IN-edges =  2
+ GO EDGES: ---p2_2---> c3 (s1,s2)
+ RETURN EDGES: 
+ INST EDGE: --<C2,s2>--> c2 (s2,D)
+
+c2 (s2,D) nr.IN-edges =  3
+ GO EDGES: 
+ RETURN EDGES: ---p1_2---> c1 (s2,D); ---p3_1---> c3 (s2,D)
+ INST EDGE: { }
+
+Instance c1 :
+c1 (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<C1,s0>--> c1 (s0,s1)
+
+c1 (s0,s1) nr.IN-edges =  2
+ GO EDGES: ---p1_1---> c0 (s0,s1)
+ RETURN EDGES: 
+ INST EDGE: --<C1,s1>--> c1 (s1,s2)
+
+c1 (s1,s2) nr.IN-edges =  2
+ GO EDGES: ---p1_2---> c2 (s1,s2)
+ RETURN EDGES: 
  INST EDGE: --<C1,s2>--> c1 (s2,D)
 
 c1 (s2,D) nr.IN-edges =  3
@@ -828,7 +1295,6 @@ Plan BEFORE:
  Plan[5] = [Create instance c0:C0]
  Plan[6] = [c4 : change state from s0 to s1]
  Plan[7] = [c4 : bind port p4_1 to instance c3]
- Plan[8] = [c4 : bind port p4_1 to instance c3]
 Vertex popped: c3 (s0,s1)
 STACK = 
 []
@@ -850,10 +1316,8 @@ Plan BEFORE:
  Plan[5] = [Create instance c0:C0]
  Plan[6] = [c4 : change state from s0 to s1]
  Plan[7] = [c4 : bind port p4_1 to instance c3]
- Plan[8] = [c4 : bind port p4_1 to instance c3]
- Plan[9] = [c3 : change state from s0 to s1]
- Plan[10] = [c3 : bind port p3_1 to instance c2]
- Plan[11] = [c3 : bind port p3_1 to instance c2]
+ Plan[8] = [c3 : change state from s0 to s1]
+ Plan[9] = [c3 : bind port p3_1 to instance c2]
 Vertex popped: c2 (s0,s1)
 STACK = 
 []
@@ -875,13 +1339,10 @@ Plan BEFORE:
  Plan[5] = [Create instance c0:C0]
  Plan[6] = [c4 : change state from s0 to s1]
  Plan[7] = [c4 : bind port p4_1 to instance c3]
- Plan[8] = [c4 : bind port p4_1 to instance c3]
- Plan[9] = [c3 : change state from s0 to s1]
- Plan[10] = [c3 : bind port p3_1 to instance c2]
- Plan[11] = [c3 : bind port p3_1 to instance c2]
- Plan[12] = [c2 : change state from s0 to s1]
- Plan[13] = [c2 : bind port p2_1 to instance c1]
- Plan[14] = [c2 : bind port p2_1 to instance c1]
+ Plan[8] = [c3 : change state from s0 to s1]
+ Plan[9] = [c3 : bind port p3_1 to instance c2]
+ Plan[10] = [c2 : change state from s0 to s1]
+ Plan[11] = [c2 : bind port p2_1 to instance c1]
 Vertex popped: c1 (s0,s1)
 STACK = 
 []
@@ -903,15 +1364,12 @@ Plan BEFORE:
  Plan[5] = [Create instance c0:C0]
  Plan[6] = [c4 : change state from s0 to s1]
  Plan[7] = [c4 : bind port p4_1 to instance c3]
- Plan[8] = [c4 : bind port p4_1 to instance c3]
- Plan[9] = [c3 : change state from s0 to s1]
- Plan[10] = [c3 : bind port p3_1 to instance c2]
- Plan[11] = [c3 : bind port p3_1 to instance c2]
- Plan[12] = [c2 : change state from s0 to s1]
- Plan[13] = [c2 : bind port p2_1 to instance c1]
- Plan[14] = [c2 : bind port p2_1 to instance c1]
- Plan[15] = [c1 : change state from s0 to s1]
- Plan[16] = [c1 : bind port p1_1 to instance c0]
+ Plan[8] = [c3 : change state from s0 to s1]
+ Plan[9] = [c3 : bind port p3_1 to instance c2]
+ Plan[10] = [c2 : change state from s0 to s1]
+ Plan[11] = [c2 : bind port p2_1 to instance c1]
+ Plan[12] = [c1 : change state from s0 to s1]
+ Plan[13] = [c1 : bind port p1_1 to instance c0]
 Vertex popped: c0 (s0,s1)
 STACK = 
 []
@@ -933,17 +1391,14 @@ Plan BEFORE:
  Plan[5] = [Create instance c0:C0]
  Plan[6] = [c4 : change state from s0 to s1]
  Plan[7] = [c4 : bind port p4_1 to instance c3]
- Plan[8] = [c4 : bind port p4_1 to instance c3]
- Plan[9] = [c3 : change state from s0 to s1]
- Plan[10] = [c3 : bind port p3_1 to instance c2]
- Plan[11] = [c3 : bind port p3_1 to instance c2]
- Plan[12] = [c2 : change state from s0 to s1]
- Plan[13] = [c2 : bind port p2_1 to instance c1]
- Plan[14] = [c2 : bind port p2_1 to instance c1]
- Plan[15] = [c1 : change state from s0 to s1]
- Plan[16] = [c1 : bind port p1_1 to instance c0]
- Plan[17] = [c0 : change state from s0 to s1]
- Plan[18] = [c0 : bind port p0_2 to instance c1]
+ Plan[8] = [c3 : change state from s0 to s1]
+ Plan[9] = [c3 : bind port p3_1 to instance c2]
+ Plan[10] = [c2 : change state from s0 to s1]
+ Plan[11] = [c2 : bind port p2_1 to instance c1]
+ Plan[12] = [c1 : change state from s0 to s1]
+ Plan[13] = [c1 : bind port p1_1 to instance c0]
+ Plan[14] = [c0 : change state from s0 to s1]
+ Plan[15] = [c0 : bind port p0_2 to instance c1]
 Vertex popped: c1 (s1,s2)
 STACK = 
 []
@@ -965,20 +1420,16 @@ Plan BEFORE:
  Plan[5] = [Create instance c0:C0]
  Plan[6] = [c4 : change state from s0 to s1]
  Plan[7] = [c4 : bind port p4_1 to instance c3]
- Plan[8] = [c4 : bind port p4_1 to instance c3]
- Plan[9] = [c3 : change state from s0 to s1]
- Plan[10] = [c3 : bind port p3_1 to instance c2]
- Plan[11] = [c3 : bind port p3_1 to instance c2]
- Plan[12] = [c2 : change state from s0 to s1]
- Plan[13] = [c2 : bind port p2_1 to instance c1]
- Plan[14] = [c2 : bind port p2_1 to instance c1]
- Plan[15] = [c1 : change state from s0 to s1]
- Plan[16] = [c1 : bind port p1_1 to instance c0]
- Plan[17] = [c0 : change state from s0 to s1]
- Plan[18] = [c0 : bind port p0_2 to instance c1]
- Plan[19] = [c1 : change state from s1 to s2]
- Plan[20] = [c1 : bind port p1_2 to instance c2]
- Plan[21] = [c1 : unbind port p2_1 from instance c2]
+ Plan[8] = [c3 : change state from s0 to s1]
+ Plan[9] = [c3 : bind port p3_1 to instance c2]
+ Plan[10] = [c2 : change state from s0 to s1]
+ Plan[11] = [c2 : bind port p2_1 to instance c1]
+ Plan[12] = [c1 : change state from s0 to s1]
+ Plan[13] = [c1 : bind port p1_1 to instance c0]
+ Plan[14] = [c0 : change state from s0 to s1]
+ Plan[15] = [c0 : bind port p0_2 to instance c1]
+ Plan[16] = [c1 : change state from s1 to s2]
+ Plan[17] = [c1 : bind port p1_2 to instance c2]
 Vertex popped: c2 (s1,s2)
 STACK = 
 []
@@ -1000,23 +1451,18 @@ Plan BEFORE:
  Plan[5] = [Create instance c0:C0]
  Plan[6] = [c4 : change state from s0 to s1]
  Plan[7] = [c4 : bind port p4_1 to instance c3]
- Plan[8] = [c4 : bind port p4_1 to instance c3]
- Plan[9] = [c3 : change state from s0 to s1]
- Plan[10] = [c3 : bind port p3_1 to instance c2]
- Plan[11] = [c3 : bind port p3_1 to instance c2]
- Plan[12] = [c2 : change state from s0 to s1]
- Plan[13] = [c2 : bind port p2_1 to instance c1]
- Plan[14] = [c2 : bind port p2_1 to instance c1]
- Plan[15] = [c1 : change state from s0 to s1]
- Plan[16] = [c1 : bind port p1_1 to instance c0]
- Plan[17] = [c0 : change state from s0 to s1]
- Plan[18] = [c0 : bind port p0_2 to instance c1]
- Plan[19] = [c1 : change state from s1 to s2]
- Plan[20] = [c1 : bind port p1_2 to instance c2]
- Plan[21] = [c1 : unbind port p2_1 from instance c2]
- Plan[22] = [c2 : change state from s1 to s2]
- Plan[23] = [c2 : bind port p2_2 to instance c3]
- Plan[24] = [c2 : unbind port p3_1 from instance c3]
+ Plan[8] = [c3 : change state from s0 to s1]
+ Plan[9] = [c3 : bind port p3_1 to instance c2]
+ Plan[10] = [c2 : change state from s0 to s1]
+ Plan[11] = [c2 : bind port p2_1 to instance c1]
+ Plan[12] = [c1 : change state from s0 to s1]
+ Plan[13] = [c1 : bind port p1_1 to instance c0]
+ Plan[14] = [c0 : change state from s0 to s1]
+ Plan[15] = [c0 : bind port p0_2 to instance c1]
+ Plan[16] = [c1 : change state from s1 to s2]
+ Plan[17] = [c1 : bind port p1_2 to instance c2]
+ Plan[18] = [c2 : change state from s1 to s2]
+ Plan[19] = [c2 : bind port p2_2 to instance c3]
 Vertex popped: c3 (s1,s2)
 STACK = 
 []
@@ -1038,26 +1484,20 @@ Plan BEFORE:
  Plan[5] = [Create instance c0:C0]
  Plan[6] = [c4 : change state from s0 to s1]
  Plan[7] = [c4 : bind port p4_1 to instance c3]
- Plan[8] = [c4 : bind port p4_1 to instance c3]
- Plan[9] = [c3 : change state from s0 to s1]
- Plan[10] = [c3 : bind port p3_1 to instance c2]
- Plan[11] = [c3 : bind port p3_1 to instance c2]
- Plan[12] = [c2 : change state from s0 to s1]
- Plan[13] = [c2 : bind port p2_1 to instance c1]
- Plan[14] = [c2 : bind port p2_1 to instance c1]
- Plan[15] = [c1 : change state from s0 to s1]
- Plan[16] = [c1 : bind port p1_1 to instance c0]
- Plan[17] = [c0 : change state from s0 to s1]
- Plan[18] = [c0 : bind port p0_2 to instance c1]
- Plan[19] = [c1 : change state from s1 to s2]
- Plan[20] = [c1 : bind port p1_2 to instance c2]
- Plan[21] = [c1 : unbind port p2_1 from instance c2]
- Plan[22] = [c2 : change state from s1 to s2]
- Plan[23] = [c2 : bind port p2_2 to instance c3]
- Plan[24] = [c2 : unbind port p3_1 from instance c3]
- Plan[25] = [c3 : change state from s1 to s2]
- Plan[26] = [c3 : bind port p3_2 to instance c4]
- Plan[27] = [c3 : unbind port p4_1 from instance c4]
+ Plan[8] = [c3 : change state from s0 to s1]
+ Plan[9] = [c3 : bind port p3_1 to instance c2]
+ Plan[10] = [c2 : change state from s0 to s1]
+ Plan[11] = [c2 : bind port p2_1 to instance c1]
+ Plan[12] = [c1 : change state from s0 to s1]
+ Plan[13] = [c1 : bind port p1_1 to instance c0]
+ Plan[14] = [c0 : change state from s0 to s1]
+ Plan[15] = [c0 : bind port p0_2 to instance c1]
+ Plan[16] = [c1 : change state from s1 to s2]
+ Plan[17] = [c1 : bind port p1_2 to instance c2]
+ Plan[18] = [c2 : change state from s1 to s2]
+ Plan[19] = [c2 : bind port p2_2 to instance c3]
+ Plan[20] = [c3 : change state from s1 to s2]
+ Plan[21] = [c3 : bind port p3_2 to instance c4]
 Vertex popped: c4 (s1,s2)
 STACK = 
 []
@@ -1076,24 +1516,18 @@ The computed PLAN is:
  Plan[5] = [Create instance c0:C0]
  Plan[6] = [c4 : change state from s0 to s1]
  Plan[7] = [c4 : bind port p4_1 to instance c3]
- Plan[8] = [c4 : bind port p4_1 to instance c3]
- Plan[9] = [c3 : change state from s0 to s1]
- Plan[10] = [c3 : bind port p3_1 to instance c2]
- Plan[11] = [c3 : bind port p3_1 to instance c2]
- Plan[12] = [c2 : change state from s0 to s1]
- Plan[13] = [c2 : bind port p2_1 to instance c1]
- Plan[14] = [c2 : bind port p2_1 to instance c1]
- Plan[15] = [c1 : change state from s0 to s1]
- Plan[16] = [c1 : bind port p1_1 to instance c0]
- Plan[17] = [c0 : change state from s0 to s1]
- Plan[18] = [c0 : bind port p0_2 to instance c1]
- Plan[19] = [c1 : change state from s1 to s2]
- Plan[20] = [c1 : bind port p1_2 to instance c2]
- Plan[21] = [c1 : unbind port p2_1 from instance c2]
- Plan[22] = [c2 : change state from s1 to s2]
- Plan[23] = [c2 : bind port p2_2 to instance c3]
- Plan[24] = [c2 : unbind port p3_1 from instance c3]
- Plan[25] = [c3 : change state from s1 to s2]
- Plan[26] = [c3 : bind port p3_2 to instance c4]
- Plan[27] = [c3 : unbind port p4_1 from instance c4]
- Plan[28] = [c4 : change state from s1 to s2]
+ Plan[8] = [c3 : change state from s0 to s1]
+ Plan[9] = [c3 : bind port p3_1 to instance c2]
+ Plan[10] = [c2 : change state from s0 to s1]
+ Plan[11] = [c2 : bind port p2_1 to instance c1]
+ Plan[12] = [c1 : change state from s0 to s1]
+ Plan[13] = [c1 : bind port p1_1 to instance c0]
+ Plan[14] = [c0 : change state from s0 to s1]
+ Plan[15] = [c0 : bind port p0_2 to instance c1]
+ Plan[16] = [c1 : change state from s1 to s2]
+ Plan[17] = [c1 : bind port p1_2 to instance c2]
+ Plan[18] = [c2 : change state from s1 to s2]
+ Plan[19] = [c2 : bind port p2_2 to instance c3]
+ Plan[20] = [c3 : change state from s1 to s2]
+ Plan[21] = [c3 : bind port p3_2 to instance c4]
+ Plan[22] = [c4 : change state from s1 to s2]

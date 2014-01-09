@@ -337,8 +337,105 @@ a (s4,D) nr.IN-edges =  1
  RETURN EDGES: 
  INST EDGE: { }
 
-Next we ADD GO (blue) and RETURN (red) EDGES. 
+Next we ADD GO (blue) and RETURN (red) EDGES.
 
+Instance b :
+b (C,q0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<B,q0>--> b (q0,q1)
+
+b (q0,q1) nr.IN-edges =  2
+ GO EDGES: ---p1_2---> a (s1,s2)
+ RETURN EDGES: 
+ INST EDGE: --<B,q1>--> b (q1,q2)
+
+b (q1,q2) nr.IN-edges =  2
+ GO EDGES: ---p1_3---> a (s2,s3)
+ RETURN EDGES: ---p0_1---> a (s2,s3)
+ INST EDGE: --<B,q2>--> b (q2,q3)
+
+b (q2,q3) nr.IN-edges =  3
+ GO EDGES: ---p1_4---> a (s3,s4)
+ RETURN EDGES: ---p0_2---> a (s3,s4)
+ INST EDGE: --<B,q3>--> b (q3,q4)
+
+b (q3,q4) nr.IN-edges =  3
+ GO EDGES: 
+ RETURN EDGES: ---p0_3---> a (s4,D)
+ INST EDGE: --<B,q4>--> b (q4,D)
+
+b (q4,D) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: ---p0_4---> a (s4,D)
+ INST EDGE: { }
+
+Instance a :
+a (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<A,s0>--> a (s0,s1)
+
+a (s0,s1) nr.IN-edges =  1
+ GO EDGES: ---p0_1---> b (q0,q1)
+ RETURN EDGES: 
+ INST EDGE: --<A,s1>--> a (s1,s2)
+
+a (s1,s2) nr.IN-edges =  2
+ GO EDGES: ---p0_2---> b (q1,q2)
+ RETURN EDGES: 
+ INST EDGE: --<A,s2>--> a (s2,s3)
+
+a (s2,s3) nr.IN-edges =  3
+ GO EDGES: ---p0_3---> b (q2,q3)
+ RETURN EDGES: ---p1_2---> b (q2,q3)
+ INST EDGE: --<A,s3>--> a (s3,s4)
+
+a (s3,s4) nr.IN-edges =  3
+ GO EDGES: ---p0_4---> b (q3,q4)
+ RETURN EDGES: ---p1_3---> b (q3,q4)
+ INST EDGE: --<A,s4>--> a (s4,D)
+
+a (s4,D) nr.IN-edges =  3
+ GO EDGES: 
+ RETURN EDGES: ---p1_4---> b (q4,D)
+ INST EDGE: { }
+
+Next we FIX ENCLOSING GO (blue) and RETURN (red) EDGES.
+################# Fix enclosing edges for vertex b (q0,q1) and GO edge ---p1_2---> a (s1,s2)
+Pairs found from the given vertex: { }
+Pairs found from successors of the given vertex: { }
+Total set of pairs found: { }
+
+################# Fix enclosing edges for vertex b (q1,q2) and GO edge ---p1_3---> a (s2,s3)
+Pairs found from the given vertex: { }
+Pairs found from successors of the given vertex: { }
+Total set of pairs found: { }
+
+################# Fix enclosing edges for vertex b (q2,q3) and GO edge ---p1_4---> a (s3,s4)
+Pairs found from the given vertex: { }
+Pairs found from successors of the given vertex: { }
+Total set of pairs found: { }
+
+################# Fix enclosing edges for vertex a (s0,s1) and GO edge ---p0_1---> b (q0,q1)
+Pairs found from the given vertex: { }
+Pairs found from successors of the given vertex: { }
+Total set of pairs found: { }
+
+################# Fix enclosing edges for vertex a (s1,s2) and GO edge ---p0_2---> b (q1,q2)
+Pairs found from the given vertex: { }
+Pairs found from successors of the given vertex: { }
+Total set of pairs found: { }
+
+################# Fix enclosing edges for vertex a (s2,s3) and GO edge ---p0_3---> b (q2,q3)
+Pairs found from the given vertex: { }
+Pairs found from successors of the given vertex: { }
+Total set of pairs found: { }
+
+################# Fix enclosing edges for vertex a (s3,s4) and GO edge ---p0_4---> b (q3,q4)
+Pairs found from the given vertex: { }
+Pairs found from successors of the given vertex: { }
+Total set of pairs found: { }
 
 Now the INSTANCE LINES WITH EDGES look like this:
 

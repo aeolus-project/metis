@@ -27,7 +27,7 @@ val add_vertex : t -> T.Vertex.t -> unit
 val build_instance_lines : (Gg.Node.t list) list -> t list
 val filter_by_comp_type : (component_t ref) -> t list -> t list
 val list_add_dep_edges : t list -> unit
-val fix_enclosing_edges_pairs : t list -> unit
+val fix_enclosing_edges_pairs : Buffer.t ref -> t list -> unit
 val list_to_vertices : t list -> (T.Vertex.t list)
 val filter_maximal_paths : (Gg.Node.t list) list -> (Gg.Node.t list) list 
 (* functions involved in the splitting phase *)
@@ -41,5 +41,3 @@ val find_ready_iline : T.Vertex.t -> t list -> t
 val find_src_by_go_edge : t -> T.Dep_edge.t -> T.Vertex.t 
 val find_in_edges_vertices_pairs : T.Vertex.t -> t list -> (T.Dep_edge.t * T.Vertex.t) list 
 val find_corresponding_vertex : T.Vertex.t -> t -> t -> T.Vertex.t  
-val find_farthest_vertex_edge : T.Vertex.t -> T.Dep_edge.t -> ((T.Vertex.t * T.Dep_edge.t ) list) ref -> T.Vertex.t * T.Dep_edge.t 
-

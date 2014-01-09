@@ -11,7 +11,7 @@ type t =
 | State_change of (string * string * string)
 | Bind of (string * string * string)
 | Unbind of (string * string * string)
-| Del of string (* TODO: used for tags of the kind (3,D) *)
+| Del of string (* used for tags of the kind (3,D) *)
 
 
 let to_string action =

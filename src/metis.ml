@@ -109,11 +109,13 @@ let () =
     let instance_lines = (Instance.build_instance_lines maximal_paths) in
 		(Printf.bprintf !file_buffer "%s\n" "\n\nThe INSTANCE LINES are the following:\n");
     (Instance.print_list file_buffer instance_lines);
-		(Printf.bprintf !file_buffer "%s\n" "\nNext we ADD GO (blue) and RETURN (red) EDGES. ");
+		(Printf.bprintf !file_buffer "%s\n" "\nNext we ADD GO (blue) and RETURN (red) EDGES.\n");
     (Instance.list_add_dep_edges instance_lines);
-		(* deal with enclosing edges, e.g. g1 g1' r1 r1' should become g1 r1' *)	
-    (Instance.fix_enclosing_edges_pairs instance_lines);
-		(Printf.bprintf !file_buffer "%s\n" "\n\nNow the INSTANCE LINES WITH EDGES look like this:\n");
+    (Instance.print_list file_buffer instance_lines);
+		(* deal with enclosing dependency edges, e.g. g1 g1' r1 r1' should become g1 r1' *)	
+		(Printf.bprintf !file_buffer "%s" "\nNext we FIX ENCLOSING GO (blue) and RETURN (red) EDGES.");
+    (Instance.fix_enclosing_edges_pairs file_buffer instance_lines);
+		(Printf.bprintf !file_buffer "%s\n" "\nNow the INSTANCE LINES WITH EDGES look like this:\n");
     (Instance.print_list file_buffer instance_lines);
 
 		(*print_endline "\nNow we merge all vertices together for topological sorting.";*)

@@ -54,6 +54,7 @@ module T =
       val extract_vertex : (t option) ref -> t
 			val chop_list : t list -> int -> t list 
 			val remove_final_vertex : t list -> t list
+			val get_all_inst_succs : t -> t list
 			val compute_all_succs : t -> t list
       val find_in_list_by_state : state_id_t -> t list -> t
       val top_sort : t list -> t list
@@ -71,6 +72,7 @@ module T =
 			val find_in_blue_edges_vertices : t -> t list -> (Dep_edge.t * t) list
 			val find_position : int ref -> t -> t list -> int 
 			val find_go_edge_by_port : port_name -> t -> (Dep_edge.t option)
+			val filter_go_edges_by_port : port_name -> t -> Dep_edge.t list
 			(* need the following functions to use Ocamlgraph library *)	
 			val compare : t -> t -> int
 			val hash : t -> int
@@ -137,7 +139,7 @@ module T =
       type t = {
         id : string;      
 				comp_type_name : string; 
-        (* a tag of the kind (0,1) or (C,0) for creation or (i,D) for destruction *)
+        (* a tag of the kind (s_i,s_j) or (C,s_0) for creation or (s_i,D) for destruction *)
         mutable tag : vertex_tag_t;
 				(* used to keep track of the identity of different duplicates *)
 				mutable duplicates_nr : int;
@@ -162,6 +164,12 @@ module T =
 
 			let extract_src_from_tag vertex =
 				(extract_tag_src vertex.tag)
+
+			let rec get_all_inst_succs vertex =
+					match vertex.inst_edge with
+						None -> []
+					| (Some edge) -> let succ = !(Inst_edge.get_dest edge) in
+							succ :: (get_all_inst_succs succ) 
 
 			let compute_all_succs vertex =
 				let inst_succ = 
@@ -649,7 +657,10 @@ module T =
 				| _ -> raise (Too_many_matching_go_edges 
 						("Vertex " ^ (to_string_with_id vertex) ^ " has " 
 						^ (string_of_int (List.length matching_go_edges)) ^ " GO edges that match port " ^ port)) 
-			
+		
+			let filter_go_edges_by_port port vertex =
+				(List.filter (Dep_edge.match_port port) vertex.go_edges) 
+	
 			(******************************************************)
 			(* 			functions needed to use Ocamlgraph library		*)
       (******************************************************)
@@ -1657,6 +1668,7 @@ module T =
       (* go edges are blue while return edges are red *)    
       type color_t 
       type t
+			val eq : t -> t -> bool
       val to_string : t -> string
       val string_of_list : t list -> string
       val get_dest : t -> (Vertex.t ref)       
