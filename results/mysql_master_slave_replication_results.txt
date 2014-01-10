@@ -378,8 +378,106 @@ master (MasterServing,D) nr.IN-edges =  1
  RETURN EDGES: 
  INST EDGE: { }
 
-Next we ADD GO (blue) and RETURN (red) EDGES. 
+Next we ADD GO (blue) and RETURN (red) EDGES.
 
+Instance application :
+application (C,Uninst) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Application,Uninst>--> application (Uninst,Inst)
+
+application (Uninst,Inst) nr.IN-edges =  3
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Application,Inst>--> application (Inst,D)
+
+application (Inst,D) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: ---mysql---> master (MasterServing,D); ---s_mysql---> slave (Serving,D)
+ INST EDGE: { }
+
+Instance slave :
+slave (C,Uninst) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Slave,Uninst>--> slave (Uninst,Inst)
+
+slave (Uninst,Inst) nr.IN-edges =  1
+ GO EDGES: ---slave_ip---> master (Serving,Auth)
+ RETURN EDGES: 
+ INST EDGE: --<Slave,Inst>--> slave (Inst,ReceiveDump)
+
+slave (Inst,ReceiveDump) nr.IN-edges =  3
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Slave,ReceiveDump>--> slave (ReceiveDump,Serving)
+
+slave (ReceiveDump,Serving) nr.IN-edges =  1
+ GO EDGES: ---s_mysql---> application (Uninst,Inst)
+ RETURN EDGES: ---dump---> master (Dump,MasterServing)
+ INST EDGE: --<Slave,Serving>--> slave (Serving,D)
+
+slave (Serving,D) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: { }
+
+Instance master :
+master (C,Uninst) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Master,Uninst>--> master (Uninst,Inst)
+
+master (Uninst,Inst) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Master,Inst>--> master (Inst,Serving)
+
+master (Inst,Serving) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Master,Serving>--> master (Serving,Auth)
+
+master (Serving,Auth) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Master,Auth>--> master (Auth,Dump)
+
+master (Auth,Dump) nr.IN-edges =  1
+ GO EDGES: ---dump---> slave (Inst,ReceiveDump)
+ RETURN EDGES: ---slave_ip---> slave (Inst,ReceiveDump)
+ INST EDGE: --<Master,Dump>--> master (Dump,MasterServing)
+
+master (Dump,MasterServing) nr.IN-edges =  2
+ GO EDGES: ---mysql---> application (Uninst,Inst)
+ RETURN EDGES: 
+ INST EDGE: --<Master,MasterServing>--> master (MasterServing,D)
+
+master (MasterServing,D) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: { }
+
+Next we FIX ENCLOSING GO (blue) and RETURN (red) EDGES.
+################# Fix enclosing edges for vertex slave (Uninst,Inst) and GO edge ---slave_ip---> master (Serving,Auth)
+Pairs found from the given vertex: { }
+Pairs found from successors of the given vertex: { }
+Total set of pairs found: { }
+
+################# Fix enclosing edges for vertex slave (ReceiveDump,Serving) and GO edge ---s_mysql---> application (Uninst,Inst)
+Pairs found from the given vertex: { }
+Pairs found from successors of the given vertex: { }
+Total set of pairs found: { }
+
+################# Fix enclosing edges for vertex master (Auth,Dump) and GO edge ---dump---> slave (Inst,ReceiveDump)
+Pairs found from the given vertex: { }
+Pairs found from successors of the given vertex: { }
+Total set of pairs found: { }
+
+################# Fix enclosing edges for vertex master (Dump,MasterServing) and GO edge ---mysql---> application (Uninst,Inst)
+Pairs found from the given vertex: { }
+Pairs found from successors of the given vertex: { }
+Total set of pairs found: { }
 
 Now the INSTANCE LINES WITH EDGES look like this:
 

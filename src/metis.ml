@@ -60,12 +60,9 @@ let user_universe = (Datatypes_j.universe_of_string buffer)
  * In the rest we work then with this representation.
  *)
 let universe = (Universe_translator.translate user_universe)
-(*
-let () = (print_endline "performed universe translation")
-*)
+(* let () = (print_endline "performed universe translation") *)
 
 (* find target component in provided universe *)
-(* TODO: abort if it can't find it *)
 let targetType = (Facade.find_component_by_name universe !target_component_name) 
 
 (* TODO: check for correctness: if the given state ID does not belong to the given component abort *)

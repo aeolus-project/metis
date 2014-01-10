@@ -6,6 +6,10 @@
 open My_datatypes
 open Datatypes_t
 
+(** Exception thrown when a component name cannot be found in the given 
+		universe. *)              
+exception Component_name_not_found of string
+
 (* Functions dealing with state *)
 
 let get_state_id state =
@@ -115,7 +119,8 @@ let find_component_by_name universe name =
     let component = (List.find (match_comp_name name) universe) in
     component
   with 
-    Not_found -> raise Not_found (* TODO: change into global abort *)  
+    Not_found -> raise (Component_name_not_found ("There is no component with name " 
+			^ "'" ^ name ^ "'" ^ " in the given universe."))
 
 
 (*********************************************************************************)

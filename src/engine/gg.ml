@@ -614,10 +614,10 @@ module Gg =
 				end in
 		origin
 		
- 	(** Choose provider of port [require] from the list of nodes [nlist], relying 
-			on heuristics. *)
+(** Choose provider of port [require] from the list of nodes [nlist], relying 
+		on heuristics. *)
 (* N.B. we use Bind arcs *)
-let new_choose_port_provider file_buffer node require nlist =
+let choose_port_provider file_buffer node require nlist =
 	let providers = (filter_port_providers require nlist) in	
 	match providers with 
 		[] -> raise (No_available_provider ("No provider available for require " ^ require))
@@ -649,8 +649,10 @@ let new_choose_port_provider file_buffer node require nlist =
         (require, provider)
       end
 
-(* TODO: to be deleted when new version is debugged *)
-let choose_port_provider file_buffer node require nlist =
+(** Choose provider of port [require] from the list of nodes [nlist]. 
+		This is a ligthweight version that picks the first provider at hand 
+		without any heuristics. *)
+let choose_port_provider_light file_buffer node require nlist =
 	let providers_list = (filter_port_providers require nlist) in	
 	match providers_list with 
 		[] -> raise (No_available_provider ("No provider available for require " ^ require))
@@ -664,10 +666,10 @@ let choose_port_provider file_buffer node require nlist =
         (require, head)
       end
 
- 	(** Choose providers relying on heuristics. *)
+(** Choose providers relying on heuristics. *)
 let choose_providers file_buffer node nlist =
   let requiresList = (requires_of_node node) in      
-  let choose_provider require = (new_choose_port_provider file_buffer node require nlist) in
+  let choose_provider require = (choose_port_provider file_buffer node require nlist) in
   let providersList = (List.map choose_provider requiresList) in
   providersList  
   
@@ -749,7 +751,7 @@ let find_state_by_name automaton name =
 	done;	
 	match !found_state with
 	|	None -> raise (State_not_found ("state " ^ name 
-										^ "could not be found in the corresponding automaton."))
+										^ " could not be found in the corresponding automaton."))
 	|	(Some state) -> state
 
 (** Create a new node with the given pair <T,q> where only the name of state 

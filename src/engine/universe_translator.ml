@@ -9,8 +9,7 @@ open Datatypes_t
 open My_datatypes
 
 (** Exception thrown when a state name doesn't correspond to any position in 
-    the given automaton.   
-*)              
+    the given automaton. *)              
 exception Position_not_found of string
 
 (** Build a state ID given a key and a name. *)
@@ -32,9 +31,9 @@ let find_position_by_name name automaton =
 		if (state.id).value = name then 
 			index := (state.id).key
 	done;
-	if (!index = length) then
+	if (!index = length) then (* TODO: meaningless control *)
 		raise (Position_not_found ("I was not able to find position of state " 
-																^ name ^ " in the automaton."))
+			^ name ^ " in the automaton."))
 	else
 		!index 
 
