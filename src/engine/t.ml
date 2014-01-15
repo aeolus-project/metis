@@ -1,9 +1,6 @@
 
 open My_datatypes
 open Datatypes_t
-(*
-open Batteries
-*)
 open My_loops
 open Facade
 open Action
