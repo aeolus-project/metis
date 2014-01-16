@@ -117,25 +117,51 @@ open T
 	(*						dealing with DOT file representation					*)
 	(************************************************************)
   
-	let dot_of instance =
+	let dot_of_nodes instance =
+		let instance_comment = ("\n\t// Instance line of " ^ instance.id) in
+		let cluster_id = ("cluster_" ^ instance.id) in
+		let header = "\n\tsubgraph " ^ cluster_id ^ " {" in
 		(*
-		let instance_comment = ("\n\t// nodes from " ^ instance.id) in
-		(Buffer.add_string !file_buffer instance_comment);
+    let style_str = "\n\tstyle=filled;" in
+    let style_str = "\n\tnode[style=filled];" in
+    let style_str = "" in
+    let color_str = "\n\t\tcolor=blue;" in
 		*)
-    let string_repr = (T.Vertex.dot_of_list instance.vertices) in
-    string_repr
+    let style_str = "\n\t\tnode[style=filled, color=lightgrey];" in
+    let color_str = "" in
+    let label_str = "\n\t\tlabel=\"" ^ (String.uppercase instance.id) ^ "\";" in
+		let closing = "\n\t}" in
+    let nodes_repr = (T.Vertex.dot_of_nodes_list instance.vertices) in
+		let string_repr = (instance_comment ^ header ^ style_str ^ color_str 
+			^ nodes_repr ^ label_str ^ closing) in
+		string_repr 
   
-	let dot_of_list instances_list =
-    let string_list = (List.map dot_of instances_list) in
-    let string_repr = (String.concat "\n\n" string_list) in
+	let dot_of_nodes_list instances_list =
+    let string_list = (List.map dot_of_nodes instances_list) in
+    let string_repr = (String.concat "\n" string_list) in
+    string_repr  
+	
+	let dot_of_edges instance =
+		let instance_comment = (ref "") in
+    let edges_repr = (T.Vertex.dot_of_edges_list instance.vertices) in
+		if edges_repr <> "" then
+			instance_comment := ("\n\t// Edges from instance line of " ^ instance.id); 
+		let string_repr = !instance_comment ^ edges_repr in
+		string_repr 
+
+	let dot_of_edges_list instances_list =
+    let string_list = (List.map dot_of_edges instances_list) in
+    let string_repr = (String.concat "\n" string_list) in
     string_repr  
 
   let print_abstract_plan file_buffer instances_list =
-		let string_repr = (dot_of_list instances_list) in
+		let nodes_string_repr = (dot_of_nodes_list instances_list) in
+		let dep_edges_string_repr = (dot_of_edges_list instances_list) in
 		let header = "digraph {\n" in
 		let closing = "\n}" in
 		(Buffer.add_string !file_buffer header);
-		(Buffer.add_string !file_buffer string_repr);
+		(Buffer.add_string !file_buffer nodes_string_repr);
+		(Buffer.add_string !file_buffer dep_edges_string_repr);
 		(Buffer.add_string !file_buffer closing)
 		
   let make component_type inst_id  =
