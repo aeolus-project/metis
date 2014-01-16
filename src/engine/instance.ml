@@ -155,10 +155,12 @@ open T
     string_repr  
 
   let print_abstract_plan file_buffer instances_list =
+		let pre_header = "// Abstract plan in DOT file representation \n\n" in
 		let nodes_string_repr = (dot_of_nodes_list instances_list) in
 		let dep_edges_string_repr = (dot_of_edges_list instances_list) in
 		let header = "digraph {\n" in
 		let closing = "\n}" in
+		(Buffer.add_string !file_buffer pre_header);
 		(Buffer.add_string !file_buffer header);
 		(Buffer.add_string !file_buffer nodes_string_repr);
 		(Buffer.add_string !file_buffer dep_edges_string_repr);
