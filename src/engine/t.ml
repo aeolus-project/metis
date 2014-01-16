@@ -35,6 +35,8 @@ module T =
       val to_string_list : t list -> string
       val to_string_list_list : t list list -> string
       val to_string_list_full : t list -> string
+      val dot_of_node : t -> string
+      val dot_of_list : t list -> string
       val print_list : t list -> unit
       val print_simple_list : t list -> unit
       val print_actions : Buffer.t ref -> t list -> unit
@@ -330,14 +332,24 @@ module T =
 					^ "\n RETURN EDGES: " ^ return_edges_str ^ "\n INST EDGE: " 
 					^ inst_edge_str) in
         vertex_str 
-
-(*
-      let to_string_list vertices_list =
-        let string_list = (List.map to_string_with_inst_edge vertices_list) in
-        let string_repr = (String.concat " " string_list) in
-        string_repr  
-*)
       
+      let dot_of_node vertex =
+        let node_repr = ( "\"" ^ vertex.id ^ " " ^ (string_of_vtag vertex.tag) 
+					^ "\"") in
+        node_repr
+			
+			(* N.B. we only consider instance edges and go/blue edges *)
+			let dot_of vertex =
+        let inst_edge_str = (Inst_edge.dot_of_opt vertex vertex.inst_edge) in 
+        let go_edges_str = (Dep_edge.dot_of_list vertex vertex.go_edges) in   
+        let vertex_str = (inst_edge_str ^ go_edges_str) in
+        vertex_str 
+      
+			let dot_of_list vertices_list =
+        let string_list = (List.map dot_of vertices_list) in
+        let string_repr = (String.concat "\n" string_list) in
+        string_repr  
+
       let to_string_with_id_list vertices_list =
         let string_list = (List.map to_string_with_id vertices_list) in
         let string_repr = (String.concat " " string_list) in
@@ -1583,6 +1595,7 @@ module T =
       val make : (Gg.Node.t ref) -> Vertex.t -> t
       val to_string : t -> string
       val to_string_opt : t option -> string
+      val dot_of_opt : Vertex.t -> t option -> string
       val get_comp_type : t -> (component_t ref)
       val get_state : t -> (state_t ref)       
       val get_dest : t -> (Vertex.t ref)       
@@ -1638,11 +1651,23 @@ module T =
 				let dest_str = (Vertex.to_string_with_id dest_vertex) in
         let full_repr = (string_repr ^ " " ^ dest_str) in
 				full_repr
-
+			
 			let to_string_opt edge_option =
 				match edge_option with
 					None -> "{ }"
 				| (Some edge) -> (to_string_full edge)      
+
+			let dot_of src_vertex edge =
+				let src_str = (Vertex.dot_of_node src_vertex) in
+				let dest_vertex = !(edge.dest) in
+				let dest_str = (Vertex.dot_of_node dest_vertex) in
+        let string_repr = ("\n\t" ^ src_str ^ " -> " ^ dest_str ^ ";") in
+				string_repr
+			
+			let dot_of_opt src_vertex edge_option =
+				match edge_option with
+					None -> ""
+				| (Some edge) -> (dot_of src_vertex edge)      
 
       let make gnode_ref vertex =
         let new_inst_edge = {
@@ -1677,6 +1702,7 @@ module T =
 			val eq : t -> t -> bool
       val to_string : t -> string
       val string_of_list : t list -> string
+      val dot_of_list : Vertex.t -> t list -> string
       val get_dest : t -> (Vertex.t ref)       
       val set_dest : t -> (Vertex.t ref) -> unit       
       val extract_dest_vrtx : t -> Vertex.t       
@@ -1749,6 +1775,21 @@ module T =
 			let string_of_list edges_list = 
         let string_list = (List.map to_string edges_list) in
 				let string_repr = (String.concat "; " string_list) in
+				string_repr
+			
+			let dot_of src_vertex go_edge =
+				let src_str = (Vertex.dot_of_node src_vertex) in
+        let label_str = "label=\"" ^ go_edge.port ^ "\"" in
+        let color_str = "color=blue" in
+				let dest_vertex = !(go_edge.dest) in
+				let dest_str = (Vertex.dot_of_node dest_vertex) in
+        let string_repr = ("\n\t" ^ src_str ^ " -> " ^ dest_str 
+					^ " [" ^ label_str ^ ", " ^ color_str ^ "];") in
+				string_repr
+			
+			let dot_of_list src_vertex edges_list = 
+        let string_list = (List.map (dot_of src_vertex) edges_list) in
+				let string_repr = (String.concat " " string_list) in
 				string_repr
 
       let make_go dest_vertex a_port =

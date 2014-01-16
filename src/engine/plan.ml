@@ -7,10 +7,6 @@
     @author Tudor A. Lascu 
 *)
 
-(*
-open Batteries
-open Batteries_uni
-*)
 open ExtLib
 
 

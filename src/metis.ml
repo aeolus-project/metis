@@ -14,6 +14,7 @@ open Plan
 (* input / output *)
 let universe_channel              = ref stdin
 let output_channel                = ref stdout
+let ap_output_channel             = ref stdout
 let	target_component_name					= ref "" 
 let	target_state 									= ref "" 
 
@@ -34,7 +35,8 @@ let speclist =
     ("-u",         Arg.String (fun filename -> universe_channel := (open_in filename)), " The universe input file");
     ("-c",         Arg.String (fun component_name -> target_component_name := component_name), " The target component");
     ("-s",         Arg.String (fun component_state -> target_state := component_state), " The target state name");
-    ("-o",         Arg.String (fun filename -> output_channel := (open_out_gen [Open_creat;Open_trunc;Open_wronly] 0o666 filename)), " The output file with the final plan")
+    ("-o",         Arg.String (fun filename -> output_channel := (open_out_gen [Open_creat;Open_trunc;Open_wronly] 0o666 filename)), " The output file with the final plan");
+    ("-ap",        Arg.String (fun filename -> ap_output_channel := (open_out_gen [Open_creat;Open_trunc;Open_wronly] 0o666 filename)), " The output file with the abstract plan")
   ] 
 
 (* Read the arguments *)
@@ -117,6 +119,14 @@ let () =
     (Instance.fix_enclosing_edges_pairs file_buffer instance_lines);
 		(Printf.bprintf !file_buffer "%s\n" "\nNow the INSTANCE LINES WITH EDGES look like this:\n");
     (Instance.print_list file_buffer instance_lines);
+
+		(* output abstract plan in DOT file *)
+		let ap_file_buffer = ref (Buffer.create 500) in
+		(Printf.bprintf !ap_file_buffer "%s\n" "//Abstract plan in DOT file representation: \n");
+    (Instance.print_abstract_plan ap_file_buffer instance_lines);
+		(Buffer.output_buffer !ap_output_channel !ap_file_buffer);
+		(close_out !ap_output_channel);
+		
 
 		(*print_endline "\nNow we merge all vertices together for topological sorting.";*)
     let all_vertices = (ref (Instance.list_to_vertices instance_lines)) in ();

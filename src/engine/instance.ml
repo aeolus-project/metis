@@ -111,11 +111,33 @@ open T
   let print_list file_buffer instances_list =
 		let string_repr = (to_string_list_full instances_list) in
 		(Buffer.add_string !file_buffer (string_repr ^ "\n"))
-		(*
-		(print_string "\nINSTANCE LINES WITH EDGES:\n");
-		(print_endline string_repr)
-		*)
 
+
+	(************************************************************)
+	(*						dealing with DOT file representation					*)
+	(************************************************************)
+  
+	let dot_of instance =
+		(*
+		let instance_comment = ("\n\t// nodes from " ^ instance.id) in
+		(Buffer.add_string !file_buffer instance_comment);
+		*)
+    let string_repr = (T.Vertex.dot_of_list instance.vertices) in
+    string_repr
+  
+	let dot_of_list instances_list =
+    let string_list = (List.map dot_of instances_list) in
+    let string_repr = (String.concat "\n\n" string_list) in
+    string_repr  
+
+  let print_abstract_plan file_buffer instances_list =
+		let string_repr = (dot_of_list instances_list) in
+		let header = "digraph {\n" in
+		let closing = "\n}" in
+		(Buffer.add_string !file_buffer header);
+		(Buffer.add_string !file_buffer string_repr);
+		(Buffer.add_string !file_buffer closing)
+		
   let make component_type inst_id  =
     let new_instance = { 
       comp_type = component_type; 
