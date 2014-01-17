@@ -1674,6 +1674,11 @@ module T =
 				match edge_option with
 					None -> "{ }"
 				| (Some edge) -> (to_string_full edge)      
+	
+
+			(************************************************************)
+			(*						dealing with DOT file representation					*)
+			(************************************************************)
 
 			let dot_of src_vertex edge =
 				let src_str = (Vertex.dot_of_node src_vertex) in
@@ -1686,6 +1691,8 @@ module T =
 				match edge_option with
 					None -> ""
 				| (Some edge) -> (dot_of src_vertex edge)      
+
+
 
       let make gnode_ref vertex =
         let new_inst_edge = {
@@ -1795,6 +1802,11 @@ module T =
 				let string_repr = (String.concat "; " string_list) in
 				string_repr
 			
+			
+			(************************************************************)
+			(*						dealing with DOT file representation					*)
+			(************************************************************)
+			
 			let dot_of src_vertex go_edge =
 				let src_str = (Vertex.dot_of_node src_vertex) in
         let label_str = "label=\"" ^ go_edge.port ^ "\"" in
@@ -1809,6 +1821,7 @@ module T =
         let string_list = (List.map (dot_of src_vertex) edges_list) in
 				let string_repr = (String.concat " " string_list) in
 				string_repr
+
 
       let make_go dest_vertex a_port =
         let new_go_edge = {

@@ -1,9 +1,9 @@
-<src/*.{ml,mli,native}>:package(ocamlgraph),package(atdgen),package(extlib)
+<src/*.{ml,mli,native}>:package(atdgen),package(extlib)
 <src>:include
 
-<src/datatypes/*.{ml,mli,native}>:package(ocamlgraph),package(atdgen),package(extlib)
+<src/datatypes/*.{ml,mli,native}>:package(atdgen),package(extlib)
 <src/datatypes>:include
 
-<src/engine/*.{ml,mli,native}>:package(ocamlgraph),package(atdgen),package(extlib)
+<src/engine/*.{ml,mli,native}>:package(atdgen),package(extlib)
 <src/engine>:include
 

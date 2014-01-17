@@ -2,7 +2,9 @@
 open Universe_translator
 open Datatypes_t
 open Instance
+(* module used for old style topological sort + duplication  
 open My_scc
+*)
 open Facade
 open Ggraph
 open Gg
