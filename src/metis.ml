@@ -164,4 +164,11 @@ let () =
 
 		(Buffer.output_buffer !output_channel !file_buffer);
 		(close_out !output_channel);
+		IFDEF VERBOSE THEN (print_endline "\n VERBOSE IS DEFINED") END;
+(*
+		let foo = IFDEF VERBOSE THEN (print_endline "\n VERBOSE IS DEFINED") END in
+		foo;
+		let foo = IFDEF VERBOSE THEN (print_endline "\n VERBOSE IS DEFINED") ELSE (print_endline "\n VERBOSE UNDEFINED") END in
+		foo;
+*)
   end

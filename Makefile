@@ -1,10 +1,14 @@
 
-OBFLAGS := -no-hygiene -classic-display -use-ocamlfind 
-PPFLAGS := -pp camlp4o pa_macro.cmo -DFOO
+OBFLAGS := -no-hygiene -classic-display -use-ocamlfind
+ADDPPFLAGS := -pp 'camlp4o pa_macro.cmo -DVERBOSE'
+RMPPFLAGS := -pp 'camlp4o pa_macro.cmo -UVERBOSE'
 
 all:
-	ocamlbuild $(OBFLAGS) metis.native
-	#ocamlbuild $(PPFLAGS) $(OBFLAGS) metis.native
+	#ocamlbuild $(OBFLAGS) metis.native
+	ocamlbuild $(RMPPFLAGS) $(OBFLAGS) metis.native
+
+verbose:
+	ocamlbuild $(ADDPPFLAGS) $(OBFLAGS) metis.native
 
 clean:
 	ocamlbuild -clean
