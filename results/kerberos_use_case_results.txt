@@ -7,6 +7,82 @@ Generation nr.2: <krb5,stage1>_1; <open-ldap,uninst>_2; <krb5,uninst>_2; <open-l
 Generation nr.3: <open-ldap,normal>_1; <krb5,uninst>_3; <open-ldap,uninst>_3; <krb5,stage1>_2; <krb5,normal>
 
 BOTTOM-UP VISIT of the G-graph. For every node we choose origin node and providers.
+Total requires: libldap2-dev
+fanIn[<krb5,stage1>_1] := 0
+fanIn[<open-ldap,uninst>_2] := 0
+fanIn[<krb5,uninst>_2] := 0
+fanIn[<open-ldap,normal>] := 1
+Nodes with fanIn values:
+<krb5,stage1>_1, fanIn = 0 | <open-ldap,uninst>_2, fanIn = 0 | <krb5,uninst>_2, fanIn = 0 | <open-ldap,normal>, fanIn = 1
+
+ ----------------- BOTTOM-UP VISIT LEVEL nr. 3 CYCLE execution nr. 1 ----------------
+node to be examined: <krb5,normal>
+<krb5,normal> is NOT an initial node => need to look for parent
+<krb5,stage1>_1 chosen with max fanIn value
+origin node chosen: <krb5,stage1>_1
+<krb5,normal> is NOT a copy => must take care of providers
+<open-ldap,normal> chosen with max fanIn value
+Update fanIn : fanIn[<open-ldap,normal>] <- 0 (due to provide libldap2-dev)
+list of chosen providers: <open-ldap,normal> 
+current generation: Generation nr.3: <krb5,normal>
+next working set, at level nr.2 : { <open-ldap,normal> <krb5,stage1>_1  }
+Nodes with fanIn values:
+<krb5,stage1>_1, fanIn = 0 | <open-ldap,uninst>_2, fanIn = 0 | <krb5,uninst>_2, fanIn = 0 | <open-ldap,normal>, fanIn = 0
+Total requires: libkrb5-dev
+fanIn[<krb5,uninst>_1] := 0
+fanIn[<open-ldap,uninst>_1] := 0
+fanIn[<krb5,stage1>] := 1
+Nodes with fanIn values:
+<krb5,uninst>_1, fanIn = 0 | <open-ldap,uninst>_1, fanIn = 0 | <krb5,stage1>, fanIn = 1
+
+ ----------------- BOTTOM-UP VISIT LEVEL nr. 2 CYCLE execution nr. 1 ----------------
+node to be examined: <open-ldap,normal>
+<open-ldap,normal> is NOT an initial node => need to look for parent
+<open-ldap,uninst>_1 chosen with max fanIn value
+origin node chosen: <open-ldap,uninst>_1
+<open-ldap,normal> is NOT a copy => must take care of providers
+<krb5,stage1> chosen with max fanIn value
+Update fanIn : fanIn[<krb5,stage1>] <- 0 (due to provide libkrb5-dev)
+list of chosen providers: <krb5,stage1> 
+current generation: Generation nr.2: <open-ldap,normal>
+next working set, at level nr.1 : { <krb5,stage1> <open-ldap,uninst>_1  }
+Nodes with fanIn values:
+<krb5,uninst>_1, fanIn = 0 | <open-ldap,uninst>_1, fanIn = 0 | <krb5,stage1>, fanIn = 0
+
+ ----------------- BOTTOM-UP VISIT LEVEL nr. 2 CYCLE execution nr. 2 ----------------
+node to be examined: <krb5,stage1>_1
+<krb5,stage1>_1 is NOT an initial node => need to look for parent
+<krb5,stage1> chosen as a copy
+origin node chosen: <krb5,stage1>
+current generation: Generation nr.2: <krb5,stage1>_1; <open-ldap,normal>
+next working set, at level nr.1 : { <krb5,stage1> <open-ldap,uninst>_1  }
+Nodes with fanIn values:
+<krb5,uninst>_1, fanIn = 0 | <open-ldap,uninst>_1, fanIn = 0 | <krb5,stage1>, fanIn = 0
+Total requires: 
+fanIn[<open-ldap,uninst>] := 0
+fanIn[<krb5,uninst>] := 0
+Nodes with fanIn values:
+<open-ldap,uninst>, fanIn = 0 | <krb5,uninst>, fanIn = 0
+
+ ----------------- BOTTOM-UP VISIT LEVEL nr. 1 CYCLE execution nr. 1 ----------------
+node to be examined: <krb5,stage1>
+<krb5,stage1> is NOT an initial node => need to look for parent
+<krb5,uninst> chosen with max fanIn value
+origin node chosen: <krb5,uninst>
+<krb5,stage1> is NOT a copy => must take care of providers
+list of chosen providers: 
+current generation: Generation nr.1: <krb5,stage1>
+next working set, at level nr.0 : { <krb5,uninst>  }
+Nodes with fanIn values:
+<open-ldap,uninst>, fanIn = 0 | <krb5,uninst>, fanIn = 0
+
+ ----------------- BOTTOM-UP VISIT LEVEL nr. 1 CYCLE execution nr. 2 ----------------
+node to be examined: <open-ldap,uninst>_1
+<open-ldap,uninst>_1 is an initial node => no need to look for parent and providers
+current generation: Generation nr.1: <open-ldap,uninst>_1; <krb5,stage1>
+next working set, at level nr.0 : { <open-ldap,uninst> <krb5,uninst>  }
+Nodes with fanIn values:
+<open-ldap,uninst>, fanIn = 0 | <krb5,uninst>, fanIn = 0
 
 LINEARIZATION phase
 
@@ -56,8 +132,55 @@ open-ldap (normal,D) nr.IN-edges =  1
  RETURN EDGES: 
  INST EDGE: { }
 
-Next we ADD GO (blue) and RETURN (red) EDGES. 
+Next we ADD GO (blue) and RETURN (red) EDGES.
 
+Instance krb5 :
+krb5 (C,uninst) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<krb5,uninst>--> krb5 (uninst,stage1)
+
+krb5 (uninst,stage1) nr.IN-edges =  1
+ GO EDGES: ---libkrb5-dev---> open-ldap (uninst,normal)
+ RETURN EDGES: 
+ INST EDGE: --<krb5,stage1>--> krb5 (stage1,normal)
+
+krb5 (stage1,normal) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<krb5,normal>--> krb5 (normal,D)
+
+krb5 (normal,D) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: ---libldap2-dev---> open-ldap (normal,D)
+ INST EDGE: { }
+
+Instance open-ldap :
+open-ldap (C,uninst) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<open-ldap,uninst>--> open-ldap (uninst,normal)
+
+open-ldap (uninst,normal) nr.IN-edges =  2
+ GO EDGES: ---libldap2-dev---> krb5 (stage1,normal)
+ RETURN EDGES: 
+ INST EDGE: --<open-ldap,normal>--> open-ldap (normal,D)
+
+open-ldap (normal,D) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: ---libkrb5-dev---> krb5 (normal,D)
+ INST EDGE: { }
+
+Next we FIX ENCLOSING GO (blue) and RETURN (red) EDGES.
+################# Fix enclosing edges for vertex krb5 (uninst,stage1) and GO edge ---libkrb5-dev---> open-ldap (uninst,normal)
+Pairs found from the given vertex: { }
+Pairs found from successors of the given vertex: { }
+Total set of pairs found: { }
+
+################# Fix enclosing edges for vertex open-ldap (uninst,normal) and GO edge ---libldap2-dev---> krb5 (stage1,normal)
+Pairs found from the given vertex: { }
+Pairs found from successors of the given vertex: { }
+Total set of pairs found: { }
 
 Now the INSTANCE LINES WITH EDGES look like this:
 
@@ -98,12 +221,90 @@ open-ldap (normal,D) nr.IN-edges =  2
  RETURN EDGES: ---libkrb5-dev---> krb5 (normal,D)
  INST EDGE: { }
 
-Now we perform a TOPOLOGICAL SORT.
 
-And finally the COMPUTED PLAN is:
+----------------------- PLAN SYNTHESIS START -----------------------
+Added action [Create instance krb5:krb5] to the plan.
+Added action [Create instance open-ldap:open-ldap] to the plan.
+External loop iteration i = 0
 
-krb5 must perform actions: [Create instance]
-open-ldap must perform actions: [Create instance]
-krb5 must perform actions: [Bind port libkrb5-dev to instance open-ldap]  [Change state from uninst to stage1]
-open-ldap must perform actions: [Bind port libldap2-dev to instance krb5]  [Change state from uninst to normal]
-krb5 must perform actions: [Change state from stage1 to normal]
+*********************** Internal loop iteration j = 0
+Plan BEFORE: 
+ Plan[1] = [Create instance krb5:krb5]
+ Plan[2] = [Create instance open-ldap:open-ldap]
+Vertex popped: open-ldap (C,uninst)
+STACK = 
+krb5 (C,uninst) | 
+Deal with successor vertex.
+Vertex removed: open-ldap (C,uninst)
+
+*********************** Internal loop iteration j = 1
+Plan BEFORE: 
+ Plan[1] = [Create instance krb5:krb5]
+ Plan[2] = [Create instance open-ldap:open-ldap]
+Vertex popped: krb5 (C,uninst)
+STACK = 
+[]
+Deal with successor vertex.
+INST Edge: PUSH vertex: krb5 (uninst,stage1)
+STACK = 
+krb5 (uninst,stage1) | 
+Vertex removed: krb5 (C,uninst)
+
+*********************** Internal loop iteration j = 2
+Plan BEFORE: 
+ Plan[1] = [Create instance krb5:krb5]
+ Plan[2] = [Create instance open-ldap:open-ldap]
+Vertex popped: krb5 (uninst,stage1)
+STACK = 
+[]
+It's an intermediate vertex => add action [krb5 : change state from uninst to stage1] to the plan.
+Deal with go/blue edges
+GO Edge: PUSH vertex: open-ldap (uninst,normal)
+STACK = 
+open-ldap (uninst,normal) | 
+Deal with return/red edges
+Deal with successor vertex.
+Vertex removed: krb5 (uninst,stage1)
+
+*********************** Internal loop iteration j = 3
+Plan BEFORE: 
+ Plan[1] = [Create instance krb5:krb5]
+ Plan[2] = [Create instance open-ldap:open-ldap]
+ Plan[3] = [krb5 : change state from uninst to stage1]
+Vertex popped: open-ldap (uninst,normal)
+STACK = 
+[]
+It's an intermediate vertex => add action [open-ldap : change state from uninst to normal] to the plan.
+Deal with go/blue edges
+GO Edge: PUSH vertex: krb5 (stage1,normal)
+STACK = 
+krb5 (stage1,normal) | 
+Deal with return/red edges
+Deal with successor vertex.
+Vertex removed: open-ldap (uninst,normal)
+
+*********************** Internal loop iteration j = 4
+Plan BEFORE: 
+ Plan[1] = [Create instance krb5:krb5]
+ Plan[2] = [Create instance open-ldap:open-ldap]
+ Plan[3] = [krb5 : change state from uninst to stage1]
+ Plan[4] = [open-ldap : invoke method libkrb5-dev of krb5]
+ Plan[5] = [open-ldap : change state from uninst to normal]
+Vertex popped: krb5 (stage1,normal)
+STACK = 
+[]
+It's an intermediate vertex => add action [krb5 : change state from stage1 to normal] to the plan.
+Deal with go/blue edges
+Deal with return/red edges
+Deal with successor vertex.
+Target has been REACHED.
+Vertex removed: krb5 (stage1,normal)
+
+The computed PLAN is: 
+ Plan[1] = [Create instance krb5:krb5]
+ Plan[2] = [Create instance open-ldap:open-ldap]
+ Plan[3] = [krb5 : change state from uninst to stage1]
+ Plan[4] = [open-ldap : invoke method libkrb5-dev of krb5]
+ Plan[5] = [open-ldap : change state from uninst to normal]
+ Plan[6] = [krb5 : invoke method libldap2-dev of open-ldap]
+ Plan[7] = [krb5 : change state from stage1 to normal]

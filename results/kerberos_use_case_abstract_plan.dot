@@ -1,0 +1,26 @@
+// Abstract plan in DOT file representation 
+
+digraph {
+
+	// Instance line of krb5
+	subgraph cluster_krb5 {
+		node[style=filled, color=lightgrey];
+		"krb5 (C,uninst)" -> "krb5 (uninst,stage1)";
+		"krb5 (uninst,stage1)" -> "krb5 (stage1,normal)";
+		"krb5 (stage1,normal)" -> "krb5 (normal,D)";
+		label="KRB5";
+	}
+
+	// Instance line of open-ldap
+	subgraph cluster_open {
+		node[style=filled, color=lightgrey];
+		"open-ldap (C,uninst)" -> "open-ldap (uninst,normal)";
+		"open-ldap (uninst,normal)" -> "open-ldap (normal,D)";
+		label="OPEN-LDAP";
+	}
+	// Edges from instance line of krb5
+		"krb5 (uninst,stage1)" -> "open-ldap (uninst,normal)" [label="libkrb5-dev", color=blue];
+
+	// Edges from instance line of open-ldap
+		"open-ldap (uninst,normal)" -> "krb5 (stage1,normal)" [label="libldap2-dev", color=blue];
+}

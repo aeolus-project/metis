@@ -1,0 +1,57 @@
+// Abstract plan in DOT file representation 
+
+digraph {
+
+	// Instance line of varnish
+	subgraph cluster_varnish {
+		node[style=filled, color=lightgrey];
+		"varnish (C,NotInstalled)" -> "varnish (NotInstalled,Installed)";
+		"varnish (NotInstalled,Installed)" -> "varnish (Installed,Configured)";
+		"varnish (Installed,Configured)" -> "varnish (Configured,Active)";
+		"varnish (Configured,Active)" -> "varnish (Active,D)";
+		label="VARNISH";
+	}
+
+	// Instance line of wordpress
+	subgraph cluster_wordpress {
+		node[style=filled, color=lightgrey];
+		"wordpress (C,NotInstalled)" -> "wordpress (NotInstalled,Installed)";
+		"wordpress (NotInstalled,Installed)" -> "wordpress (Installed,Template)";
+		"wordpress (Installed,Template)" -> "wordpress (Template,Configured)";
+		"wordpress (Template,Configured)" -> "wordpress (Configured,Active)";
+		"wordpress (Configured,Active)" -> "wordpress (Active,D)";
+		label="WORDPRESS";
+	}
+
+	// Instance line of httpd
+	subgraph cluster_httpd {
+		node[style=filled, color=lightgrey];
+		"httpd (C,NotInstalled)" -> "httpd (NotInstalled,Installed)";
+		"httpd (NotInstalled,Installed)" -> "httpd (Installed,Configured)";
+		"httpd (Installed,Configured)" -> "httpd (Configured,Active)";
+		"httpd (Configured,Active)" -> "httpd (Active,D)";
+		label="HTTPD";
+	}
+
+	// Instance line of mysql
+	subgraph cluster_mysql {
+		node[style=filled, color=lightgrey];
+		"mysql (C,NotInstalled)" -> "mysql (NotInstalled,Installed)";
+		"mysql (NotInstalled,Installed)" -> "mysql (Installed,SetRootPassword)";
+		"mysql (Installed,SetRootPassword)" -> "mysql (SetRootPassword,Configured)";
+		"mysql (SetRootPassword,Configured)" -> "mysql (Configured,Active)";
+		"mysql (Configured,Active)" -> "mysql (Active,D)";
+		label="MYSQL";
+	}
+
+	// Edges from instance line of wordpress
+		"wordpress (Template,Configured)" -> "varnish (Installed,Configured)" [label="get_site", color=blue];
+		"wordpress (Configured,Active)" -> "varnish (Configured,Active)" [label="Wordpress.start", color=blue];
+
+	// Edges from instance line of httpd
+		"httpd (Installed,Configured)" -> "wordpress (Configured,Active)" [label="Httpd.get_documentRoot", color=blue];
+		"httpd (Configured,Active)" -> "wordpress (Configured,Active)" [label="Httpd.start", color=blue];
+
+	// Edges from instance line of mysql
+		"mysql (Configured,Active)" -> "wordpress (Template,Configured)" [label="Mysql.addDatabase", color=blue];
+}

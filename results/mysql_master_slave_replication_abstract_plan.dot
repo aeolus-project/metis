@@ -1,0 +1,42 @@
+// Abstract plan in DOT file representation 
+
+digraph {
+
+	// Instance line of application
+	subgraph cluster_application {
+		node[style=filled, color=lightgrey];
+		"application (C,Uninst)" -> "application (Uninst,Inst)";
+		"application (Uninst,Inst)" -> "application (Inst,D)";
+		label="APPLICATION";
+	}
+
+	// Instance line of slave
+	subgraph cluster_slave {
+		node[style=filled, color=lightgrey];
+		"slave (C,Uninst)" -> "slave (Uninst,Inst)";
+		"slave (Uninst,Inst)" -> "slave (Inst,ReceiveDump)";
+		"slave (Inst,ReceiveDump)" -> "slave (ReceiveDump,Serving)";
+		"slave (ReceiveDump,Serving)" -> "slave (Serving,D)";
+		label="SLAVE";
+	}
+
+	// Instance line of master
+	subgraph cluster_master {
+		node[style=filled, color=lightgrey];
+		"master (C,Uninst)" -> "master (Uninst,Inst)";
+		"master (Uninst,Inst)" -> "master (Inst,Serving)";
+		"master (Inst,Serving)" -> "master (Serving,Auth)";
+		"master (Serving,Auth)" -> "master (Auth,Dump)";
+		"master (Auth,Dump)" -> "master (Dump,MasterServing)";
+		"master (Dump,MasterServing)" -> "master (MasterServing,D)";
+		label="MASTER";
+	}
+
+	// Edges from instance line of slave
+		"slave (Uninst,Inst)" -> "master (Serving,Auth)" [label="slave_ip", color=blue];
+		"slave (ReceiveDump,Serving)" -> "application (Uninst,Inst)" [label="s_mysql", color=blue];
+
+	// Edges from instance line of master
+		"master (Auth,Dump)" -> "slave (Inst,ReceiveDump)" [label="dump", color=blue];
+		"master (Dump,MasterServing)" -> "application (Uninst,Inst)" [label="mysql", color=blue];
+}
