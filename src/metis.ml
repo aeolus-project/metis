@@ -124,11 +124,13 @@ let () =
     (Instance.print_list file_buffer instance_lines);
 
 		(* output abstract plan in DOT file *)
-		let ap_file_buffer = ref (Buffer.create 500) in
-    (Instance.print_abstract_plan ap_file_buffer instance_lines);
-		(Buffer.output_buffer !ap_output_channel !ap_file_buffer);
-		(close_out !ap_output_channel);
-		
+		if !ap_output_channel != stdout then begin
+			let ap_file_buffer = ref (Buffer.create 500) in
+    	(Instance.print_abstract_plan ap_file_buffer instance_lines);
+			(Buffer.output_buffer !ap_output_channel !ap_file_buffer);
+			(close_out !ap_output_channel)
+		end;
+
 		(*print_endline "\nNow we merge all vertices together for topological sorting.";*)
     let all_vertices = (ref (Instance.list_to_vertices instance_lines)) in ();
 		(* (print_string "\nThe VERTICES are the following:"); (T.Vertex.print_list !all_vertices); *)
