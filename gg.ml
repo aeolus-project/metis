@@ -180,7 +180,7 @@ module Gg =
  
  
   (**************************************************************)
-  (*                      boilerplate code  		                *)
+  (*                      Boilerplate code  		                *)
   (**************************************************************)
 
   let get_state node =
@@ -210,7 +210,7 @@ module Gg =
 
 
   (**************************************************************)
-  (*    utility functions for string conversion and printing		*)
+  (*    Utility functions for string conversion and printing		*)
   (**************************************************************)
   
   let to_string node = 
@@ -502,13 +502,17 @@ let choose_providers node nlist =
   providersList  
   
 (* this function computes the cardinality (i.e. the nr. of requires) of a component type and a state *)  
-let compute_component_card state =
-  let card = (List.length state.requires) in
+let compute_component_card state origin_node =
+  let current_state_card = (List.length state.requires) in
+	let card = current_state_card + origin_node.card in
   card
 
 (* this function computes the cardinality (i.e. the nr. of requires) of a component type in its initial state *)
+(* TODO: remove as initial state has no required port, by definition *)
+(*
 let compute_card_init_state compType =
 	(compute_component_card (compType.automaton).(0))
+*)
 
 (* this function computes the cardinality (i.e. the nr. of requires) of a node *)
 let compute_card node =
@@ -530,7 +534,7 @@ let build_initial resTypeRef =
 			bindings = []; 
       bound_to_me = [];
       origin = None; 
-			card = (compute_card_init_state !resTypeRef); (* cardinality can be computed right away *)
+			card = 0;
 			dist = 0;
 			fanIn = 0; 
       copy_index = 0;
@@ -568,7 +572,7 @@ let build_target resTypeRef target_name =
 			bindings = []; 
       bound_to_me = [];
       origin = None; 
-			card = (compute_card_init_state !resTypeRef); (* cardinality can be computed right away *)
+			card = 0;
 			dist = 0;
 			fanIn = 0; 
       copy_index = 0;
@@ -590,7 +594,7 @@ let build_from_pair resTypeRef state_id =
 			bindings = []; 
       bound_to_me = [];
       origin = None; 
-			card = (compute_card_init_state !resTypeRef); (* cardinality can be computed right away *)
+			card = 0;
 			dist = 0;
 			fanIn = 0; 
       copy_index = 0;
@@ -647,9 +651,9 @@ let build_succs node =
 				succNode.preds <- predArc :: succNode.preds;
 				(* successor's distance = father distance + 1 *)
 				succNode.dist <- node.dist + 1;
-				(* compute successor's cardinality *)
         let succ_state = ((!resType).automaton).(succ_state_id.key) in 
-				succNode.card <- (compute_component_card succ_state);
+				(* compute successor's cardinality *)
+				succNode.card <- (compute_component_card succ_state node);
 				(* finally add current node to the successors' list *)	
 				successorsList := succNode :: (!successorsList);
 				(*print_endline ("just created node " ^ (to_string succNode)

@@ -2,6 +2,7 @@
 open My_datatypes
 open Datatypes_t
 open Generation
+open My_loops
 open Facade
 open Gg
 
@@ -9,27 +10,6 @@ open Gg
 (****************************************************************************************)
 (*					G-graph						*)
 (****************************************************************************************)
-
-(*
-module Ggraph = 
-  struct
-*)
-
-(* write my own repeat-until construct, used in function populate *)
-let repeat_until f p ~init =
-  let rec loop v =
-    let v = f v in
-    if not(p v) then loop v
-  in
-  loop init
-
-(* write my own do-while construct *)
-let do_while f p ~init =
-  let rec loop v =
-    let v = f v in
-    if p v then loop v
-  in
-  loop init
 
 
       type t = {
@@ -114,14 +94,14 @@ let do_while f p ~init =
       let reverse_generations = List.rev graph.generations in
       (set_generations graph reverse_generations) 
 		
-		(* generate the G-graph *)
+		(* generate the whole G-graph with alla generations *)
     let populate graph =
 			(* first build initial generation *)
 			let firstGen = (build_initial_gen graph) in 
 			(add_generation graph firstGen);
 			(* initialize needed structures *)
       let newNodes = (ref []) in
-			(* Loop for building and adding one generation at the time *)
+			(* Loop for building and adding one generation at a time *)
 			(repeat_until 
 				(* Loop body *)
 				(fun i ->

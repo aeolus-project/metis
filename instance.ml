@@ -108,6 +108,10 @@ open T
   let print_list file_buffer instances_list =
 		let string_repr = (to_string_list_full instances_list) in
 		(Buffer.add_string !file_buffer (string_repr ^ "\n"))
+		(*
+		(print_string "\nINSTANCE LINES WITH EDGES:\n");
+		(print_endline string_repr)
+		*)
 
   let make component_type inst_id  =
     let new_instance = { 
@@ -230,8 +234,6 @@ open T
 		let maximal_paths = (keep_max_paths ct_list paths) in
 		maximal_paths 
 		
-
-  
 	(* here we use iteration instead of recursion to add an index for unique instance line (and hence vertex) ID *)
   let build_instance_lines list_of_nlist =
     let aux_fun nlist =

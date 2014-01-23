@@ -1,3 +1,3 @@
 #/bin/bash
 
-./amin_planner.native -u ./input/testB_3.json -c C2 -s s2 -o ./results/testB_3_results.txt
+../amin_planner.native -u ../input/new_testB_3.json -c C2 -s s2 -o ../results/new_testB_3_results.txt

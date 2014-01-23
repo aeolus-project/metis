@@ -24,7 +24,7 @@
 				{
 					"u_name" : "s3",
 					"u_successors" : ["s4"],
-					"u_provides" : ["p0_3"],
+					"u_provides" : ["p0_3", "p0_2"],
 					"u_requires" : ["p1_3"]
 				},
 				{

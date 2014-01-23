@@ -116,8 +116,17 @@ let () =
 		
 		(*print_endline "\nNow we merge all vertices together for topological sorting.";*)
     let all_vertices = (ref (Instance.list_to_vertices instance_lines)) in ();
-    (*(T.Vertex.print_list all_vertices); *)
-	
+		(*
+		(print_string "\nThe VERTICES are the following:"); (T.Vertex.print_list !all_vertices); 
+		*)
+
+		let plan_vertices = !all_vertices in
+		(Printf.bprintf !file_buffer "\n\n%s\n" "---------------------- PLAN SYNTHESIS START ----------------------");
+		let plan = (T.Vertex.synthesize_plan (ref plan_vertices) !target_component_name !target_state file_buffer) in
+		(Printf.bprintf !file_buffer "\n%s\n" ("The computed PLAN is: " ^ (Plan.to_string plan)));
+		(print_string "\nThe computed "); (Plan.print plan); 	
+
+(* Old Topological sort  
 		(* eliminate cycles if there are *)
 		let cycles = (My_scc.find_cycles !all_vertices file_buffer) in
 		if cycles != [] then
@@ -127,9 +136,8 @@ let () =
 				(Printf.bprintf !file_buffer "%s\n" "\n\nThe INSTANCE LINES after splitting are the following:\n");
     		(Instance.print_list file_buffer new_instance_lines)
 			end;
-    
-		let vertices_to_sort = !all_vertices in ();
 
+		let vertices_to_sort = !all_vertices in ();
 		(* proceed with the topological sorting *)
 		(Printf.bprintf !file_buffer "%s\n" "\nNow we perform a TOPOLOGICAL SORT.");
     (*
@@ -139,8 +147,8 @@ let () =
 		(print_endline "\nThe COMPUTED PLAN is:\n");
 		(Printf.bprintf !file_buffer "%s\n" "\nAnd finally the COMPUTED PLAN is:\n");
     (T.Vertex.print_actions file_buffer sorted_vertices);
+*)
 
 		(Buffer.output_buffer !output_channel !file_buffer);
 		(close_out !output_channel);
   end
-

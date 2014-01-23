@@ -1,5 +1,5 @@
 '''
-TestA_json.py [Options]
+TestB_json.py [Options]
 
 Options:
     -s, --size=SIZE: number of components. Must be > 2 (default 5)
