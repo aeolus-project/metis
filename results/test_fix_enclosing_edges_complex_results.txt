@@ -1,0 +1,691 @@
+
+We generate the FULL G-GRAPH: 
+
+Generation nr.0: <B,q0>; <A,s0>
+Generation nr.1: <A,s0>_1; <B,q0>_1; <A,s1>
+Generation nr.2: <A,s1>_1; <B,q0>_2; <A,s0>_2; <B,q1>; <A,s2>
+Generation nr.3: <A,s2>_1; <B,q1>_1; <A,s0>_3; <B,q0>_3; <A,s1>_2; <B,q2>; <A,s3>
+Generation nr.4: <A,s3>_1; <B,q2>_1; <A,s1>_3; <B,q0>_4; <A,s0>_4; <B,q1>_2; <A,s2>_2; <B,q3>
+
+BOTTOM-UP VISIT of the G-graph. For every node we choose origin node and providers.
+Total requires: p0_3 | p0_2 | p0_1
+fanIn[<A,s2>_1] := 2
+fanIn[<B,q1>_1] := 0
+fanIn[<A,s0>_3] := 0
+fanIn[<B,q0>_3] := 0
+fanIn[<A,s1>_2] := 1
+fanIn[<B,q2>] := 0
+fanIn[<A,s3>] := 3
+Nodes with fanIn values:
+<A,s2>_1, fanIn = 2 | <B,q1>_1, fanIn = 0 | <A,s0>_3, fanIn = 0 | <B,q0>_3, fanIn = 0 | <A,s1>_2, fanIn = 1 | <B,q2>, fanIn = 0 | <A,s3>, fanIn = 3
+
+ ----------------- BOTTOM-UP VISIT LEVEL nr. 4 CYCLE execution nr. 1 ----------------
+node to be examined: <B,q3>
+<B,q3> is NOT an initial node => need to look for parent
+<B,q2> chosen with max fanIn value
+origin node chosen: <B,q2>
+<B,q3> is NOT a copy => must take care of providers
+<A,s3> chosen with max fanIn value
+Update fanIn : fanIn[<A,s2>_1] <- 1 (due to provide p0_2)
+Update fanIn : fanIn[<A,s2>_1] <- 0 (due to provide p0_1)
+Update fanIn : fanIn[<A,s1>_2] <- 0 (due to provide p0_1)
+Update fanIn : fanIn[<A,s3>] <- 2 (due to provide p0_3)
+Update fanIn : fanIn[<A,s3>] <- 1 (due to provide p0_2)
+Update fanIn : fanIn[<A,s3>] <- 0 (due to provide p0_1)
+list of chosen providers: <A,s3> <A,s2>_1 
+current generation: Generation nr.4: <B,q3>
+next working set, at level nr.3 : { <A,s3> <A,s2>_1 <B,q2>  }
+Nodes with fanIn values:
+<A,s2>_1, fanIn = 0 | <B,q1>_1, fanIn = 0 | <A,s0>_3, fanIn = 0 | <B,q0>_3, fanIn = 0 | <A,s1>_2, fanIn = 0 | <B,q2>, fanIn = 0 | <A,s3>, fanIn = 0
+Total requires: p0_2 | p0_1
+fanIn[<A,s1>_1] := 1
+fanIn[<B,q0>_2] := 0
+fanIn[<A,s0>_2] := 0
+fanIn[<B,q1>] := 0
+fanIn[<A,s2>] := 2
+Nodes with fanIn values:
+<A,s1>_1, fanIn = 1 | <B,q0>_2, fanIn = 0 | <A,s0>_2, fanIn = 0 | <B,q1>, fanIn = 0 | <A,s2>, fanIn = 2
+
+ ----------------- BOTTOM-UP VISIT LEVEL nr. 3 CYCLE execution nr. 1 ----------------
+node to be examined: <A,s3>
+<A,s3> is NOT an initial node => need to look for parent
+<A,s2> chosen with max fanIn value
+origin node chosen: <A,s2>
+Update fanIn : fanIn[<A,s1>_1] <- 0 (due to provide p0_1)
+Update fanIn : fanIn[<A,s2>] <- 1 (due to provide p0_2)
+Update fanIn : fanIn[<A,s2>] <- 0 (due to provide p0_1)
+<A,s3> is NOT a copy => must take care of providers
+list of chosen providers: 
+current generation: Generation nr.3: <A,s3>
+next working set, at level nr.2 : { <A,s2>  }
+Nodes with fanIn values:
+<A,s1>_1, fanIn = 0 | <B,q0>_2, fanIn = 0 | <A,s0>_2, fanIn = 0 | <B,q1>, fanIn = 0 | <A,s2>, fanIn = 0
+
+ ----------------- BOTTOM-UP VISIT LEVEL nr. 3 CYCLE execution nr. 2 ----------------
+node to be examined: <A,s2>_1
+<A,s2>_1 is NOT an initial node => need to look for parent
+<A,s2> chosen as a copy
+origin node chosen: <A,s2>
+current generation: Generation nr.3: <A,s2>_1; <A,s3>
+next working set, at level nr.2 : { <A,s2>  }
+Nodes with fanIn values:
+<A,s1>_1, fanIn = 0 | <B,q0>_2, fanIn = 0 | <A,s0>_2, fanIn = 0 | <B,q1>, fanIn = 0 | <A,s2>, fanIn = 0
+
+ ----------------- BOTTOM-UP VISIT LEVEL nr. 3 CYCLE execution nr. 3 ----------------
+node to be examined: <B,q2>
+<B,q2> is NOT an initial node => need to look for parent
+<B,q1> chosen with max fanIn value
+origin node chosen: <B,q1>
+<B,q2> is NOT a copy => must take care of providers
+<A,s2> chosen with max fanIn value
+list of chosen providers: <A,s2> <A,s1>_1 
+current generation: Generation nr.3: <B,q2>; <A,s2>_1; <A,s3>
+next working set, at level nr.2 : { <A,s2> <A,s1>_1 <B,q1>  }
+Nodes with fanIn values:
+<A,s1>_1, fanIn = 0 | <B,q0>_2, fanIn = 0 | <A,s0>_2, fanIn = 0 | <B,q1>, fanIn = 0 | <A,s2>, fanIn = 0
+Total requires: p0_1
+fanIn[<A,s0>_1] := 0
+fanIn[<B,q0>_1] := 0
+fanIn[<A,s1>] := 1
+Nodes with fanIn values:
+<A,s0>_1, fanIn = 0 | <B,q0>_1, fanIn = 0 | <A,s1>, fanIn = 1
+
+ ----------------- BOTTOM-UP VISIT LEVEL nr. 2 CYCLE execution nr. 1 ----------------
+node to be examined: <A,s2>
+<A,s2> is NOT an initial node => need to look for parent
+<A,s1> chosen with max fanIn value
+origin node chosen: <A,s1>
+Update fanIn : fanIn[<A,s1>] <- 0 (due to provide p0_1)
+<A,s2> is NOT a copy => must take care of providers
+list of chosen providers: 
+current generation: Generation nr.2: <A,s2>
+next working set, at level nr.1 : { <A,s1>  }
+Nodes with fanIn values:
+<A,s0>_1, fanIn = 0 | <B,q0>_1, fanIn = 0 | <A,s1>, fanIn = 0
+
+ ----------------- BOTTOM-UP VISIT LEVEL nr. 2 CYCLE execution nr. 2 ----------------
+node to be examined: <A,s1>_1
+<A,s1>_1 is NOT an initial node => need to look for parent
+<A,s1> chosen as a copy
+origin node chosen: <A,s1>
+current generation: Generation nr.2: <A,s1>_1; <A,s2>
+next working set, at level nr.1 : { <A,s1>  }
+Nodes with fanIn values:
+<A,s0>_1, fanIn = 0 | <B,q0>_1, fanIn = 0 | <A,s1>, fanIn = 0
+
+ ----------------- BOTTOM-UP VISIT LEVEL nr. 2 CYCLE execution nr. 3 ----------------
+node to be examined: <B,q1>
+<B,q1> is NOT an initial node => need to look for parent
+<B,q0>_1 chosen with max fanIn value
+origin node chosen: <B,q0>_1
+<B,q1> is NOT a copy => must take care of providers
+<A,s1> chosen with max fanIn value
+list of chosen providers: <A,s1> 
+current generation: Generation nr.2: <B,q1>; <A,s1>_1; <A,s2>
+next working set, at level nr.1 : { <A,s1> <B,q0>_1  }
+Nodes with fanIn values:
+<A,s0>_1, fanIn = 0 | <B,q0>_1, fanIn = 0 | <A,s1>, fanIn = 0
+Total requires: 
+fanIn[<B,q0>] := 0
+fanIn[<A,s0>] := 0
+Nodes with fanIn values:
+<B,q0>, fanIn = 0 | <A,s0>, fanIn = 0
+
+ ----------------- BOTTOM-UP VISIT LEVEL nr. 1 CYCLE execution nr. 1 ----------------
+node to be examined: <A,s1>
+<A,s1> is NOT an initial node => need to look for parent
+<A,s0> chosen with max fanIn value
+origin node chosen: <A,s0>
+<A,s1> is NOT a copy => must take care of providers
+list of chosen providers: 
+current generation: Generation nr.1: <A,s1>
+next working set, at level nr.0 : { <A,s0>  }
+Nodes with fanIn values:
+<B,q0>, fanIn = 0 | <A,s0>, fanIn = 0
+
+ ----------------- BOTTOM-UP VISIT LEVEL nr. 1 CYCLE execution nr. 2 ----------------
+node to be examined: <B,q0>_1
+<B,q0>_1 is an initial node => no need to look for parent and providers
+current generation: Generation nr.1: <B,q0>_1; <A,s1>
+next working set, at level nr.0 : { <B,q0> <A,s0>  }
+Nodes with fanIn values:
+<B,q0>, fanIn = 0 | <A,s0>, fanIn = 0
+
+LINEARIZATION phase
+
+The linearized paths are the following:
+
+<A,s0> <A,s1> <A,s2> <A,s3> 
+
+<A,s0> <A,s1> <A,s2> 
+
+<B,q0> <B,q1> <B,q2> <B,q3> 
+
+
+The INSTANCE LINES are the following:
+
+Instance b :
+b (C,q0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<B,q0>--> b (q0,q1)
+
+b (q0,q1) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<B,q1>--> b (q1,q2)
+
+b (q1,q2) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<B,q2>--> b (q2,q3)
+
+b (q2,q3) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<B,q3>--> b (q3,D)
+
+b (q3,D) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: { }
+
+Instance a :
+a (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<A,s0>--> a (s0,s1)
+
+a (s0,s1) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<A,s1>--> a (s1,s2)
+
+a (s1,s2) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<A,s2>--> a (s2,s3)
+
+a (s2,s3) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<A,s3>--> a (s3,D)
+
+a (s3,D) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: { }
+
+Next we ADD GO (blue) and RETURN (red) EDGES.
+
+Instance b :
+b (C,q0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<B,q0>--> b (q0,q1)
+
+b (q0,q1) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<B,q1>--> b (q1,q2)
+
+b (q1,q2) nr.IN-edges =  3
+ GO EDGES: 
+ RETURN EDGES: ---p0_1---> a (s3,D)
+ INST EDGE: --<B,q2>--> b (q2,q3)
+
+b (q2,q3) nr.IN-edges =  4
+ GO EDGES: 
+ RETURN EDGES: ---p0_2---> a (s3,D); ---p0_1---> a (s3,D)
+ INST EDGE: --<B,q3>--> b (q3,D)
+
+b (q3,D) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: ---p0_3---> a (s3,D); ---p0_2---> a (s3,D); ---p0_1---> a (s3,D)
+ INST EDGE: { }
+
+Instance a :
+a (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<A,s0>--> a (s0,s1)
+
+a (s0,s1) nr.IN-edges =  1
+ GO EDGES: ---p0_1---> b (q1,q2); ---p0_1---> b (q0,q1)
+ RETURN EDGES: 
+ INST EDGE: --<A,s1>--> a (s1,s2)
+
+a (s1,s2) nr.IN-edges =  1
+ GO EDGES: ---p0_2---> b (q2,q3); ---p0_1---> b (q2,q3); ---p0_2---> b (q1,q2)
+ RETURN EDGES: 
+ INST EDGE: --<A,s2>--> a (s2,s3)
+
+a (s2,s3) nr.IN-edges =  1
+ GO EDGES: ---p0_3---> b (q2,q3)
+ RETURN EDGES: 
+ INST EDGE: --<A,s3>--> a (s3,D)
+
+a (s3,D) nr.IN-edges =  7
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: { }
+
+Next we FIX ENCLOSING GO (blue) and RETURN (red) EDGES.
+################# Fix enclosing edges for vertex a (s0,s1) and GO edge ---p0_1---> b (q1,q2)
+Pairs found from the given vertex: { }
+Pairs found from successors of the given vertex: (a (s1,s2), ---p0_1---> b (q2,q3))
+Total set of pairs found: (a (s1,s2), ---p0_1---> b (q2,q3))
+Farthest vertex: (a (s1,s2), ---p0_1---> b (q2,q3))
+Edges to be removed: { }
+Apply EDGE FIXING
+Orig twin edge: ---p0_1---> a (s3,D) from b (q2,q3)
+Farthest twin edge: ---p0_1---> a (s3,D) from b (q3,D)
+Instance lines AFTER fixing enclosing edges: Instance b :
+b (C,q0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<B,q0>--> b (q0,q1)
+
+b (q0,q1) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<B,q1>--> b (q1,q2)
+
+b (q1,q2) nr.IN-edges =  3
+ GO EDGES: 
+ RETURN EDGES: ---p0_1---> a (s3,D)
+ INST EDGE: --<B,q2>--> b (q2,q3)
+
+b (q2,q3) nr.IN-edges =  3
+ GO EDGES: 
+ RETURN EDGES: ---p0_2---> a (s3,D)
+ INST EDGE: --<B,q3>--> b (q3,D)
+
+b (q3,D) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: ---p0_3---> a (s3,D); ---p0_2---> a (s3,D); ---p0_1---> a (s3,D)
+ INST EDGE: { }
+
+Instance a :
+a (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<A,s0>--> a (s0,s1)
+
+a (s0,s1) nr.IN-edges =  1
+ GO EDGES: ---p0_1---> b (q1,q2); ---p0_1---> b (q0,q1)
+ RETURN EDGES: 
+ INST EDGE: --<A,s1>--> a (s1,s2)
+
+a (s1,s2) nr.IN-edges =  1
+ GO EDGES: ---p0_2---> b (q2,q3); ---p0_2---> b (q1,q2)
+ RETURN EDGES: 
+ INST EDGE: --<A,s2>--> a (s2,s3)
+
+a (s2,s3) nr.IN-edges =  1
+ GO EDGES: ---p0_3---> b (q2,q3)
+ RETURN EDGES: 
+ INST EDGE: --<A,s3>--> a (s3,D)
+
+a (s3,D) nr.IN-edges =  6
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: { }
+
+################# Fix enclosing edges for vertex a (s0,s1) and GO edge ---p0_1---> b (q0,q1)
+Pairs found from the given vertex: (a (s0,s1), ---p0_1---> b (q1,q2))
+Pairs found from successors of the given vertex: { }
+Total set of pairs found: (a (s0,s1), ---p0_1---> b (q1,q2))
+Farthest vertex: (a (s0,s1), ---p0_1---> b (q1,q2))
+Edges to be removed: { }
+Apply EDGE FIXING
+Orig twin edge: ---p0_1---> a (s3,D) from b (q1,q2)
+Farthest twin edge: ---p0_1---> a (s3,D) from b (q2,q3)
+Instance lines AFTER fixing enclosing edges: Instance b :
+b (C,q0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<B,q0>--> b (q0,q1)
+
+b (q0,q1) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<B,q1>--> b (q1,q2)
+
+b (q1,q2) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<B,q2>--> b (q2,q3)
+
+b (q2,q3) nr.IN-edges =  3
+ GO EDGES: 
+ RETURN EDGES: ---p0_2---> a (s3,D)
+ INST EDGE: --<B,q3>--> b (q3,D)
+
+b (q3,D) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: ---p0_3---> a (s3,D); ---p0_2---> a (s3,D); ---p0_1---> a (s3,D)
+ INST EDGE: { }
+
+Instance a :
+a (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<A,s0>--> a (s0,s1)
+
+a (s0,s1) nr.IN-edges =  1
+ GO EDGES: ---p0_1---> b (q0,q1)
+ RETURN EDGES: 
+ INST EDGE: --<A,s1>--> a (s1,s2)
+
+a (s1,s2) nr.IN-edges =  1
+ GO EDGES: ---p0_2---> b (q2,q3); ---p0_2---> b (q1,q2)
+ RETURN EDGES: 
+ INST EDGE: --<A,s2>--> a (s2,s3)
+
+a (s2,s3) nr.IN-edges =  1
+ GO EDGES: ---p0_3---> b (q2,q3)
+ RETURN EDGES: 
+ INST EDGE: --<A,s3>--> a (s3,D)
+
+a (s3,D) nr.IN-edges =  5
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: { }
+
+################# Fix enclosing edges for vertex a (s1,s2) and GO edge ---p0_2---> b (q2,q3)
+Pairs found from the given vertex: { }
+Pairs found from successors of the given vertex: { }
+Total set of pairs found: { }
+
+################# Fix enclosing edges for vertex a (s1,s2) and GO edge ---p0_2---> b (q1,q2)
+Pairs found from the given vertex: (a (s1,s2), ---p0_2---> b (q2,q3))
+Pairs found from successors of the given vertex: { }
+Total set of pairs found: (a (s1,s2), ---p0_2---> b (q2,q3))
+Farthest vertex: (a (s1,s2), ---p0_2---> b (q2,q3))
+Edges to be removed: { }
+Apply EDGE FIXING
+Orig twin edge: ---p0_2---> a (s3,D) from b (q2,q3)
+Farthest twin edge: ---p0_2---> a (s3,D) from b (q3,D)
+Instance lines AFTER fixing enclosing edges: Instance b :
+b (C,q0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<B,q0>--> b (q0,q1)
+
+b (q0,q1) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<B,q1>--> b (q1,q2)
+
+b (q1,q2) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<B,q2>--> b (q2,q3)
+
+b (q2,q3) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<B,q3>--> b (q3,D)
+
+b (q3,D) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: ---p0_3---> a (s3,D); ---p0_2---> a (s3,D); ---p0_1---> a (s3,D)
+ INST EDGE: { }
+
+Instance a :
+a (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<A,s0>--> a (s0,s1)
+
+a (s0,s1) nr.IN-edges =  1
+ GO EDGES: ---p0_1---> b (q0,q1)
+ RETURN EDGES: 
+ INST EDGE: --<A,s1>--> a (s1,s2)
+
+a (s1,s2) nr.IN-edges =  1
+ GO EDGES: ---p0_2---> b (q1,q2)
+ RETURN EDGES: 
+ INST EDGE: --<A,s2>--> a (s2,s3)
+
+a (s2,s3) nr.IN-edges =  1
+ GO EDGES: ---p0_3---> b (q2,q3)
+ RETURN EDGES: 
+ INST EDGE: --<A,s3>--> a (s3,D)
+
+a (s3,D) nr.IN-edges =  4
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: { }
+
+################# Fix enclosing edges for vertex a (s2,s3) and GO edge ---p0_3---> b (q2,q3)
+Pairs found from the given vertex: { }
+Pairs found from successors of the given vertex: { }
+Total set of pairs found: { }
+
+Now the INSTANCE LINES WITH EDGES look like this:
+
+Instance b :
+b (C,q0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<B,q0>--> b (q0,q1)
+
+b (q0,q1) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<B,q1>--> b (q1,q2)
+
+b (q1,q2) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<B,q2>--> b (q2,q3)
+
+b (q2,q3) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<B,q3>--> b (q3,D)
+
+b (q3,D) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: ---p0_3---> a (s3,D); ---p0_2---> a (s3,D); ---p0_1---> a (s3,D)
+ INST EDGE: { }
+
+Instance a :
+a (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<A,s0>--> a (s0,s1)
+
+a (s0,s1) nr.IN-edges =  1
+ GO EDGES: ---p0_1---> b (q0,q1)
+ RETURN EDGES: 
+ INST EDGE: --<A,s1>--> a (s1,s2)
+
+a (s1,s2) nr.IN-edges =  1
+ GO EDGES: ---p0_2---> b (q1,q2)
+ RETURN EDGES: 
+ INST EDGE: --<A,s2>--> a (s2,s3)
+
+a (s2,s3) nr.IN-edges =  1
+ GO EDGES: ---p0_3---> b (q2,q3)
+ RETURN EDGES: 
+ INST EDGE: --<A,s3>--> a (s3,D)
+
+a (s3,D) nr.IN-edges =  4
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: { }
+
+
+----------------------- PLAN SYNTHESIS START -----------------------
+Added action [Create instance b:B] to the plan.
+Added action [Create instance a:A] to the plan.
+External loop iteration i = 0
+
+*********************** Internal loop iteration j = 0
+Plan BEFORE: 
+ Plan[1] = [Create instance b:B]
+ Plan[2] = [Create instance a:A]
+Vertex popped: a (C,s0)
+STACK = 
+b (C,q0) | 
+Deal with successor vertex.
+INST Edge: PUSH vertex: a (s0,s1)
+STACK = 
+a (s0,s1) | b (C,q0) | 
+Vertex removed: a (C,s0)
+
+*********************** Internal loop iteration j = 1
+Plan BEFORE: 
+ Plan[1] = [Create instance b:B]
+ Plan[2] = [Create instance a:A]
+Vertex popped: a (s0,s1)
+STACK = 
+b (C,q0) | 
+It's an intermediate vertex => add action [a : change state from s0 to s1] to the plan.
+Deal with go/blue edges
+Deal with return/red edges
+Deal with successor vertex.
+INST Edge: PUSH vertex: a (s1,s2)
+STACK = 
+a (s1,s2) | b (C,q0) | 
+Vertex removed: a (s0,s1)
+
+*********************** Internal loop iteration j = 2
+Plan BEFORE: 
+ Plan[1] = [Create instance b:B]
+ Plan[2] = [Create instance a:A]
+ Plan[3] = [a : change state from s0 to s1]
+ Plan[4] = [a : bind port p0_1 to instance b]
+Vertex popped: a (s1,s2)
+STACK = 
+b (C,q0) | 
+It's an intermediate vertex => add action [a : change state from s1 to s2] to the plan.
+Deal with go/blue edges
+Deal with return/red edges
+Deal with successor vertex.
+INST Edge: PUSH vertex: a (s2,s3)
+STACK = 
+a (s2,s3) | b (C,q0) | 
+Vertex removed: a (s1,s2)
+
+*********************** Internal loop iteration j = 3
+Plan BEFORE: 
+ Plan[1] = [Create instance b:B]
+ Plan[2] = [Create instance a:A]
+ Plan[3] = [a : change state from s0 to s1]
+ Plan[4] = [a : bind port p0_1 to instance b]
+ Plan[5] = [a : change state from s1 to s2]
+ Plan[6] = [a : bind port p0_2 to instance b]
+Vertex popped: a (s2,s3)
+STACK = 
+b (C,q0) | 
+It's an intermediate vertex => add action [a : change state from s2 to s3] to the plan.
+Deal with go/blue edges
+Deal with return/red edges
+Deal with successor vertex.
+Vertex removed: a (s2,s3)
+
+*********************** Internal loop iteration j = 4
+Plan BEFORE: 
+ Plan[1] = [Create instance b:B]
+ Plan[2] = [Create instance a:A]
+ Plan[3] = [a : change state from s0 to s1]
+ Plan[4] = [a : bind port p0_1 to instance b]
+ Plan[5] = [a : change state from s1 to s2]
+ Plan[6] = [a : bind port p0_2 to instance b]
+ Plan[7] = [a : change state from s2 to s3]
+ Plan[8] = [a : bind port p0_3 to instance b]
+Vertex popped: b (C,q0)
+STACK = 
+[]
+Deal with successor vertex.
+INST Edge: PUSH vertex: b (q0,q1)
+STACK = 
+b (q0,q1) | 
+Vertex removed: b (C,q0)
+
+*********************** Internal loop iteration j = 5
+Plan BEFORE: 
+ Plan[1] = [Create instance b:B]
+ Plan[2] = [Create instance a:A]
+ Plan[3] = [a : change state from s0 to s1]
+ Plan[4] = [a : bind port p0_1 to instance b]
+ Plan[5] = [a : change state from s1 to s2]
+ Plan[6] = [a : bind port p0_2 to instance b]
+ Plan[7] = [a : change state from s2 to s3]
+ Plan[8] = [a : bind port p0_3 to instance b]
+Vertex popped: b (q0,q1)
+STACK = 
+[]
+It's an intermediate vertex => add action [b : change state from q0 to q1] to the plan.
+Deal with go/blue edges
+Deal with return/red edges
+Deal with successor vertex.
+INST Edge: PUSH vertex: b (q1,q2)
+STACK = 
+b (q1,q2) | 
+Vertex removed: b (q0,q1)
+
+*********************** Internal loop iteration j = 6
+Plan BEFORE: 
+ Plan[1] = [Create instance b:B]
+ Plan[2] = [Create instance a:A]
+ Plan[3] = [a : change state from s0 to s1]
+ Plan[4] = [a : bind port p0_1 to instance b]
+ Plan[5] = [a : change state from s1 to s2]
+ Plan[6] = [a : bind port p0_2 to instance b]
+ Plan[7] = [a : change state from s2 to s3]
+ Plan[8] = [a : bind port p0_3 to instance b]
+ Plan[9] = [b : change state from q0 to q1]
+Vertex popped: b (q1,q2)
+STACK = 
+[]
+It's an intermediate vertex => add action [b : change state from q1 to q2] to the plan.
+Deal with go/blue edges
+Deal with return/red edges
+Deal with successor vertex.
+INST Edge: PUSH vertex: b (q2,q3)
+STACK = 
+b (q2,q3) | 
+Vertex removed: b (q1,q2)
+
+*********************** Internal loop iteration j = 7
+Plan BEFORE: 
+ Plan[1] = [Create instance b:B]
+ Plan[2] = [Create instance a:A]
+ Plan[3] = [a : change state from s0 to s1]
+ Plan[4] = [a : bind port p0_1 to instance b]
+ Plan[5] = [a : change state from s1 to s2]
+ Plan[6] = [a : bind port p0_2 to instance b]
+ Plan[7] = [a : change state from s2 to s3]
+ Plan[8] = [a : bind port p0_3 to instance b]
+ Plan[9] = [b : change state from q0 to q1]
+ Plan[10] = [b : change state from q1 to q2]
+Vertex popped: b (q2,q3)
+STACK = 
+[]
+It's an intermediate vertex => add action [b : change state from q2 to q3] to the plan.
+Deal with go/blue edges
+Deal with return/red edges
+Deal with successor vertex.
+INST Edge: PUSH vertex: b (q3,D)
+STACK = 
+b (q3,D) | 
+Target has been REACHED.
+Vertex removed: b (q2,q3)
+
+The computed PLAN is: 
+ Plan[1] = [Create instance b:B]
+ Plan[2] = [Create instance a:A]
+ Plan[3] = [a : change state from s0 to s1]
+ Plan[4] = [a : bind port p0_1 to instance b]
+ Plan[5] = [a : change state from s1 to s2]
+ Plan[6] = [a : bind port p0_2 to instance b]
+ Plan[7] = [a : change state from s2 to s3]
+ Plan[8] = [a : bind port p0_3 to instance b]
+ Plan[9] = [b : change state from q0 to q1]
+ Plan[10] = [b : change state from q1 to q2]
+ Plan[11] = [b : change state from q2 to q3]
