@@ -649,7 +649,8 @@ let new_choose_port_provider file_buffer node require nlist =
         (require, provider)
       end
 
-(* TODO: to be deleted when new version is debugged *)
+(** Choose provider of port [require] from the list of nodes [nlist] by simply 
+		picking the first provider at hand (no heuristics involved). *)
 let choose_port_provider file_buffer node require nlist =
 	let providers_list = (filter_port_providers require nlist) in	
 	match providers_list with 
@@ -664,7 +665,7 @@ let choose_port_provider file_buffer node require nlist =
         (require, head)
       end
 
- 	(** Choose providers relying on heuristics. *)
+(** Choose providers relying on heuristics. *)
 let choose_providers file_buffer node nlist =
   let requiresList = (requires_of_node node) in      
   let choose_provider require = (new_choose_port_provider file_buffer node require nlist) in

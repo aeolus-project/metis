@@ -1,9 +1,9 @@
-<src/*.{ml,mli,native}>:package(atdgen), package(extlib), pp(camlp4o pa_macro.cmo -DFOO), use_camlp4_full
+<src/*.{ml,mli,native}>:package(atdgen), package(extlib), pp(camlp4o pa_macro.cmo -DVERBOSE), use_camlp4_full
 <src>:include
 
-<src/datatypes/*.{ml,mli,native}>:package(atdgen), package(extlib), pp(camlp4o pa_macro.cmo -DFOO), use_camlp4_full
+<src/datatypes/*.{ml,mli,native}>:package(atdgen), package(extlib), pp(camlp4o pa_macro.cmo -DVERBOSE), use_camlp4_full
 <src/datatypes>:include
 
-<src/engine/*.{ml,mli,native}>:package(atdgen), package(extlib), pp(camlp4o pa_macro.cmo -DFOO), use_camlp4_full
+<src/engine/*.{ml,mli,native}>:package(atdgen), package(extlib), pp(camlp4o pa_macro.cmo -DVERBOSE), use_camlp4_full
 <src/engine>:include
 
