@@ -2,7 +2,8 @@
 open Universe_translator
 open Datatypes_t
 open Instance
-(* module used for old style topological sort + duplication  
+(* module used for old style topological sort + duplication 
+(exploiting cycle detection) 
 open My_scc
 *)
 open Facade
@@ -20,12 +21,18 @@ let ap_output_channel             = ref stdout
 let	target_component_name					= ref "" 
 let	target_state 									= ref "" 
 
+(* settings for Metis' behaviour *)
+let use_heuristics								= ref false
+let mandriva_mode									= ref false
+
 (* Arg module settings *)
 
 let usage = 
   Printf.sprintf
-    "usage: %s %s %s %s %s %s"
+    "usage: %s %s %s %s %s %s %s %s"
     Sys.argv.(0)
+    "[-hr]"
+    "[-m]"
     "[-u input-universe-file]"
     "[-c target-component-type]"
     "[-s target-state]"
@@ -35,6 +42,8 @@ let usage =
 let speclist = 
   Arg.align [
     (* Input arguments *)
+		("-hr",        Arg.Set use_heuristics, " Use heuristics for component selection");
+		("-m",         Arg.Set mandriva_mode, " Work in Mandriva mode");
     ("-u",         Arg.String (fun filename -> universe_channel := (open_in filename)), " The universe input file");
     ("-c",         Arg.String (fun component_name -> target_component_name := component_name), " The target component");
     ("-s",         Arg.String (fun component_state -> target_state := component_state), " The target state name");
@@ -70,7 +79,6 @@ let () = (print_endline "performed universe translation")
 *)
 
 (* find target component in provided universe *)
-(* TODO: abort if it can't find it *)
 let targetType = (Facade.find_component_by_name universe !target_component_name) 
 
 (* TODO: check for correctness: if the given state ID does not belong to the given component abort *)
