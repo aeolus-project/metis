@@ -1,0 +1,91 @@
+// Abstract plan in DOT file representation 
+
+digraph {
+
+	// Instance line of varnish
+	subgraph cluster_varnish {
+		node[style=filled, color=lightgrey];
+		"varnish (C,NotInstalled)" -> "varnish (NotInstalled,Installed)";
+		"varnish (NotInstalled,Installed)" -> "varnish (Installed,Configured)";
+		"varnish (Installed,Configured)" -> "varnish (Configured,Active)";
+		"varnish (Configured,Active)" -> "varnish (Active,D)";
+		label="VARNISH";
+	}
+
+	// Instance line of wordpress_3
+	subgraph cluster_wordpress_3 {
+		node[style=filled, color=lightgrey];
+		"wordpress_3 (C,NotInstalled)" -> "wordpress_3 (NotInstalled,Installed)";
+		"wordpress_3 (NotInstalled,Installed)" -> "wordpress_3 (Installed,Template)";
+		"wordpress_3 (Installed,Template)" -> "wordpress_3 (Template,Configured)";
+		"wordpress_3 (Template,Configured)" -> "wordpress_3 (Configured,Active)";
+		"wordpress_3 (Configured,Active)" -> "wordpress_3 (Active,D)";
+		label="WORDPRESS_3";
+	}
+
+	// Instance line of wordpress_2
+	subgraph cluster_wordpress_2 {
+		node[style=filled, color=lightgrey];
+		"wordpress_2 (C,NotInstalled)" -> "wordpress_2 (NotInstalled,Installed)";
+		"wordpress_2 (NotInstalled,Installed)" -> "wordpress_2 (Installed,Template)";
+		"wordpress_2 (Installed,Template)" -> "wordpress_2 (Template,Configured)";
+		"wordpress_2 (Template,Configured)" -> "wordpress_2 (Configured,Active)";
+		"wordpress_2 (Configured,Active)" -> "wordpress_2 (Active,D)";
+		label="WORDPRESS_2";
+	}
+
+	// Instance line of wordpress_1
+	subgraph cluster_wordpress_1 {
+		node[style=filled, color=lightgrey];
+		"wordpress_1 (C,NotInstalled)" -> "wordpress_1 (NotInstalled,Installed)";
+		"wordpress_1 (NotInstalled,Installed)" -> "wordpress_1 (Installed,Template)";
+		"wordpress_1 (Installed,Template)" -> "wordpress_1 (Template,Configured)";
+		"wordpress_1 (Template,Configured)" -> "wordpress_1 (Configured,Active)";
+		"wordpress_1 (Configured,Active)" -> "wordpress_1 (Active,D)";
+		label="WORDPRESS_1";
+	}
+
+	// Instance line of httpd
+	subgraph cluster_httpd {
+		node[style=filled, color=lightgrey];
+		"httpd (C,NotInstalled)" -> "httpd (NotInstalled,Installed)";
+		"httpd (NotInstalled,Installed)" -> "httpd (Installed,Configured)";
+		"httpd (Installed,Configured)" -> "httpd (Configured,Active)";
+		"httpd (Configured,Active)" -> "httpd (Active,D)";
+		label="HTTPD";
+	}
+
+	// Instance line of mysql
+	subgraph cluster_mysql {
+		node[style=filled, color=lightgrey];
+		"mysql (C,NotInstalled)" -> "mysql (NotInstalled,Installed)";
+		"mysql (NotInstalled,Installed)" -> "mysql (Installed,SetRootPassword)";
+		"mysql (Installed,SetRootPassword)" -> "mysql (SetRootPassword,Configured)";
+		"mysql (SetRootPassword,Configured)" -> "mysql (Configured,Active.ActiveOnMBS)";
+		"mysql (Configured,Active.ActiveOnMBS)" -> "mysql (Active.ActiveOnMBS,Active)";
+		"mysql (Active.ActiveOnMBS,Active)" -> "mysql (Active,D)";
+		label="MYSQL";
+	}
+
+	// Edges from instance line of wordpress_3
+		"wordpress_3 (Configured,Active)" -> "varnish (Installed,Configured)" [label="/mbs/Wordpress-3/Active/get_website", color=blue];
+
+	// Edges from instance line of wordpress_2
+		"wordpress_2 (Configured,Active)" -> "varnish (Installed,Configured)" [label="/mbs/Wordpress-2/Active/get_website", color=blue];
+
+	// Edges from instance line of wordpress_1
+		"wordpress_1 (Configured,Active)" -> "varnish (Installed,Configured)" [label="/mbs/Wordpress-1/Active/get_website", color=blue];
+
+	// Edges from instance line of httpd
+		"httpd (Configured,Active)" -> "wordpress_1 (Configured,Active)" [label="/mbs/Httpd/Active/start", color=blue]; 
+		"httpd (Configured,Active)" -> "wordpress_1 (Configured,Active)" [label="Httpd.get_documentRoot", color=blue]; 
+		"httpd (Configured,Active)" -> "wordpress_2 (Configured,Active)" [label="/mbs/Httpd/Active/start", color=blue]; 
+		"httpd (Configured,Active)" -> "wordpress_2 (Configured,Active)" [label="Httpd.get_documentRoot", color=blue]; 
+		"httpd (Configured,Active)" -> "wordpress_3 (Configured,Active)" [label="/mbs/Httpd/Active/start", color=blue]; 
+		"httpd (Configured,Active)" -> "wordpress_3 (Configured,Active)" [label="Httpd.get_documentRoot", color=blue];
+
+	// Edges from instance line of mysql
+		"mysql (Active.ActiveOnMBS,Active)" -> "wordpress_1 (Template,Configured)" [label="/mbs/Mysql/Active/addDatabase", color=blue]; 
+		"mysql (Active.ActiveOnMBS,Active)" -> "wordpress_2 (Template,Configured)" [label="/mbs/Mysql/Active/addDatabase", color=blue]; 
+		"mysql (Active.ActiveOnMBS,Active)" -> "wordpress_3 (Template,Configured)" [label="/mbs/Mysql/Active/addDatabase", color=blue];
+}

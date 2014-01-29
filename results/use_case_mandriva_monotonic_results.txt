@@ -1,0 +1,1310 @@
+
+We generate the FULL G-GRAPH: 
+
+Generation nr.0: <Wordpress,NotInstalled>; <Varnish,NotInstalled>; <Httpd,NotInstalled>; <Sharing,Init>; <Mysql,NotInstalled>
+Generation nr.1: <Mysql,NotInstalled>_1; <Sharing,Init>_1; <Httpd,NotInstalled>_1; <Varnish,NotInstalled>_1; <Wordpress,NotInstalled>_1; <Wordpress,Installed>; <Varnish,Installed>; <Httpd,Installed>; <Mysql,Installed>
+Generation nr.2: <Mysql,Installed>_1; <Httpd,Installed>_1; <Varnish,Installed>_1; <Wordpress,Installed>_1; <Wordpress,NotInstalled>_2; <Varnish,NotInstalled>_2; <Httpd,NotInstalled>_2; <Sharing,Init>_2; <Mysql,NotInstalled>_2; <Wordpress,Template>; <Httpd,Configured>; <Mysql,SetRootPassword>; <Mysql,ResetRootPassword>
+Generation nr.3: <Mysql,ResetRootPassword>_1; <Mysql,SetRootPassword>_1; <Httpd,Configured>_1; <Wordpress,Template>_1; <Mysql,NotInstalled>_3; <Sharing,Init>_3; <Httpd,NotInstalled>_3; <Varnish,NotInstalled>_3; <Wordpress,NotInstalled>_3; <Wordpress,Installed>_2; <Varnish,Installed>_2; <Httpd,Installed>_2; <Mysql,Installed>_2; <Httpd,Active>; <Mysql,Configured>
+Generation nr.4: <Mysql,Configured>_1; <Httpd,Active>_1; <Mysql,Installed>_3; <Httpd,Installed>_3; <Varnish,Installed>_3; <Wordpress,Installed>_3; <Wordpress,NotInstalled>_4; <Varnish,NotInstalled>_4; <Httpd,NotInstalled>_4; <Sharing,Init>_4; <Mysql,NotInstalled>_4; <Wordpress,Template>_2; <Httpd,Configured>_2; <Mysql,SetRootPassword>_2; <Mysql,ResetRootPassword>_2; <Mysql,ConfiguredAsSlave>; <Mysql,ConfiguredAsMaster>; <Mysql,Active>
+Generation nr.5: <Mysql,Active>_1; <Mysql,ConfiguredAsMaster>_1; <Mysql,ConfiguredAsSlave>_1; <Mysql,ResetRootPassword>_3; <Mysql,SetRootPassword>_3; <Httpd,Configured>_3; <Wordpress,Template>_3; <Mysql,NotInstalled>_5; <Sharing,Init>_5; <Httpd,NotInstalled>_5; <Varnish,NotInstalled>_5; <Wordpress,NotInstalled>_5; <Wordpress,Installed>_4; <Varnish,Installed>_4; <Httpd,Installed>_4; <Mysql,Installed>_4; <Httpd,Active>_2; <Mysql,Configured>_2; <Wordpress,Configured>
+Generation nr.6: <Wordpress,Configured>_1; <Mysql,Configured>_3; <Httpd,Active>_3; <Mysql,Installed>_5; <Httpd,Installed>_5; <Varnish,Installed>_5; <Wordpress,Installed>_5; <Wordpress,NotInstalled>_6; <Varnish,NotInstalled>_6; <Httpd,NotInstalled>_6; <Sharing,Init>_6; <Mysql,NotInstalled>_6; <Wordpress,Template>_4; <Httpd,Configured>_4; <Mysql,SetRootPassword>_4; <Mysql,ResetRootPassword>_4; <Mysql,ConfiguredAsSlave>_2; <Mysql,ConfiguredAsMaster>_2; <Mysql,Active>_2; <Varnish,Configured>; <Wordpress,Active>
+Generation nr.7: <Wordpress,Active>_1; <Varnish,Configured>_1; <Mysql,Active>_3; <Mysql,ConfiguredAsMaster>_3; <Mysql,ConfiguredAsSlave>_3; <Mysql,ResetRootPassword>_5; <Mysql,SetRootPassword>_5; <Httpd,Configured>_5; <Wordpress,Template>_5; <Mysql,NotInstalled>_7; <Sharing,Init>_7; <Httpd,NotInstalled>_7; <Varnish,NotInstalled>_7; <Wordpress,NotInstalled>_7; <Wordpress,Installed>_6; <Varnish,Installed>_6; <Httpd,Installed>_6; <Mysql,Installed>_6; <Httpd,Active>_4; <Mysql,Configured>_4; <Wordpress,Configured>_2; <Varnish,Active>
+
+BOTTOM-UP VISIT of the G-graph. For every node we choose origin node and providers.
+Total requires: Wordpress.start
+fanIn[<Wordpress,Configured>_1] := 0
+fanIn[<Mysql,Configured>_3] := 0
+fanIn[<Httpd,Active>_3] := 0
+fanIn[<Mysql,Installed>_5] := 0
+fanIn[<Httpd,Installed>_5] := 0
+fanIn[<Varnish,Installed>_5] := 0
+fanIn[<Wordpress,Installed>_5] := 0
+fanIn[<Wordpress,NotInstalled>_6] := 0
+fanIn[<Varnish,NotInstalled>_6] := 0
+fanIn[<Httpd,NotInstalled>_6] := 0
+fanIn[<Sharing,Init>_6] := 0
+fanIn[<Mysql,NotInstalled>_6] := 0
+fanIn[<Wordpress,Template>_4] := 0
+fanIn[<Httpd,Configured>_4] := 0
+fanIn[<Mysql,SetRootPassword>_4] := 0
+fanIn[<Mysql,ResetRootPassword>_4] := 0
+fanIn[<Mysql,ConfiguredAsSlave>_2] := 0
+fanIn[<Mysql,ConfiguredAsMaster>_2] := 0
+fanIn[<Mysql,Active>_2] := 0
+fanIn[<Varnish,Configured>] := 0
+fanIn[<Wordpress,Active>] := 1
+Nodes with fanIn values:
+<Wordpress,Configured>_1, fanIn = 0 | <Mysql,Configured>_3, fanIn = 0 | <Httpd,Active>_3, fanIn = 0 | <Mysql,Installed>_5, fanIn = 0 | <Httpd,Installed>_5, fanIn = 0 | <Varnish,Installed>_5, fanIn = 0 | <Wordpress,Installed>_5, fanIn = 0 | <Wordpress,NotInstalled>_6, fanIn = 0 | <Varnish,NotInstalled>_6, fanIn = 0 | <Httpd,NotInstalled>_6, fanIn = 0 | <Sharing,Init>_6, fanIn = 0 | <Mysql,NotInstalled>_6, fanIn = 0 | <Wordpress,Template>_4, fanIn = 0 | <Httpd,Configured>_4, fanIn = 0 | <Mysql,SetRootPassword>_4, fanIn = 0 | <Mysql,ResetRootPassword>_4, fanIn = 0 | <Mysql,ConfiguredAsSlave>_2, fanIn = 0 | <Mysql,ConfiguredAsMaster>_2, fanIn = 0 | <Mysql,Active>_2, fanIn = 0 | <Varnish,Configured>, fanIn = 0 | <Wordpress,Active>, fanIn = 1
+
+ ----------------- BOTTOM-UP VISIT LEVEL nr. 7 CYCLE execution nr. 1 ----------------
+node to be examined: <Varnish,Active>
+<Varnish,Active> is NOT an initial node => need to look for parent
+<Varnish,Configured> chosen with max fanIn value
+origin node chosen: <Varnish,Configured>
+<Varnish,Active> is NOT a copy => must take care of providers
+<Wordpress,Active> chosen with max fanIn value
+Update fanIn : fanIn[<Wordpress,Active>] <- 0 (due to provide get_network_port)
+list of chosen providers: <Wordpress,Active> 
+current generation: Generation nr.7: <Varnish,Active>
+next working set, at level nr.6 : { <Wordpress,Active> <Varnish,Configured>  }
+Nodes with fanIn values:
+<Wordpress,Configured>_1, fanIn = 0 | <Mysql,Configured>_3, fanIn = 0 | <Httpd,Active>_3, fanIn = 0 | <Mysql,Installed>_5, fanIn = 0 | <Httpd,Installed>_5, fanIn = 0 | <Varnish,Installed>_5, fanIn = 0 | <Wordpress,Installed>_5, fanIn = 0 | <Wordpress,NotInstalled>_6, fanIn = 0 | <Varnish,NotInstalled>_6, fanIn = 0 | <Httpd,NotInstalled>_6, fanIn = 0 | <Sharing,Init>_6, fanIn = 0 | <Mysql,NotInstalled>_6, fanIn = 0 | <Wordpress,Template>_4, fanIn = 0 | <Httpd,Configured>_4, fanIn = 0 | <Mysql,SetRootPassword>_4, fanIn = 0 | <Mysql,ResetRootPassword>_4, fanIn = 0 | <Mysql,ConfiguredAsSlave>_2, fanIn = 0 | <Mysql,ConfiguredAsMaster>_2, fanIn = 0 | <Mysql,Active>_2, fanIn = 0 | <Varnish,Configured>, fanIn = 0 | <Wordpress,Active>, fanIn = 0
+Total requires: Httpd.start | Httpd.get_documentRoot | get_site
+fanIn[<Mysql,Active>_1] := 0
+fanIn[<Mysql,ConfiguredAsMaster>_1] := 0
+fanIn[<Mysql,ConfiguredAsSlave>_1] := 0
+fanIn[<Mysql,ResetRootPassword>_3] := 0
+fanIn[<Mysql,SetRootPassword>_3] := 0
+fanIn[<Httpd,Configured>_3] := 1
+fanIn[<Wordpress,Template>_3] := 0
+fanIn[<Mysql,NotInstalled>_5] := 0
+fanIn[<Sharing,Init>_5] := 0
+fanIn[<Httpd,NotInstalled>_5] := 0
+fanIn[<Varnish,NotInstalled>_5] := 0
+fanIn[<Wordpress,NotInstalled>_5] := 0
+fanIn[<Wordpress,Installed>_4] := 0
+fanIn[<Varnish,Installed>_4] := 0
+fanIn[<Httpd,Installed>_4] := 0
+fanIn[<Mysql,Installed>_4] := 0
+fanIn[<Httpd,Active>_2] := 2
+fanIn[<Mysql,Configured>_2] := 0
+fanIn[<Wordpress,Configured>] := 1
+Nodes with fanIn values:
+<Mysql,Active>_1, fanIn = 0 | <Mysql,ConfiguredAsMaster>_1, fanIn = 0 | <Mysql,ConfiguredAsSlave>_1, fanIn = 0 | <Mysql,ResetRootPassword>_3, fanIn = 0 | <Mysql,SetRootPassword>_3, fanIn = 0 | <Httpd,Configured>_3, fanIn = 1 | <Wordpress,Template>_3, fanIn = 0 | <Mysql,NotInstalled>_5, fanIn = 0 | <Sharing,Init>_5, fanIn = 0 | <Httpd,NotInstalled>_5, fanIn = 0 | <Varnish,NotInstalled>_5, fanIn = 0 | <Wordpress,NotInstalled>_5, fanIn = 0 | <Wordpress,Installed>_4, fanIn = 0 | <Varnish,Installed>_4, fanIn = 0 | <Httpd,Installed>_4, fanIn = 0 | <Mysql,Installed>_4, fanIn = 0 | <Httpd,Active>_2, fanIn = 2 | <Mysql,Configured>_2, fanIn = 0 | <Wordpress,Configured>, fanIn = 1
+
+ ----------------- BOTTOM-UP VISIT LEVEL nr. 6 CYCLE execution nr. 1 ----------------
+node to be examined: <Wordpress,Active>
+<Wordpress,Active> is NOT an initial node => need to look for parent
+<Wordpress,Configured> chosen with max fanIn value
+origin node chosen: <Wordpress,Configured>
+Update fanIn : fanIn[<Wordpress,Configured>] <- 0 (due to provide get_network_port)
+<Wordpress,Active> is NOT a copy => must take care of providers
+<Httpd,Active>_2 chosen with max fanIn value
+Update fanIn : fanIn[<Httpd,Configured>_3] <- 0 (due to provide Httpd.get_documentRoot)
+Update fanIn : fanIn[<Httpd,Active>_2] <- 1 (due to provide Httpd.get_documentRoot)
+Update fanIn : fanIn[<Httpd,Active>_2] <- 0 (due to provide Httpd.set_port)
+list of chosen providers: <Httpd,Active>_2 <Httpd,Configured>_3 
+current generation: Generation nr.6: <Wordpress,Active>
+next working set, at level nr.5 : { <Httpd,Active>_2 <Httpd,Configured>_3 <Wordpress,Configured>  }
+Nodes with fanIn values:
+<Mysql,Active>_1, fanIn = 0 | <Mysql,ConfiguredAsMaster>_1, fanIn = 0 | <Mysql,ConfiguredAsSlave>_1, fanIn = 0 | <Mysql,ResetRootPassword>_3, fanIn = 0 | <Mysql,SetRootPassword>_3, fanIn = 0 | <Httpd,Configured>_3, fanIn = 0 | <Wordpress,Template>_3, fanIn = 0 | <Mysql,NotInstalled>_5, fanIn = 0 | <Sharing,Init>_5, fanIn = 0 | <Httpd,NotInstalled>_5, fanIn = 0 | <Varnish,NotInstalled>_5, fanIn = 0 | <Wordpress,NotInstalled>_5, fanIn = 0 | <Wordpress,Installed>_4, fanIn = 0 | <Varnish,Installed>_4, fanIn = 0 | <Httpd,Installed>_4, fanIn = 0 | <Mysql,Installed>_4, fanIn = 0 | <Httpd,Active>_2, fanIn = 0 | <Mysql,Configured>_2, fanIn = 0 | <Wordpress,Configured>, fanIn = 0
+
+ ----------------- BOTTOM-UP VISIT LEVEL nr. 6 CYCLE execution nr. 2 ----------------
+node to be examined: <Varnish,Configured>
+<Varnish,Configured> is NOT an initial node => need to look for parent
+<Varnish,Installed>_4 chosen with max fanIn value
+origin node chosen: <Varnish,Installed>_4
+<Varnish,Configured> is NOT a copy => must take care of providers
+<Wordpress,Configured> chosen with max fanIn value
+list of chosen providers: <Wordpress,Configured> 
+current generation: Generation nr.6: <Varnish,Configured>; <Wordpress,Active>
+next working set, at level nr.5 : { <Wordpress,Configured> <Varnish,Installed>_4 <Httpd,Active>_2 <Httpd,Configured>_3  }
+Nodes with fanIn values:
+<Mysql,Active>_1, fanIn = 0 | <Mysql,ConfiguredAsMaster>_1, fanIn = 0 | <Mysql,ConfiguredAsSlave>_1, fanIn = 0 | <Mysql,ResetRootPassword>_3, fanIn = 0 | <Mysql,SetRootPassword>_3, fanIn = 0 | <Httpd,Configured>_3, fanIn = 0 | <Wordpress,Template>_3, fanIn = 0 | <Mysql,NotInstalled>_5, fanIn = 0 | <Sharing,Init>_5, fanIn = 0 | <Httpd,NotInstalled>_5, fanIn = 0 | <Varnish,NotInstalled>_5, fanIn = 0 | <Wordpress,NotInstalled>_5, fanIn = 0 | <Wordpress,Installed>_4, fanIn = 0 | <Varnish,Installed>_4, fanIn = 0 | <Httpd,Installed>_4, fanIn = 0 | <Mysql,Installed>_4, fanIn = 0 | <Httpd,Active>_2, fanIn = 0 | <Mysql,Configured>_2, fanIn = 0 | <Wordpress,Configured>, fanIn = 0
+Total requires: Mysql.addDatabase
+fanIn[<Mysql,Configured>_1] := 0
+fanIn[<Httpd,Active>_1] := 0
+fanIn[<Mysql,Installed>_3] := 0
+fanIn[<Httpd,Installed>_3] := 0
+fanIn[<Varnish,Installed>_3] := 0
+fanIn[<Wordpress,Installed>_3] := 0
+fanIn[<Wordpress,NotInstalled>_4] := 0
+fanIn[<Varnish,NotInstalled>_4] := 0
+fanIn[<Httpd,NotInstalled>_4] := 0
+fanIn[<Sharing,Init>_4] := 0
+fanIn[<Mysql,NotInstalled>_4] := 0
+fanIn[<Wordpress,Template>_2] := 0
+fanIn[<Httpd,Configured>_2] := 0
+fanIn[<Mysql,SetRootPassword>_2] := 0
+fanIn[<Mysql,ResetRootPassword>_2] := 0
+fanIn[<Mysql,ConfiguredAsSlave>] := 0
+fanIn[<Mysql,ConfiguredAsMaster>] := 0
+fanIn[<Mysql,Active>] := 1
+Nodes with fanIn values:
+<Mysql,Configured>_1, fanIn = 0 | <Httpd,Active>_1, fanIn = 0 | <Mysql,Installed>_3, fanIn = 0 | <Httpd,Installed>_3, fanIn = 0 | <Varnish,Installed>_3, fanIn = 0 | <Wordpress,Installed>_3, fanIn = 0 | <Wordpress,NotInstalled>_4, fanIn = 0 | <Varnish,NotInstalled>_4, fanIn = 0 | <Httpd,NotInstalled>_4, fanIn = 0 | <Sharing,Init>_4, fanIn = 0 | <Mysql,NotInstalled>_4, fanIn = 0 | <Wordpress,Template>_2, fanIn = 0 | <Httpd,Configured>_2, fanIn = 0 | <Mysql,SetRootPassword>_2, fanIn = 0 | <Mysql,ResetRootPassword>_2, fanIn = 0 | <Mysql,ConfiguredAsSlave>, fanIn = 0 | <Mysql,ConfiguredAsMaster>, fanIn = 0 | <Mysql,Active>, fanIn = 1
+
+ ----------------- BOTTOM-UP VISIT LEVEL nr. 5 CYCLE execution nr. 1 ----------------
+node to be examined: <Wordpress,Configured>
+<Wordpress,Configured> is NOT an initial node => need to look for parent
+<Wordpress,Template>_2 chosen with max fanIn value
+origin node chosen: <Wordpress,Template>_2
+<Wordpress,Configured> is NOT a copy => must take care of providers
+<Mysql,Active> chosen with max fanIn value
+Update fanIn : fanIn[<Mysql,Active>] <- 0 (due to provide Mysql.start)
+list of chosen providers: <Mysql,Active> 
+current generation: Generation nr.5: <Wordpress,Configured>
+next working set, at level nr.4 : { <Mysql,Active> <Wordpress,Template>_2  }
+Nodes with fanIn values:
+<Mysql,Configured>_1, fanIn = 0 | <Httpd,Active>_1, fanIn = 0 | <Mysql,Installed>_3, fanIn = 0 | <Httpd,Installed>_3, fanIn = 0 | <Varnish,Installed>_3, fanIn = 0 | <Wordpress,Installed>_3, fanIn = 0 | <Wordpress,NotInstalled>_4, fanIn = 0 | <Varnish,NotInstalled>_4, fanIn = 0 | <Httpd,NotInstalled>_4, fanIn = 0 | <Sharing,Init>_4, fanIn = 0 | <Mysql,NotInstalled>_4, fanIn = 0 | <Wordpress,Template>_2, fanIn = 0 | <Httpd,Configured>_2, fanIn = 0 | <Mysql,SetRootPassword>_2, fanIn = 0 | <Mysql,ResetRootPassword>_2, fanIn = 0 | <Mysql,ConfiguredAsSlave>, fanIn = 0 | <Mysql,ConfiguredAsMaster>, fanIn = 0 | <Mysql,Active>, fanIn = 0
+
+ ----------------- BOTTOM-UP VISIT LEVEL nr. 5 CYCLE execution nr. 2 ----------------
+node to be examined: <Varnish,Installed>_4
+<Varnish,Installed>_4 is NOT an initial node => need to look for parent
+<Varnish,Installed>_3 chosen as a copy
+origin node chosen: <Varnish,Installed>_3
+current generation: Generation nr.5: <Varnish,Installed>_4; <Wordpress,Configured>
+next working set, at level nr.4 : { <Varnish,Installed>_3 <Mysql,Active> <Wordpress,Template>_2  }
+Nodes with fanIn values:
+<Mysql,Configured>_1, fanIn = 0 | <Httpd,Active>_1, fanIn = 0 | <Mysql,Installed>_3, fanIn = 0 | <Httpd,Installed>_3, fanIn = 0 | <Varnish,Installed>_3, fanIn = 0 | <Wordpress,Installed>_3, fanIn = 0 | <Wordpress,NotInstalled>_4, fanIn = 0 | <Varnish,NotInstalled>_4, fanIn = 0 | <Httpd,NotInstalled>_4, fanIn = 0 | <Sharing,Init>_4, fanIn = 0 | <Mysql,NotInstalled>_4, fanIn = 0 | <Wordpress,Template>_2, fanIn = 0 | <Httpd,Configured>_2, fanIn = 0 | <Mysql,SetRootPassword>_2, fanIn = 0 | <Mysql,ResetRootPassword>_2, fanIn = 0 | <Mysql,ConfiguredAsSlave>, fanIn = 0 | <Mysql,ConfiguredAsMaster>, fanIn = 0 | <Mysql,Active>, fanIn = 0
+
+ ----------------- BOTTOM-UP VISIT LEVEL nr. 5 CYCLE execution nr. 3 ----------------
+node to be examined: <Httpd,Active>_2
+<Httpd,Active>_2 is NOT an initial node => need to look for parent
+<Httpd,Active>_1 chosen as a copy
+origin node chosen: <Httpd,Active>_1
+current generation: Generation nr.5: <Httpd,Active>_2; <Varnish,Installed>_4; <Wordpress,Configured>
+next working set, at level nr.4 : { <Httpd,Active>_1 <Varnish,Installed>_3 <Mysql,Active> <Wordpress,Template>_2  }
+Nodes with fanIn values:
+<Mysql,Configured>_1, fanIn = 0 | <Httpd,Active>_1, fanIn = 0 | <Mysql,Installed>_3, fanIn = 0 | <Httpd,Installed>_3, fanIn = 0 | <Varnish,Installed>_3, fanIn = 0 | <Wordpress,Installed>_3, fanIn = 0 | <Wordpress,NotInstalled>_4, fanIn = 0 | <Varnish,NotInstalled>_4, fanIn = 0 | <Httpd,NotInstalled>_4, fanIn = 0 | <Sharing,Init>_4, fanIn = 0 | <Mysql,NotInstalled>_4, fanIn = 0 | <Wordpress,Template>_2, fanIn = 0 | <Httpd,Configured>_2, fanIn = 0 | <Mysql,SetRootPassword>_2, fanIn = 0 | <Mysql,ResetRootPassword>_2, fanIn = 0 | <Mysql,ConfiguredAsSlave>, fanIn = 0 | <Mysql,ConfiguredAsMaster>, fanIn = 0 | <Mysql,Active>, fanIn = 0
+
+ ----------------- BOTTOM-UP VISIT LEVEL nr. 5 CYCLE execution nr. 4 ----------------
+node to be examined: <Httpd,Configured>_3
+<Httpd,Configured>_3 is NOT an initial node => need to look for parent
+<Httpd,Configured>_2 chosen as a copy
+origin node chosen: <Httpd,Configured>_2
+current generation: Generation nr.5: <Httpd,Configured>_3; <Httpd,Active>_2; <Varnish,Installed>_4; <Wordpress,Configured>
+next working set, at level nr.4 : { <Httpd,Configured>_2 <Httpd,Active>_1 <Varnish,Installed>_3 <Mysql,Active> <Wordpress,Template>_2  }
+Nodes with fanIn values:
+<Mysql,Configured>_1, fanIn = 0 | <Httpd,Active>_1, fanIn = 0 | <Mysql,Installed>_3, fanIn = 0 | <Httpd,Installed>_3, fanIn = 0 | <Varnish,Installed>_3, fanIn = 0 | <Wordpress,Installed>_3, fanIn = 0 | <Wordpress,NotInstalled>_4, fanIn = 0 | <Varnish,NotInstalled>_4, fanIn = 0 | <Httpd,NotInstalled>_4, fanIn = 0 | <Sharing,Init>_4, fanIn = 0 | <Mysql,NotInstalled>_4, fanIn = 0 | <Wordpress,Template>_2, fanIn = 0 | <Httpd,Configured>_2, fanIn = 0 | <Mysql,SetRootPassword>_2, fanIn = 0 | <Mysql,ResetRootPassword>_2, fanIn = 0 | <Mysql,ConfiguredAsSlave>, fanIn = 0 | <Mysql,ConfiguredAsMaster>, fanIn = 0 | <Mysql,Active>, fanIn = 0
+Total requires: 
+fanIn[<Mysql,ResetRootPassword>_1] := 0
+fanIn[<Mysql,SetRootPassword>_1] := 0
+fanIn[<Httpd,Configured>_1] := 0
+fanIn[<Wordpress,Template>_1] := 0
+fanIn[<Mysql,NotInstalled>_3] := 0
+fanIn[<Sharing,Init>_3] := 0
+fanIn[<Httpd,NotInstalled>_3] := 0
+fanIn[<Varnish,NotInstalled>_3] := 0
+fanIn[<Wordpress,NotInstalled>_3] := 0
+fanIn[<Wordpress,Installed>_2] := 0
+fanIn[<Varnish,Installed>_2] := 0
+fanIn[<Httpd,Installed>_2] := 0
+fanIn[<Mysql,Installed>_2] := 0
+fanIn[<Httpd,Active>] := 0
+fanIn[<Mysql,Configured>] := 0
+Nodes with fanIn values:
+<Mysql,ResetRootPassword>_1, fanIn = 0 | <Mysql,SetRootPassword>_1, fanIn = 0 | <Httpd,Configured>_1, fanIn = 0 | <Wordpress,Template>_1, fanIn = 0 | <Mysql,NotInstalled>_3, fanIn = 0 | <Sharing,Init>_3, fanIn = 0 | <Httpd,NotInstalled>_3, fanIn = 0 | <Varnish,NotInstalled>_3, fanIn = 0 | <Wordpress,NotInstalled>_3, fanIn = 0 | <Wordpress,Installed>_2, fanIn = 0 | <Varnish,Installed>_2, fanIn = 0 | <Httpd,Installed>_2, fanIn = 0 | <Mysql,Installed>_2, fanIn = 0 | <Httpd,Active>, fanIn = 0 | <Mysql,Configured>, fanIn = 0
+
+ ----------------- BOTTOM-UP VISIT LEVEL nr. 4 CYCLE execution nr. 1 ----------------
+node to be examined: <Httpd,Configured>_2
+<Httpd,Configured>_2 is NOT an initial node => need to look for parent
+<Httpd,Configured>_1 chosen as a copy
+origin node chosen: <Httpd,Configured>_1
+current generation: Generation nr.4: <Httpd,Configured>_2
+next working set, at level nr.3 : { <Httpd,Configured>_1  }
+Nodes with fanIn values:
+<Mysql,ResetRootPassword>_1, fanIn = 0 | <Mysql,SetRootPassword>_1, fanIn = 0 | <Httpd,Configured>_1, fanIn = 0 | <Wordpress,Template>_1, fanIn = 0 | <Mysql,NotInstalled>_3, fanIn = 0 | <Sharing,Init>_3, fanIn = 0 | <Httpd,NotInstalled>_3, fanIn = 0 | <Varnish,NotInstalled>_3, fanIn = 0 | <Wordpress,NotInstalled>_3, fanIn = 0 | <Wordpress,Installed>_2, fanIn = 0 | <Varnish,Installed>_2, fanIn = 0 | <Httpd,Installed>_2, fanIn = 0 | <Mysql,Installed>_2, fanIn = 0 | <Httpd,Active>, fanIn = 0 | <Mysql,Configured>, fanIn = 0
+
+ ----------------- BOTTOM-UP VISIT LEVEL nr. 4 CYCLE execution nr. 2 ----------------
+node to be examined: <Httpd,Active>_1
+<Httpd,Active>_1 is NOT an initial node => need to look for parent
+<Httpd,Active> chosen as a copy
+origin node chosen: <Httpd,Active>
+current generation: Generation nr.4: <Httpd,Active>_1; <Httpd,Configured>_2
+next working set, at level nr.3 : { <Httpd,Active> <Httpd,Configured>_1  }
+Nodes with fanIn values:
+<Mysql,ResetRootPassword>_1, fanIn = 0 | <Mysql,SetRootPassword>_1, fanIn = 0 | <Httpd,Configured>_1, fanIn = 0 | <Wordpress,Template>_1, fanIn = 0 | <Mysql,NotInstalled>_3, fanIn = 0 | <Sharing,Init>_3, fanIn = 0 | <Httpd,NotInstalled>_3, fanIn = 0 | <Varnish,NotInstalled>_3, fanIn = 0 | <Wordpress,NotInstalled>_3, fanIn = 0 | <Wordpress,Installed>_2, fanIn = 0 | <Varnish,Installed>_2, fanIn = 0 | <Httpd,Installed>_2, fanIn = 0 | <Mysql,Installed>_2, fanIn = 0 | <Httpd,Active>, fanIn = 0 | <Mysql,Configured>, fanIn = 0
+
+ ----------------- BOTTOM-UP VISIT LEVEL nr. 4 CYCLE execution nr. 3 ----------------
+node to be examined: <Varnish,Installed>_3
+<Varnish,Installed>_3 is NOT an initial node => need to look for parent
+<Varnish,Installed>_2 chosen as a copy
+origin node chosen: <Varnish,Installed>_2
+current generation: Generation nr.4: <Varnish,Installed>_3; <Httpd,Active>_1; <Httpd,Configured>_2
+next working set, at level nr.3 : { <Varnish,Installed>_2 <Httpd,Active> <Httpd,Configured>_1  }
+Nodes with fanIn values:
+<Mysql,ResetRootPassword>_1, fanIn = 0 | <Mysql,SetRootPassword>_1, fanIn = 0 | <Httpd,Configured>_1, fanIn = 0 | <Wordpress,Template>_1, fanIn = 0 | <Mysql,NotInstalled>_3, fanIn = 0 | <Sharing,Init>_3, fanIn = 0 | <Httpd,NotInstalled>_3, fanIn = 0 | <Varnish,NotInstalled>_3, fanIn = 0 | <Wordpress,NotInstalled>_3, fanIn = 0 | <Wordpress,Installed>_2, fanIn = 0 | <Varnish,Installed>_2, fanIn = 0 | <Httpd,Installed>_2, fanIn = 0 | <Mysql,Installed>_2, fanIn = 0 | <Httpd,Active>, fanIn = 0 | <Mysql,Configured>, fanIn = 0
+
+ ----------------- BOTTOM-UP VISIT LEVEL nr. 4 CYCLE execution nr. 4 ----------------
+node to be examined: <Mysql,Active>
+<Mysql,Active> is NOT an initial node => need to look for parent
+<Mysql,Configured> chosen with max fanIn value
+origin node chosen: <Mysql,Configured>
+<Mysql,Active> is NOT a copy => must take care of providers
+list of chosen providers: 
+current generation: Generation nr.4: <Mysql,Active>; <Varnish,Installed>_3; <Httpd,Active>_1; <Httpd,Configured>_2
+next working set, at level nr.3 : { <Mysql,Configured> <Varnish,Installed>_2 <Httpd,Active> <Httpd,Configured>_1  }
+Nodes with fanIn values:
+<Mysql,ResetRootPassword>_1, fanIn = 0 | <Mysql,SetRootPassword>_1, fanIn = 0 | <Httpd,Configured>_1, fanIn = 0 | <Wordpress,Template>_1, fanIn = 0 | <Mysql,NotInstalled>_3, fanIn = 0 | <Sharing,Init>_3, fanIn = 0 | <Httpd,NotInstalled>_3, fanIn = 0 | <Varnish,NotInstalled>_3, fanIn = 0 | <Wordpress,NotInstalled>_3, fanIn = 0 | <Wordpress,Installed>_2, fanIn = 0 | <Varnish,Installed>_2, fanIn = 0 | <Httpd,Installed>_2, fanIn = 0 | <Mysql,Installed>_2, fanIn = 0 | <Httpd,Active>, fanIn = 0 | <Mysql,Configured>, fanIn = 0
+
+ ----------------- BOTTOM-UP VISIT LEVEL nr. 4 CYCLE execution nr. 5 ----------------
+node to be examined: <Wordpress,Template>_2
+<Wordpress,Template>_2 is NOT an initial node => need to look for parent
+<Wordpress,Template>_1 chosen as a copy
+origin node chosen: <Wordpress,Template>_1
+current generation: Generation nr.4: <Wordpress,Template>_2; <Mysql,Active>; <Varnish,Installed>_3; <Httpd,Active>_1; <Httpd,Configured>_2
+next working set, at level nr.3 : { <Wordpress,Template>_1 <Mysql,Configured> <Varnish,Installed>_2 <Httpd,Active> <Httpd,Configured>_1  }
+Nodes with fanIn values:
+<Mysql,ResetRootPassword>_1, fanIn = 0 | <Mysql,SetRootPassword>_1, fanIn = 0 | <Httpd,Configured>_1, fanIn = 0 | <Wordpress,Template>_1, fanIn = 0 | <Mysql,NotInstalled>_3, fanIn = 0 | <Sharing,Init>_3, fanIn = 0 | <Httpd,NotInstalled>_3, fanIn = 0 | <Varnish,NotInstalled>_3, fanIn = 0 | <Wordpress,NotInstalled>_3, fanIn = 0 | <Wordpress,Installed>_2, fanIn = 0 | <Varnish,Installed>_2, fanIn = 0 | <Httpd,Installed>_2, fanIn = 0 | <Mysql,Installed>_2, fanIn = 0 | <Httpd,Active>, fanIn = 0 | <Mysql,Configured>, fanIn = 0
+Total requires: 
+fanIn[<Mysql,Installed>_1] := 0
+fanIn[<Httpd,Installed>_1] := 0
+fanIn[<Varnish,Installed>_1] := 0
+fanIn[<Wordpress,Installed>_1] := 0
+fanIn[<Wordpress,NotInstalled>_2] := 0
+fanIn[<Varnish,NotInstalled>_2] := 0
+fanIn[<Httpd,NotInstalled>_2] := 0
+fanIn[<Sharing,Init>_2] := 0
+fanIn[<Mysql,NotInstalled>_2] := 0
+fanIn[<Wordpress,Template>] := 0
+fanIn[<Httpd,Configured>] := 0
+fanIn[<Mysql,SetRootPassword>] := 0
+fanIn[<Mysql,ResetRootPassword>] := 0
+Nodes with fanIn values:
+<Mysql,Installed>_1, fanIn = 0 | <Httpd,Installed>_1, fanIn = 0 | <Varnish,Installed>_1, fanIn = 0 | <Wordpress,Installed>_1, fanIn = 0 | <Wordpress,NotInstalled>_2, fanIn = 0 | <Varnish,NotInstalled>_2, fanIn = 0 | <Httpd,NotInstalled>_2, fanIn = 0 | <Sharing,Init>_2, fanIn = 0 | <Mysql,NotInstalled>_2, fanIn = 0 | <Wordpress,Template>, fanIn = 0 | <Httpd,Configured>, fanIn = 0 | <Mysql,SetRootPassword>, fanIn = 0 | <Mysql,ResetRootPassword>, fanIn = 0
+
+ ----------------- BOTTOM-UP VISIT LEVEL nr. 3 CYCLE execution nr. 1 ----------------
+node to be examined: <Wordpress,Template>_1
+<Wordpress,Template>_1 is NOT an initial node => need to look for parent
+<Wordpress,Template> chosen as a copy
+origin node chosen: <Wordpress,Template>
+current generation: Generation nr.3: <Wordpress,Template>_1
+next working set, at level nr.2 : { <Wordpress,Template>  }
+Nodes with fanIn values:
+<Mysql,Installed>_1, fanIn = 0 | <Httpd,Installed>_1, fanIn = 0 | <Varnish,Installed>_1, fanIn = 0 | <Wordpress,Installed>_1, fanIn = 0 | <Wordpress,NotInstalled>_2, fanIn = 0 | <Varnish,NotInstalled>_2, fanIn = 0 | <Httpd,NotInstalled>_2, fanIn = 0 | <Sharing,Init>_2, fanIn = 0 | <Mysql,NotInstalled>_2, fanIn = 0 | <Wordpress,Template>, fanIn = 0 | <Httpd,Configured>, fanIn = 0 | <Mysql,SetRootPassword>, fanIn = 0 | <Mysql,ResetRootPassword>, fanIn = 0
+
+ ----------------- BOTTOM-UP VISIT LEVEL nr. 3 CYCLE execution nr. 2 ----------------
+node to be examined: <Mysql,Configured>
+<Mysql,Configured> is NOT an initial node => need to look for parent
+<Mysql,SetRootPassword> chosen with max fanIn value
+origin node chosen: <Mysql,SetRootPassword>
+<Mysql,Configured> is NOT a copy => must take care of providers
+list of chosen providers: 
+current generation: Generation nr.3: <Mysql,Configured>; <Wordpress,Template>_1
+next working set, at level nr.2 : { <Mysql,SetRootPassword> <Wordpress,Template>  }
+Nodes with fanIn values:
+<Mysql,Installed>_1, fanIn = 0 | <Httpd,Installed>_1, fanIn = 0 | <Varnish,Installed>_1, fanIn = 0 | <Wordpress,Installed>_1, fanIn = 0 | <Wordpress,NotInstalled>_2, fanIn = 0 | <Varnish,NotInstalled>_2, fanIn = 0 | <Httpd,NotInstalled>_2, fanIn = 0 | <Sharing,Init>_2, fanIn = 0 | <Mysql,NotInstalled>_2, fanIn = 0 | <Wordpress,Template>, fanIn = 0 | <Httpd,Configured>, fanIn = 0 | <Mysql,SetRootPassword>, fanIn = 0 | <Mysql,ResetRootPassword>, fanIn = 0
+
+ ----------------- BOTTOM-UP VISIT LEVEL nr. 3 CYCLE execution nr. 3 ----------------
+node to be examined: <Varnish,Installed>_2
+<Varnish,Installed>_2 is NOT an initial node => need to look for parent
+<Varnish,Installed>_1 chosen as a copy
+origin node chosen: <Varnish,Installed>_1
+current generation: Generation nr.3: <Varnish,Installed>_2; <Mysql,Configured>; <Wordpress,Template>_1
+next working set, at level nr.2 : { <Varnish,Installed>_1 <Mysql,SetRootPassword> <Wordpress,Template>  }
+Nodes with fanIn values:
+<Mysql,Installed>_1, fanIn = 0 | <Httpd,Installed>_1, fanIn = 0 | <Varnish,Installed>_1, fanIn = 0 | <Wordpress,Installed>_1, fanIn = 0 | <Wordpress,NotInstalled>_2, fanIn = 0 | <Varnish,NotInstalled>_2, fanIn = 0 | <Httpd,NotInstalled>_2, fanIn = 0 | <Sharing,Init>_2, fanIn = 0 | <Mysql,NotInstalled>_2, fanIn = 0 | <Wordpress,Template>, fanIn = 0 | <Httpd,Configured>, fanIn = 0 | <Mysql,SetRootPassword>, fanIn = 0 | <Mysql,ResetRootPassword>, fanIn = 0
+
+ ----------------- BOTTOM-UP VISIT LEVEL nr. 3 CYCLE execution nr. 4 ----------------
+node to be examined: <Httpd,Active>
+<Httpd,Active> is NOT an initial node => need to look for parent
+<Httpd,Configured> chosen with max fanIn value
+origin node chosen: <Httpd,Configured>
+<Httpd,Active> is NOT a copy => must take care of providers
+list of chosen providers: 
+current generation: Generation nr.3: <Httpd,Active>; <Varnish,Installed>_2; <Mysql,Configured>; <Wordpress,Template>_1
+next working set, at level nr.2 : { <Httpd,Configured> <Varnish,Installed>_1 <Mysql,SetRootPassword> <Wordpress,Template>  }
+Nodes with fanIn values:
+<Mysql,Installed>_1, fanIn = 0 | <Httpd,Installed>_1, fanIn = 0 | <Varnish,Installed>_1, fanIn = 0 | <Wordpress,Installed>_1, fanIn = 0 | <Wordpress,NotInstalled>_2, fanIn = 0 | <Varnish,NotInstalled>_2, fanIn = 0 | <Httpd,NotInstalled>_2, fanIn = 0 | <Sharing,Init>_2, fanIn = 0 | <Mysql,NotInstalled>_2, fanIn = 0 | <Wordpress,Template>, fanIn = 0 | <Httpd,Configured>, fanIn = 0 | <Mysql,SetRootPassword>, fanIn = 0 | <Mysql,ResetRootPassword>, fanIn = 0
+
+ ----------------- BOTTOM-UP VISIT LEVEL nr. 3 CYCLE execution nr. 5 ----------------
+node to be examined: <Httpd,Configured>_1
+<Httpd,Configured>_1 is NOT an initial node => need to look for parent
+<Httpd,Configured> chosen as a copy
+origin node chosen: <Httpd,Configured>
+current generation: Generation nr.3: <Httpd,Configured>_1; <Httpd,Active>; <Varnish,Installed>_2; <Mysql,Configured>; <Wordpress,Template>_1
+next working set, at level nr.2 : { <Httpd,Configured> <Varnish,Installed>_1 <Mysql,SetRootPassword> <Wordpress,Template>  }
+Nodes with fanIn values:
+<Mysql,Installed>_1, fanIn = 0 | <Httpd,Installed>_1, fanIn = 0 | <Varnish,Installed>_1, fanIn = 0 | <Wordpress,Installed>_1, fanIn = 0 | <Wordpress,NotInstalled>_2, fanIn = 0 | <Varnish,NotInstalled>_2, fanIn = 0 | <Httpd,NotInstalled>_2, fanIn = 0 | <Sharing,Init>_2, fanIn = 0 | <Mysql,NotInstalled>_2, fanIn = 0 | <Wordpress,Template>, fanIn = 0 | <Httpd,Configured>, fanIn = 0 | <Mysql,SetRootPassword>, fanIn = 0 | <Mysql,ResetRootPassword>, fanIn = 0
+Total requires: 
+fanIn[<Mysql,NotInstalled>_1] := 0
+fanIn[<Sharing,Init>_1] := 0
+fanIn[<Httpd,NotInstalled>_1] := 0
+fanIn[<Varnish,NotInstalled>_1] := 0
+fanIn[<Wordpress,NotInstalled>_1] := 0
+fanIn[<Wordpress,Installed>] := 0
+fanIn[<Varnish,Installed>] := 0
+fanIn[<Httpd,Installed>] := 0
+fanIn[<Mysql,Installed>] := 0
+Nodes with fanIn values:
+<Mysql,NotInstalled>_1, fanIn = 0 | <Sharing,Init>_1, fanIn = 0 | <Httpd,NotInstalled>_1, fanIn = 0 | <Varnish,NotInstalled>_1, fanIn = 0 | <Wordpress,NotInstalled>_1, fanIn = 0 | <Wordpress,Installed>, fanIn = 0 | <Varnish,Installed>, fanIn = 0 | <Httpd,Installed>, fanIn = 0 | <Mysql,Installed>, fanIn = 0
+
+ ----------------- BOTTOM-UP VISIT LEVEL nr. 2 CYCLE execution nr. 1 ----------------
+node to be examined: <Httpd,Configured>
+<Httpd,Configured> is NOT an initial node => need to look for parent
+<Httpd,Installed> chosen with max fanIn value
+origin node chosen: <Httpd,Installed>
+<Httpd,Configured> is NOT a copy => must take care of providers
+list of chosen providers: 
+current generation: Generation nr.2: <Httpd,Configured>
+next working set, at level nr.1 : { <Httpd,Installed>  }
+Nodes with fanIn values:
+<Mysql,NotInstalled>_1, fanIn = 0 | <Sharing,Init>_1, fanIn = 0 | <Httpd,NotInstalled>_1, fanIn = 0 | <Varnish,NotInstalled>_1, fanIn = 0 | <Wordpress,NotInstalled>_1, fanIn = 0 | <Wordpress,Installed>, fanIn = 0 | <Varnish,Installed>, fanIn = 0 | <Httpd,Installed>, fanIn = 0 | <Mysql,Installed>, fanIn = 0
+
+ ----------------- BOTTOM-UP VISIT LEVEL nr. 2 CYCLE execution nr. 2 ----------------
+node to be examined: <Varnish,Installed>_1
+<Varnish,Installed>_1 is NOT an initial node => need to look for parent
+<Varnish,Installed> chosen as a copy
+origin node chosen: <Varnish,Installed>
+current generation: Generation nr.2: <Varnish,Installed>_1; <Httpd,Configured>
+next working set, at level nr.1 : { <Varnish,Installed> <Httpd,Installed>  }
+Nodes with fanIn values:
+<Mysql,NotInstalled>_1, fanIn = 0 | <Sharing,Init>_1, fanIn = 0 | <Httpd,NotInstalled>_1, fanIn = 0 | <Varnish,NotInstalled>_1, fanIn = 0 | <Wordpress,NotInstalled>_1, fanIn = 0 | <Wordpress,Installed>, fanIn = 0 | <Varnish,Installed>, fanIn = 0 | <Httpd,Installed>, fanIn = 0 | <Mysql,Installed>, fanIn = 0
+
+ ----------------- BOTTOM-UP VISIT LEVEL nr. 2 CYCLE execution nr. 3 ----------------
+node to be examined: <Mysql,SetRootPassword>
+<Mysql,SetRootPassword> is NOT an initial node => need to look for parent
+<Mysql,Installed> chosen with max fanIn value
+origin node chosen: <Mysql,Installed>
+<Mysql,SetRootPassword> is NOT a copy => must take care of providers
+list of chosen providers: 
+current generation: Generation nr.2: <Mysql,SetRootPassword>; <Varnish,Installed>_1; <Httpd,Configured>
+next working set, at level nr.1 : { <Mysql,Installed> <Varnish,Installed> <Httpd,Installed>  }
+Nodes with fanIn values:
+<Mysql,NotInstalled>_1, fanIn = 0 | <Sharing,Init>_1, fanIn = 0 | <Httpd,NotInstalled>_1, fanIn = 0 | <Varnish,NotInstalled>_1, fanIn = 0 | <Wordpress,NotInstalled>_1, fanIn = 0 | <Wordpress,Installed>, fanIn = 0 | <Varnish,Installed>, fanIn = 0 | <Httpd,Installed>, fanIn = 0 | <Mysql,Installed>, fanIn = 0
+
+ ----------------- BOTTOM-UP VISIT LEVEL nr. 2 CYCLE execution nr. 4 ----------------
+node to be examined: <Wordpress,Template>
+<Wordpress,Template> is NOT an initial node => need to look for parent
+<Wordpress,Installed> chosen with max fanIn value
+origin node chosen: <Wordpress,Installed>
+<Wordpress,Template> is NOT a copy => must take care of providers
+list of chosen providers: 
+current generation: Generation nr.2: <Wordpress,Template>; <Mysql,SetRootPassword>; <Varnish,Installed>_1; <Httpd,Configured>
+next working set, at level nr.1 : { <Wordpress,Installed> <Mysql,Installed> <Varnish,Installed> <Httpd,Installed>  }
+Nodes with fanIn values:
+<Mysql,NotInstalled>_1, fanIn = 0 | <Sharing,Init>_1, fanIn = 0 | <Httpd,NotInstalled>_1, fanIn = 0 | <Varnish,NotInstalled>_1, fanIn = 0 | <Wordpress,NotInstalled>_1, fanIn = 0 | <Wordpress,Installed>, fanIn = 0 | <Varnish,Installed>, fanIn = 0 | <Httpd,Installed>, fanIn = 0 | <Mysql,Installed>, fanIn = 0
+Total requires: 
+fanIn[<Wordpress,NotInstalled>] := 0
+fanIn[<Varnish,NotInstalled>] := 0
+fanIn[<Httpd,NotInstalled>] := 0
+fanIn[<Sharing,Init>] := 0
+fanIn[<Mysql,NotInstalled>] := 0
+Nodes with fanIn values:
+<Wordpress,NotInstalled>, fanIn = 0 | <Varnish,NotInstalled>, fanIn = 0 | <Httpd,NotInstalled>, fanIn = 0 | <Sharing,Init>, fanIn = 0 | <Mysql,NotInstalled>, fanIn = 0
+
+ ----------------- BOTTOM-UP VISIT LEVEL nr. 1 CYCLE execution nr. 1 ----------------
+node to be examined: <Wordpress,Installed>
+<Wordpress,Installed> is NOT an initial node => need to look for parent
+<Wordpress,NotInstalled> chosen with max fanIn value
+origin node chosen: <Wordpress,NotInstalled>
+<Wordpress,Installed> is NOT a copy => must take care of providers
+list of chosen providers: 
+current generation: Generation nr.1: <Wordpress,Installed>
+next working set, at level nr.0 : { <Wordpress,NotInstalled>  }
+Nodes with fanIn values:
+<Wordpress,NotInstalled>, fanIn = 0 | <Varnish,NotInstalled>, fanIn = 0 | <Httpd,NotInstalled>, fanIn = 0 | <Sharing,Init>, fanIn = 0 | <Mysql,NotInstalled>, fanIn = 0
+
+ ----------------- BOTTOM-UP VISIT LEVEL nr. 1 CYCLE execution nr. 2 ----------------
+node to be examined: <Mysql,Installed>
+<Mysql,Installed> is NOT an initial node => need to look for parent
+<Mysql,NotInstalled> chosen with max fanIn value
+origin node chosen: <Mysql,NotInstalled>
+<Mysql,Installed> is NOT a copy => must take care of providers
+list of chosen providers: 
+current generation: Generation nr.1: <Mysql,Installed>; <Wordpress,Installed>
+next working set, at level nr.0 : { <Mysql,NotInstalled> <Wordpress,NotInstalled>  }
+Nodes with fanIn values:
+<Wordpress,NotInstalled>, fanIn = 0 | <Varnish,NotInstalled>, fanIn = 0 | <Httpd,NotInstalled>, fanIn = 0 | <Sharing,Init>, fanIn = 0 | <Mysql,NotInstalled>, fanIn = 0
+
+ ----------------- BOTTOM-UP VISIT LEVEL nr. 1 CYCLE execution nr. 3 ----------------
+node to be examined: <Varnish,Installed>
+<Varnish,Installed> is NOT an initial node => need to look for parent
+<Varnish,NotInstalled> chosen with max fanIn value
+origin node chosen: <Varnish,NotInstalled>
+<Varnish,Installed> is NOT a copy => must take care of providers
+list of chosen providers: 
+current generation: Generation nr.1: <Varnish,Installed>; <Mysql,Installed>; <Wordpress,Installed>
+next working set, at level nr.0 : { <Varnish,NotInstalled> <Mysql,NotInstalled> <Wordpress,NotInstalled>  }
+Nodes with fanIn values:
+<Wordpress,NotInstalled>, fanIn = 0 | <Varnish,NotInstalled>, fanIn = 0 | <Httpd,NotInstalled>, fanIn = 0 | <Sharing,Init>, fanIn = 0 | <Mysql,NotInstalled>, fanIn = 0
+
+ ----------------- BOTTOM-UP VISIT LEVEL nr. 1 CYCLE execution nr. 4 ----------------
+node to be examined: <Httpd,Installed>
+<Httpd,Installed> is NOT an initial node => need to look for parent
+<Httpd,NotInstalled> chosen with max fanIn value
+origin node chosen: <Httpd,NotInstalled>
+<Httpd,Installed> is NOT a copy => must take care of providers
+list of chosen providers: 
+current generation: Generation nr.1: <Httpd,Installed>; <Varnish,Installed>; <Mysql,Installed>; <Wordpress,Installed>
+next working set, at level nr.0 : { <Httpd,NotInstalled> <Varnish,NotInstalled> <Mysql,NotInstalled> <Wordpress,NotInstalled>  }
+Nodes with fanIn values:
+<Wordpress,NotInstalled>, fanIn = 0 | <Varnish,NotInstalled>, fanIn = 0 | <Httpd,NotInstalled>, fanIn = 0 | <Sharing,Init>, fanIn = 0 | <Mysql,NotInstalled>, fanIn = 0
+
+LINEARIZATION phase
+
+The linearized paths are the following:
+
+<Mysql,NotInstalled> <Mysql,Installed> <Mysql,SetRootPassword> <Mysql,Configured> <Mysql,Active> 
+
+<Httpd,NotInstalled> <Httpd,Installed> <Httpd,Configured> <Httpd,Active> 
+
+<Httpd,NotInstalled> <Httpd,Installed> <Httpd,Configured> 
+
+<Wordpress,NotInstalled> <Wordpress,Installed> <Wordpress,Template> <Wordpress,Configured> <Wordpress,Active> 
+
+<Varnish,NotInstalled> <Varnish,Installed> <Varnish,Configured> <Varnish,Active> 
+
+
+The INSTANCE LINES are the following:
+
+Instance varnish :
+varnish (C,NotInstalled) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Varnish,NotInstalled>--> varnish (NotInstalled,Installed)
+
+varnish (NotInstalled,Installed) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Varnish,Installed>--> varnish (Installed,Configured)
+
+varnish (Installed,Configured) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Varnish,Configured>--> varnish (Configured,Active)
+
+varnish (Configured,Active) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Varnish,Active>--> varnish (Active,D)
+
+varnish (Active,D) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: { }
+
+Instance wordpress :
+wordpress (C,NotInstalled) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Wordpress,NotInstalled>--> wordpress (NotInstalled,Installed)
+
+wordpress (NotInstalled,Installed) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Wordpress,Installed>--> wordpress (Installed,Template)
+
+wordpress (Installed,Template) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Wordpress,Template>--> wordpress (Template,Configured)
+
+wordpress (Template,Configured) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Wordpress,Configured>--> wordpress (Configured,Active)
+
+wordpress (Configured,Active) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Wordpress,Active>--> wordpress (Active,D)
+
+wordpress (Active,D) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: { }
+
+Instance httpd :
+httpd (C,NotInstalled) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Httpd,NotInstalled>--> httpd (NotInstalled,Installed)
+
+httpd (NotInstalled,Installed) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Httpd,Installed>--> httpd (Installed,Configured)
+
+httpd (Installed,Configured) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Httpd,Configured>--> httpd (Configured,Active)
+
+httpd (Configured,Active) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Httpd,Active>--> httpd (Active,D)
+
+httpd (Active,D) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: { }
+
+Instance mysql :
+mysql (C,NotInstalled) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Mysql,NotInstalled>--> mysql (NotInstalled,Installed)
+
+mysql (NotInstalled,Installed) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Mysql,Installed>--> mysql (Installed,SetRootPassword)
+
+mysql (Installed,SetRootPassword) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Mysql,SetRootPassword>--> mysql (SetRootPassword,Configured)
+
+mysql (SetRootPassword,Configured) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Mysql,Configured>--> mysql (Configured,Active)
+
+mysql (Configured,Active) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Mysql,Active>--> mysql (Active,D)
+
+mysql (Active,D) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: { }
+
+Next we ADD GO (blue) and RETURN (red) EDGES.
+
+Instance varnish :
+varnish (C,NotInstalled) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Varnish,NotInstalled>--> varnish (NotInstalled,Installed)
+
+varnish (NotInstalled,Installed) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Varnish,Installed>--> varnish (Installed,Configured)
+
+varnish (Installed,Configured) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Varnish,Configured>--> varnish (Configured,Active)
+
+varnish (Configured,Active) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: ---get_site---> wordpress (Active,D)
+ INST EDGE: --<Varnish,Active>--> varnish (Active,D)
+
+varnish (Active,D) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: ---Wordpress.start---> wordpress (Active,D)
+ INST EDGE: { }
+
+Instance wordpress :
+wordpress (C,NotInstalled) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Wordpress,NotInstalled>--> wordpress (NotInstalled,Installed)
+
+wordpress (NotInstalled,Installed) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Wordpress,Installed>--> wordpress (Installed,Template)
+
+wordpress (Installed,Template) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Wordpress,Template>--> wordpress (Template,Configured)
+
+wordpress (Template,Configured) nr.IN-edges =  2
+ GO EDGES: ---get_site---> varnish (Installed,Configured)
+ RETURN EDGES: 
+ INST EDGE: --<Wordpress,Configured>--> wordpress (Configured,Active)
+
+wordpress (Configured,Active) nr.IN-edges =  3
+ GO EDGES: ---Wordpress.start---> varnish (Configured,Active)
+ RETURN EDGES: ---Mysql.addDatabase---> mysql (Active,D)
+ INST EDGE: --<Wordpress,Active>--> wordpress (Active,D)
+
+wordpress (Active,D) nr.IN-edges =  3
+ GO EDGES: 
+ RETURN EDGES: ---Httpd.start---> httpd (Active,D); ---Httpd.get_documentRoot---> httpd (Active,D)
+ INST EDGE: { }
+
+Instance httpd :
+httpd (C,NotInstalled) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Httpd,NotInstalled>--> httpd (NotInstalled,Installed)
+
+httpd (NotInstalled,Installed) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Httpd,Installed>--> httpd (Installed,Configured)
+
+httpd (Installed,Configured) nr.IN-edges =  1
+ GO EDGES: ---Httpd.get_documentRoot---> wordpress (Configured,Active)
+ RETURN EDGES: 
+ INST EDGE: --<Httpd,Configured>--> httpd (Configured,Active)
+
+httpd (Configured,Active) nr.IN-edges =  1
+ GO EDGES: ---Httpd.start---> wordpress (Configured,Active)
+ RETURN EDGES: 
+ INST EDGE: --<Httpd,Active>--> httpd (Active,D)
+
+httpd (Active,D) nr.IN-edges =  3
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: { }
+
+Instance mysql :
+mysql (C,NotInstalled) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Mysql,NotInstalled>--> mysql (NotInstalled,Installed)
+
+mysql (NotInstalled,Installed) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Mysql,Installed>--> mysql (Installed,SetRootPassword)
+
+mysql (Installed,SetRootPassword) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Mysql,SetRootPassword>--> mysql (SetRootPassword,Configured)
+
+mysql (SetRootPassword,Configured) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Mysql,Configured>--> mysql (Configured,Active)
+
+mysql (Configured,Active) nr.IN-edges =  1
+ GO EDGES: ---Mysql.addDatabase---> wordpress (Template,Configured)
+ RETURN EDGES: 
+ INST EDGE: --<Mysql,Active>--> mysql (Active,D)
+
+mysql (Active,D) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: { }
+
+Next we FIX ENCLOSING GO (blue) and RETURN (red) EDGES.
+################# Fix enclosing edges for vertex wordpress (Template,Configured) and GO edge ---get_site---> varnish (Installed,Configured)
+Pairs found from the given vertex: { }
+Pairs found from successors of the given vertex: { }
+Total set of pairs found: { }
+
+################# Fix enclosing edges for vertex wordpress (Configured,Active) and GO edge ---Wordpress.start---> varnish (Configured,Active)
+Pairs found from the given vertex: { }
+Pairs found from successors of the given vertex: { }
+Total set of pairs found: { }
+
+################# Fix enclosing edges for vertex httpd (Installed,Configured) and GO edge ---Httpd.get_documentRoot---> wordpress (Configured,Active)
+Pairs found from the given vertex: { }
+Pairs found from successors of the given vertex: { }
+Total set of pairs found: { }
+
+################# Fix enclosing edges for vertex httpd (Configured,Active) and GO edge ---Httpd.start---> wordpress (Configured,Active)
+Pairs found from the given vertex: { }
+Pairs found from successors of the given vertex: { }
+Total set of pairs found: { }
+
+################# Fix enclosing edges for vertex mysql (Configured,Active) and GO edge ---Mysql.addDatabase---> wordpress (Template,Configured)
+Pairs found from the given vertex: { }
+Pairs found from successors of the given vertex: { }
+Total set of pairs found: { }
+
+Now the INSTANCE LINES WITH EDGES look like this:
+
+Instance varnish :
+varnish (C,NotInstalled) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Varnish,NotInstalled>--> varnish (NotInstalled,Installed)
+
+varnish (NotInstalled,Installed) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Varnish,Installed>--> varnish (Installed,Configured)
+
+varnish (Installed,Configured) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Varnish,Configured>--> varnish (Configured,Active)
+
+varnish (Configured,Active) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: ---get_site---> wordpress (Active,D)
+ INST EDGE: --<Varnish,Active>--> varnish (Active,D)
+
+varnish (Active,D) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: ---Wordpress.start---> wordpress (Active,D)
+ INST EDGE: { }
+
+Instance wordpress :
+wordpress (C,NotInstalled) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Wordpress,NotInstalled>--> wordpress (NotInstalled,Installed)
+
+wordpress (NotInstalled,Installed) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Wordpress,Installed>--> wordpress (Installed,Template)
+
+wordpress (Installed,Template) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Wordpress,Template>--> wordpress (Template,Configured)
+
+wordpress (Template,Configured) nr.IN-edges =  2
+ GO EDGES: ---get_site---> varnish (Installed,Configured)
+ RETURN EDGES: 
+ INST EDGE: --<Wordpress,Configured>--> wordpress (Configured,Active)
+
+wordpress (Configured,Active) nr.IN-edges =  3
+ GO EDGES: ---Wordpress.start---> varnish (Configured,Active)
+ RETURN EDGES: ---Mysql.addDatabase---> mysql (Active,D)
+ INST EDGE: --<Wordpress,Active>--> wordpress (Active,D)
+
+wordpress (Active,D) nr.IN-edges =  3
+ GO EDGES: 
+ RETURN EDGES: ---Httpd.start---> httpd (Active,D); ---Httpd.get_documentRoot---> httpd (Active,D)
+ INST EDGE: { }
+
+Instance httpd :
+httpd (C,NotInstalled) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Httpd,NotInstalled>--> httpd (NotInstalled,Installed)
+
+httpd (NotInstalled,Installed) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Httpd,Installed>--> httpd (Installed,Configured)
+
+httpd (Installed,Configured) nr.IN-edges =  1
+ GO EDGES: ---Httpd.get_documentRoot---> wordpress (Configured,Active)
+ RETURN EDGES: 
+ INST EDGE: --<Httpd,Configured>--> httpd (Configured,Active)
+
+httpd (Configured,Active) nr.IN-edges =  1
+ GO EDGES: ---Httpd.start---> wordpress (Configured,Active)
+ RETURN EDGES: 
+ INST EDGE: --<Httpd,Active>--> httpd (Active,D)
+
+httpd (Active,D) nr.IN-edges =  3
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: { }
+
+Instance mysql :
+mysql (C,NotInstalled) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Mysql,NotInstalled>--> mysql (NotInstalled,Installed)
+
+mysql (NotInstalled,Installed) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Mysql,Installed>--> mysql (Installed,SetRootPassword)
+
+mysql (Installed,SetRootPassword) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Mysql,SetRootPassword>--> mysql (SetRootPassword,Configured)
+
+mysql (SetRootPassword,Configured) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Mysql,Configured>--> mysql (Configured,Active)
+
+mysql (Configured,Active) nr.IN-edges =  1
+ GO EDGES: ---Mysql.addDatabase---> wordpress (Template,Configured)
+ RETURN EDGES: 
+ INST EDGE: --<Mysql,Active>--> mysql (Active,D)
+
+mysql (Active,D) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: { }
+
+
+----------------------- PLAN SYNTHESIS START -----------------------
+Added action [Create instance varnish:Varnish] to the plan.
+Added action [Create instance wordpress:Wordpress] to the plan.
+Added action [Create instance httpd:Httpd] to the plan.
+Added action [Create instance mysql:Mysql] to the plan.
+External loop iteration i = 0
+
+*********************** Internal loop iteration j = 0
+Plan BEFORE: 
+ Plan[1] = [Create instance varnish:Varnish]
+ Plan[2] = [Create instance wordpress:Wordpress]
+ Plan[3] = [Create instance httpd:Httpd]
+ Plan[4] = [Create instance mysql:Mysql]
+Vertex popped: mysql (C,NotInstalled)
+STACK = 
+httpd (C,NotInstalled) | wordpress (C,NotInstalled) | varnish (C,NotInstalled) | 
+Deal with successor vertex.
+INST Edge: PUSH vertex: mysql (NotInstalled,Installed)
+STACK = 
+mysql (NotInstalled,Installed) | httpd (C,NotInstalled) | wordpress (C,NotInstalled) | varnish (C,NotInstalled) | 
+Vertex removed: mysql (C,NotInstalled)
+
+*********************** Internal loop iteration j = 1
+Plan BEFORE: 
+ Plan[1] = [Create instance varnish:Varnish]
+ Plan[2] = [Create instance wordpress:Wordpress]
+ Plan[3] = [Create instance httpd:Httpd]
+ Plan[4] = [Create instance mysql:Mysql]
+Vertex popped: mysql (NotInstalled,Installed)
+STACK = 
+httpd (C,NotInstalled) | wordpress (C,NotInstalled) | varnish (C,NotInstalled) | 
+It's an intermediate vertex => add action [mysql : change state from NotInstalled to Installed] to the plan.
+Deal with go/blue edges
+Deal with return/red edges
+Deal with successor vertex.
+INST Edge: PUSH vertex: mysql (Installed,SetRootPassword)
+STACK = 
+mysql (Installed,SetRootPassword) | httpd (C,NotInstalled) | wordpress (C,NotInstalled) | varnish (C,NotInstalled) | 
+Vertex removed: mysql (NotInstalled,Installed)
+
+*********************** Internal loop iteration j = 2
+Plan BEFORE: 
+ Plan[1] = [Create instance varnish:Varnish]
+ Plan[2] = [Create instance wordpress:Wordpress]
+ Plan[3] = [Create instance httpd:Httpd]
+ Plan[4] = [Create instance mysql:Mysql]
+ Plan[5] = [mysql : change state from NotInstalled to Installed]
+Vertex popped: mysql (Installed,SetRootPassword)
+STACK = 
+httpd (C,NotInstalled) | wordpress (C,NotInstalled) | varnish (C,NotInstalled) | 
+It's an intermediate vertex => add action [mysql : change state from Installed to SetRootPassword] to the plan.
+Deal with go/blue edges
+Deal with return/red edges
+Deal with successor vertex.
+INST Edge: PUSH vertex: mysql (SetRootPassword,Configured)
+STACK = 
+mysql (SetRootPassword,Configured) | httpd (C,NotInstalled) | wordpress (C,NotInstalled) | varnish (C,NotInstalled) | 
+Vertex removed: mysql (Installed,SetRootPassword)
+
+*********************** Internal loop iteration j = 3
+Plan BEFORE: 
+ Plan[1] = [Create instance varnish:Varnish]
+ Plan[2] = [Create instance wordpress:Wordpress]
+ Plan[3] = [Create instance httpd:Httpd]
+ Plan[4] = [Create instance mysql:Mysql]
+ Plan[5] = [mysql : change state from NotInstalled to Installed]
+ Plan[6] = [mysql : change state from Installed to SetRootPassword]
+Vertex popped: mysql (SetRootPassword,Configured)
+STACK = 
+httpd (C,NotInstalled) | wordpress (C,NotInstalled) | varnish (C,NotInstalled) | 
+It's an intermediate vertex => add action [mysql : change state from SetRootPassword to Configured] to the plan.
+Deal with go/blue edges
+Deal with return/red edges
+Deal with successor vertex.
+INST Edge: PUSH vertex: mysql (Configured,Active)
+STACK = 
+mysql (Configured,Active) | httpd (C,NotInstalled) | wordpress (C,NotInstalled) | varnish (C,NotInstalled) | 
+Vertex removed: mysql (SetRootPassword,Configured)
+
+*********************** Internal loop iteration j = 4
+Plan BEFORE: 
+ Plan[1] = [Create instance varnish:Varnish]
+ Plan[2] = [Create instance wordpress:Wordpress]
+ Plan[3] = [Create instance httpd:Httpd]
+ Plan[4] = [Create instance mysql:Mysql]
+ Plan[5] = [mysql : change state from NotInstalled to Installed]
+ Plan[6] = [mysql : change state from Installed to SetRootPassword]
+ Plan[7] = [mysql : change state from SetRootPassword to Configured]
+Vertex popped: mysql (Configured,Active)
+STACK = 
+httpd (C,NotInstalled) | wordpress (C,NotInstalled) | varnish (C,NotInstalled) | 
+It's an intermediate vertex => add action [mysql : change state from Configured to Active] to the plan.
+Deal with go/blue edges
+Deal with return/red edges
+Deal with successor vertex.
+Vertex removed: mysql (Configured,Active)
+
+*********************** Internal loop iteration j = 5
+Plan BEFORE: 
+ Plan[1] = [Create instance varnish:Varnish]
+ Plan[2] = [Create instance wordpress:Wordpress]
+ Plan[3] = [Create instance httpd:Httpd]
+ Plan[4] = [Create instance mysql:Mysql]
+ Plan[5] = [mysql : change state from NotInstalled to Installed]
+ Plan[6] = [mysql : change state from Installed to SetRootPassword]
+ Plan[7] = [mysql : change state from SetRootPassword to Configured]
+ Plan[8] = [mysql : change state from Configured to Active]
+Vertex popped: httpd (C,NotInstalled)
+STACK = 
+wordpress (C,NotInstalled) | varnish (C,NotInstalled) | 
+Deal with successor vertex.
+INST Edge: PUSH vertex: httpd (NotInstalled,Installed)
+STACK = 
+httpd (NotInstalled,Installed) | wordpress (C,NotInstalled) | varnish (C,NotInstalled) | 
+Vertex removed: httpd (C,NotInstalled)
+
+*********************** Internal loop iteration j = 6
+Plan BEFORE: 
+ Plan[1] = [Create instance varnish:Varnish]
+ Plan[2] = [Create instance wordpress:Wordpress]
+ Plan[3] = [Create instance httpd:Httpd]
+ Plan[4] = [Create instance mysql:Mysql]
+ Plan[5] = [mysql : change state from NotInstalled to Installed]
+ Plan[6] = [mysql : change state from Installed to SetRootPassword]
+ Plan[7] = [mysql : change state from SetRootPassword to Configured]
+ Plan[8] = [mysql : change state from Configured to Active]
+Vertex popped: httpd (NotInstalled,Installed)
+STACK = 
+wordpress (C,NotInstalled) | varnish (C,NotInstalled) | 
+It's an intermediate vertex => add action [httpd : change state from NotInstalled to Installed] to the plan.
+Deal with go/blue edges
+Deal with return/red edges
+Deal with successor vertex.
+INST Edge: PUSH vertex: httpd (Installed,Configured)
+STACK = 
+httpd (Installed,Configured) | wordpress (C,NotInstalled) | varnish (C,NotInstalled) | 
+Vertex removed: httpd (NotInstalled,Installed)
+
+*********************** Internal loop iteration j = 7
+Plan BEFORE: 
+ Plan[1] = [Create instance varnish:Varnish]
+ Plan[2] = [Create instance wordpress:Wordpress]
+ Plan[3] = [Create instance httpd:Httpd]
+ Plan[4] = [Create instance mysql:Mysql]
+ Plan[5] = [mysql : change state from NotInstalled to Installed]
+ Plan[6] = [mysql : change state from Installed to SetRootPassword]
+ Plan[7] = [mysql : change state from SetRootPassword to Configured]
+ Plan[8] = [mysql : change state from Configured to Active]
+ Plan[9] = [httpd : change state from NotInstalled to Installed]
+Vertex popped: httpd (Installed,Configured)
+STACK = 
+wordpress (C,NotInstalled) | varnish (C,NotInstalled) | 
+It's an intermediate vertex => add action [httpd : change state from Installed to Configured] to the plan.
+Deal with go/blue edges
+Deal with return/red edges
+Deal with successor vertex.
+INST Edge: PUSH vertex: httpd (Configured,Active)
+STACK = 
+httpd (Configured,Active) | wordpress (C,NotInstalled) | varnish (C,NotInstalled) | 
+Vertex removed: httpd (Installed,Configured)
+
+*********************** Internal loop iteration j = 8
+Plan BEFORE: 
+ Plan[1] = [Create instance varnish:Varnish]
+ Plan[2] = [Create instance wordpress:Wordpress]
+ Plan[3] = [Create instance httpd:Httpd]
+ Plan[4] = [Create instance mysql:Mysql]
+ Plan[5] = [mysql : change state from NotInstalled to Installed]
+ Plan[6] = [mysql : change state from Installed to SetRootPassword]
+ Plan[7] = [mysql : change state from SetRootPassword to Configured]
+ Plan[8] = [mysql : change state from Configured to Active]
+ Plan[9] = [httpd : change state from NotInstalled to Installed]
+ Plan[10] = [httpd : change state from Installed to Configured]
+Vertex popped: httpd (Configured,Active)
+STACK = 
+wordpress (C,NotInstalled) | varnish (C,NotInstalled) | 
+It's an intermediate vertex => add action [httpd : change state from Configured to Active] to the plan.
+Deal with go/blue edges
+Deal with return/red edges
+Deal with successor vertex.
+Vertex removed: httpd (Configured,Active)
+
+*********************** Internal loop iteration j = 9
+Plan BEFORE: 
+ Plan[1] = [Create instance varnish:Varnish]
+ Plan[2] = [Create instance wordpress:Wordpress]
+ Plan[3] = [Create instance httpd:Httpd]
+ Plan[4] = [Create instance mysql:Mysql]
+ Plan[5] = [mysql : change state from NotInstalled to Installed]
+ Plan[6] = [mysql : change state from Installed to SetRootPassword]
+ Plan[7] = [mysql : change state from SetRootPassword to Configured]
+ Plan[8] = [mysql : change state from Configured to Active]
+ Plan[9] = [httpd : change state from NotInstalled to Installed]
+ Plan[10] = [httpd : change state from Installed to Configured]
+ Plan[11] = [httpd : change state from Configured to Active]
+Vertex popped: wordpress (C,NotInstalled)
+STACK = 
+varnish (C,NotInstalled) | 
+Deal with successor vertex.
+INST Edge: PUSH vertex: wordpress (NotInstalled,Installed)
+STACK = 
+wordpress (NotInstalled,Installed) | varnish (C,NotInstalled) | 
+Vertex removed: wordpress (C,NotInstalled)
+
+*********************** Internal loop iteration j = 10
+Plan BEFORE: 
+ Plan[1] = [Create instance varnish:Varnish]
+ Plan[2] = [Create instance wordpress:Wordpress]
+ Plan[3] = [Create instance httpd:Httpd]
+ Plan[4] = [Create instance mysql:Mysql]
+ Plan[5] = [mysql : change state from NotInstalled to Installed]
+ Plan[6] = [mysql : change state from Installed to SetRootPassword]
+ Plan[7] = [mysql : change state from SetRootPassword to Configured]
+ Plan[8] = [mysql : change state from Configured to Active]
+ Plan[9] = [httpd : change state from NotInstalled to Installed]
+ Plan[10] = [httpd : change state from Installed to Configured]
+ Plan[11] = [httpd : change state from Configured to Active]
+Vertex popped: wordpress (NotInstalled,Installed)
+STACK = 
+varnish (C,NotInstalled) | 
+It's an intermediate vertex => add action [wordpress : change state from NotInstalled to Installed] to the plan.
+Deal with go/blue edges
+Deal with return/red edges
+Deal with successor vertex.
+INST Edge: PUSH vertex: wordpress (Installed,Template)
+STACK = 
+wordpress (Installed,Template) | varnish (C,NotInstalled) | 
+Vertex removed: wordpress (NotInstalled,Installed)
+
+*********************** Internal loop iteration j = 11
+Plan BEFORE: 
+ Plan[1] = [Create instance varnish:Varnish]
+ Plan[2] = [Create instance wordpress:Wordpress]
+ Plan[3] = [Create instance httpd:Httpd]
+ Plan[4] = [Create instance mysql:Mysql]
+ Plan[5] = [mysql : change state from NotInstalled to Installed]
+ Plan[6] = [mysql : change state from Installed to SetRootPassword]
+ Plan[7] = [mysql : change state from SetRootPassword to Configured]
+ Plan[8] = [mysql : change state from Configured to Active]
+ Plan[9] = [httpd : change state from NotInstalled to Installed]
+ Plan[10] = [httpd : change state from Installed to Configured]
+ Plan[11] = [httpd : change state from Configured to Active]
+ Plan[12] = [wordpress : change state from NotInstalled to Installed]
+Vertex popped: wordpress (Installed,Template)
+STACK = 
+varnish (C,NotInstalled) | 
+It's an intermediate vertex => add action [wordpress : change state from Installed to Template] to the plan.
+Deal with go/blue edges
+Deal with return/red edges
+Deal with successor vertex.
+INST Edge: PUSH vertex: wordpress (Template,Configured)
+STACK = 
+wordpress (Template,Configured) | varnish (C,NotInstalled) | 
+Vertex removed: wordpress (Installed,Template)
+
+*********************** Internal loop iteration j = 12
+Plan BEFORE: 
+ Plan[1] = [Create instance varnish:Varnish]
+ Plan[2] = [Create instance wordpress:Wordpress]
+ Plan[3] = [Create instance httpd:Httpd]
+ Plan[4] = [Create instance mysql:Mysql]
+ Plan[5] = [mysql : change state from NotInstalled to Installed]
+ Plan[6] = [mysql : change state from Installed to SetRootPassword]
+ Plan[7] = [mysql : change state from SetRootPassword to Configured]
+ Plan[8] = [mysql : change state from Configured to Active]
+ Plan[9] = [httpd : change state from NotInstalled to Installed]
+ Plan[10] = [httpd : change state from Installed to Configured]
+ Plan[11] = [httpd : change state from Configured to Active]
+ Plan[12] = [wordpress : change state from NotInstalled to Installed]
+ Plan[13] = [wordpress : change state from Installed to Template]
+Vertex popped: wordpress (Template,Configured)
+STACK = 
+varnish (C,NotInstalled) | 
+It's an intermediate vertex => add action [wordpress : change state from Template to Configured] to the plan.
+Deal with go/blue edges
+Deal with return/red edges
+Deal with successor vertex.
+INST Edge: PUSH vertex: wordpress (Configured,Active)
+STACK = 
+wordpress (Configured,Active) | varnish (C,NotInstalled) | 
+Vertex removed: wordpress (Template,Configured)
+
+*********************** Internal loop iteration j = 13
+Plan BEFORE: 
+ Plan[1] = [Create instance varnish:Varnish]
+ Plan[2] = [Create instance wordpress:Wordpress]
+ Plan[3] = [Create instance httpd:Httpd]
+ Plan[4] = [Create instance mysql:Mysql]
+ Plan[5] = [mysql : change state from NotInstalled to Installed]
+ Plan[6] = [mysql : change state from Installed to SetRootPassword]
+ Plan[7] = [mysql : change state from SetRootPassword to Configured]
+ Plan[8] = [mysql : change state from Configured to Active]
+ Plan[9] = [httpd : change state from NotInstalled to Installed]
+ Plan[10] = [httpd : change state from Installed to Configured]
+ Plan[11] = [httpd : change state from Configured to Active]
+ Plan[12] = [wordpress : change state from NotInstalled to Installed]
+ Plan[13] = [wordpress : change state from Installed to Template]
+ Plan[14] = [wordpress : invoke method Mysql.addDatabase of mysql]
+ Plan[15] = [wordpress : change state from Template to Configured]
+Vertex popped: wordpress (Configured,Active)
+STACK = 
+varnish (C,NotInstalled) | 
+It's an intermediate vertex => add action [wordpress : change state from Configured to Active] to the plan.
+Deal with go/blue edges
+Deal with return/red edges
+RETURN Edge: PUSH vertex: mysql (Active,D)
+STACK = 
+mysql (Active,D) | varnish (C,NotInstalled) | 
+Deal with successor vertex.
+Vertex removed: wordpress (Configured,Active)
+
+*********************** Internal loop iteration j = 14
+Plan BEFORE: 
+ Plan[1] = [Create instance varnish:Varnish]
+ Plan[2] = [Create instance wordpress:Wordpress]
+ Plan[3] = [Create instance httpd:Httpd]
+ Plan[4] = [Create instance mysql:Mysql]
+ Plan[5] = [mysql : change state from NotInstalled to Installed]
+ Plan[6] = [mysql : change state from Installed to SetRootPassword]
+ Plan[7] = [mysql : change state from SetRootPassword to Configured]
+ Plan[8] = [mysql : change state from Configured to Active]
+ Plan[9] = [httpd : change state from NotInstalled to Installed]
+ Plan[10] = [httpd : change state from Installed to Configured]
+ Plan[11] = [httpd : change state from Configured to Active]
+ Plan[12] = [wordpress : change state from NotInstalled to Installed]
+ Plan[13] = [wordpress : change state from Installed to Template]
+ Plan[14] = [wordpress : invoke method Mysql.addDatabase of mysql]
+ Plan[15] = [wordpress : change state from Template to Configured]
+ Plan[16] = [wordpress : invoke method Httpd.start of httpd]
+ Plan[17] = [wordpress : invoke method Httpd.get_documentRoot of httpd]
+ Plan[18] = [wordpress : change state from Configured to Active]
+Vertex popped: mysql (Active,D)
+STACK = 
+varnish (C,NotInstalled) | 
+Deal with return/red edges
+Current vertex is final: we add a Del action to the plan.
+Vertex removed: mysql (Active,D)
+
+*********************** Internal loop iteration j = 15
+Plan BEFORE: 
+ Plan[1] = [Create instance varnish:Varnish]
+ Plan[2] = [Create instance wordpress:Wordpress]
+ Plan[3] = [Create instance httpd:Httpd]
+ Plan[4] = [Create instance mysql:Mysql]
+ Plan[5] = [mysql : change state from NotInstalled to Installed]
+ Plan[6] = [mysql : change state from Installed to SetRootPassword]
+ Plan[7] = [mysql : change state from SetRootPassword to Configured]
+ Plan[8] = [mysql : change state from Configured to Active]
+ Plan[9] = [httpd : change state from NotInstalled to Installed]
+ Plan[10] = [httpd : change state from Installed to Configured]
+ Plan[11] = [httpd : change state from Configured to Active]
+ Plan[12] = [wordpress : change state from NotInstalled to Installed]
+ Plan[13] = [wordpress : change state from Installed to Template]
+ Plan[14] = [wordpress : invoke method Mysql.addDatabase of mysql]
+ Plan[15] = [wordpress : change state from Template to Configured]
+ Plan[16] = [wordpress : invoke method Httpd.start of httpd]
+ Plan[17] = [wordpress : invoke method Httpd.get_documentRoot of httpd]
+ Plan[18] = [wordpress : change state from Configured to Active]
+ Plan[19] = [mysql : stop]
+Vertex popped: varnish (C,NotInstalled)
+STACK = 
+[]
+Deal with successor vertex.
+INST Edge: PUSH vertex: varnish (NotInstalled,Installed)
+STACK = 
+varnish (NotInstalled,Installed) | 
+Vertex removed: varnish (C,NotInstalled)
+
+*********************** Internal loop iteration j = 16
+Plan BEFORE: 
+ Plan[1] = [Create instance varnish:Varnish]
+ Plan[2] = [Create instance wordpress:Wordpress]
+ Plan[3] = [Create instance httpd:Httpd]
+ Plan[4] = [Create instance mysql:Mysql]
+ Plan[5] = [mysql : change state from NotInstalled to Installed]
+ Plan[6] = [mysql : change state from Installed to SetRootPassword]
+ Plan[7] = [mysql : change state from SetRootPassword to Configured]
+ Plan[8] = [mysql : change state from Configured to Active]
+ Plan[9] = [httpd : change state from NotInstalled to Installed]
+ Plan[10] = [httpd : change state from Installed to Configured]
+ Plan[11] = [httpd : change state from Configured to Active]
+ Plan[12] = [wordpress : change state from NotInstalled to Installed]
+ Plan[13] = [wordpress : change state from Installed to Template]
+ Plan[14] = [wordpress : invoke method Mysql.addDatabase of mysql]
+ Plan[15] = [wordpress : change state from Template to Configured]
+ Plan[16] = [wordpress : invoke method Httpd.start of httpd]
+ Plan[17] = [wordpress : invoke method Httpd.get_documentRoot of httpd]
+ Plan[18] = [wordpress : change state from Configured to Active]
+ Plan[19] = [mysql : stop]
+Vertex popped: varnish (NotInstalled,Installed)
+STACK = 
+[]
+It's an intermediate vertex => add action [varnish : change state from NotInstalled to Installed] to the plan.
+Deal with go/blue edges
+Deal with return/red edges
+Deal with successor vertex.
+INST Edge: PUSH vertex: varnish (Installed,Configured)
+STACK = 
+varnish (Installed,Configured) | 
+Vertex removed: varnish (NotInstalled,Installed)
+
+*********************** Internal loop iteration j = 17
+Plan BEFORE: 
+ Plan[1] = [Create instance varnish:Varnish]
+ Plan[2] = [Create instance wordpress:Wordpress]
+ Plan[3] = [Create instance httpd:Httpd]
+ Plan[4] = [Create instance mysql:Mysql]
+ Plan[5] = [mysql : change state from NotInstalled to Installed]
+ Plan[6] = [mysql : change state from Installed to SetRootPassword]
+ Plan[7] = [mysql : change state from SetRootPassword to Configured]
+ Plan[8] = [mysql : change state from Configured to Active]
+ Plan[9] = [httpd : change state from NotInstalled to Installed]
+ Plan[10] = [httpd : change state from Installed to Configured]
+ Plan[11] = [httpd : change state from Configured to Active]
+ Plan[12] = [wordpress : change state from NotInstalled to Installed]
+ Plan[13] = [wordpress : change state from Installed to Template]
+ Plan[14] = [wordpress : invoke method Mysql.addDatabase of mysql]
+ Plan[15] = [wordpress : change state from Template to Configured]
+ Plan[16] = [wordpress : invoke method Httpd.start of httpd]
+ Plan[17] = [wordpress : invoke method Httpd.get_documentRoot of httpd]
+ Plan[18] = [wordpress : change state from Configured to Active]
+ Plan[19] = [mysql : stop]
+ Plan[20] = [varnish : change state from NotInstalled to Installed]
+Vertex popped: varnish (Installed,Configured)
+STACK = 
+[]
+It's an intermediate vertex => add action [varnish : change state from Installed to Configured] to the plan.
+Deal with go/blue edges
+Deal with return/red edges
+Deal with successor vertex.
+INST Edge: PUSH vertex: varnish (Configured,Active)
+STACK = 
+varnish (Configured,Active) | 
+Vertex removed: varnish (Installed,Configured)
+
+*********************** Internal loop iteration j = 18
+Plan BEFORE: 
+ Plan[1] = [Create instance varnish:Varnish]
+ Plan[2] = [Create instance wordpress:Wordpress]
+ Plan[3] = [Create instance httpd:Httpd]
+ Plan[4] = [Create instance mysql:Mysql]
+ Plan[5] = [mysql : change state from NotInstalled to Installed]
+ Plan[6] = [mysql : change state from Installed to SetRootPassword]
+ Plan[7] = [mysql : change state from SetRootPassword to Configured]
+ Plan[8] = [mysql : change state from Configured to Active]
+ Plan[9] = [httpd : change state from NotInstalled to Installed]
+ Plan[10] = [httpd : change state from Installed to Configured]
+ Plan[11] = [httpd : change state from Configured to Active]
+ Plan[12] = [wordpress : change state from NotInstalled to Installed]
+ Plan[13] = [wordpress : change state from Installed to Template]
+ Plan[14] = [wordpress : invoke method Mysql.addDatabase of mysql]
+ Plan[15] = [wordpress : change state from Template to Configured]
+ Plan[16] = [wordpress : invoke method Httpd.start of httpd]
+ Plan[17] = [wordpress : invoke method Httpd.get_documentRoot of httpd]
+ Plan[18] = [wordpress : change state from Configured to Active]
+ Plan[19] = [mysql : stop]
+ Plan[20] = [varnish : change state from NotInstalled to Installed]
+ Plan[21] = [varnish : invoke method get_site of wordpress]
+ Plan[22] = [varnish : change state from Installed to Configured]
+Vertex popped: varnish (Configured,Active)
+STACK = 
+[]
+It's an intermediate vertex => add action [varnish : change state from Configured to Active] to the plan.
+Deal with go/blue edges
+Deal with return/red edges
+Deal with successor vertex.
+INST Edge: PUSH vertex: varnish (Active,D)
+STACK = 
+varnish (Active,D) | 
+Target has been REACHED.
+Vertex removed: varnish (Configured,Active)
+
+The computed PLAN is: 
+ Plan[1] = [Create instance varnish:Varnish]
+ Plan[2] = [Create instance wordpress:Wordpress]
+ Plan[3] = [Create instance httpd:Httpd]
+ Plan[4] = [Create instance mysql:Mysql]
+ Plan[5] = [mysql : change state from NotInstalled to Installed]
+ Plan[6] = [mysql : change state from Installed to SetRootPassword]
+ Plan[7] = [mysql : change state from SetRootPassword to Configured]
+ Plan[8] = [mysql : change state from Configured to Active]
+ Plan[9] = [httpd : change state from NotInstalled to Installed]
+ Plan[10] = [httpd : change state from Installed to Configured]
+ Plan[11] = [httpd : change state from Configured to Active]
+ Plan[12] = [wordpress : change state from NotInstalled to Installed]
+ Plan[13] = [wordpress : change state from Installed to Template]
+ Plan[14] = [wordpress : invoke method Mysql.addDatabase of mysql]
+ Plan[15] = [wordpress : change state from Template to Configured]
+ Plan[16] = [wordpress : invoke method Httpd.start of httpd]
+ Plan[17] = [wordpress : invoke method Httpd.get_documentRoot of httpd]
+ Plan[18] = [wordpress : change state from Configured to Active]
+ Plan[19] = [mysql : stop]
+ Plan[20] = [varnish : change state from NotInstalled to Installed]
+ Plan[21] = [varnish : invoke method get_site of wordpress]
+ Plan[22] = [varnish : change state from Installed to Configured]
+ Plan[23] = [varnish : invoke method Wordpress.start of wordpress]
+ Plan[24] = [varnish : change state from Configured to Active]

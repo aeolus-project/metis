@@ -1,0 +1,260 @@
+[
+	{
+		"u_cname" : "Mysql",
+		"u_automaton" :
+			[
+				{
+					"u_name" : "NotInstalled",
+					"u_successors" : ["Installed"],
+					"u_provides" : [],
+					"u_requires" : []
+				},
+				{
+					"u_name" : "Installed",
+					"u_successors" : ["NotInstalled", "SetRootPassword", "ResetRootPassword" ],
+					"u_provides" : [],
+					"u_requires" : []
+				},
+				{
+					"u_name" : "SetRootPassword",
+					"u_successors" : ["Installed", "Configured"],
+					"u_provides" : [],
+					"u_requires" : []
+				},
+				{
+					"u_name" : "ResetRootPassword",
+					"u_successors" : ["Installed"],
+					"u_provides" : [],
+					"u_requires" : []
+				},
+				{
+					"u_name" : "Configured",
+					"u_successors" : ["SetRootPassword", "ConfiguredAsSlave", "ConfiguredAsMaster", "Active.ActiveOnMBS"],
+					"u_provides" : [],
+					"u_requires" : []
+				},
+				{
+					"u_name" : "ConfiguredAsSlave",
+					"u_successors" : ["Configured", "ActiveAsSlave"],
+					"u_provides" : [],
+					"u_requires" : []
+				},
+				{
+					"u_name" : "ConfiguredAsMaster",
+					"u_successors" : ["Configured", "ActiveAsMaster"],
+					"u_provides" : [],
+					"u_requires" : []
+				},
+				{
+					"u_name" : "Active.ActiveOnMBS",
+					"u_successors" : ["Configured", "Active"],
+					"u_provides" : [],
+					"u_requires" : []
+				},
+				{
+					"u_name" : "Active",
+					"u_successors" : ["Configured"],
+					"u_provides" : ["Mysql.start", "/mbs/Mysql/Active/addDatabase", "/mbs/Mysql/Active/getDatabases", "/mbs/Mysql/Active/rmDatabase"],
+					"u_requires" : []
+				},
+				{
+					"u_name" : "ActiveAsSlave",
+					"u_successors" : ["ConfiguredAsSlave"],
+					"u_provides" : ["Mysql.slave_status"],
+					"u_requires" : ["Mysql.add_slave_auth", "Mysql.get_dump"]
+				},
+				{
+					"u_name" : "ActiveAsMaster",
+					"u_successors" : ["ConfiguredAsMaster"],
+					"u_provides" : ["Mysql.addDatabaseMaster", "Mysql.add_slave_auth", "Mysql.get_dump"],
+					"u_requires" : ["Sharing.get_file_access"]
+				}
+			]
+	},
+	{
+		"u_cname" : "Sharing",
+		"u_automaton" :
+			[
+				{
+					"u_name" : "Init",
+					"u_successors" : ["ViaHttp"],
+					"u_provides" : [],
+					"u_requires" : []
+				},
+				{
+					"u_name" : "ViaHttp",
+					"u_successors" : ["Init"],
+					"u_provides" : ["Sharing.get_file_access"],
+					"u_requires" : ["Httpd.start", "Httpd.get_port"]
+				}
+			]
+	},
+	{
+		"u_cname" : "Httpd",
+		"u_automaton" :
+			[
+				{
+					"u_name" : "NotInstalled",
+					"u_successors" : ["Installed"],
+					"u_provides" : [],
+					"u_requires" : []
+				},
+				{
+					"u_name" : "Installed",
+					"u_successors" : ["NotInstalled", "Configured"],
+					"u_provides" : [],
+					"u_requires" : []
+				},
+				{
+					"u_name" : "Configured",
+					"u_successors" : ["Installed", "Active"],
+					"u_provides" : ["Httpd.get_documentRoot", "Httpd.set_port"],
+					"u_requires" : []
+				},
+				{
+					"u_name" : "Active",
+					"u_successors" : ["Configured"],
+					"u_provides" : ["Httpd.get_documentRoot", "Httpd.set_port", "/mbs/Httpd/Active/start"],
+					"u_requires" : []
+				}
+			]
+	},
+	{
+		"u_cname" : "Varnish",
+		"u_automaton" :
+			[
+				{
+					"u_name" : "NotInstalled",
+					"u_successors" : ["Installed"],
+					"u_provides" : [],
+					"u_requires" : []
+				},
+				{
+					"u_name" : "Installed",
+					"u_successors" : ["NotInstalled", "Configured"],
+					"u_provides" : [],
+					"u_requires" : []
+				},
+				{
+					"u_name" : "Configured",
+					"u_successors" : ["Installed", "Active"],
+					"u_provides" : [],
+					"u_requires" : ["/mbs/Wordpress-1/Active/get_website", "/mbs/Wordpress-2/Active/get_website",	"/mbs/Wordpress-3/Active/get_website"]	
+				},
+				{
+					"u_name" : "Active",
+					"u_successors" : ["Configured"],
+					"u_provides" : ["Varnish.start"],
+					"u_requires" : []
+				}
+			]
+	},
+	{
+		"u_cname" : "Wordpress_1",
+		"u_automaton" :
+			[
+				{
+					"u_name" : "NotInstalled",
+					"u_successors" : ["Installed"],
+					"u_provides" : [],
+					"u_requires" : []
+				},
+				{
+					"u_name" : "Installed",
+					"u_successors" : ["NotInstalled", "Template"],
+					"u_provides" : [],
+					"u_requires" : []
+				},
+				{
+					"u_name" : "Template",
+					"u_successors" : ["Installed", "Configured"],
+					"u_provides" : [],	
+					"u_requires" : []
+				},
+				{
+					"u_name" : "Configured",
+					"u_successors" : ["Template", "Active"],
+					"u_provides" : ["get_network_port"],	
+					"u_requires" : ["/mbs/Mysql/Active/addDatabase"]
+				},
+				{
+					"u_name" : "Active",
+					"u_successors" : ["Configured"],
+					"u_provides" : ["get_network_port", "/mbs/Wordpress-1/Active/get_website"],
+					"u_requires" : ["/mbs/Httpd/Active/start", "Httpd.get_documentRoot"]
+				}
+			]
+	},
+	{
+		"u_cname" : "Wordpress_2",
+		"u_automaton" :
+			[
+				{
+					"u_name" : "NotInstalled",
+					"u_successors" : ["Installed"],
+					"u_provides" : [],
+					"u_requires" : []
+				},
+				{
+					"u_name" : "Installed",
+					"u_successors" : ["NotInstalled", "Template"],
+					"u_provides" : [],
+					"u_requires" : []
+				},
+				{
+					"u_name" : "Template",
+					"u_successors" : ["Installed", "Configured"],
+					"u_provides" : [],	
+					"u_requires" : []
+				},
+				{
+					"u_name" : "Configured",
+					"u_successors" : ["Template", "Active"],
+					"u_provides" : ["get_network_port"],	
+					"u_requires" : ["/mbs/Mysql/Active/addDatabase"]
+				},
+				{
+					"u_name" : "Active",
+					"u_successors" : ["Configured"],
+					"u_provides" : ["get_network_port", "/mbs/Wordpress-2/Active/get_website"],
+					"u_requires" : ["/mbs/Httpd/Active/start", "Httpd.get_documentRoot"]
+				}
+			]
+	},
+	{
+		"u_cname" : "Wordpress_3",
+		"u_automaton" :
+			[
+				{
+					"u_name" : "NotInstalled",
+					"u_successors" : ["Installed"],
+					"u_provides" : [],
+					"u_requires" : []
+				},
+				{
+					"u_name" : "Installed",
+					"u_successors" : ["NotInstalled", "Template"],
+					"u_provides" : [],
+					"u_requires" : []
+				},
+				{
+					"u_name" : "Template",
+					"u_successors" : ["Installed", "Configured"],
+					"u_provides" : [],	
+					"u_requires" : []
+				},
+				{
+					"u_name" : "Configured",
+					"u_successors" : ["Template", "Active"],
+					"u_provides" : ["get_network_port"],	
+					"u_requires" : ["/mbs/Mysql/Active/addDatabase"]
+				},
+				{
+					"u_name" : "Active",
+					"u_successors" : ["Configured"],
+					"u_provides" : ["get_network_port", "/mbs/Wordpress-3/Active/get_website"],
+					"u_requires" : ["/mbs/Httpd/Active/start", "Httpd.get_documentRoot"]
+				}
+			]
+	}
+]
