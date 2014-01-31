@@ -248,7 +248,9 @@ open Gg
       (* it also adds bind arcs *)
       let ports_and_providers = (Gg.Node.choose_providers file_buffer node nodes) in
       let providers = (Gg.Node.elim_duplicates (snd (List.split ports_and_providers))) in
-			(print_to_file file_buffer ("list of chosen providers: " ^ Gg.Node.to_string_list providers));
+			IFDEF VERBOSE THEN
+				(print_to_file file_buffer ("list of chosen providers: " ^ Gg.Node.to_string_list providers))
+			END;
       (* all chosen providers must enter into previous working set *) 
 			prev_wset := (Gg.Node.add_list_no_duplicate providers !prev_wset)
 
@@ -261,7 +263,9 @@ open Gg
       (Gg.Node.set_origin node (ref origin));
       (* node is now among the sons of origin *)
       (Gg.Node.add_son origin (ref node)); 
-			(print_to_file file_buffer ("origin node chosen: " ^ (Gg.Node.to_string origin)));
+			IFDEF VERBOSE THEN
+				(print_to_file file_buffer ("origin node chosen: " ^ (Gg.Node.to_string origin)))
+			END;
       (* add parent to previous working set *) 
 			prev_wset := (Gg.Node.add_no_duplicate origin !prev_wset);
 			origin
@@ -311,29 +315,35 @@ open Gg
 					let prevGeneration = (nth_generation graph (l-1)) in
 					let prevNodes = (Generation.get_nodes prevGeneration) in
 					(Gg.Node.compute_fanIn file_buffer prevNodes workingSet); 
-					(Gg.Node.print_fanIn file_buffer prevNodes); 
+					IFDEF VERBOSE THEN
+						(Gg.Node.print_fanIn file_buffer prevNodes) 
+					END;
           let currentGen = (Generation.create_with_index l) in
 					(* Loop *)
 					(repeat_until 
 						(* Loop body *)
 						(fun i ->
-								(print_to_file file_buffer ("\n ----------------- BOTTOM-UP VISIT" 
-					        ^ " LEVEL nr. " ^ (string_of_int l) 
-                  ^ " CYCLE execution nr. "^ (string_of_int (!i+1))^" ----------------"));
 								i := !i + 1;
-								(*print_endline ("current working set, at level nr." ^
-                 * (string_of_int l) ^ " : " ^ "{ " ^ (Gg.Node.to_string_list
-                 * !workingSet) ^ " }");	*)
 								let nodeToExamine = (Gg.Node.extract workingSet) in
-                 (print_to_file file_buffer ("node to be examined: " ^ (Gg.Node.to_string nodeToExamine)));
+								IFDEF VERBOSE THEN
+									(print_to_file file_buffer ("\n ----------------- BOTTOM-UP VISIT" 
+					        	^ " LEVEL nr. " ^ (string_of_int l) 
+                  	^ " CYCLE execution nr. "^ (string_of_int (!i+1))^" ----------------"));
+                 	(print_to_file file_buffer ("node to be examined: " ^ (Gg.Node.to_string nodeToExamine)))
+								END;
                  (* if it's an initial node: simply add it to current generation and to previous working set *)
                  if (Gg.Node.is_initial nodeToExamine) then begin
-		                (print_to_file file_buffer ((Gg.Node.to_string nodeToExamine) 
-											^ " is an initial node => no need to look for parent and providers"));	
+										IFDEF VERBOSE THEN
+		                	(print_to_file file_buffer ((Gg.Node.to_string nodeToExamine) 
+												^ " is an initial node => no need to look for parent and providers"))
+										END;	
                     (handle_initial_node nodeToExamine currentGen prevWset); 
                  end else begin       
                  (* else need to find_in_list parent and (maybe) providers for fulfilling the requires *)
-								    (print_to_file file_buffer ((Gg.Node.to_string nodeToExamine) ^ " is NOT an initial node => need to look for parent"));
+										IFDEF VERBOSE THEN
+								    	(print_to_file file_buffer ((Gg.Node.to_string nodeToExamine) 
+												^ " is NOT an initial node => need to look for parent"))
+										END;	
                     (* the extracted node becomes part of the new graph *) 
                     (Generation.add_node currentGen nodeToExamine);      
                     let origin = (handle_origin file_buffer nodeToExamine prevWset) in
@@ -341,15 +351,21 @@ open Gg
 										(*print_endline ("next working set after adding ORIGIN: " ^ "{ " ^ (Gg.Node.to_string_list !prevWset) ^ " }");	*)
                     (* if is not a copy then choose provider *)
                     if (Gg.Node.not_a_copy nodeToExamine) then begin
-								    	(print_to_file file_buffer ((Gg.Node.to_string nodeToExamine)
-                      	^ " is NOT a copy => must take care of providers")); 
+											IFDEF VERBOSE THEN
+								    		(print_to_file file_buffer ((Gg.Node.to_string nodeToExamine)
+                      		^ " is NOT a copy => must take care of providers")); 
+											END;	
                       (handle_providers file_buffer nodeToExamine currentGen prevWset graph);
                     end;  
                   end;
                   workSets.(l-1) <- !prevWset;
-                  (print_to_file file_buffer ("current generation: " ^  (Generation.to_string currentGen)));
-									(print_to_file file_buffer ("next working set, at level nr." ^ (string_of_int (l-1)) ^ " : " ^ "{ " ^ (Gg.Node.to_string_list !prevWset) ^ " }"));
-									(Gg.Node.print_fanIn file_buffer prevNodes); 
+									IFDEF VERBOSE THEN
+                  	(print_to_file file_buffer ("current generation: " 
+											^ (Generation.to_string currentGen)));
+										(print_to_file file_buffer ("next working set, at level nr." 
+											^ (string_of_int (l-1)) ^ " : " ^ "{ " ^ (Gg.Node.to_string_list !prevWset) ^ " }"));
+										(Gg.Node.print_fanIn file_buffer prevNodes) 
+									END;	
 									i)
 							(* Loop condition: stop when there are no more unexamined nodes *)
 							(fun i -> (Gg.Node.is_empty !workingSet)) 

@@ -534,8 +534,10 @@ module Gg =
 			if (List.mem provide node_provides) then 
 				if node.fanIn > 0 then begin
 					node.fanIn <- node.fanIn - 1;
-					(print_to_file file_buffer ("Update fanIn : fanIn[" ^ (to_string node) 
-						^ "] <- " ^ (string_of_int node.fanIn) ^ " (due to provide " ^ provide ^ ")"));
+					IFDEF VERBOSE THEN
+						(print_to_file file_buffer ("Update fanIn : fanIn[" ^ (to_string node) 
+							^ "] <- " ^ (string_of_int node.fanIn) ^ " (due to provide " ^ provide ^ ")"))
+					END;
 				end;
 		in (List.iter (aux node) provides)
 
@@ -596,19 +598,37 @@ module Gg =
 		let max_fanIn_nodes = (find_max_fanIn_nodes potential_origins) in
 		let origin = match max_fanIn_nodes with
 				[] ->	raise (No_available_origins ("Node " ^ (to_string node) ^ " has no potential origin nodes with max fanIn value!"))
-			|	[single_node] -> (print_to_file file_buffer ((to_string single_node) ^ " chosen with max fanIn value")); single_node
+			|	[single_node] -> begin 
+					IFDEF VERBOSE THEN
+						(print_to_file file_buffer ((to_string single_node) ^ " chosen with max fanIn value")) 
+					END;
+					single_node
+				end
 			| (head :: tail) as origins -> 
 				begin match (find_min_card_nodes origins) with
 						[] ->	raise (No_available_origins ("Node " ^ (to_string node) ^ " has no potential origin nodes with min cardinality value!"))
-					|	[single_node] -> (print_to_file file_buffer ((to_string single_node) ^ " chosen with min cardinality value")); single_node
+					|	[single_node] -> begin 
+							IFDEF VERBOSE THEN
+								(print_to_file file_buffer ((to_string single_node) ^ " chosen with min cardinality value")) 
+							END;
+							single_node
+						end
 					| (head :: tail) as new_origins -> 
 						if copy_list != [] then begin
 							let copy_origin = (List.hd copy_list) in
-							(print_to_file file_buffer ((to_string copy_origin) ^ " chosen as a copy")); copy_origin
+							IFDEF VERBOSE THEN
+								(print_to_file file_buffer ((to_string copy_origin) ^ " chosen as a copy")) 
+							END;
+							copy_origin
 						end else
 							begin match (find_min_dist_nodes new_origins) with
 								[] ->	raise (No_available_origins ("Node " ^ (to_string node) ^ " has no potential origin nodes with min distance value!"))
-							|	[single_node] -> (print_to_file file_buffer ((to_string single_node) ^ " chosen with min distance value")); single_node
+							|	[single_node] -> begin 
+									IFDEF VERBOSE THEN
+										(print_to_file file_buffer ((to_string single_node) ^ " chosen with min distance value")) 
+									END;
+									single_node
+								end
 							| head :: tail -> head
 							end
 				end in
@@ -626,15 +646,30 @@ let new_choose_port_provider file_buffer node require nlist =
 				let max_fanIn_nodes = (find_max_fanIn_nodes providers) in
 				let provider = match max_fanIn_nodes with
 						[] ->	raise (No_available_providers ("Node " ^ (to_string node) ^ " has no potential providers with max fanIn value!"))
-					|	[single_node] -> (print_to_file file_buffer ((to_string single_node) ^ " chosen with max fanIn value")); single_node
+					|	[single_node] -> begin
+							IFDEF VERBOSE THEN
+								(print_to_file file_buffer ((to_string single_node) ^ " chosen with max fanIn value"))
+							END;
+							single_node
+						end
 					| (head :: tail) as same_fanIn_providers -> 
 						begin match (find_min_card_nodes same_fanIn_providers) with
 								[] ->	raise (No_available_providers ("Node " ^ (to_string node) ^ " has no potential providers with min cardinality value!"))
-							|	[single_node] -> (print_to_file file_buffer ((to_string single_node) ^ " chosen with min cardinality value")); single_node
+							|	[single_node] -> begin
+									IFDEF VERBOSE THEN
+										(print_to_file file_buffer ((to_string single_node) ^ " chosen with min cardinality value")) 
+									END;
+									single_node
+								end
 							| (head :: tail) as same_card_providers -> 
 									begin match (find_min_dist_nodes same_card_providers) with
 											[] ->	raise (No_available_providers ("Node " ^ (to_string node) ^ " has no potential providers with min distance value!"))
-										|	[single_node] -> (print_to_file file_buffer ((to_string single_node) ^ " chosen with min distance value")); single_node
+										|	[single_node] -> begin
+												IFDEF VERBOSE THEN
+													(print_to_file file_buffer ((to_string single_node) ^ " chosen with min distance value")) 
+												END;
+												single_node
+											end
 										| head :: tail -> head
 									end
 						end 
@@ -695,8 +730,10 @@ let compute_node_fanIn file_buffer requires node =
 		(print_to_file file_buffer ("Potential provides: " ^ potential_provides_str));
 	end;
 	*)
-	let string_repr = ("fanIn[" ^ (to_string node) ^ "] := " ^ (string_of_int fanIn)) in
-	(print_to_file file_buffer string_repr);
+	IFDEF VERBOSE THEN
+		let string_repr = ("fanIn[" ^ (to_string node) ^ "] := " ^ (string_of_int fanIn)) in
+		(print_to_file file_buffer string_repr)
+	END;
 	node.fanIn <- fanIn
 			
 (** Computes the fanIn value of a [selected_nodes] and sets the corresponding field. *)
@@ -704,8 +741,10 @@ let compute_fanIn file_buffer prevNodes selected_nodes =
 	if !selected_nodes = [] then
 		raise No_selected_nodes;
 	let all_requires = (requires_of_node_list !selected_nodes) in
-	let string_repr = (String.concat " | " all_requires) in
-	(print_to_file file_buffer ("Total requires: " ^ string_repr));
+	IFDEF VERBOSE THEN
+		let string_repr = (String.concat " | " all_requires) in
+		(print_to_file file_buffer ("Total requires: " ^ string_repr))
+	END;
 	(List.iter (compute_node_fanIn file_buffer all_requires) prevNodes)  
 
 let print_fanIn file_buffer nodes =

@@ -103,33 +103,48 @@ let ggraph = (Ggraph.create universe (ref targetType) !targetStateID)
 let () =
 	let file_buffer = ref (Buffer.create 500) in ();
   
-	(Printf.bprintf !file_buffer "%s\n" "\nWe generate the FULL G-GRAPH: \n");
 	(Ggraph.populate ggraph);
 	
-	(Ggraph.print_generations ggraph file_buffer);
-	(Printf.bprintf !file_buffer "%s\n" ("\nBOTTOM-UP VISIT of the G-graph. "
-    ^ "For every node we choose origin node and providers."));
+	IFDEF VERBOSE THEN
+		(Printf.bprintf !file_buffer "%s\n" "\nWe generate the FULL G-GRAPH: \n"); 
+		(Ggraph.print_generations ggraph file_buffer);
+		(Printf.bprintf !file_buffer "%s\n" ("\nBOTTOM-UP VISIT of the G-graph. "
+    	^ "For every node we choose origin node and providers."))
+	END;
+	
   let polished_array = (Ggraph.visit file_buffer ggraph) in
   begin
     let target = (Ggraph.get_target ggraph) in
-		(Printf.bprintf !file_buffer "%s\n" "\nLINEARIZATION phase");
     let trimmed_paths_list = (Ggraph.linearize polished_array target) in
-    let paths_string = (Gg.Node.to_string_list_of_list trimmed_paths_list) in
-		(Printf.bprintf !file_buffer "%s\n" ("\nThe linearized paths are the following:\n\n" ^ paths_string));
+		IFDEF VERBOSE THEN
+			(Printf.bprintf !file_buffer "%s\n" "\nLINEARIZATION phase");
+    	let paths_string = (Gg.Node.to_string_list_of_list trimmed_paths_list) in
+			(Printf.bprintf !file_buffer "%s\n" ("\nThe linearized paths are the following:\n\n" ^ paths_string))
+		END;
 
 		let maximal_paths = (Instance.filter_maximal_paths trimmed_paths_list) in ();
 			
+		(* we build instance lines *)	
     let instance_lines = (Instance.build_instance_lines maximal_paths) in
-		(Printf.bprintf !file_buffer "%s\n" "\n\nThe INSTANCE LINES are the following:\n");
-    (Instance.print_list file_buffer instance_lines);
-		(Printf.bprintf !file_buffer "%s\n" "\nNext we ADD GO (blue) and RETURN (red) EDGES.\n");
+		IFDEF VERBOSE THEN
+			(Printf.bprintf !file_buffer "%s\n" "\n\nThe INSTANCE LINES are the following:\n");
+    	(Instance.print_list file_buffer instance_lines)
+		END;
+
+		(* we add dependency edges: go/blue and return/red arcs *)	
     (Instance.list_add_dep_edges instance_lines);
-    (Instance.print_list file_buffer instance_lines);
+		IFDEF VERBOSE THEN
+			(Printf.bprintf !file_buffer "%s\n" "\nNext we ADD GO (blue) and RETURN (red) EDGES.\n");
+    	(Instance.print_list file_buffer instance_lines)
+		END;
+
 		(* deal with enclosing dependency edges, e.g. g1 g1' r1 r1' should become g1 r1' *)	
-		(Printf.bprintf !file_buffer "%s" "\nNext we FIX ENCLOSING GO (blue) and RETURN (red) EDGES.");
     (Instance.fix_enclosing_edges_pairs file_buffer instance_lines);
-		(Printf.bprintf !file_buffer "%s\n" "\nNow the INSTANCE LINES WITH EDGES look like this:\n");
-    (Instance.print_list file_buffer instance_lines);
+		IFDEF VERBOSE THEN
+			(Printf.bprintf !file_buffer "%s" "\nNext we FIX ENCLOSING GO (blue) and RETURN (red) EDGES.");
+			(Printf.bprintf !file_buffer "%s\n" "\nNow the INSTANCE LINES WITH EDGES look like this:\n");
+    	(Instance.print_list file_buffer instance_lines)
+		END;
 
 		(* output abstract plan in DOT file *)
 		if !ap_output_channel != stdout then begin
@@ -144,7 +159,9 @@ let () =
 		(* (print_string "\nThe VERTICES are the following:"); (T.Vertex.print_list !all_vertices); *)
 
 		let plan_vertices = !all_vertices in
-		(Printf.bprintf !file_buffer "\n\n%s\n" "----------------------- PLAN SYNTHESIS START -----------------------");
+		IFDEF VERBOSE THEN
+			(Printf.bprintf !file_buffer "\n\n%s\n" "----------------------- PLAN SYNTHESIS START -----------------------")
+		END;
 		let plan = (T.Vertex.synthesize_plan (ref plan_vertices) !target_component_name !target_state file_buffer) in
 		(Printf.bprintf !file_buffer "\n%s\n" ("The computed PLAN is: " ^ (Plan.to_string plan)));
 		(print_string "\nThe computed "); (Plan.print plan); 	
@@ -174,6 +191,7 @@ let () =
 
 		(Buffer.output_buffer !output_channel !file_buffer);
 		(close_out !output_channel);
+
 (*
 		IFDEF VERBOSE THEN (print_endline "\n VERBOSE IS DEFINED") END;
 		let foo = IFDEF VERBOSE THEN (print_endline "\n VERBOSE IS DEFINED") END in

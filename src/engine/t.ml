@@ -1187,8 +1187,10 @@ module T =
 			let add_initial_vertex stack plan file_buffer vertex =
 				let new_action = (New (vertex.id, vertex.comp_type_name)) in
 				(Plan.add plan new_action);
-				(Printf.bprintf !file_buffer "%s\n" ("Added action " ^ (Action.to_string new_action) ^ " to the plan."));	
-				(Stack.push vertex stack)
+				(Stack.push vertex stack);
+				IFDEF VERBOSE THEN
+					(Printf.bprintf !file_buffer "%s\n" ("Added action " ^ (Action.to_string new_action) ^ " to the plan."))	
+				END
 
 			(** Deal with [return edges] (the red ones) *)
 			let process_ret_edge plan stack src_vertex file_buffer return_edge =
@@ -1204,9 +1206,11 @@ module T =
 				(* if destination vertex has no more incoming edges push it onto stack toVisit *)
 				let dst_vertex = !(Dep_edge.get_dest return_edge) in
 				if (has_no_in_edges dst_vertex) then begin
-					(Printf.bprintf !file_buffer "%s\n" ("RETURN Edge: PUSH vertex: " ^ (to_string_with_id dst_vertex))); 
 					(Stack.push dst_vertex stack);
-					(print_stack stack file_buffer)
+					IFDEF VERBOSE THEN
+						(Printf.bprintf !file_buffer "%s\n" ("RETURN Edge: PUSH vertex: " ^ (to_string_with_id dst_vertex))); 
+						(print_stack stack file_buffer)
+					END
 				end
 
 			(** Deal with [go edges] (the blue ones) *)
@@ -1221,9 +1225,11 @@ module T =
 				(remove_go_edge src_vertex go_edge);
 				(* if dest. vertex has no more incoming edges push it onto stack toVisit *)
 				if (has_no_in_edges dst_vertex) then begin
-					(Printf.bprintf !file_buffer "%s\n" ("GO Edge: PUSH vertex: " ^ (to_string_with_id dst_vertex))); 
 					(Stack.push dst_vertex stack);
-					(print_stack stack file_buffer)
+					IFDEF VERBOSE THEN
+						(Printf.bprintf !file_buffer "%s\n" ("GO Edge: PUSH vertex: " ^ (to_string_with_id dst_vertex)));
+						(print_stack stack file_buffer)
+					END
 				end
 
 			(** Deal with the [instance edge] *)
@@ -1232,9 +1238,11 @@ module T =
 					let successor = (get_succ vertex) in
 					(remove_inst_edge vertex);
 					if (has_no_in_edges successor) then begin
-						(Printf.bprintf !file_buffer "%s\n" ("INST Edge: PUSH vertex: " ^ (to_string_with_id successor))); 
 						(Stack.push successor stack);
-					(print_stack stack file_buffer)
+						IFDEF VERBOSE THEN
+							(Printf.bprintf !file_buffer "%s\n" ("INST Edge: PUSH vertex: " ^ (to_string_with_id successor))); 
+							(print_stack stack file_buffer)
+						END
 					end
 				end
 			
@@ -1247,7 +1255,7 @@ module T =
 				let state_change_act = State_change (id, src_state, dst_state) in 
 				state_change_act 
 											
-			let process_method_invocation plan file_buffer action =
+			let process_method_invocation plan action =
 				(Plan.add plan action)
 			
 			(** Compute a deployment plan *)
@@ -1264,62 +1272,82 @@ module T =
 					(* External loop body *)
 					(fun i ->
           	begin
-							(Printf.bprintf !file_buffer "%s\n" ("External loop iteration i = " ^ (string_of_int !i)));
+							IFDEF VERBOSE THEN
+								(Printf.bprintf !file_buffer "%s\n" ("External loop iteration i = " ^ (string_of_int !i)))
+							END;
 							i := !i + 1;
 							(* Inner loop *)
 							(repeat_until 
 								(* Inner loop body *)
 								(fun j ->
           				begin 
-										(Printf.bprintf !file_buffer "\n*********************** %s\n" ("Internal loop iteration j = " ^ (string_of_int !j)));
-										(Printf.bprintf !file_buffer "%s\n" ("Plan BEFORE: " ^ (Plan.to_string plan)));
 										j := !j + 1;
 										let currentVertex = (Stack.pop toVisit) in
-										(Printf.bprintf !file_buffer "%s\n" ("Vertex popped: " ^ (to_string_with_id currentVertex))); 
-										(print_stack toVisit file_buffer);
+										IFDEF VERBOSE THEN
+											(Printf.bprintf !file_buffer "\n*********************** %s\n" ("Internal loop iteration j = " ^ (string_of_int !j)));
+											(Printf.bprintf !file_buffer "%s\n" ("Plan BEFORE: " ^ (Plan.to_string plan)));
+											(Printf.bprintf !file_buffer "%s\n" ("Vertex popped: " ^ (to_string_with_id currentVertex))); 
+											(print_stack toVisit file_buffer)
+										END;
 										(* initial node case *)
 										if (is_initial currentVertex) then begin
 											(* deal with instance successor *)
-											(Printf.bprintf !file_buffer "%s\n" "Deal with successor vertex.");
+											IFDEF VERBOSE THEN
+												(Printf.bprintf !file_buffer "%s\n" "Deal with successor vertex.")
+											END;
 											(process_inst_edge plan toVisit file_buffer currentVertex)
 										(* final node case *)
 										end else if (is_final currentVertex) then begin
 											(* deal with return/red edges *)
-											(Printf.bprintf !file_buffer "%s\n" "Deal with return/red edges");
 											(List.iter (process_ret_edge plan toVisit currentVertex file_buffer) currentVertex.return_edges);
 											(* add del action *)
-											(Printf.bprintf !file_buffer "%s\n" "Current vertex is final: we add a Del action to the plan.");
 											let deleteAct = (Del currentVertex.id) in
-											(Plan.add plan deleteAct)
+											(Plan.add plan deleteAct);
+											IFDEF VERBOSE THEN
+												(Printf.bprintf !file_buffer "%s\n" "Deal with return/red edges");
+												(Printf.bprintf !file_buffer "%s\n" "Current vertex is final: we add a Del action to the plan.")
+											END
 										(* inner node case *)
 										end else begin
 											(* deal with method invocation actions *)
-											(List.iter (process_method_invocation plan file_buffer) currentVertex.actions);
+											(List.iter (process_method_invocation plan) currentVertex.actions);
 											(* add stateChange action *)
 											let stateChangeAct = (compute_state_change_act currentVertex) in
 											(Plan.add plan stateChangeAct);
-											(Printf.bprintf !file_buffer "%s\n" ("It's an intermediate vertex => add action " 
-													^ (Action.to_string stateChangeAct) ^ " to the plan."));
+											IFDEF VERBOSE THEN
+												(Printf.bprintf !file_buffer "%s\n" ("It's an intermediate vertex => add action " 
+													^ (Action.to_string stateChangeAct) ^ " to the plan."))
+											END;
 											(* deal with go/blue edges *)
-											(Printf.bprintf !file_buffer "%s\n" "Deal with go/blue edges");
+											IFDEF VERBOSE THEN
+												(Printf.bprintf !file_buffer "%s\n" "Deal with go/blue edges")
+											END;
 											(List.iter (process_go_edge plan toVisit currentVertex file_buffer) currentVertex.go_edges);
 											(* deal with return/red edges *)
-											(Printf.bprintf !file_buffer "%s\n" "Deal with return/red edges");
+											IFDEF VERBOSE THEN
+												(Printf.bprintf !file_buffer "%s\n" "Deal with return/red edges")
+											END;
 											(List.iter (process_ret_edge plan toVisit currentVertex file_buffer) currentVertex.return_edges);
 											(* deal with instance successor *)
-											(Printf.bprintf !file_buffer "%s\n" "Deal with successor vertex.");
+											IFDEF VERBOSE THEN
+											 (Printf.bprintf !file_buffer "%s\n" "Deal with successor vertex.")
+											END;
 											(process_inst_edge plan toVisit file_buffer currentVertex)
 										end;
 										(* if we reach the target node *)
 										if (currentVertex.comp_type_name = targetComponent) && 
 												((extract_tag_dst_name currentVertex.tag) = targetState) then 
 											begin 
-													(Printf.bprintf !file_buffer "%s\n" "Target has been REACHED.");
+													IFDEF VERBOSE THEN
+														(Printf.bprintf !file_buffer "%s\n" "Target has been REACHED.")
+													END;
 													finished := true
 											end;
 										(* delete current vertex from vertices list *)
 										vertices := (remove_from_list currentVertex !vertices); 
-										(Printf.bprintf !file_buffer "%s\n" ("Vertex removed: " ^ (to_string_with_id currentVertex))); 
+										IFDEF VERBOSE THEN
+											(Printf.bprintf !file_buffer "%s\n" ("Vertex removed: " ^ (to_string_with_id currentVertex)))
+										END;
 										j
           				end)
 								(* Inner loop condition: stop when we reach a fixpoint (no new nodes are added) or we find target *)
@@ -1328,12 +1356,16 @@ module T =
 							(* If we finished without reaching target => there are unvisited 
 									vertices (couldn't be visited in topological order) => need duplication *)
 							if !finished = false then begin
-								(Printf.bprintf !file_buffer "%s\n" "\n ************************* NEED INSTANCE DUPLICATION *************************** "); 
+								IFDEF VERBOSE THEN
+									(Printf.bprintf !file_buffer "%s\n" "\n ************************* NEED INSTANCE DUPLICATION *************************** ") 
+								END;
 								let vertex = (duplicate vertices plan toVisit file_buffer) in begin
 									if vertex.nr_in_edges = 0 then begin
 										(Stack.push vertex toVisit);
-										(Printf.bprintf !file_buffer "%s\n" ("Pushed duplicated vertex: " ^ (to_string_with_id vertex)));
-										(print_stack toVisit file_buffer) 
+										IFDEF VERBOSE THEN
+											(Printf.bprintf !file_buffer "%s\n" ("Pushed duplicated vertex: " ^ (to_string_with_id vertex)));
+											(print_stack toVisit file_buffer) 
+										END
 									end; 
 								end;
 							end;	
