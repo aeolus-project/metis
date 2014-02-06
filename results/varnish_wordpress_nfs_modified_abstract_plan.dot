@@ -68,24 +68,24 @@ digraph {
 	}
 
 	// Edges from instance line of wordpress_3
-		"wordpress_3 (Configured,Active)" -> "varnish (Installed,Configured)" [label="/mbs/Wordpress-3/Active/get_website", color=blue];
+		"wordpress_3 (Configured,Active)" -> "varnish (Installed,Configured)" [style=bold, label="/mbs/Wordpress-3/Active/get_website", color=blue];
 
 	// Edges from instance line of wordpress_2
-		"wordpress_2 (Configured,Active)" -> "varnish (Installed,Configured)" [label="/mbs/Wordpress-2/Active/get_website", color=blue];
+		"wordpress_2 (Configured,Active)" -> "varnish (Installed,Configured)" [style=bold, label="/mbs/Wordpress-2/Active/get_website", color=blue];
 
 	// Edges from instance line of wordpress_1
-		"wordpress_1 (Configured,Active)" -> "varnish (Installed,Configured)" [label="/mbs/Wordpress-1/Active/get_website", color=blue];
+		"wordpress_1 (Configured,Active)" -> "varnish (Installed,Configured)" [style=bold, label="/mbs/Wordpress-1/Active/get_website", color=blue];
 
 	// Edges from instance line of httpd
-		"httpd (Configured,Active)" -> "wordpress_1 (Configured,Active)" [label="/mbs/Httpd/Active/start", color=blue]; 
-		"httpd (Configured,Active)" -> "wordpress_1 (Configured,Active)" [label="Httpd.get_documentRoot", color=blue]; 
-		"httpd (Configured,Active)" -> "wordpress_2 (Configured,Active)" [label="/mbs/Httpd/Active/start", color=blue]; 
-		"httpd (Configured,Active)" -> "wordpress_2 (Configured,Active)" [label="Httpd.get_documentRoot", color=blue]; 
-		"httpd (Configured,Active)" -> "wordpress_3 (Configured,Active)" [label="/mbs/Httpd/Active/start", color=blue]; 
-		"httpd (Configured,Active)" -> "wordpress_3 (Configured,Active)" [label="Httpd.get_documentRoot", color=blue];
+		"httpd (Configured,Active)" -> "wordpress_1 (Configured,Active)" [style=bold, label="/mbs/Httpd/Active/start", color=blue]; 
+		"httpd (Configured,Active)" -> "wordpress_1 (Configured,Active)" [style=bold, label="Httpd.get_documentRoot", color=blue]; 
+		"httpd (Configured,Active)" -> "wordpress_2 (Configured,Active)" [style=bold, label="/mbs/Httpd/Active/start", color=blue]; 
+		"httpd (Configured,Active)" -> "wordpress_2 (Configured,Active)" [style=bold, label="Httpd.get_documentRoot", color=blue]; 
+		"httpd (Configured,Active)" -> "wordpress_3 (Configured,Active)" [style=bold, label="/mbs/Httpd/Active/start", color=blue]; 
+		"httpd (Configured,Active)" -> "wordpress_3 (Configured,Active)" [style=bold, label="Httpd.get_documentRoot", color=blue];
 
 	// Edges from instance line of mysql
-		"mysql (Active.ActiveOnMBS,Active)" -> "wordpress_1 (Template,Configured)" [label="/mbs/Mysql/Active/addDatabase", color=blue]; 
-		"mysql (Active.ActiveOnMBS,Active)" -> "wordpress_2 (Template,Configured)" [label="/mbs/Mysql/Active/addDatabase", color=blue]; 
-		"mysql (Active.ActiveOnMBS,Active)" -> "wordpress_3 (Template,Configured)" [label="/mbs/Mysql/Active/addDatabase", color=blue];
+		"mysql (Active.ActiveOnMBS,Active)" -> "wordpress_1 (Template,Configured)" [style=bold, label="/mbs/Mysql/Active/addDatabase", color=blue]; 
+		"mysql (Active.ActiveOnMBS,Active)" -> "wordpress_2 (Template,Configured)" [style=bold, label="/mbs/Mysql/Active/addDatabase", color=blue]; 
+		"mysql (Active.ActiveOnMBS,Active)" -> "wordpress_3 (Template,Configured)" [style=bold, label="/mbs/Mysql/Active/addDatabase", color=blue];
 }

@@ -1841,12 +1841,13 @@ module T =
 			
 			let dot_of src_vertex go_edge =
 				let src_str = (Vertex.dot_of_node src_vertex) in
+        let style_str = "style=bold" in
         let label_str = "label=\"" ^ go_edge.port ^ "\"" in
         let color_str = "color=blue" in
 				let dest_vertex = !(go_edge.dest) in
 				let dest_str = (Vertex.dot_of_node dest_vertex) in
         let string_repr = ("\n\t\t" ^ src_str ^ " -> " ^ dest_str 
-					^ " [" ^ label_str ^ ", " ^ color_str ^ "];") in
+					^ " [" ^ style_str ^ ", " ^ label_str ^ ", " ^ color_str ^ "];") in
 				string_repr
 			
 			let dot_of_list src_vertex edges_list = 

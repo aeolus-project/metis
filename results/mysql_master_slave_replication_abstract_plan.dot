@@ -33,10 +33,10 @@ digraph {
 	}
 
 	// Edges from instance line of slave
-		"slave (Uninst,Inst)" -> "master (Serving,Auth)" [label="slave_ip", color=blue];
-		"slave (ReceiveDump,Serving)" -> "application (Uninst,Inst)" [label="s_mysql", color=blue];
+		"slave (Uninst,Inst)" -> "master (Serving,Auth)" [style=bold, label="slave_ip", color=blue];
+		"slave (ReceiveDump,Serving)" -> "application (Uninst,Inst)" [style=bold, label="s_mysql", color=blue];
 
 	// Edges from instance line of master
-		"master (Auth,Dump)" -> "slave (Inst,ReceiveDump)" [label="dump", color=blue];
-		"master (Dump,MasterServing)" -> "application (Uninst,Inst)" [label="mysql", color=blue];
+		"master (Auth,Dump)" -> "slave (Inst,ReceiveDump)" [style=bold, label="dump", color=blue];
+		"master (Dump,MasterServing)" -> "application (Uninst,Inst)" [style=bold, label="mysql", color=blue];
 }
