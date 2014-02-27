@@ -31,12 +31,17 @@ digraph {
 		"master (Dump,MasterServing)" -> "master (MasterServing,D)";
 		label="MASTER";
 	}
+	// Edges from instance line of application
+		"application (Inst,D)" -> "master (MasterServing,D)" [style=bold, label="mysql", color=red]; 
+		"application (Inst,D)" -> "slave (Serving,D)" [style=bold, label="s_mysql", color=red];
 
 	// Edges from instance line of slave
 		"slave (Uninst,Inst)" -> "master (Serving,Auth)" [style=bold, label="slave_ip", color=blue];
 		"slave (ReceiveDump,Serving)" -> "application (Uninst,Inst)" [style=bold, label="s_mysql", color=blue];
+		"slave (ReceiveDump,Serving)" -> "master (Dump,MasterServing)" [style=bold, label="dump", color=red];
 
 	// Edges from instance line of master
 		"master (Auth,Dump)" -> "slave (Inst,ReceiveDump)" [style=bold, label="dump", color=blue];
+		"master (Auth,Dump)" -> "slave (Inst,ReceiveDump)" [style=bold, label="slave_ip", color=red];
 		"master (Dump,MasterServing)" -> "application (Uninst,Inst)" [style=bold, label="mysql", color=blue];
 }

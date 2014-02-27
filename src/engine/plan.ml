@@ -57,7 +57,10 @@ let set_action plan pos action =
 let insert_action plan pos action = 
 	(DynArray.insert plan.actions pos action)
 
-let add plan action =
+let add file_buffer plan action =
 	(DynArray.add plan.actions action);
-	(print_endline ("Plan[" ^ (string_of_int (length plan) ^ "] = " ^ (Action.to_string action))))
+	IFDEF VERBOSE THEN
+      (Printf.bprintf !file_buffer ("Plan[" ^ (string_of_int (length plan) 
+				^ "] = " ^ (Action.to_string action))))
+  END
 		

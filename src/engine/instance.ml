@@ -803,7 +803,8 @@ open T
 				END
 			end
 		end
-		with No_pairs -> (print_endline ("DO NOTHING because farthest edge is the SAME as the original edge " ^ (T.Dep_edge.to_string go_edge)))
+		with No_pairs -> (Printf.bprintf !file_buffer "%s\n" 
+			 ("DO NOTHING because farthest edge is the SAME as the original edge " ^ (T.Dep_edge.to_string go_edge)))
 		
 	(** Deal with pair of edges that overlap on all go edges of [vertex]. *)
 	let vertex_fix_enclosing_edges file_buffer inst_lines vertex =

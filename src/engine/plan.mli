@@ -26,4 +26,4 @@ val set_action : t -> int -> Action.t -> unit
 
 val insert_action : t -> int -> Action.t -> unit
 
-val add : t -> Action.t -> unit
+val add : Buffer.t ref -> t -> Action.t -> unit

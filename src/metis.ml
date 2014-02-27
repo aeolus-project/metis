@@ -154,17 +154,17 @@ let () =
 			(close_out !ap_output_channel)
 		end;
 
-		(*print_endline "\nNow we merge all vertices together for topological sorting.";*)
+		(* we merge all vertices together for topological sorting *)
     let all_vertices = (ref (Instance.list_to_vertices instance_lines)) in ();
 		(* (print_string "\nThe VERTICES are the following:"); (T.Vertex.print_list !all_vertices); *)
-
-		let plan_vertices = !all_vertices in
+		
+		(* sequential plan synthesis *)
 		IFDEF VERBOSE THEN
 			(Printf.bprintf !file_buffer "\n\n%s\n" "----------------------- PLAN SYNTHESIS START -----------------------")
 		END;
-		let plan = (T.Vertex.synthesize_plan (ref plan_vertices) !target_component_name !target_state file_buffer) in
+		let plan = (T.Vertex.synthesize_plan all_vertices !target_component_name !target_state file_buffer) in
 		(Printf.bprintf !file_buffer "\n%s\n" ("The computed PLAN is: " ^ (Plan.to_string plan)));
-		(print_string "\nThe computed "); (Plan.print plan); 	
+		(print_string "\nThe computed "); (Plan.print plan); 
 
 (* Old Topological sort  
 		(* eliminate cycles if there are *)
