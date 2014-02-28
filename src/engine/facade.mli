@@ -1,5 +1,7 @@
 
-(** Module used to deal with state, component and universe   
+(** Module used to deal with state, component and universe.
+		Functions herein transform a universe provided by the user in JSON format
+		into the corresponding internal format (OCaml datatype).
 	*)
 
 open My_datatypes
@@ -35,5 +37,6 @@ val print_u_automaton : automaton_type -> unit
 val print_u_component : component_type -> unit
 val print_u_universe : universe -> unit
 
-(* Functions dealing with universe *)
+(** Function used to retrieve a component from the universe structure by its 
+		name. *)
 val find_component_by_name : universe_t -> string -> component_t

@@ -1,4 +1,4 @@
-(* Auto-generated from "datatypes.atd" *)
+(** Auto-generated from "datatypes.atd" *)
 
 
 (** Type definitions for naming. *)

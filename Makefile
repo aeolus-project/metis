@@ -10,5 +10,8 @@ all:
 verbose:
 	ocamlbuild $(ADDPPFLAGS) $(OBFLAGS) metis.native
 
+doc:
+	ocamlbuild $(RMPPFLAGS) $(OBFLAGS) metis.docdir/index.html
+
 clean:
 	ocamlbuild -clean
