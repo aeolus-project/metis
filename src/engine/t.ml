@@ -1,4 +1,16 @@
 
+(** Module containing the T-graph data structure.
+		It is used to represent the original instance lines to be processed to 
+		generate, respectively:
+			- the abstract plan 
+			- the sequential plan (by means of the adaptive topolgical sort)
+		This module contains the following submodules (put together as they are 
+		mutually recursive):  
+     - Vertex
+     - Inst_edge, for edges connecting vertices on the same instance line; 
+     - Dep_edge, for go/blue and return/red edges. 
+	*)
+
 open My_datatypes
 open Datatypes_t
 open My_loops
@@ -11,7 +23,7 @@ module T =
   struct      
 
 (************************************************************)
-(*			          T-graph vertex  type                 			*)
+(*			          T-graph vertex type                 			*)
 (************************************************************)
     module rec Vertex : sig
       type t
@@ -57,14 +69,8 @@ module T =
 			val get_all_inst_succs : t -> t list
 			val compute_all_succs : t -> t list
       val find_in_list_by_state : state_id_t -> t list -> t
-(*
-      val top_sort : t list -> t list
-      val top_sort_DEBUG : t list -> t list
-*)
 			val synthesize_plan : (t list) ref -> string -> string -> Buffer.t ref -> Plan.t
-			val synthesize_plan_DEBUG : (t list) ref -> string -> string -> Buffer.t ref -> Plan.t
 			val copy_vertices_until : (t list) ref -> t -> t list -> t list
-			val copy_vertices_until_DEBUG : (t list) ref -> t -> t list -> t list
 			val find_split_edge : t list -> Dep_edge.t  
 			val extract_src_from_tag : t -> state_id_t
 			val find_in_list_by_go_edge : Dep_edge.t -> t list -> t
@@ -75,10 +81,6 @@ module T =
 			val find_position : int ref -> t -> t list -> int 
 			val find_go_edge_by_port : port_name -> t -> (Dep_edge.t option)
 			val filter_go_edges_by_port : port_name -> t -> Dep_edge.t list
-			(* need the following functions to use Ocamlgraph library *)	
-			val compare : t -> t -> int
-			val hash : t -> int
-			val equal : t -> t -> bool
     end = struct
 
 			exception No_instance_edge of string
@@ -603,79 +605,7 @@ module T =
 				(finalize_vertex_tag new_vertex); 
 				new_vertices := new_vertex :: !new_vertices;
 				(List.rev !new_vertices)
- 	
-			let copy_vertices_until_DEBUG new_vertices vertex orig_vertices =
-				if (List.memq vertex orig_vertices) = false then
-					raise (Vertex_not_in_list ("Vertex " ^ (to_string_with_id vertex) 
-						^ " could not be found in the following list " 
-						^ (to_string_list orig_vertices)));
-				let vertices = (Array.of_list orig_vertices) in
-				let i = (ref 0) in
-				let current_vertex = (ref vertices.(!i)) in
-				(*while (!i < length) && (neq_id_tag vertex !next_vertex) do*)
-				while (neq_id_tag vertex !current_vertex) do
-					print_endline ("\niteration nr." ^ (string_of_int !i));
-					print_endline (" current_vertex = " ^ (to_string_with_id !current_vertex));
-					let new_vertex = {
-						id = (!current_vertex.id ^ "'");
-						comp_type_name = !current_vertex.comp_type_name;
-          	tag = !current_vertex.tag;
-						duplicates_nr = !current_vertex.duplicates_nr;
-          	nr_in_edges = 0;
-          	go_edges = [];
-          	return_edges = [];
-          	inst_edge = None; 
-          	actions = [];
-					} in
-					print_endline (" new_vertex = " ^ (to_string_with_id new_vertex));
-					(* if current it's not the initial vertex I need to set inst_edge field of its predecessor *)
-					if (is_not_initial !current_vertex) then
-						begin
-							print_endline "\nsince it's not an initial vertex we need to do some work";
-							let last_vertex = (List.hd !new_vertices) in
-							(* we need to fetch the same G-node reference of the original inst_edge *)
-							let previous_vertex = vertices.(!i-1) in
-							let prev_inst_edge = (Inst_edge.extract_value previous_vertex.inst_edge) in
-							let prev_gnode_tag = (Inst_edge.get_tag prev_inst_edge) in
-							(* we build a new instance edge *)
-							(set_inst_edge last_vertex new_vertex prev_gnode_tag); 
-							new_vertex.nr_in_edges <- 1
-						end;
-					(* finally we add the new vertex *)
-					new_vertices := new_vertex :: !new_vertices;
-					print_endline ("\n new_vertices = { "	^ (to_string_list (List.rev !new_vertices)) ^ " }");
-					i := !i + 1;
-					current_vertex := vertices.(!i);
-				done;
-				(* after exiting the loop we still need to add current_vertex: 
-				 * for now in a dummy copy-and-pasted loop body
-				 * TODO: change it in something less ugly 
-				 *)
-				let new_vertex = {
-					id = (!current_vertex.id ^ "'");
-					comp_type_name = !current_vertex.comp_type_name;
-          tag = !current_vertex.tag;
-					duplicates_nr = !current_vertex.duplicates_nr;
-          nr_in_edges = 1;
-          go_edges = [];
-          return_edges = [];
-          inst_edge = None; 
-          actions = [];
-				} in
-				print_endline (" last new_vertex = " ^ (to_string_with_id new_vertex));
-				let last_vertex = (List.hd !new_vertices) in
-				(* we need to fetch the same G-node reference of the original inst_edge *)
-				let previous_vertex = vertices.(!i-1) in
-				let prev_inst_edge = (Inst_edge.extract_value previous_vertex.inst_edge) in
-				let prev_gnode_tag = (Inst_edge.get_tag prev_inst_edge) in
-				(* we build a new instance edge *)
-				(set_inst_edge last_vertex new_vertex prev_gnode_tag); 
-				(* we must change vertex tag from (s,s') into something like (s,D) *)
-				(finalize_vertex_tag new_vertex); 
-				new_vertices := new_vertex :: !new_vertices;
-				print_endline ("\n Final new_vertices = { "	^ (to_string_list (List.rev !new_vertices)) ^ " }");
-				(List.rev !new_vertices)
-
+ 				
 			(** Check if [vertex1] and [vertex2] belong to the same instance line. 
 					It suffices to check that they have the same id. *)
 			let not_on_same_instance vertex1 vertex2 =
@@ -698,17 +628,6 @@ module T =
 			let filter_go_edges_by_port port vertex =
 				(List.filter (Dep_edge.match_port port) vertex.go_edges) 
 	
-			(******************************************************)
-			(* 			functions needed to use Ocamlgraph library		*)
-      (******************************************************)
-			let compare v1 v2 =
-				let v1_full_id =  (get_full_id v1)  in
-				let v2_full_id =  (get_full_id v2)  in
-				(Pervasives.compare v1_full_id v2_full_id)
-			let hash = Hashtbl.hash
-			let equal = eq_id_tag
-		
-
 
 (******************************************************************)
 (*			                  	SPLITTING			                   			*)
@@ -1385,261 +1304,7 @@ module T =
       	~init:(ref 0));
 				plan
 
-
-			(** Compute a deployment plan *)
-			let synthesize_plan_old_style vertices targetComponent targetState file_buffer =
-				(* initialize data structures *)
-				let plan = (Plan.make 100) in 
-				let toVisit = Stack.create () in
-				let finished = (ref false) in
-        (* all initial vertices are pushed on the toVisit stack *)
-				let startVertices = (List.filter has_no_in_edges !vertices) in
-					(List.iter (add_initial_vertex toVisit plan file_buffer) startVertices);
-				(* External loop *)
-				(repeat_until 
-					(* External loop body *)
-					(fun i ->
-          	begin
-							(Printf.bprintf !file_buffer "%s\n" ("External loop iteration i = " ^ (string_of_int !i)));
-							i := !i + 1;
-							(* Inner loop *)
-							(repeat_until 
-								(* Inner loop body *)
-								(fun j ->
-          				begin 
-										(Printf.bprintf !file_buffer "\n*********************** %s\n" ("Internal loop iteration j = " ^ (string_of_int !j)));
-										(Printf.bprintf !file_buffer "%s\n" ("Plan BEFORE: " ^ (Plan.to_string plan)));
-										j := !j + 1;
-										let currentVertex = (Stack.pop toVisit) in
-										(Printf.bprintf !file_buffer "%s\n" ("Vertex popped: " ^ (to_string_with_id currentVertex))); 
-										(print_stack toVisit file_buffer);
-										(* deal with return/red edges *)
-										(Printf.bprintf !file_buffer "%s\n" "Deal with return/red edges");
-										(List.iter (process_ret_edge plan toVisit currentVertex file_buffer) currentVertex.return_edges);
-										if (is_final currentVertex) then begin
-											(Printf.bprintf !file_buffer "%s\n" "Current vertex is final: we add a Del action to the plan.");
-											let deleteAct = (Del currentVertex.id) in
-											(Plan.add file_buffer plan deleteAct)
-										end else begin
-											(* deal with go/blue edges *)
-											(Printf.bprintf !file_buffer "%s\n" "Deal with go/blue edges");
-											(List.iter (process_go_edge plan toVisit currentVertex file_buffer) currentVertex.go_edges);
-											if (is_not_initial currentVertex) then begin
-													let stateChangeAct = (compute_state_change_act currentVertex) in
-													(Plan.add file_buffer plan stateChangeAct);
-													(Printf.bprintf !file_buffer "%s\n" ("It's an intermediate vertex => add action " 
-															^ (Action.to_string stateChangeAct) ^ " to the plan."))
-												end;
-											(* deal with instance successor *)
-											(Printf.bprintf !file_buffer "%s\n" "Deal with successor vertex.");
-											(process_inst_edge plan toVisit file_buffer currentVertex)
-										end;
-										(* if we reach the target node *)
-										if (currentVertex.comp_type_name = targetComponent) && 
-												((extract_tag_dst_name currentVertex.tag) = targetState) then begin 
-													(Printf.bprintf !file_buffer "%s\n" "Target has been REACHED.");
-													finished := true
-											end;
-										(* delete current vertex from vertices list *)
-										vertices := (remove_from_list currentVertex !vertices); 
-										(Printf.bprintf !file_buffer "%s\n" ("Vertex removed: " ^ (to_string_with_id currentVertex))); 
-										j
-          				end)
-								(* Inner loop condition: stop when we reach a fixpoint (no new nodes are added) or we find target *)
-								(fun j -> ((Stack.is_empty toVisit) || !finished)) 
-      					~init:(ref 0));
-							(* If we finished without reaching target => there are unvisited 
-									vertices (couldn't be visited in topological order) => need duplication *)
-							if !finished = false then begin
-								(Printf.bprintf !file_buffer "%s\n" "\n ************************* NEED INSTANCE DUPLICATION *************************** "); 
-								let vertex = (duplicate vertices plan toVisit file_buffer) in begin
-									if vertex.nr_in_edges = 0 then begin
-										(Stack.push vertex toVisit);
-										(Printf.bprintf !file_buffer "%s\n" ("Pushed duplicated vertex: " ^ (to_string_with_id vertex)));
-										(print_stack toVisit file_buffer) 
-									end; 
-								end;
-							end;	
-							i
-          	end)
-					(* External loop condition *)
-					(fun i -> !finished)
-      	~init:(ref 0));
-				plan
-
-			(** Compute a deployment plan DEBUG version *)
-			let synthesize_plan_DEBUG vertices targetComponent targetState file_buffer =
-				(* initialize data structures *)
-				let plan = (Plan.make 100) in 
-				let toVisit = Stack.create () in
-				let finished = (ref false) in
-        (* all initial vertices are pushed on the toVisit stack *)
-				let startVertices = (List.filter has_no_in_edges !vertices) in
-					(List.iter (add_initial_vertex toVisit plan file_buffer) startVertices);
-				(* External loop *)
-				(repeat_until 
-					(* External loop body *)
-					(fun i ->
-          	begin
-							(print_endline ("External loop iteration i = " ^ (string_of_int !i)));
-							(Printf.bprintf !file_buffer "%s\n" ("External loop iteration i = " ^ (string_of_int !i)));
-							i := !i + 1;
-							(* Inner loop *)
-							(repeat_until 
-								(* Inner loop body *)
-								(fun j ->
-          				begin 
-										(print_endline ("\n***************** Internal loop iteration j = " ^ (string_of_int !j)));
-										(print_string "VERTICES = "); (print_simple_list !vertices);
-										(print_endline ("Plan BEFORE: " ^ (Plan.to_string plan)));
-										(Printf.bprintf !file_buffer "\n*********************** %s\n" ("Internal loop iteration j = " ^ (string_of_int !j)));
-										(Printf.bprintf !file_buffer "%s\n" ("Plan BEFORE: " ^ (Plan.to_string plan)));
-										j := !j + 1;
-										let currentVertex = (Stack.pop toVisit) in
-										(print_endline ("Vertex popped: " ^ (to_string_with_id currentVertex))); 
-										(Printf.bprintf !file_buffer "%s\n" ("Vertex popped: " ^ (to_string_with_id currentVertex))); 
-										(print_stack toVisit file_buffer);
-										(* deal with return/red edges *)
-										(print_endline "Deal with return/red edges");
-										(Printf.bprintf !file_buffer "%s\n" "Deal with return/red edges");
-										(List.iter (process_ret_edge plan toVisit currentVertex file_buffer) currentVertex.return_edges);
-										if (is_final currentVertex) then begin
-											(print_endline "Current vertex is final: we add a Del action to the plan.");
-											(Printf.bprintf !file_buffer "%s\n" "Current vertex is final: we add a Del action to the plan.");
-											let deleteAct = (Del currentVertex.id) in
-											(Plan.add file_buffer plan deleteAct)
-										end else begin
-											(* deal with go/blue edges *)
-											(print_endline "Deal with go/blue edges");
-											(Printf.bprintf !file_buffer "%s\n" "Deal with go/blue edges");
-											(List.iter (process_go_edge plan toVisit currentVertex file_buffer) currentVertex.go_edges);
-											if (is_not_initial currentVertex) then begin
-													let stateChangeAct = (compute_state_change_act currentVertex) in
-													(Plan.add file_buffer plan stateChangeAct);
-													(print_endline ("It's an intermediate vertex => add action " 
-															^ (Action.to_string stateChangeAct) ^ " to the plan."));
-													(Printf.bprintf !file_buffer "%s\n" ("It's an intermediate vertex => add action " 
-															^ (Action.to_string stateChangeAct) ^ " to the plan."))
-												end;
-											(* deal with instance successor *)
-											(print_endline "Deal with successor vertex.");
-											(Printf.bprintf !file_buffer "%s\n" "Deal with successor vertex.");
-											(process_inst_edge plan toVisit file_buffer currentVertex)
-										end;
-										(* if we reach the target node *)
-										if (currentVertex.comp_type_name = targetComponent) && 
-												((extract_tag_dst_name currentVertex.tag) = targetState) then begin 
-													(print_endline "Target has been REACHED.");
-													(Printf.bprintf !file_buffer "%s\n" "Target has been REACHED.");
-													finished := true
-											end;
-										(* delete current vertex from vertices list *)
-										vertices := (remove_from_list currentVertex !vertices); 
-										(print_endline ("Vertex removed: " ^ (to_string_with_id currentVertex))); 
-										(Printf.bprintf !file_buffer "%s\n" ("Vertex removed: " ^ (to_string_with_id currentVertex))); 
-										j
-          				end)
-								(* Inner loop condition: stop when we reach a fixpoint (no new nodes are added) or we find target *)
-								(fun j -> ((Stack.is_empty toVisit) || !finished)) 
-      					~init:(ref 0));
-							(* If we finished without reaching target => there are unvisited 
-									vertices (couldn't be visited in topological order) => need duplication *)
-							if !finished = false then begin
-								(print_endline "\n ************************* NEED INSTANCE DUPLICATION *************************** "); 
-								(Printf.bprintf !file_buffer "%s\n" "\n ************************* NEED INSTANCE DUPLICATION *************************** "); 
-								let vertex = (duplicate vertices plan toVisit file_buffer) in begin
-									(print_endline ("DUPLICATED Vertex: " ^ (to_string_full vertex)));
-									if vertex.nr_in_edges = 0 then begin
-										(Stack.push vertex toVisit);
-										(Printf.bprintf !file_buffer "%s\n" ("Pushed duplicated vertex: " ^ (to_string_with_id vertex)));
-										(print_endline (">>>>>>>>>>>>>>> PUSH duplicated vertex: " ^ (to_string_with_id vertex)));
-										(print_stack toVisit file_buffer) 
-									end; 
-								end;
-							end;	
-							i
-          	end)
-					(* External loop condition *)
-					(fun i -> !finished)
-      	~init:(ref 0));
-				plan
-
 			
-				
-      (**************************************************)
-      (*                  Topological sort              *)  
-      (**************************************************)
-(* 
-			let top_sort vertices =
-        let sorted_vertices = (ref []) in
-        let start_vertices = (List.filter has_no_in_edges vertices) in
-        (* at the beginning we only have initial vertices *)
-        let work_list = (ref start_vertices) in
-        while (not_empty !work_list) do
-          begin
-            let current_vertex = (extract_from work_list) in
-            (* associate actions to vertex *)
-            let computed_actions = (compute_actions current_vertex) in
-            (set_actions current_vertex computed_actions);
-            (* add to working_list the successors that have no incoming edge as
-              a side effect of removing edges from vertex *)
-            let successors_refs = (get_successors current_vertex) in
-						let successors = (elim_duplicates (List.map (fun vertex_ref -> !vertex_ref) successors_refs)) in
-              begin
-                (remove_edges current_vertex);
-                let no_in_edge_succs = (List.filter has_no_in_edges successors) in
-                (add_vertices work_list no_in_edge_succs);
-              end;
-            sorted_vertices := current_vertex :: !sorted_vertices;
-          end;
-        done;
-        !sorted_vertices 
-
-      (*  Topological sort used for debugging, many prints to see what happens *)  
-      let top_sort_DEBUG vertices =
-        let sorted_vertices = (ref []) in
-        let start_vertices = (List.filter has_no_in_edges vertices) in
-        (* at the beginning we only have initial vertices *)
-        let work_list = (ref start_vertices) in
-        let i = (ref (2*(List.length vertices))) in
-        while ((not_empty !work_list) && (!i > 0)) do
-          begin
-            let vertex = (extract_from work_list) in
-            let vertex_string = (to_string_with_id vertex) in
-            print_endline ("\nvertex extracted: " ^ vertex_string);
-            (* associate actions to vertex *)
-            let actions = (compute_actions vertex) in
-            (set_actions vertex actions);
-            let actions_string = (Action.string_of_actions_list actions) in
-            print_endline ("the actions computed are: " ^ actions_string);
-            (* add to working_list the successors that have no incoming edge as
-              a side effect of removing edges from vertex *)
-            let successors_refs = (get_successors vertex) in
-						let successors = (elim_duplicates (List.map (fun vertex_ref -> !vertex_ref) successors_refs)) in
-            let succs_string = (ref "{ }") in
-            if (successors != []) then
-              succs_string := (to_string_with_id_list successors);
-            print_endline ("the whole list of its successors is: " ^ !succs_string);
-              begin
-                (remove_edges vertex);
-                let no_in_edge_succs = (List.filter has_no_in_edges successors) in
-                (add_vertices work_list no_in_edge_succs);
-                let succs_no_in_edge_str = (ref "{ }") in
-                if (no_in_edge_succs != []) then
-                        succs_no_in_edge_str := (to_string_with_id_list no_in_edge_succs);
-                print_endline ("we add to working set the following vertices with no incoming"
-                ^ " edge: " ^ !succs_no_in_edge_str);
-              end;
-            sorted_vertices := vertex :: !sorted_vertices;
-            let sorted_vertices_str = (to_string_with_id_list (List.rev !sorted_vertices)) in
-            print_endline ("the sorted vertices up to now are: " ^
-            sorted_vertices_str);
-            i := (!i - 1)
-          end;
-        done;
-        !sorted_vertices 
-*)
-
     end
 
 
@@ -1848,19 +1513,6 @@ module T =
 			(*						dealing with DOT file representation					*)
 			(************************************************************)
 		
-			(*	
-			let dot_of src_vertex edge =
-				let src_str = (Vertex.dot_of_node src_vertex) in
-        let style_str = "style=bold" in
-        let label_str = "label=\"" ^ edge.port ^ "\"" in
-        let color_str = "color=blue" in
-				let dest_vertex = !(edge.dest) in
-				let dest_str = (Vertex.dot_of_node dest_vertex) in
-        let string_repr = ("\n\t\t" ^ src_str ^ " -> " ^ dest_str 
-					^ " [" ^ style_str ^ ", " ^ label_str ^ ", " ^ color_str ^ "];") in
-				string_repr
-			*)
-
 			let dot_of src_vertex edge =
 				let src_str = (Vertex.dot_of_node src_vertex) in
         let (style, color) as kind_pair  = match edge.color with
@@ -1880,7 +1532,6 @@ module T =
         let string_list = (List.map (dot_of src_vertex) edges_list) in
 				let string_repr = (String.concat " " string_list) in
 				string_repr
-
 
       let make_go dest_vertex a_port =
         let new_go_edge = {
