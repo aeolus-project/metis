@@ -2,10 +2,6 @@
 open Universe_translator
 open Datatypes_t
 open Instance
-(* module used for old style topological sort + duplication 
-(exploiting cycle detection) 
-open My_scc
-*)
 open Facade
 open Ggraph
 open Gg
@@ -164,37 +160,8 @@ let () =
 		(Printf.bprintf !file_buffer "\n%s\n" ("The computed PLAN is: " ^ (Plan.to_string plan)));
 		(print_string "\nThe computed "); (Plan.print plan); 
 
-(* Old Topological sort  
-		(* eliminate cycles if there are *)
-		let cycles = (My_scc.find_cycles !all_vertices file_buffer) in
-		if cycles != [] then
-			begin
-				let new_instance_lines = (My_scc.elim_cycles instance_lines cycles file_buffer) in
-    		all_vertices := (Instance.list_to_vertices new_instance_lines);
-				(Printf.bprintf !file_buffer "%s\n" "\n\nThe INSTANCE LINES after splitting are the following:\n");
-    		(Instance.print_list file_buffer new_instance_lines)
-			end;
-
-		let vertices_to_sort = !all_vertices in ();
-		(* proceed with the topological sorting *)
-		(Printf.bprintf !file_buffer "%s\n" "\nNow we perform a TOPOLOGICAL SORT.");
-    (*
-		let sorted_vertices = (T.Vertex.top_sort_DEBUG vertices_to_sort) in ();
-		*)
-    let sorted_vertices = (T.Vertex.top_sort vertices_to_sort) in ();
-		(print_endline "\nThe COMPUTED PLAN is:\n");
-		(Printf.bprintf !file_buffer "%s\n" "\nAnd finally the COMPUTED PLAN is:\n");
-    (T.Vertex.print_actions file_buffer sorted_vertices);
-*)
 
 		(Buffer.output_buffer !output_channel !file_buffer);
 		(close_out !output_channel);
 
-(*
-		IFDEF VERBOSE THEN (print_endline "\n VERBOSE IS DEFINED") END;
-		let foo = IFDEF VERBOSE THEN (print_endline "\n VERBOSE IS DEFINED") END in
-		foo;
-		let foo = IFDEF VERBOSE THEN (print_endline "\n VERBOSE IS DEFINED") ELSE (print_endline "\n VERBOSE UNDEFINED") END in
-		foo;
-*)
   end
