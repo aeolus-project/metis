@@ -57,8 +57,10 @@ module T =
 			val get_all_inst_succs : t -> t list
 			val compute_all_succs : t -> t list
       val find_in_list_by_state : state_id_t -> t list -> t
+(*
       val top_sort : t list -> t list
       val top_sort_DEBUG : t list -> t list
+*)
 			val synthesize_plan : (t list) ref -> string -> string -> Buffer.t ref -> Plan.t
 			val synthesize_plan_DEBUG : (t list) ref -> string -> string -> Buffer.t ref -> Plan.t
 			val copy_vertices_until : (t list) ref -> t -> t list -> t list
@@ -1567,7 +1569,7 @@ module T =
       (**************************************************)
       (*                  Topological sort              *)  
       (**************************************************)
-      
+(* 
 			let top_sort vertices =
         let sorted_vertices = (ref []) in
         let start_vertices = (List.filter has_no_in_edges vertices) in
@@ -1636,7 +1638,7 @@ module T =
           end;
         done;
         !sorted_vertices 
-
+*)
 
     end
 

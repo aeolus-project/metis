@@ -54,7 +54,6 @@ let () =
     (fun x -> raise (Arg.Bad ("Bad argument : " ^ x)))
     usage
 
-
 (* read universe in *)
 let file_length = (in_channel_length !universe_channel) 
 let buffer = (String.create file_length)
@@ -70,7 +69,6 @@ let user_universe = (Datatypes_j.universe_of_string buffer)
  * In the rest we work then with this representation.
  *)
 let universe = (Universe_translator.translate user_universe)
-(* let () = (print_endline "performed universe translation") *)
 
 (* find target component in provided universe *)
 let targetType = (Facade.find_component_by_name universe !target_component_name) 
@@ -79,24 +77,11 @@ let targetType = (Facade.find_component_by_name universe !target_component_name)
 (* kept for simplicity, just a matter of names *)
 let targetStateID = target_state 
 
-(*
-let () =
-(Printf.fprintf !output_channel "%s" "here go the results")
-*)
-(* setup file for output *)
-(*
-let out_file_name =
-match in_file_name with
-	("input/" ^ actual_in_file_name ^ ".json") -> 
-		("results/" ^ actual_in_file_name ^ "_results.txt")
-| _ -> "results/results.txt" 
-in
-*)
-
 let ggraph = (Ggraph.create universe (ref targetType) !targetStateID) 
 let () =
 	let file_buffer = ref (Buffer.create 500) in ();
   
+	(* we build the reachability graph (was the G-graph) *)
 	(Ggraph.populate ggraph);
 	
 	IFDEF VERBOSE THEN
@@ -118,7 +103,7 @@ let () =
 
 		let maximal_paths = (Instance.filter_maximal_paths trimmed_paths_list) in ();
 			
-		(* we build instance lines *)	
+		(* we build single instance lines *)	
     let instance_lines = (Instance.build_instance_lines maximal_paths) in
 		IFDEF VERBOSE THEN
 			(Printf.bprintf !file_buffer "%s\n" "\n\nThe INSTANCE LINES are the following:\n");
@@ -148,9 +133,8 @@ let () =
 			(close_out !ap_output_channel)
 		end;
 
-		(* we merge all vertices together for topological sorting *)
+		(* we merge all vertices together before performing the adaptive topological sort *)
     let all_vertices = (ref (Instance.list_to_vertices instance_lines)) in ();
-		(* (print_string "\nThe VERTICES are the following:"); (T.Vertex.print_list !all_vertices); *)
 		
 		(* sequential plan synthesis *)
 		IFDEF VERBOSE THEN
