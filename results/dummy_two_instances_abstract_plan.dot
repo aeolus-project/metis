@@ -1,0 +1,37 @@
+// Abstract plan in DOT file representation 
+
+digraph {
+
+	// Instance line of c1
+	subgraph cluster_c1 {
+		node[style=filled, color=lightgrey];
+		"c1 (C,s0)" -> "c1 (s0,s1)";
+		"c1 (s0,s1)" -> "c1 (s1,s2)";
+		"c1 (s1,s2)" -> "c1 (s2,D)";
+		label="C1";
+	}
+
+	// Instance line of c0
+	subgraph cluster_c0 {
+		node[style=filled, color=lightgrey];
+		"c0 (C,s0)" -> "c0 (s0,s1)";
+		"c0 (s0,s1)" -> "c0 (s1,D)";
+		label="C0";
+	}
+
+	// Instance line of c2
+	subgraph cluster_c2 {
+		node[style=filled, color=lightgrey];
+		"c2 (C,s0)" -> "c2 (s0,s1)";
+		"c2 (s0,s1)" -> "c2 (s1,D)";
+		label="C2";
+	}
+	// Edges from instance line of c1
+		"c1 (s0,s1)" -> "c0 (s0,s1)" [label="p1_1", color=blue];
+
+	// Edges from instance line of c0
+		"c0 (s0,s1)" -> "c1 (s1,s2)" [label="p0_2", color=blue];
+
+	// Edges from instance line of c2
+		"c2 (s0,s1)" -> "c1 (s0,s1)" [label="p2_1", color=blue];
+}

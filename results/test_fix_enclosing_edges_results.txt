@@ -199,6 +199,67 @@ a (s2,D) nr.IN-edges =  4
  INST EDGE: { }
 
 Next we FIX ENCLOSING GO (blue) and RETURN (red) EDGES.
+################# Fix enclosing edges for vertex a (s0,s1) and GO edge ---p0_1---> b (q1,q2)
+Pairs found from the given vertex: { }
+Pairs found from successors of the given vertex: { }
+Total set of pairs found: { }
+
+################# Fix enclosing edges for vertex a (s0,s1) and GO edge ---p0_1---> b (q0,q1)
+Pairs found from the given vertex: (a (s0,s1), ---p0_1---> b (q1,q2))
+Pairs found from successors of the given vertex: { }
+Total set of pairs found: (a (s0,s1), ---p0_1---> b (q1,q2))
+Farthest vertex: (a (s0,s1), ---p0_1---> b (q1,q2))
+Edges to be removed: { }
+Apply EDGE FIXING
+Orig twin edge: ---p0_1---> a (s2,D) from b (q1,q2)
+Farthest twin edge: ---p0_1---> a (s2,D) from b (q2,D)
+Instance lines AFTER fixing enclosing edges: Instance b :
+b (C,q0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<B,q0>--> b (q0,q1)
+
+b (q0,q1) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<B,q1>--> b (q1,q2)
+
+b (q1,q2) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<B,q2>--> b (q2,D)
+
+b (q2,D) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: ---p0_2---> a (s2,D); ---p0_1---> a (s2,D)
+ INST EDGE: { }
+
+Instance a :
+a (C,s0) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<A,s0>--> a (s0,s1)
+
+a (s0,s1) nr.IN-edges =  1
+ GO EDGES: ---p0_1---> b (q0,q1)
+ RETURN EDGES: 
+ INST EDGE: --<A,s1>--> a (s1,s2)
+
+a (s1,s2) nr.IN-edges =  1
+ GO EDGES: ---p0_2---> b (q1,q2)
+ RETURN EDGES: 
+ INST EDGE: --<A,s2>--> a (s2,D)
+
+a (s2,D) nr.IN-edges =  3
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: { }
+
+################# Fix enclosing edges for vertex a (s1,s2) and GO edge ---p0_2---> b (q1,q2)
+Pairs found from the given vertex: { }
+Pairs found from successors of the given vertex: { }
+Total set of pairs found: { }
+
 Now the INSTANCE LINES WITH EDGES look like this:
 
 Instance b :
@@ -283,7 +344,6 @@ Plan BEFORE:
  Plan[1] = [Create instance b:B]
  Plan[2] = [Create instance a:A]
  Plan[3] = [a : change state from s0 to s1]
- Plan[4] = [a : bind port p0_1 to instance b]
 Vertex popped: a (s1,s2)
 STACK = 
 b (C,q0) | 
@@ -298,9 +358,7 @@ Plan BEFORE:
  Plan[1] = [Create instance b:B]
  Plan[2] = [Create instance a:A]
  Plan[3] = [a : change state from s0 to s1]
- Plan[4] = [a : bind port p0_1 to instance b]
- Plan[5] = [a : change state from s1 to s2]
- Plan[6] = [a : bind port p0_2 to instance b]
+ Plan[4] = [a : change state from s1 to s2]
 Vertex popped: b (C,q0)
 STACK = 
 []
@@ -315,9 +373,7 @@ Plan BEFORE:
  Plan[1] = [Create instance b:B]
  Plan[2] = [Create instance a:A]
  Plan[3] = [a : change state from s0 to s1]
- Plan[4] = [a : bind port p0_1 to instance b]
- Plan[5] = [a : change state from s1 to s2]
- Plan[6] = [a : bind port p0_2 to instance b]
+ Plan[4] = [a : change state from s1 to s2]
 Vertex popped: b (q0,q1)
 STACK = 
 []
@@ -335,10 +391,9 @@ Plan BEFORE:
  Plan[1] = [Create instance b:B]
  Plan[2] = [Create instance a:A]
  Plan[3] = [a : change state from s0 to s1]
- Plan[4] = [a : bind port p0_1 to instance b]
- Plan[5] = [a : change state from s1 to s2]
- Plan[6] = [a : bind port p0_2 to instance b]
- Plan[7] = [b : change state from q0 to q1]
+ Plan[4] = [a : change state from s1 to s2]
+ Plan[5] = [b : invoke method p0_1 of a]
+ Plan[6] = [b : change state from q0 to q1]
 Vertex popped: b (q1,q2)
 STACK = 
 []
@@ -356,8 +411,8 @@ The computed PLAN is:
  Plan[1] = [Create instance b:B]
  Plan[2] = [Create instance a:A]
  Plan[3] = [a : change state from s0 to s1]
- Plan[4] = [a : bind port p0_1 to instance b]
- Plan[5] = [a : change state from s1 to s2]
- Plan[6] = [a : bind port p0_2 to instance b]
- Plan[7] = [b : change state from q0 to q1]
+ Plan[4] = [a : change state from s1 to s2]
+ Plan[5] = [b : invoke method p0_1 of a]
+ Plan[6] = [b : change state from q0 to q1]
+ Plan[7] = [b : invoke method p0_2 of a]
  Plan[8] = [b : change state from q1 to q2]

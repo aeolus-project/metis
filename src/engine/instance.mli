@@ -21,6 +21,7 @@ val to_string_list : t list -> string
 val to_string_full : t -> string
 val to_string_list_full : t list -> string
 val print_list : Buffer.t ref -> t list -> unit
+val print_abstract_plan : Buffer.t ref -> t list -> unit
 val make : (component_t ref) -> string -> t
 val add_vertex : t -> T.Vertex.t -> unit  
 (* generates instance lines from a list of G-nodes *)
@@ -35,9 +36,6 @@ val get_final_vertex : t -> T.Vertex.t
 val copy_line_until_vertex : t -> T.Vertex.t -> t
 val find_by_vertex : T.Vertex.t -> t list -> t 
 val find_by_id : string -> t list -> t 
-(*
-val find_ready_iline : T.Vertex.t -> t list -> t
-*)
 val find_src_by_go_edge : t -> T.Dep_edge.t -> T.Vertex.t 
 val find_in_edges_vertices_pairs : T.Vertex.t -> t list -> (T.Dep_edge.t * T.Vertex.t) list 
 val find_corresponding_vertex : T.Vertex.t -> t -> t -> T.Vertex.t  

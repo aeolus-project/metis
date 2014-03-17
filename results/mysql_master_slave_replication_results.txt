@@ -1,4 +1,5 @@
 
+<<<<<<< HEAD
 We generate the FULL G-GRAPH: 
 
 Generation nr.0: <Slave,Uninst>; <Master,Uninst>; <Application,Uninst>
@@ -827,6 +828,8 @@ application (Inst,D) |
 Target has been REACHED.
 Vertex removed: application (Uninst,Inst)
 
+=======
+>>>>>>> mandrivaUseCase
 The computed PLAN is: 
  Plan[1] = [Create instance application:Application]
  Plan[2] = [Create instance slave:Slave]
@@ -834,15 +837,13 @@ The computed PLAN is:
  Plan[4] = [master : change state from Uninst to Inst]
  Plan[5] = [master : change state from Inst to Serving]
  Plan[6] = [slave : change state from Uninst to Inst]
- Plan[7] = [slave : bind port slave_ip to instance master]
+ Plan[7] = [master : invoke method slave_ip of slave]
  Plan[8] = [master : change state from Serving to Auth]
  Plan[9] = [master : change state from Auth to Dump]
- Plan[10] = [master : bind port dump to instance slave]
- Plan[11] = [master : unbind port slave_ip from instance slave]
- Plan[12] = [slave : change state from Inst to ReceiveDump]
- Plan[13] = [slave : change state from ReceiveDump to Serving]
- Plan[14] = [slave : bind port s_mysql to instance application]
- Plan[15] = [slave : unbind port dump from instance master]
- Plan[16] = [master : change state from Dump to MasterServing]
- Plan[17] = [master : bind port mysql to instance application]
- Plan[18] = [application : change state from Uninst to Inst]
+ Plan[10] = [slave : invoke method dump of master]
+ Plan[11] = [slave : change state from Inst to ReceiveDump]
+ Plan[12] = [slave : change state from ReceiveDump to Serving]
+ Plan[13] = [master : change state from Dump to MasterServing]
+ Plan[14] = [application : invoke method mysql of master]
+ Plan[15] = [application : invoke method s_mysql of slave]
+ Plan[16] = [application : change state from Uninst to Inst]

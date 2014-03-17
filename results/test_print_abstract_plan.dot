@@ -1,0 +1,21 @@
+//Abstract plan in DOT file representation: 
+
+digraph {
+
+	"b (C,q0)" -> "b (q0,q1)";
+
+	"b (q0,q1)" -> "b (q1,q2)";
+
+	"b (q1,q2)" -> "b (q2,D)";
+
+
+
+	"a (C,s0)" -> "a (s0,s1)";
+
+	"a (s0,s1)" -> "a (s1,s2)";
+	"a (s0,s1)" -> "b (q0,q1)" [label="p0_1", color=blue];
+
+	"a (s1,s2)" -> "a (s2,D)";
+	"a (s1,s2)" -> "b (q1,q2)" [label="p0_2", color=blue];
+
+}

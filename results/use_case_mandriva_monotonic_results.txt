@@ -1,0 +1,34 @@
+<<<<<<< HEAD
+=======
+DO NOTHING because farthest edge is the SAME as the original edge ---get_site---> varnish (Installed,Configured)
+DO NOTHING because farthest edge is the SAME as the original edge ---Wordpress.start---> varnish (Configured,Active)
+DO NOTHING because farthest edge is the SAME as the original edge ---Httpd.get_documentRoot---> wordpress (Configured,Active)
+DO NOTHING because farthest edge is the SAME as the original edge ---Httpd.start---> wordpress (Configured,Active)
+DO NOTHING because farthest edge is the SAME as the original edge ---Mysql.addDatabase---> wordpress (Template,Configured)
+
+The computed PLAN is: 
+ Plan[1] = [Create instance varnish:Varnish]
+ Plan[2] = [Create instance wordpress:Wordpress]
+ Plan[3] = [Create instance httpd:Httpd]
+ Plan[4] = [Create instance mysql:Mysql]
+ Plan[5] = [mysql : change state from NotInstalled to Installed]
+ Plan[6] = [mysql : change state from Installed to SetRootPassword]
+ Plan[7] = [mysql : change state from SetRootPassword to Configured]
+ Plan[8] = [mysql : change state from Configured to Active]
+ Plan[9] = [httpd : change state from NotInstalled to Installed]
+ Plan[10] = [httpd : change state from Installed to Configured]
+ Plan[11] = [httpd : change state from Configured to Active]
+ Plan[12] = [wordpress : change state from NotInstalled to Installed]
+ Plan[13] = [wordpress : change state from Installed to Template]
+ Plan[14] = [wordpress : invoke method Mysql.addDatabase of mysql]
+ Plan[15] = [wordpress : change state from Template to Configured]
+ Plan[16] = [wordpress : invoke method Httpd.start of httpd]
+ Plan[17] = [wordpress : invoke method Httpd.get_documentRoot of httpd]
+ Plan[18] = [wordpress : change state from Configured to Active]
+ Plan[19] = [mysql : stop]
+ Plan[20] = [varnish : change state from NotInstalled to Installed]
+ Plan[21] = [varnish : invoke method get_site of wordpress]
+ Plan[22] = [varnish : change state from Installed to Configured]
+ Plan[23] = [varnish : invoke method Wordpress.start of wordpress]
+ Plan[24] = [varnish : change state from Configured to Active]
+>>>>>>> mandrivaUseCase

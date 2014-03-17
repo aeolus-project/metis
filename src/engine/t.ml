@@ -1,9 +1,6 @@
 
 open My_datatypes
 open Datatypes_t
-(*
-open Batteries
-*)
 open My_loops
 open Facade
 open Action
@@ -38,6 +35,9 @@ module T =
       val to_string_list : t list -> string
       val to_string_list_list : t list list -> string
       val to_string_list_full : t list -> string
+      val dot_of_node : t -> string
+      val dot_of_nodes_list : t list -> string
+      val dot_of_edges_list : t list -> string
       val print_list : t list -> unit
       val print_simple_list : t list -> unit
       val print_actions : Buffer.t ref -> t list -> unit
@@ -221,6 +221,9 @@ module T =
       let set_actions vertex new_actions =
         vertex.actions <- new_actions
       
+			let add_action vertex new_action =
+        vertex.actions <- new_action :: vertex.actions 
+      
       let get_id vertex =
         vertex.id
       
@@ -330,15 +333,43 @@ module T =
 					^ "\n RETURN EDGES: " ^ return_edges_str ^ "\n INST EDGE: " 
 					^ inst_edge_str) in
         vertex_str 
+     
 
-(*
-      let to_string_list vertices_list =
-        let string_list = (List.map to_string_with_inst_edge vertices_list) in
-        let string_repr = (String.concat " " string_list) in
-        string_repr  
-*)
+ 
+			(************************************************************)
+			(*						dealing with DOT file representation					*)
+			(************************************************************)
       
-      let to_string_with_id_list vertices_list =
+			let dot_of_node vertex =
+				(*
+        let node_repr = ( "\"" ^ (string_of_vtag vertex.tag) ^ "\"") in
+				*)
+        let node_repr = ( "\"" ^ vertex.id ^ " " ^ (string_of_vtag vertex.tag) ^ "\"") in
+        node_repr
+			
+			let dot_of vertex =
+        let inst_edge_str = (Inst_edge.dot_of_opt vertex vertex.inst_edge) in 
+        let vertex_str = inst_edge_str in
+        vertex_str 
+      
+			let dot_of_nodes_list vertices_list =
+        let string_list = (List.map dot_of vertices_list) in
+        let string_repr = (String.concat "" string_list) in
+        string_repr  
+
+			let dot_of_edge vertex =
+        let go_edges_str = (Dep_edge.dot_of_list vertex vertex.go_edges) in   
+        let return_edges_str = (Dep_edge.dot_of_list vertex vertex.return_edges) in   
+        let dep_edges_str = go_edges_str ^ return_edges_str in
+        (* let dep_edges_str = go_edges_str in *)
+				dep_edges_str 
+
+			let dot_of_edges_list vertices_list =
+        let string_list = (List.map dot_of_edge vertices_list) in
+        let string_repr = (String.concat "" string_list) in
+        string_repr  
+      
+			let to_string_with_id_list vertices_list =
         let string_list = (List.map to_string_with_id vertices_list) in
         let string_repr = (String.concat " " string_list) in
         string_repr  
@@ -430,15 +461,19 @@ module T =
 				vertex.go_edges <- (Dep_edge.remove_edge edge vertex.go_edges);
 				let dest_vertex = !(Dep_edge.get_dest edge) in 
 				dest_vertex.nr_in_edges <- (dest_vertex.nr_in_edges - 1);
-				(print_endline ("Removed GO edge " ^ (to_string_with_id vertex) ^ (Dep_edge.to_string edge)));
-				(print_endline ("Destination vertex " ^ (to_string_with_id dest_vertex) ^ " has now nr_in_edges = " ^ (string_of_int dest_vertex.nr_in_edges)))
+				IFDEF VERBOSE THEN
+					(Printf.bprintf !file_buffer "%s\n" ("Removed GO edge " ^ (to_string_with_id vertex) ^ (Dep_edge.to_string edge)));
+					(Printf.bprintf !file_buffer "%s\n" ("Destination vertex " ^ (to_string_with_id dest_vertex) ^ " has now nr_in_edges = " ^ (string_of_int dest_vertex.nr_in_edges)))
+				END
 			
 			let remove_return_edge vertex edge =
 				vertex.return_edges <- (Dep_edge.remove_edge edge vertex.return_edges);
 				let dest_vertex = !(Dep_edge.get_dest edge) in
 				dest_vertex.nr_in_edges <- (dest_vertex.nr_in_edges - 1);
-				(print_endline ("Removed RETURN vertex " ^ (to_string_with_id vertex) ^ (Dep_edge.to_string edge)));
-				(print_endline ("Destination vertex " ^ (to_string_with_id dest_vertex) ^ " has now nr_in_edges = " ^ (string_of_int dest_vertex.nr_in_edges)))
+				IFDEF VERBOSE THEN
+					(Printf.bprintf !file_buffer "%s\n" ("Removed RETURN edge " ^ (to_string_with_id vertex) ^ (Dep_edge.to_string edge)));
+					(Printf.bprintf !file_buffer "%s\n" ("Destination vertex " ^ (to_string_with_id dest_vertex) ^ " has now nr_in_edges = " ^ (string_of_int dest_vertex.nr_in_edges)))
+				END
 
       (* this function simply extracts a value of type Vertex.t from an option *)    
       let extract_vertex opt_vertex_ref =
@@ -1156,27 +1191,33 @@ module T =
 			(** Deal with [initial vertices] (i.e. with no incoming edges) *)
 			let add_initial_vertex stack plan file_buffer vertex =
 				let new_action = (New (vertex.id, vertex.comp_type_name)) in
-				(Plan.add plan new_action);
-				(Printf.bprintf !file_buffer "%s\n" ("Added action " ^ (Action.to_string new_action) ^ " to the plan."));	
+				(Plan.add file_buffer plan new_action);
 				(Stack.push vertex stack)
+				(*
+				IFDEF VERBOSE THEN
+					(Printf.bprintf !file_buffer "%s\n" ("Added action " ^ (Action.to_string new_action) ^ " to the plan."))	
+				END
+				*)
 
 			(** Deal with [return edges] (the red ones) *)
 			let process_ret_edge plan stack src_vertex file_buffer return_edge =
+				(* we ignore Unbind actions: we simply remove the red edge 
 				let dst_vertex = !(Dep_edge.get_dest return_edge) in
 				let port = (Dep_edge.get_port return_edge) in
 				let unbind_act = Unbind (port, dst_vertex.id, src_vertex.id) in (* unbind action is performed by requirer *)
 				(* add unbind action to plan *)
 				(Plan.add plan unbind_act);
+				*)
 				(* remove edge *)
 				(remove_return_edge src_vertex return_edge);
 				(* if destination vertex has no more incoming edges push it onto stack toVisit *)
+				let dst_vertex = !(Dep_edge.get_dest return_edge) in
 				if (has_no_in_edges dst_vertex) then begin
-					(* 
-					(print_endline ("RETURN Edge: PUSH vertex: " ^ (to_string_with_id dst_vertex))); 
-					*)
-					(Printf.bprintf !file_buffer "%s\n" ("RETURN Edge: PUSH vertex: " ^ (to_string_with_id dst_vertex))); 
 					(Stack.push dst_vertex stack);
-					(print_stack stack file_buffer)
+					IFDEF VERBOSE THEN
+						(Printf.bprintf !file_buffer "%s\n" ("RETURN Edge: PUSH vertex: " ^ (to_string_with_id dst_vertex))); 
+						(print_stack stack file_buffer)
+					END
 				end
 
 			(** Deal with [go edges] (the blue ones) *)
@@ -1185,14 +1226,17 @@ module T =
 				let port = (Dep_edge.get_port go_edge) in
 				let bind_act = Bind (port, src_vertex.id, dst_vertex.id) in (* bind action is performed by provider *)
 				(* add bind action to plan *)
-				(Plan.add plan bind_act);
+				(*(Plan.add plan bind_act);*)
+				(add_action dst_vertex bind_act);
 				(* remove edge *)
 				(remove_go_edge src_vertex go_edge);
 				(* if dest. vertex has no more incoming edges push it onto stack toVisit *)
 				if (has_no_in_edges dst_vertex) then begin
-					(Printf.bprintf !file_buffer "%s\n" ("GO Edge: PUSH vertex: " ^ (to_string_with_id dst_vertex))); 
 					(Stack.push dst_vertex stack);
-					(print_stack stack file_buffer)
+					IFDEF VERBOSE THEN
+						(Printf.bprintf !file_buffer "%s\n" ("GO Edge: PUSH vertex: " ^ (to_string_with_id dst_vertex)));
+						(print_stack stack file_buffer)
+					END
 				end
 
 			(** Deal with the [instance edge] *)
@@ -1201,9 +1245,11 @@ module T =
 					let successor = (get_succ vertex) in
 					(remove_inst_edge vertex);
 					if (has_no_in_edges successor) then begin
-						(Printf.bprintf !file_buffer "%s\n" ("INST Edge: PUSH vertex: " ^ (to_string_with_id successor))); 
 						(Stack.push successor stack);
-					(print_stack stack file_buffer)
+						IFDEF VERBOSE THEN
+							(Printf.bprintf !file_buffer "%s\n" ("INST Edge: PUSH vertex: " ^ (to_string_with_id successor))); 
+							(print_stack stack file_buffer)
+						END
 					end
 				end
 			
@@ -1215,6 +1261,9 @@ module T =
 				let dst_state = (snd trans_pair) in
 				let state_change_act = State_change (id, src_state, dst_state) in 
 				state_change_act 
+											
+			let process_method_invocation file_buffer plan action =
+				(Plan.add file_buffer plan action)
 			
 			(** Compute a deployment plan *)
 			let synthesize_plan vertices targetComponent targetState file_buffer =
@@ -1230,60 +1279,82 @@ module T =
 					(* External loop body *)
 					(fun i ->
           	begin
-							(Printf.bprintf !file_buffer "%s\n" ("External loop iteration i = " ^ (string_of_int !i)));
+							IFDEF VERBOSE THEN
+								(Printf.bprintf !file_buffer "%s\n" ("External loop iteration i = " ^ (string_of_int !i)))
+							END;
 							i := !i + 1;
 							(* Inner loop *)
 							(repeat_until 
 								(* Inner loop body *)
 								(fun j ->
           				begin 
-										(Printf.bprintf !file_buffer "\n*********************** %s\n" ("Internal loop iteration j = " ^ (string_of_int !j)));
-										(Printf.bprintf !file_buffer "%s\n" ("Plan BEFORE: " ^ (Plan.to_string plan)));
 										j := !j + 1;
 										let currentVertex = (Stack.pop toVisit) in
-										(Printf.bprintf !file_buffer "%s\n" ("Vertex popped: " ^ (to_string_with_id currentVertex))); 
-										(print_stack toVisit file_buffer);
+										IFDEF VERBOSE THEN
+											(Printf.bprintf !file_buffer "\n*********************** %s\n" ("Internal loop iteration j = " ^ (string_of_int !j)));
+											(Printf.bprintf !file_buffer "%s\n" ("Plan BEFORE: " ^ (Plan.to_string plan)));
+											(Printf.bprintf !file_buffer "%s\n" ("Vertex popped: " ^ (to_string_with_id currentVertex))); 
+											(print_stack toVisit file_buffer)
+										END;
 										(* initial node case *)
 										if (is_initial currentVertex) then begin
 											(* deal with instance successor *)
-											(Printf.bprintf !file_buffer "%s\n" "Deal with successor vertex.");
+											IFDEF VERBOSE THEN
+												(Printf.bprintf !file_buffer "%s\n" "Deal with successor vertex.")
+											END;
 											(process_inst_edge plan toVisit file_buffer currentVertex)
 										(* final node case *)
 										end else if (is_final currentVertex) then begin
 											(* deal with return/red edges *)
-											(Printf.bprintf !file_buffer "%s\n" "Deal with return/red edges");
 											(List.iter (process_ret_edge plan toVisit currentVertex file_buffer) currentVertex.return_edges);
 											(* add del action *)
-											(Printf.bprintf !file_buffer "%s\n" "Current vertex is final: we add a Del action to the plan.");
 											let deleteAct = (Del currentVertex.id) in
-											(Plan.add plan deleteAct)
+											(Plan.add file_buffer plan deleteAct);
+											IFDEF VERBOSE THEN
+												(Printf.bprintf !file_buffer "%s\n" "Deal with return/red edges");
+												(Printf.bprintf !file_buffer "%s\n" "Current vertex is final: we add a Del action to the plan.")
+											END
 										(* inner node case *)
 										end else begin
+											(* deal with method invocation actions *)
+											(List.iter (process_method_invocation file_buffer plan) currentVertex.actions);
 											(* add stateChange action *)
 											let stateChangeAct = (compute_state_change_act currentVertex) in
-											(Plan.add plan stateChangeAct);
-											(Printf.bprintf !file_buffer "%s\n" ("It's an intermediate vertex => add action " 
-													^ (Action.to_string stateChangeAct) ^ " to the plan."));
+											(Plan.add file_buffer plan stateChangeAct);
+											IFDEF VERBOSE THEN
+												(Printf.bprintf !file_buffer "%s\n" ("It's an intermediate vertex => add action " 
+													^ (Action.to_string stateChangeAct) ^ " to the plan."))
+											END;
 											(* deal with go/blue edges *)
-											(Printf.bprintf !file_buffer "%s\n" "Deal with go/blue edges");
+											IFDEF VERBOSE THEN
+												(Printf.bprintf !file_buffer "%s\n" "Deal with go/blue edges")
+											END;
 											(List.iter (process_go_edge plan toVisit currentVertex file_buffer) currentVertex.go_edges);
 											(* deal with return/red edges *)
-											(Printf.bprintf !file_buffer "%s\n" "Deal with return/red edges");
+											IFDEF VERBOSE THEN
+												(Printf.bprintf !file_buffer "%s\n" "Deal with return/red edges")
+											END;
 											(List.iter (process_ret_edge plan toVisit currentVertex file_buffer) currentVertex.return_edges);
 											(* deal with instance successor *)
-											(Printf.bprintf !file_buffer "%s\n" "Deal with successor vertex.");
+											IFDEF VERBOSE THEN
+											 (Printf.bprintf !file_buffer "%s\n" "Deal with successor vertex.")
+											END;
 											(process_inst_edge plan toVisit file_buffer currentVertex)
 										end;
 										(* if we reach the target node *)
 										if (currentVertex.comp_type_name = targetComponent) && 
 												((extract_tag_dst_name currentVertex.tag) = targetState) then 
 											begin 
-													(Printf.bprintf !file_buffer "%s\n" "Target has been REACHED.");
+													IFDEF VERBOSE THEN
+														(Printf.bprintf !file_buffer "%s\n" "Target has been REACHED.")
+													END;
 													finished := true
 											end;
 										(* delete current vertex from vertices list *)
 										vertices := (remove_from_list currentVertex !vertices); 
-										(Printf.bprintf !file_buffer "%s\n" ("Vertex removed: " ^ (to_string_with_id currentVertex))); 
+										IFDEF VERBOSE THEN
+											(Printf.bprintf !file_buffer "%s\n" ("Vertex removed: " ^ (to_string_with_id currentVertex)))
+										END;
 										j
           				end)
 								(* Inner loop condition: stop when we reach a fixpoint (no new nodes are added) or we find target *)
@@ -1292,12 +1363,16 @@ module T =
 							(* If we finished without reaching target => there are unvisited 
 									vertices (couldn't be visited in topological order) => need duplication *)
 							if !finished = false then begin
-								(Printf.bprintf !file_buffer "%s\n" "\n ************************* NEED INSTANCE DUPLICATION *************************** "); 
+								IFDEF VERBOSE THEN
+									(Printf.bprintf !file_buffer "%s\n" "\n ************************* NEED INSTANCE DUPLICATION *************************** ") 
+								END;
 								let vertex = (duplicate vertices plan toVisit file_buffer) in begin
 									if vertex.nr_in_edges = 0 then begin
 										(Stack.push vertex toVisit);
-										(Printf.bprintf !file_buffer "%s\n" ("Pushed duplicated vertex: " ^ (to_string_with_id vertex)));
-										(print_stack toVisit file_buffer) 
+										IFDEF VERBOSE THEN
+											(Printf.bprintf !file_buffer "%s\n" ("Pushed duplicated vertex: " ^ (to_string_with_id vertex)));
+											(print_stack toVisit file_buffer) 
+										END
 									end; 
 								end;
 							end;	
@@ -1342,14 +1417,14 @@ module T =
 										if (is_final currentVertex) then begin
 											(Printf.bprintf !file_buffer "%s\n" "Current vertex is final: we add a Del action to the plan.");
 											let deleteAct = (Del currentVertex.id) in
-											(Plan.add plan deleteAct)
+											(Plan.add file_buffer plan deleteAct)
 										end else begin
 											(* deal with go/blue edges *)
 											(Printf.bprintf !file_buffer "%s\n" "Deal with go/blue edges");
 											(List.iter (process_go_edge plan toVisit currentVertex file_buffer) currentVertex.go_edges);
 											if (is_not_initial currentVertex) then begin
 													let stateChangeAct = (compute_state_change_act currentVertex) in
-													(Plan.add plan stateChangeAct);
+													(Plan.add file_buffer plan stateChangeAct);
 													(Printf.bprintf !file_buffer "%s\n" ("It's an intermediate vertex => add action " 
 															^ (Action.to_string stateChangeAct) ^ " to the plan."))
 												end;
@@ -1430,7 +1505,7 @@ module T =
 											(print_endline "Current vertex is final: we add a Del action to the plan.");
 											(Printf.bprintf !file_buffer "%s\n" "Current vertex is final: we add a Del action to the plan.");
 											let deleteAct = (Del currentVertex.id) in
-											(Plan.add plan deleteAct)
+											(Plan.add file_buffer plan deleteAct)
 										end else begin
 											(* deal with go/blue edges *)
 											(print_endline "Deal with go/blue edges");
@@ -1438,7 +1513,7 @@ module T =
 											(List.iter (process_go_edge plan toVisit currentVertex file_buffer) currentVertex.go_edges);
 											if (is_not_initial currentVertex) then begin
 													let stateChangeAct = (compute_state_change_act currentVertex) in
-													(Plan.add plan stateChangeAct);
+													(Plan.add file_buffer plan stateChangeAct);
 													(print_endline ("It's an intermediate vertex => add action " 
 															^ (Action.to_string stateChangeAct) ^ " to the plan."));
 													(Printf.bprintf !file_buffer "%s\n" ("It's an intermediate vertex => add action " 
@@ -1577,6 +1652,7 @@ module T =
       val make : (Gg.Node.t ref) -> Vertex.t -> t
       val to_string : t -> string
       val to_string_opt : t option -> string
+      val dot_of_opt : Vertex.t -> t option -> string
       val get_comp_type : t -> (component_t ref)
       val get_state : t -> (state_t ref)       
       val get_dest : t -> (Vertex.t ref)       
@@ -1632,11 +1708,30 @@ module T =
 				let dest_str = (Vertex.to_string_with_id dest_vertex) in
         let full_repr = (string_repr ^ " " ^ dest_str) in
 				full_repr
-
+			
 			let to_string_opt edge_option =
 				match edge_option with
 					None -> "{ }"
 				| (Some edge) -> (to_string_full edge)      
+	
+
+			(************************************************************)
+			(*						dealing with DOT file representation					*)
+			(************************************************************)
+
+			let dot_of src_vertex edge =
+				let src_str = (Vertex.dot_of_node src_vertex) in
+				let dest_vertex = !(edge.dest) in
+				let dest_str = (Vertex.dot_of_node dest_vertex) in
+        let string_repr = ("\n\t\t" ^ src_str ^ " -> " ^ dest_str ^ ";") in
+				string_repr
+			
+			let dot_of_opt src_vertex edge_option =
+				match edge_option with
+					None -> ""
+				| (Some edge) -> (dot_of src_vertex edge)      
+
+
 
       let make gnode_ref vertex =
         let new_inst_edge = {
@@ -1671,6 +1766,7 @@ module T =
 			val eq : t -> t -> bool
       val to_string : t -> string
       val string_of_list : t list -> string
+      val dot_of_list : Vertex.t -> t list -> string
       val get_dest : t -> (Vertex.t ref)       
       val set_dest : t -> (Vertex.t ref) -> unit       
       val extract_dest_vrtx : t -> Vertex.t       
@@ -1744,6 +1840,45 @@ module T =
         let string_list = (List.map to_string edges_list) in
 				let string_repr = (String.concat "; " string_list) in
 				string_repr
+			
+			
+			(************************************************************)
+			(*						dealing with DOT file representation					*)
+			(************************************************************)
+		
+			(*	
+			let dot_of src_vertex edge =
+				let src_str = (Vertex.dot_of_node src_vertex) in
+        let style_str = "style=bold" in
+        let label_str = "label=\"" ^ edge.port ^ "\"" in
+        let color_str = "color=blue" in
+				let dest_vertex = !(edge.dest) in
+				let dest_str = (Vertex.dot_of_node dest_vertex) in
+        let string_repr = ("\n\t\t" ^ src_str ^ " -> " ^ dest_str 
+					^ " [" ^ style_str ^ ", " ^ label_str ^ ", " ^ color_str ^ "];") in
+				string_repr
+			*)
+
+			let dot_of src_vertex edge =
+				let src_str = (Vertex.dot_of_node src_vertex) in
+        let (style, color) as kind_pair  = match edge.color with
+					Blue -> ("color=blue", "style=bold")
+				| Red -> ("color=red", "style=bold") in
+				(*| Red -> ("color=red", "style=dashed") in*)
+				let color_str =  (fst kind_pair) in
+        let style_str = (snd kind_pair) in
+        let label_str = "label=\"" ^ edge.port ^ "\"" in
+				let dest_vertex = !(edge.dest) in
+				let dest_str = (Vertex.dot_of_node dest_vertex) in
+        let string_repr = ("\n\t\t" ^ src_str ^ " -> " ^ dest_str 
+					^ " [" ^ style_str ^ ", " ^ label_str ^ ", " ^ color_str ^ "];") in
+				string_repr
+			
+			let dot_of_list src_vertex edges_list = 
+        let string_list = (List.map (dot_of src_vertex) edges_list) in
+				let string_repr = (String.concat " " string_list) in
+				string_repr
+
 
       let make_go dest_vertex a_port =
         let new_go_edge = {

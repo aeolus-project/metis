@@ -362,7 +362,10 @@ Plan BEFORE:
  Plan[2] = [Create instance c0:C0]
  Plan[3] = [Create instance c2:C2]
  Plan[4] = [c2 : change state from s0 to s1]
+<<<<<<< HEAD
  Plan[5] = [c2 : bind port p2_1 to instance c1]
+=======
+>>>>>>> mandrivaUseCase
 Vertex popped: c0 (C,s0)
 STACK = 
 c1 (C,s0) | 
@@ -375,7 +378,10 @@ Plan BEFORE:
  Plan[2] = [Create instance c0:C0]
  Plan[3] = [Create instance c2:C2]
  Plan[4] = [c2 : change state from s0 to s1]
+<<<<<<< HEAD
  Plan[5] = [c2 : bind port p2_1 to instance c1]
+=======
+>>>>>>> mandrivaUseCase
 Vertex popped: c1 (C,s0)
 STACK = 
 []
@@ -391,7 +397,10 @@ Plan BEFORE:
  Plan[2] = [Create instance c0:C0]
  Plan[3] = [Create instance c2:C2]
  Plan[4] = [c2 : change state from s0 to s1]
+<<<<<<< HEAD
  Plan[5] = [c2 : bind port p2_1 to instance c1]
+=======
+>>>>>>> mandrivaUseCase
 Vertex popped: c1 (s0,s1)
 STACK = 
 []
@@ -410,9 +419,14 @@ Plan BEFORE:
  Plan[2] = [Create instance c0:C0]
  Plan[3] = [Create instance c2:C2]
  Plan[4] = [c2 : change state from s0 to s1]
+<<<<<<< HEAD
  Plan[5] = [c2 : bind port p2_1 to instance c1]
  Plan[6] = [c1 : change state from s0 to s1]
  Plan[7] = [c1 : bind port p1_1 to instance c0]
+=======
+ Plan[5] = [c1 : invoke method p2_1 of c2]
+ Plan[6] = [c1 : change state from s0 to s1]
+>>>>>>> mandrivaUseCase
 Vertex popped: c0 (s0,s1)
 STACK = 
 []
@@ -438,6 +452,7 @@ Plan BEFORE:
  Plan[3] = [Create instance c0:C0]
  Plan[4] = [Create instance c2:C2]
  Plan[5] = [c2 : change state from s0 to s1]
+<<<<<<< HEAD
  Plan[6] = [c2 : bind port p2_1 to instance c1']
  Plan[7] = [c2 : bind port p2_1 to instance c1]
  Plan[8] = [c1' : change state from s0 to s1]
@@ -446,6 +461,14 @@ Plan BEFORE:
  Plan[11] = [c0 : change state from s0 to s1]
  Plan[12] = [c0 : bind port p0_2 to instance c1']
  Plan[13] = [c0 : bind port p0_2 to instance c1]
+=======
+ Plan[6] = [c1' : invoke method p2_1 of c2]
+ Plan[7] = [c1 : invoke method p2_1 of c2]
+ Plan[8] = [c1' : change state from s0 to s1]
+ Plan[9] = [c1 : change state from s0 to s1]
+ Plan[10] = [c0 : invoke method p1_1 of c1']
+ Plan[11] = [c0 : change state from s0 to s1]
+>>>>>>> mandrivaUseCase
 Vertex popped: c1 (s1,s2)
 STACK = 
 []
@@ -468,6 +491,7 @@ The computed PLAN is:
  Plan[3] = [Create instance c0:C0]
  Plan[4] = [Create instance c2:C2]
  Plan[5] = [c2 : change state from s0 to s1]
+<<<<<<< HEAD
  Plan[6] = [c2 : bind port p2_1 to instance c1']
  Plan[7] = [c2 : bind port p2_1 to instance c1]
  Plan[8] = [c1' : change state from s0 to s1]
@@ -478,3 +502,13 @@ The computed PLAN is:
  Plan[13] = [c0 : bind port p0_2 to instance c1]
  Plan[14] = [c1 : change state from s1 to s2]
  Plan[15] = [c1 : unbind port p2_1 from instance c2]
+=======
+ Plan[6] = [c1' : invoke method p2_1 of c2]
+ Plan[7] = [c1 : invoke method p2_1 of c2]
+ Plan[8] = [c1' : change state from s0 to s1]
+ Plan[9] = [c1 : change state from s0 to s1]
+ Plan[10] = [c0 : invoke method p1_1 of c1']
+ Plan[11] = [c0 : change state from s0 to s1]
+ Plan[12] = [c1 : invoke method p0_2 of c0]
+ Plan[13] = [c1 : change state from s1 to s2]
+>>>>>>> mandrivaUseCase

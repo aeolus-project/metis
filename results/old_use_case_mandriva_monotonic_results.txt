@@ -552,8 +552,147 @@ mysql (Active,D) nr.IN-edges =  1
  RETURN EDGES: 
  INST EDGE: { }
 
-Next we ADD GO (blue) and RETURN (red) EDGES. 
+Next we ADD GO (blue) and RETURN (red) EDGES.
 
+Instance varnish :
+varnish (C,NotInstalled) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Varnish,NotInstalled>--> varnish (NotInstalled,Installed)
+
+varnish (NotInstalled,Installed) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Varnish,Installed>--> varnish (Installed,Configured)
+
+varnish (Installed,Configured) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Varnish,Configured>--> varnish (Configured,Active)
+
+varnish (Configured,Active) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: ---get_site---> wordpress (Active,D)
+ INST EDGE: --<Varnish,Active>--> varnish (Active,D)
+
+varnish (Active,D) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: ---Wordpress.start---> wordpress (Active,D)
+ INST EDGE: { }
+
+Instance wordpress :
+wordpress (C,NotInstalled) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Wordpress,NotInstalled>--> wordpress (NotInstalled,Installed)
+
+wordpress (NotInstalled,Installed) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Wordpress,Installed>--> wordpress (Installed,Template)
+
+wordpress (Installed,Template) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Wordpress,Template>--> wordpress (Template,Configured)
+
+wordpress (Template,Configured) nr.IN-edges =  2
+ GO EDGES: ---get_site---> varnish (Installed,Configured)
+ RETURN EDGES: 
+ INST EDGE: --<Wordpress,Configured>--> wordpress (Configured,Active)
+
+wordpress (Configured,Active) nr.IN-edges =  3
+ GO EDGES: ---Wordpress.start---> varnish (Configured,Active)
+ RETURN EDGES: ---Mysql.addDatabase---> mysql (Active,D)
+ INST EDGE: --<Wordpress,Active>--> wordpress (Active,D)
+
+wordpress (Active,D) nr.IN-edges =  3
+ GO EDGES: 
+ RETURN EDGES: ---Httpd.start---> httpd (Active,D); ---Httpd.get_documentRoot---> httpd (Active,D)
+ INST EDGE: { }
+
+Instance httpd :
+httpd (C,NotInstalled) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Httpd,NotInstalled>--> httpd (NotInstalled,Installed)
+
+httpd (NotInstalled,Installed) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Httpd,Installed>--> httpd (Installed,Configured)
+
+httpd (Installed,Configured) nr.IN-edges =  1
+ GO EDGES: ---Httpd.get_documentRoot---> wordpress (Configured,Active)
+ RETURN EDGES: 
+ INST EDGE: --<Httpd,Configured>--> httpd (Configured,Active)
+
+httpd (Configured,Active) nr.IN-edges =  1
+ GO EDGES: ---Httpd.start---> wordpress (Configured,Active)
+ RETURN EDGES: 
+ INST EDGE: --<Httpd,Active>--> httpd (Active,D)
+
+httpd (Active,D) nr.IN-edges =  3
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: { }
+
+Instance mysql :
+mysql (C,NotInstalled) nr.IN-edges =  0
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Mysql,NotInstalled>--> mysql (NotInstalled,Installed)
+
+mysql (NotInstalled,Installed) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Mysql,Installed>--> mysql (Installed,SetRootPassword)
+
+mysql (Installed,SetRootPassword) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Mysql,SetRootPassword>--> mysql (SetRootPassword,Configured)
+
+mysql (SetRootPassword,Configured) nr.IN-edges =  1
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: --<Mysql,Configured>--> mysql (Configured,Active)
+
+mysql (Configured,Active) nr.IN-edges =  1
+ GO EDGES: ---Mysql.addDatabase---> wordpress (Template,Configured)
+ RETURN EDGES: 
+ INST EDGE: --<Mysql,Active>--> mysql (Active,D)
+
+mysql (Active,D) nr.IN-edges =  2
+ GO EDGES: 
+ RETURN EDGES: 
+ INST EDGE: { }
+
+Next we FIX ENCLOSING GO (blue) and RETURN (red) EDGES.
+################# Fix enclosing edges for vertex wordpress (Template,Configured) and GO edge ---get_site---> varnish (Installed,Configured)
+Pairs found from the given vertex: { }
+Pairs found from successors of the given vertex: { }
+Total set of pairs found: { }
+
+################# Fix enclosing edges for vertex wordpress (Configured,Active) and GO edge ---Wordpress.start---> varnish (Configured,Active)
+Pairs found from the given vertex: { }
+Pairs found from successors of the given vertex: { }
+Total set of pairs found: { }
+
+################# Fix enclosing edges for vertex httpd (Installed,Configured) and GO edge ---Httpd.get_documentRoot---> wordpress (Configured,Active)
+Pairs found from the given vertex: { }
+Pairs found from successors of the given vertex: { }
+Total set of pairs found: { }
+
+################# Fix enclosing edges for vertex httpd (Configured,Active) and GO edge ---Httpd.start---> wordpress (Configured,Active)
+Pairs found from the given vertex: { }
+Pairs found from successors of the given vertex: { }
+Total set of pairs found: { }
+
+################# Fix enclosing edges for vertex mysql (Configured,Active) and GO edge ---Mysql.addDatabase---> wordpress (Template,Configured)
+Pairs found from the given vertex: { }
+Pairs found from successors of the given vertex: { }
+Total set of pairs found: { }
 
 Now the INSTANCE LINES WITH EDGES look like this:
 
@@ -779,7 +918,6 @@ Plan BEFORE:
  Plan[6] = [mysql : change state from Installed to SetRootPassword]
  Plan[7] = [mysql : change state from SetRootPassword to Configured]
  Plan[8] = [mysql : change state from Configured to Active]
- Plan[9] = [mysql : bind port Mysql.addDatabase to instance wordpress]
 Vertex popped: httpd (C,NotInstalled)
 STACK = 
 wordpress (C,NotInstalled) | varnish (C,NotInstalled) | 
@@ -799,7 +937,6 @@ Plan BEFORE:
  Plan[6] = [mysql : change state from Installed to SetRootPassword]
  Plan[7] = [mysql : change state from SetRootPassword to Configured]
  Plan[8] = [mysql : change state from Configured to Active]
- Plan[9] = [mysql : bind port Mysql.addDatabase to instance wordpress]
 Vertex popped: httpd (NotInstalled,Installed)
 STACK = 
 wordpress (C,NotInstalled) | varnish (C,NotInstalled) | 
@@ -822,8 +959,7 @@ Plan BEFORE:
  Plan[6] = [mysql : change state from Installed to SetRootPassword]
  Plan[7] = [mysql : change state from SetRootPassword to Configured]
  Plan[8] = [mysql : change state from Configured to Active]
- Plan[9] = [mysql : bind port Mysql.addDatabase to instance wordpress]
- Plan[10] = [httpd : change state from NotInstalled to Installed]
+ Plan[9] = [httpd : change state from NotInstalled to Installed]
 Vertex popped: httpd (Installed,Configured)
 STACK = 
 wordpress (C,NotInstalled) | varnish (C,NotInstalled) | 
@@ -846,10 +982,8 @@ Plan BEFORE:
  Plan[6] = [mysql : change state from Installed to SetRootPassword]
  Plan[7] = [mysql : change state from SetRootPassword to Configured]
  Plan[8] = [mysql : change state from Configured to Active]
- Plan[9] = [mysql : bind port Mysql.addDatabase to instance wordpress]
- Plan[10] = [httpd : change state from NotInstalled to Installed]
- Plan[11] = [httpd : change state from Installed to Configured]
- Plan[12] = [httpd : bind port Httpd.get_documentRoot to instance wordpress]
+ Plan[9] = [httpd : change state from NotInstalled to Installed]
+ Plan[10] = [httpd : change state from Installed to Configured]
 Vertex popped: httpd (Configured,Active)
 STACK = 
 wordpress (C,NotInstalled) | varnish (C,NotInstalled) | 
@@ -869,12 +1003,9 @@ Plan BEFORE:
  Plan[6] = [mysql : change state from Installed to SetRootPassword]
  Plan[7] = [mysql : change state from SetRootPassword to Configured]
  Plan[8] = [mysql : change state from Configured to Active]
- Plan[9] = [mysql : bind port Mysql.addDatabase to instance wordpress]
- Plan[10] = [httpd : change state from NotInstalled to Installed]
- Plan[11] = [httpd : change state from Installed to Configured]
- Plan[12] = [httpd : bind port Httpd.get_documentRoot to instance wordpress]
- Plan[13] = [httpd : change state from Configured to Active]
- Plan[14] = [httpd : bind port Httpd.start to instance wordpress]
+ Plan[9] = [httpd : change state from NotInstalled to Installed]
+ Plan[10] = [httpd : change state from Installed to Configured]
+ Plan[11] = [httpd : change state from Configured to Active]
 Vertex popped: wordpress (C,NotInstalled)
 STACK = 
 varnish (C,NotInstalled) | 
@@ -894,12 +1025,9 @@ Plan BEFORE:
  Plan[6] = [mysql : change state from Installed to SetRootPassword]
  Plan[7] = [mysql : change state from SetRootPassword to Configured]
  Plan[8] = [mysql : change state from Configured to Active]
- Plan[9] = [mysql : bind port Mysql.addDatabase to instance wordpress]
- Plan[10] = [httpd : change state from NotInstalled to Installed]
- Plan[11] = [httpd : change state from Installed to Configured]
- Plan[12] = [httpd : bind port Httpd.get_documentRoot to instance wordpress]
- Plan[13] = [httpd : change state from Configured to Active]
- Plan[14] = [httpd : bind port Httpd.start to instance wordpress]
+ Plan[9] = [httpd : change state from NotInstalled to Installed]
+ Plan[10] = [httpd : change state from Installed to Configured]
+ Plan[11] = [httpd : change state from Configured to Active]
 Vertex popped: wordpress (NotInstalled,Installed)
 STACK = 
 varnish (C,NotInstalled) | 
@@ -922,13 +1050,10 @@ Plan BEFORE:
  Plan[6] = [mysql : change state from Installed to SetRootPassword]
  Plan[7] = [mysql : change state from SetRootPassword to Configured]
  Plan[8] = [mysql : change state from Configured to Active]
- Plan[9] = [mysql : bind port Mysql.addDatabase to instance wordpress]
- Plan[10] = [httpd : change state from NotInstalled to Installed]
- Plan[11] = [httpd : change state from Installed to Configured]
- Plan[12] = [httpd : bind port Httpd.get_documentRoot to instance wordpress]
- Plan[13] = [httpd : change state from Configured to Active]
- Plan[14] = [httpd : bind port Httpd.start to instance wordpress]
- Plan[15] = [wordpress : change state from NotInstalled to Installed]
+ Plan[9] = [httpd : change state from NotInstalled to Installed]
+ Plan[10] = [httpd : change state from Installed to Configured]
+ Plan[11] = [httpd : change state from Configured to Active]
+ Plan[12] = [wordpress : change state from NotInstalled to Installed]
 Vertex popped: wordpress (Installed,Template)
 STACK = 
 varnish (C,NotInstalled) | 
@@ -951,14 +1076,11 @@ Plan BEFORE:
  Plan[6] = [mysql : change state from Installed to SetRootPassword]
  Plan[7] = [mysql : change state from SetRootPassword to Configured]
  Plan[8] = [mysql : change state from Configured to Active]
- Plan[9] = [mysql : bind port Mysql.addDatabase to instance wordpress]
- Plan[10] = [httpd : change state from NotInstalled to Installed]
- Plan[11] = [httpd : change state from Installed to Configured]
- Plan[12] = [httpd : bind port Httpd.get_documentRoot to instance wordpress]
- Plan[13] = [httpd : change state from Configured to Active]
- Plan[14] = [httpd : bind port Httpd.start to instance wordpress]
- Plan[15] = [wordpress : change state from NotInstalled to Installed]
- Plan[16] = [wordpress : change state from Installed to Template]
+ Plan[9] = [httpd : change state from NotInstalled to Installed]
+ Plan[10] = [httpd : change state from Installed to Configured]
+ Plan[11] = [httpd : change state from Configured to Active]
+ Plan[12] = [wordpress : change state from NotInstalled to Installed]
+ Plan[13] = [wordpress : change state from Installed to Template]
 Vertex popped: wordpress (Template,Configured)
 STACK = 
 varnish (C,NotInstalled) | 
@@ -981,16 +1103,13 @@ Plan BEFORE:
  Plan[6] = [mysql : change state from Installed to SetRootPassword]
  Plan[7] = [mysql : change state from SetRootPassword to Configured]
  Plan[8] = [mysql : change state from Configured to Active]
- Plan[9] = [mysql : bind port Mysql.addDatabase to instance wordpress]
- Plan[10] = [httpd : change state from NotInstalled to Installed]
- Plan[11] = [httpd : change state from Installed to Configured]
- Plan[12] = [httpd : bind port Httpd.get_documentRoot to instance wordpress]
- Plan[13] = [httpd : change state from Configured to Active]
- Plan[14] = [httpd : bind port Httpd.start to instance wordpress]
- Plan[15] = [wordpress : change state from NotInstalled to Installed]
- Plan[16] = [wordpress : change state from Installed to Template]
- Plan[17] = [wordpress : change state from Template to Configured]
- Plan[18] = [wordpress : bind port get_site to instance varnish]
+ Plan[9] = [httpd : change state from NotInstalled to Installed]
+ Plan[10] = [httpd : change state from Installed to Configured]
+ Plan[11] = [httpd : change state from Configured to Active]
+ Plan[12] = [wordpress : change state from NotInstalled to Installed]
+ Plan[13] = [wordpress : change state from Installed to Template]
+ Plan[14] = [wordpress : invoke method Mysql.addDatabase of mysql]
+ Plan[15] = [wordpress : change state from Template to Configured]
 Vertex popped: wordpress (Configured,Active)
 STACK = 
 varnish (C,NotInstalled) | 
@@ -1013,19 +1132,16 @@ Plan BEFORE:
  Plan[6] = [mysql : change state from Installed to SetRootPassword]
  Plan[7] = [mysql : change state from SetRootPassword to Configured]
  Plan[8] = [mysql : change state from Configured to Active]
- Plan[9] = [mysql : bind port Mysql.addDatabase to instance wordpress]
- Plan[10] = [httpd : change state from NotInstalled to Installed]
- Plan[11] = [httpd : change state from Installed to Configured]
- Plan[12] = [httpd : bind port Httpd.get_documentRoot to instance wordpress]
- Plan[13] = [httpd : change state from Configured to Active]
- Plan[14] = [httpd : bind port Httpd.start to instance wordpress]
- Plan[15] = [wordpress : change state from NotInstalled to Installed]
- Plan[16] = [wordpress : change state from Installed to Template]
- Plan[17] = [wordpress : change state from Template to Configured]
- Plan[18] = [wordpress : bind port get_site to instance varnish]
- Plan[19] = [wordpress : change state from Configured to Active]
- Plan[20] = [wordpress : bind port Wordpress.start to instance varnish]
- Plan[21] = [wordpress : unbind port Mysql.addDatabase from instance mysql]
+ Plan[9] = [httpd : change state from NotInstalled to Installed]
+ Plan[10] = [httpd : change state from Installed to Configured]
+ Plan[11] = [httpd : change state from Configured to Active]
+ Plan[12] = [wordpress : change state from NotInstalled to Installed]
+ Plan[13] = [wordpress : change state from Installed to Template]
+ Plan[14] = [wordpress : invoke method Mysql.addDatabase of mysql]
+ Plan[15] = [wordpress : change state from Template to Configured]
+ Plan[16] = [wordpress : invoke method Httpd.start of httpd]
+ Plan[17] = [wordpress : invoke method Httpd.get_documentRoot of httpd]
+ Plan[18] = [wordpress : change state from Configured to Active]
 Vertex popped: mysql (Active,D)
 STACK = 
 varnish (C,NotInstalled) | 
@@ -1043,20 +1159,17 @@ Plan BEFORE:
  Plan[6] = [mysql : change state from Installed to SetRootPassword]
  Plan[7] = [mysql : change state from SetRootPassword to Configured]
  Plan[8] = [mysql : change state from Configured to Active]
- Plan[9] = [mysql : bind port Mysql.addDatabase to instance wordpress]
- Plan[10] = [httpd : change state from NotInstalled to Installed]
- Plan[11] = [httpd : change state from Installed to Configured]
- Plan[12] = [httpd : bind port Httpd.get_documentRoot to instance wordpress]
- Plan[13] = [httpd : change state from Configured to Active]
- Plan[14] = [httpd : bind port Httpd.start to instance wordpress]
- Plan[15] = [wordpress : change state from NotInstalled to Installed]
- Plan[16] = [wordpress : change state from Installed to Template]
- Plan[17] = [wordpress : change state from Template to Configured]
- Plan[18] = [wordpress : bind port get_site to instance varnish]
- Plan[19] = [wordpress : change state from Configured to Active]
- Plan[20] = [wordpress : bind port Wordpress.start to instance varnish]
- Plan[21] = [wordpress : unbind port Mysql.addDatabase from instance mysql]
- Plan[22] = [mysql : stop]
+ Plan[9] = [httpd : change state from NotInstalled to Installed]
+ Plan[10] = [httpd : change state from Installed to Configured]
+ Plan[11] = [httpd : change state from Configured to Active]
+ Plan[12] = [wordpress : change state from NotInstalled to Installed]
+ Plan[13] = [wordpress : change state from Installed to Template]
+ Plan[14] = [wordpress : invoke method Mysql.addDatabase of mysql]
+ Plan[15] = [wordpress : change state from Template to Configured]
+ Plan[16] = [wordpress : invoke method Httpd.start of httpd]
+ Plan[17] = [wordpress : invoke method Httpd.get_documentRoot of httpd]
+ Plan[18] = [wordpress : change state from Configured to Active]
+ Plan[19] = [mysql : stop]
 Vertex popped: varnish (C,NotInstalled)
 STACK = 
 []
@@ -1076,20 +1189,17 @@ Plan BEFORE:
  Plan[6] = [mysql : change state from Installed to SetRootPassword]
  Plan[7] = [mysql : change state from SetRootPassword to Configured]
  Plan[8] = [mysql : change state from Configured to Active]
- Plan[9] = [mysql : bind port Mysql.addDatabase to instance wordpress]
- Plan[10] = [httpd : change state from NotInstalled to Installed]
- Plan[11] = [httpd : change state from Installed to Configured]
- Plan[12] = [httpd : bind port Httpd.get_documentRoot to instance wordpress]
- Plan[13] = [httpd : change state from Configured to Active]
- Plan[14] = [httpd : bind port Httpd.start to instance wordpress]
- Plan[15] = [wordpress : change state from NotInstalled to Installed]
- Plan[16] = [wordpress : change state from Installed to Template]
- Plan[17] = [wordpress : change state from Template to Configured]
- Plan[18] = [wordpress : bind port get_site to instance varnish]
- Plan[19] = [wordpress : change state from Configured to Active]
- Plan[20] = [wordpress : bind port Wordpress.start to instance varnish]
- Plan[21] = [wordpress : unbind port Mysql.addDatabase from instance mysql]
- Plan[22] = [mysql : stop]
+ Plan[9] = [httpd : change state from NotInstalled to Installed]
+ Plan[10] = [httpd : change state from Installed to Configured]
+ Plan[11] = [httpd : change state from Configured to Active]
+ Plan[12] = [wordpress : change state from NotInstalled to Installed]
+ Plan[13] = [wordpress : change state from Installed to Template]
+ Plan[14] = [wordpress : invoke method Mysql.addDatabase of mysql]
+ Plan[15] = [wordpress : change state from Template to Configured]
+ Plan[16] = [wordpress : invoke method Httpd.start of httpd]
+ Plan[17] = [wordpress : invoke method Httpd.get_documentRoot of httpd]
+ Plan[18] = [wordpress : change state from Configured to Active]
+ Plan[19] = [mysql : stop]
 Vertex popped: varnish (NotInstalled,Installed)
 STACK = 
 []
@@ -1112,21 +1222,18 @@ Plan BEFORE:
  Plan[6] = [mysql : change state from Installed to SetRootPassword]
  Plan[7] = [mysql : change state from SetRootPassword to Configured]
  Plan[8] = [mysql : change state from Configured to Active]
- Plan[9] = [mysql : bind port Mysql.addDatabase to instance wordpress]
- Plan[10] = [httpd : change state from NotInstalled to Installed]
- Plan[11] = [httpd : change state from Installed to Configured]
- Plan[12] = [httpd : bind port Httpd.get_documentRoot to instance wordpress]
- Plan[13] = [httpd : change state from Configured to Active]
- Plan[14] = [httpd : bind port Httpd.start to instance wordpress]
- Plan[15] = [wordpress : change state from NotInstalled to Installed]
- Plan[16] = [wordpress : change state from Installed to Template]
- Plan[17] = [wordpress : change state from Template to Configured]
- Plan[18] = [wordpress : bind port get_site to instance varnish]
- Plan[19] = [wordpress : change state from Configured to Active]
- Plan[20] = [wordpress : bind port Wordpress.start to instance varnish]
- Plan[21] = [wordpress : unbind port Mysql.addDatabase from instance mysql]
- Plan[22] = [mysql : stop]
- Plan[23] = [varnish : change state from NotInstalled to Installed]
+ Plan[9] = [httpd : change state from NotInstalled to Installed]
+ Plan[10] = [httpd : change state from Installed to Configured]
+ Plan[11] = [httpd : change state from Configured to Active]
+ Plan[12] = [wordpress : change state from NotInstalled to Installed]
+ Plan[13] = [wordpress : change state from Installed to Template]
+ Plan[14] = [wordpress : invoke method Mysql.addDatabase of mysql]
+ Plan[15] = [wordpress : change state from Template to Configured]
+ Plan[16] = [wordpress : invoke method Httpd.start of httpd]
+ Plan[17] = [wordpress : invoke method Httpd.get_documentRoot of httpd]
+ Plan[18] = [wordpress : change state from Configured to Active]
+ Plan[19] = [mysql : stop]
+ Plan[20] = [varnish : change state from NotInstalled to Installed]
 Vertex popped: varnish (Installed,Configured)
 STACK = 
 []
@@ -1149,22 +1256,20 @@ Plan BEFORE:
  Plan[6] = [mysql : change state from Installed to SetRootPassword]
  Plan[7] = [mysql : change state from SetRootPassword to Configured]
  Plan[8] = [mysql : change state from Configured to Active]
- Plan[9] = [mysql : bind port Mysql.addDatabase to instance wordpress]
- Plan[10] = [httpd : change state from NotInstalled to Installed]
- Plan[11] = [httpd : change state from Installed to Configured]
- Plan[12] = [httpd : bind port Httpd.get_documentRoot to instance wordpress]
- Plan[13] = [httpd : change state from Configured to Active]
- Plan[14] = [httpd : bind port Httpd.start to instance wordpress]
- Plan[15] = [wordpress : change state from NotInstalled to Installed]
- Plan[16] = [wordpress : change state from Installed to Template]
- Plan[17] = [wordpress : change state from Template to Configured]
- Plan[18] = [wordpress : bind port get_site to instance varnish]
- Plan[19] = [wordpress : change state from Configured to Active]
- Plan[20] = [wordpress : bind port Wordpress.start to instance varnish]
- Plan[21] = [wordpress : unbind port Mysql.addDatabase from instance mysql]
- Plan[22] = [mysql : stop]
- Plan[23] = [varnish : change state from NotInstalled to Installed]
- Plan[24] = [varnish : change state from Installed to Configured]
+ Plan[9] = [httpd : change state from NotInstalled to Installed]
+ Plan[10] = [httpd : change state from Installed to Configured]
+ Plan[11] = [httpd : change state from Configured to Active]
+ Plan[12] = [wordpress : change state from NotInstalled to Installed]
+ Plan[13] = [wordpress : change state from Installed to Template]
+ Plan[14] = [wordpress : invoke method Mysql.addDatabase of mysql]
+ Plan[15] = [wordpress : change state from Template to Configured]
+ Plan[16] = [wordpress : invoke method Httpd.start of httpd]
+ Plan[17] = [wordpress : invoke method Httpd.get_documentRoot of httpd]
+ Plan[18] = [wordpress : change state from Configured to Active]
+ Plan[19] = [mysql : stop]
+ Plan[20] = [varnish : change state from NotInstalled to Installed]
+ Plan[21] = [varnish : invoke method get_site of wordpress]
+ Plan[22] = [varnish : change state from Installed to Configured]
 Vertex popped: varnish (Configured,Active)
 STACK = 
 []
@@ -1187,21 +1292,19 @@ The computed PLAN is:
  Plan[6] = [mysql : change state from Installed to SetRootPassword]
  Plan[7] = [mysql : change state from SetRootPassword to Configured]
  Plan[8] = [mysql : change state from Configured to Active]
- Plan[9] = [mysql : bind port Mysql.addDatabase to instance wordpress]
- Plan[10] = [httpd : change state from NotInstalled to Installed]
- Plan[11] = [httpd : change state from Installed to Configured]
- Plan[12] = [httpd : bind port Httpd.get_documentRoot to instance wordpress]
- Plan[13] = [httpd : change state from Configured to Active]
- Plan[14] = [httpd : bind port Httpd.start to instance wordpress]
- Plan[15] = [wordpress : change state from NotInstalled to Installed]
- Plan[16] = [wordpress : change state from Installed to Template]
- Plan[17] = [wordpress : change state from Template to Configured]
- Plan[18] = [wordpress : bind port get_site to instance varnish]
- Plan[19] = [wordpress : change state from Configured to Active]
- Plan[20] = [wordpress : bind port Wordpress.start to instance varnish]
- Plan[21] = [wordpress : unbind port Mysql.addDatabase from instance mysql]
- Plan[22] = [mysql : stop]
- Plan[23] = [varnish : change state from NotInstalled to Installed]
- Plan[24] = [varnish : change state from Installed to Configured]
- Plan[25] = [varnish : change state from Configured to Active]
- Plan[26] = [varnish : unbind port get_site from instance wordpress]
+ Plan[9] = [httpd : change state from NotInstalled to Installed]
+ Plan[10] = [httpd : change state from Installed to Configured]
+ Plan[11] = [httpd : change state from Configured to Active]
+ Plan[12] = [wordpress : change state from NotInstalled to Installed]
+ Plan[13] = [wordpress : change state from Installed to Template]
+ Plan[14] = [wordpress : invoke method Mysql.addDatabase of mysql]
+ Plan[15] = [wordpress : change state from Template to Configured]
+ Plan[16] = [wordpress : invoke method Httpd.start of httpd]
+ Plan[17] = [wordpress : invoke method Httpd.get_documentRoot of httpd]
+ Plan[18] = [wordpress : change state from Configured to Active]
+ Plan[19] = [mysql : stop]
+ Plan[20] = [varnish : change state from NotInstalled to Installed]
+ Plan[21] = [varnish : invoke method get_site of wordpress]
+ Plan[22] = [varnish : change state from Installed to Configured]
+ Plan[23] = [varnish : invoke method Wordpress.start of wordpress]
+ Plan[24] = [varnish : change state from Configured to Active]

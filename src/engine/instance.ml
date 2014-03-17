@@ -111,11 +111,61 @@ open T
   let print_list file_buffer instances_list =
 		let string_repr = (to_string_list_full instances_list) in
 		(Buffer.add_string !file_buffer (string_repr ^ "\n"))
-		(*
-		(print_string "\nINSTANCE LINES WITH EDGES:\n");
-		(print_endline string_repr)
-		*)
 
+
+	(************************************************************)
+	(*						dealing with DOT file representation					*)
+	(************************************************************)
+  
+	let dot_of_nodes instance =
+		let instance_comment = ("\n\t// Instance line of " ^ instance.id) in
+		let cluster_id = ("cluster_" ^ instance.id) in
+		let header = "\n\tsubgraph " ^ cluster_id ^ " {" in
+		(*
+    let style_str = "\n\tstyle=filled;" in
+    let style_str = "\n\tnode[style=filled];" in
+    let style_str = "" in
+    let color_str = "\n\t\tcolor=blue;" in
+		*)
+    let style_str = "\n\t\tnode[style=filled, color=lightgrey];" in
+    let color_str = "" in
+    let label_str = "\n\t\tlabel=\"" ^ (String.uppercase instance.id) ^ "\";" in
+		let closing = "\n\t}" in
+    let nodes_repr = (T.Vertex.dot_of_nodes_list instance.vertices) in
+		let string_repr = (instance_comment ^ header ^ style_str ^ color_str 
+			^ nodes_repr ^ label_str ^ closing) in
+		string_repr 
+  
+	let dot_of_nodes_list instances_list =
+    let string_list = (List.map dot_of_nodes instances_list) in
+    let string_repr = (String.concat "\n" string_list) in
+    string_repr  
+	
+	let dot_of_edges instance =
+		let instance_comment = (ref "") in
+    let edges_repr = (T.Vertex.dot_of_edges_list instance.vertices) in
+		if edges_repr <> "" then
+			instance_comment := ("\n\t// Edges from instance line of " ^ instance.id); 
+		let string_repr = !instance_comment ^ edges_repr in
+		string_repr 
+
+	let dot_of_edges_list instances_list =
+    let string_list = (List.map dot_of_edges instances_list) in
+    let string_repr = (String.concat "\n" string_list) in
+    string_repr  
+
+  let print_abstract_plan file_buffer instances_list =
+		let pre_header = "// Abstract plan in DOT file representation \n\n" in
+		let nodes_string_repr = (dot_of_nodes_list instances_list) in
+		let dep_edges_string_repr = (dot_of_edges_list instances_list) in
+		let header = "digraph {\n" in
+		let closing = "\n}" in
+		(Buffer.add_string !file_buffer pre_header);
+		(Buffer.add_string !file_buffer header);
+		(Buffer.add_string !file_buffer nodes_string_repr);
+		(Buffer.add_string !file_buffer dep_edges_string_repr);
+		(Buffer.add_string !file_buffer closing)
+		
   let make component_type inst_id  =
     let new_instance = { 
       comp_type = component_type; 
@@ -691,28 +741,32 @@ open T
 	
 	(** Deal with pair of edges that overlap on all go edges of a vertex. *)
 	let edge_fix_enclosing file_buffer inst_lines vertex go_edge =
-		(Printf.bprintf !file_buffer "%s\n" ("\n################# Fix enclosing edges for vertex " 
-			^ (T.Vertex.to_string_with_id vertex) ^ " and GO edge " ^ (T.Dep_edge.to_string go_edge)));
 		let farther_pairs_same_vertex = (find_out_edges inst_lines vertex go_edge) in
-		(Printf.bprintf !file_buffer "%s\n" ("Pairs found from the given vertex: " 
-			^ (string_of_pair_list farther_pairs_same_vertex)));
 		let farther_pairs = (find_farther_vertex_edge_pairs vertex go_edge) in  
-		(Printf.bprintf !file_buffer "%s\n" ("Pairs found from successors of the given vertex: " 
-			^ (string_of_pair_list farther_pairs))); 
 		let all_vertex_edge_pairs = farther_pairs_same_vertex @ farther_pairs in
-		(Printf.bprintf !file_buffer "%s\n" ("Total set of pairs found: " 
-			^ (string_of_pair_list all_vertex_edge_pairs))); 
+		IFDEF VERBOSE THEN
+			(Printf.bprintf !file_buffer "%s\n" ("\n################# Fix enclosing edges for vertex " 
+				^ (T.Vertex.to_string_with_id vertex) ^ " and GO edge " ^ (T.Dep_edge.to_string go_edge)));
+			(Printf.bprintf !file_buffer "%s\n" ("Pairs found from the given vertex: " 
+				^ (string_of_pair_list farther_pairs_same_vertex)));
+			(Printf.bprintf !file_buffer "%s\n" ("Pairs found from successors of the given vertex: " 
+				^ (string_of_pair_list farther_pairs))); 
+			(Printf.bprintf !file_buffer "%s\n" ("Total set of pairs found: " 
+				^ (string_of_pair_list all_vertex_edge_pairs))) 
+		END;
 		(* find vertex with farthest destination *)
 		let dst_instance = (find_instance_by_edge inst_lines go_edge) in
 		let farthest_vertex_edge_pair = ref (vertex, go_edge) in
 		try begin 
 			farthest_vertex_edge_pair := (find_farthest dst_instance all_vertex_edge_pairs);
-			(Printf.bprintf !file_buffer "%s\n" ("Farthest vertex: " 
-				^ (string_of_pair !farthest_vertex_edge_pair)));
 			(*  keep track of the go edges visited in order to remove them in the end *)
 			let go_edges_to_remove = (remove_pair !farthest_vertex_edge_pair all_vertex_edge_pairs) in
-			(Printf.bprintf !file_buffer "%s\n" ("Edges to be removed: " 
-				^ (string_of_pair_list go_edges_to_remove))); 
+			IFDEF VERBOSE THEN
+				(Printf.bprintf !file_buffer "%s\n" ("Farthest vertex: " 
+					^ (string_of_pair !farthest_vertex_edge_pair)));
+				(Printf.bprintf !file_buffer "%s\n" ("Edges to be removed: " 
+					^ (string_of_pair_list go_edges_to_remove))) 
+			END;
 			let farthest_vertex = (fst !farthest_vertex_edge_pair) in 
 			let farthest_go_edge = (snd !farthest_vertex_edge_pair) in
 			(* check that there are no surprises, i.e. that the destination nodes belong to the same instance line *)		
@@ -723,18 +777,10 @@ open T
 					(T.Vertex.to_string_with_id go_edge_dst) ^ " and " ^ 
 					(T.Vertex.to_string_with_id farthest_go_edge_dst) ^ "lie on different instance lines.")) 
 			else begin
-				(Printf.bprintf !file_buffer "%s\n" "Apply EDGE FIXING");
 				let orig_twin = !(T.Dep_edge.get_twin go_edge) in	
 				let orig_twin_src = (T.Vertex.get_succ go_edge_dst) in
-				(Printf.bprintf !file_buffer "%s\n" ("Orig twin edge: " 
-					^ (T.Dep_edge.to_string orig_twin) ^ " from " 
-					^ (T.Vertex.to_string_with_id orig_twin_src)));
 				(* make the farthest return edge twin of the original one and vice versa *) 
 				let farthest_twin = !(T.Dep_edge.get_twin farthest_go_edge) in
-				let farthest_twin_src = (T.Vertex.get_succ farthest_go_edge_dst) in
-				(Printf.bprintf !file_buffer "%s\n" ("Farthest twin edge: " 
-					^ (T.Dep_edge.to_string farthest_twin) ^ " from " 
-					^ (T.Vertex.to_string_with_id farthest_twin_src)));
 				(T.Dep_edge.set_twin go_edge farthest_twin);  	
 				(T.Dep_edge.set_twin farthest_twin go_edge);
 				(* remove the farthest go/blue edge from the farthest vertex *)
@@ -743,11 +789,22 @@ open T
 				(T.Vertex.remove_return_edge orig_twin_src orig_twin);
 				(* remove all other edges go/blue and return/red ones *)
 				(remove_go_and_twin_edges go_edges_to_remove);
-				(Printf.bprintf !file_buffer "%s\n" ("Instance lines AFTER fixing enclosing edges: " 
-					^ (to_string_list_full !inst_lines)))
+				IFDEF VERBOSE THEN
+					(Printf.bprintf !file_buffer "%s\n" "Apply EDGE FIXING");
+					(Printf.bprintf !file_buffer "%s\n" ("Orig twin edge: " 
+						^ (T.Dep_edge.to_string orig_twin) ^ " from " 
+						^ (T.Vertex.to_string_with_id orig_twin_src)));
+					let farthest_twin_src = (T.Vertex.get_succ farthest_go_edge_dst) in
+					(Printf.bprintf !file_buffer "%s\n" ("Farthest twin edge: " 
+						^ (T.Dep_edge.to_string farthest_twin) ^ " from " 
+						^ (T.Vertex.to_string_with_id farthest_twin_src)));
+					(Printf.bprintf !file_buffer "%s\n" ("Instance lines AFTER fixing enclosing edges: " 
+						^ (to_string_list_full !inst_lines)))
+				END
 			end
 		end
-		with No_pairs -> (print_endline ("DO NOTHING because farthest edge is the SAME as the original edge " ^ (T.Dep_edge.to_string go_edge)))
+		with No_pairs -> (Printf.bprintf !file_buffer "%s\n" 
+			 ("DO NOTHING because farthest edge is the SAME as the original edge " ^ (T.Dep_edge.to_string go_edge)))
 		
 	(** Deal with pair of edges that overlap on all go edges of [vertex]. *)
 	let vertex_fix_enclosing_edges file_buffer inst_lines vertex =
