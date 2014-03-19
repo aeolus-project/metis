@@ -8,18 +8,21 @@ open Gg
 open T
 open Plan
 
+
 (* Variables corresponding to arguments *)
 
 (* input / output *)
 let universe_channel              = ref stdin
+(* sequential plan output channel *)
 let output_channel                = ref stdout
+(* (a)bstract (p)lan output channel *)
 let ap_output_channel             = ref stdout
 let	target_component_name					= ref "" 
 let	target_state 									= ref "" 
 
 (* settings for Metis' behaviour *)
 let use_heuristics								= ref false
-let mandriva_mode									= ref false
+let mandrivian_mode								= ref false
 
 (* Arg module settings *)
 
@@ -39,11 +42,11 @@ let speclist =
   Arg.align [
     (* Input arguments *)
 		("-hr",        Arg.Set use_heuristics, " Use heuristics for component selection");
-		("-m",         Arg.Set mandriva_mode, " Work in Mandriva mode");
+		("-m",         Arg.Set mandrivian_mode, " Work in Mandriva mode");
     ("-u",         Arg.String (fun filename -> universe_channel := (open_in filename)), " The universe input file");
     ("-c",         Arg.String (fun component_name -> target_component_name := component_name), " The target component");
     ("-s",         Arg.String (fun component_state -> target_state := component_state), " The target state name");
-    ("-o",         Arg.String (fun filename -> output_channel := (open_out_gen [Open_creat;Open_trunc;Open_wronly] 0o666 filename)), " The output file with the final plan");
+    ("-o",         Arg.String (fun filename -> output_channel := (open_out_gen [Open_creat;Open_trunc;Open_wronly] 0o666 filename)), " The output file with the sequential plan");
     ("-ap",        Arg.String (fun filename -> ap_output_channel := (open_out_gen [Open_creat;Open_trunc;Open_wronly] 0o666 filename)), " The output file for the abstract plan")
   ] 
 
@@ -81,7 +84,7 @@ let ggraph = (Ggraph.create universe (ref targetType) !targetStateID)
 let () =
 	let file_buffer = ref (Buffer.create 500) in ();
   
-	(* we build the reachability graph (was the G-graph) *)
+	(* build the reachability graph (previously known as G-graph) *)
 	(Ggraph.populate ggraph);
 	
 	IFDEF VERBOSE THEN
@@ -90,7 +93,8 @@ let () =
 		(Printf.bprintf !file_buffer "%s\n" ("\nBOTTOM-UP VISIT of the G-graph. "
     	^ "For every node we choose origin node and providers."))
 	END;
-	
+
+	(* perform component selection by bottom-up visit of the reachability graph *)	
   let polished_array = (Ggraph.visit file_buffer ggraph) in
   begin
     let target = (Ggraph.get_target ggraph) in
@@ -101,16 +105,17 @@ let () =
 			(Printf.bprintf !file_buffer "%s\n" ("\nThe linearized paths are the following:\n\n" ^ paths_string))
 		END;
 
+		(* keep only maximal paths *)
 		let maximal_paths = (Instance.filter_maximal_paths trimmed_paths_list) in ();
 			
-		(* we build single instance lines *)	
+		(* build single instance lines *)	
     let instance_lines = (Instance.build_instance_lines maximal_paths) in
 		IFDEF VERBOSE THEN
 			(Printf.bprintf !file_buffer "%s\n" "\n\nThe INSTANCE LINES are the following:\n");
     	(Instance.print_list file_buffer instance_lines)
 		END;
 
-		(* we add dependency edges: go/blue and return/red arcs *)	
+		(* add dependency edges: go/blue and return/red arcs *)	
     (Instance.list_add_dep_edges instance_lines);
 		IFDEF VERBOSE THEN
 			(Printf.bprintf !file_buffer "%s\n" "\nNext we ADD GO (blue) and RETURN (red) EDGES.\n");
@@ -133,17 +138,19 @@ let () =
 			(close_out !ap_output_channel)
 		end;
 
-		(* we merge all vertices together before performing the adaptive topological sort *)
+		(* merge all vertices together before performing the adaptive topological sort *)
     let all_vertices = (ref (Instance.list_to_vertices instance_lines)) in ();
 		
-		(* sequential plan synthesis *)
+		(* sequential plan synthesis by means of adaptive topological sort *)
 		IFDEF VERBOSE THEN
 			(Printf.bprintf !file_buffer "\n\n%s\n" "----------------------- PLAN SYNTHESIS START -----------------------")
 		END;
+(*
 		let plan = (T.Vertex.synthesize_plan all_vertices !target_component_name !target_state file_buffer) in
-		(Printf.bprintf !file_buffer "\n%s\n" ("The computed PLAN is: " ^ (Plan.to_string plan)));
-		(print_string "\nThe computed "); (Plan.print plan); 
-
+*)
+		let plan = (T.Vertex.synthesize_plan ~mandriva_mode:!mandrivian_mode all_vertices !target_component_name !target_state file_buffer) in
+		(Printf.bprintf !file_buffer "\n%s\n" ("The computed PLAN is: " ^ (Plan.to_string ~mandriva_mode:!mandrivian_mode plan)));
+		(print_string "\nThe computed "); (Plan.print ~mandriva_mode:!mandrivian_mode plan); 
 
 		(Buffer.output_buffer !output_channel !file_buffer);
 		(close_out !output_channel);

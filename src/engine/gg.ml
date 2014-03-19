@@ -1069,20 +1069,6 @@ let extract_comp_type nlist =
   let comp_type = first_node.res_type in
   comp_type
 			
-(** Set-minus operation between two lists. *)	
-(*
-let rec set_minus list1 list2 =
-	match list1 with
-		[] -> []
-	| head :: tail -> 
-			begin
-				if (List.memq head list2) then
-					(set_minus tail list2)
-				else 
-					head :: (set_minus tail list2)
-				end
-*)
-
 (** Extract the minimum value from a list of values *)
 let rec find_min guess values =
 	match values with

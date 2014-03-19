@@ -18,10 +18,14 @@ let to_string action =
 	match action with
 	  New (inst_name, comp_type_name) -> ("[Create instance " ^ inst_name ^ ":" ^ comp_type_name ^ "]") 
   | State_change (inst_name, src, dst) -> ("[" ^ inst_name ^ " : change state from " ^ src ^ " to " ^ dst ^ "]")
+  | Bind (port, provider, requirer) -> ("[" ^ provider ^ " : bind port " ^ port ^ " to " ^ requirer ^ "]") (* bind action performed by provider *)
+  | Unbind (port, provider, requirer) -> ("[" ^ requirer ^  " : unbind port " ^ port ^ " from instance " ^ provider ^ "]") (* unbind performed by requirer *)
+  | (Del inst_name) -> ("[" ^ inst_name ^ " : stop]")
+
+let to_string_mandriva_mode action =
+	match action with
+	  New (inst_name, comp_type_name) -> ("[Create instance " ^ inst_name ^ ":" ^ comp_type_name ^ "]") 
+  | State_change (inst_name, src, dst) -> ("[" ^ inst_name ^ " : change state from " ^ src ^ " to " ^ dst ^ "]")
   | Bind (port, provider, requirer) -> ("[" ^ requirer ^ " : invoke method " ^ port ^ " of " ^ provider ^ "]") (* method invocation performed by requirer *)
   | Unbind (port, provider, requirer) -> ("[" ^ requirer ^  " : unbind port " ^ port ^ " from instance " ^ provider ^ "]") (* unbind performed by requirer *)
   | (Del inst_name) -> ("[" ^ inst_name ^ " : stop]")
-      
-let string_of_actions_list actions_list =
-	let string_list = (List.map to_string actions_list) in
-  (String.concat " " string_list)

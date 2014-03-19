@@ -646,7 +646,7 @@ open T
 
 	(** Delete unnecessary dependency edges: remove each blue/go edge  and its 
 			corresponding twin. *) 
-	let rec remove_go_and_twin_edges go_edges_to_remove =
+	let rec remove_go_and_twin_edges file_buffer go_edges_to_remove =
 		match go_edges_to_remove with
 			[] -> () 
 		| head :: tail -> begin
@@ -654,13 +654,13 @@ open T
 				let go_edge = (snd head) in
 				let twin_edge = !(T.Dep_edge.get_twin go_edge) in
 				(* remove go/blue edge *)
-				(T.Vertex.remove_go_edge vertex go_edge);
+				(T.Vertex.remove_go_edge file_buffer vertex go_edge);
 				(* remove return/red edge *)
 				(* first find origin vertex of twin_edge *)
 				let go_edge_dst = !(T.Dep_edge.get_dest go_edge) in
 				let succ = (T.Vertex.get_succ go_edge_dst) in
-				(T.Vertex.remove_return_edge succ twin_edge);
-				(remove_go_and_twin_edges tail) 
+				(T.Vertex.remove_return_edge file_buffer succ twin_edge);
+				(remove_go_and_twin_edges file_buffer tail) 
 			end
 
 	(** Utility function that among the instance lines [inst_lines] finds the one
@@ -784,11 +784,11 @@ open T
 				(T.Dep_edge.set_twin go_edge farthest_twin);  	
 				(T.Dep_edge.set_twin farthest_twin go_edge);
 				(* remove the farthest go/blue edge from the farthest vertex *)
-				(T.Vertex.remove_go_edge farthest_vertex farthest_go_edge);
+				(T.Vertex.remove_go_edge file_buffer farthest_vertex farthest_go_edge);
 				(* remove the (return/red) twin edge of the original go_edge *)
-				(T.Vertex.remove_return_edge orig_twin_src orig_twin);
+				(T.Vertex.remove_return_edge file_buffer orig_twin_src orig_twin);
 				(* remove all other edges go/blue and return/red ones *)
-				(remove_go_and_twin_edges go_edges_to_remove);
+				(remove_go_and_twin_edges file_buffer go_edges_to_remove);
 				IFDEF VERBOSE THEN
 					(Printf.bprintf !file_buffer "%s\n" "Apply EDGE FIXING");
 					(Printf.bprintf !file_buffer "%s\n" ("Orig twin edge: " 
@@ -805,7 +805,7 @@ open T
 		end
 		with No_pairs -> (Printf.bprintf !file_buffer "%s\n" 
 			 ("DO NOTHING because farthest edge is the SAME as the original edge " ^ (T.Dep_edge.to_string go_edge)))
-		
+
 	(** Deal with pair of edges that overlap on all go edges of [vertex]. *)
 	let vertex_fix_enclosing_edges file_buffer inst_lines vertex =
 		let go_edges = (T.Vertex.get_go_edges vertex) in

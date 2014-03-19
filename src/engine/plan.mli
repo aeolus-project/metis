@@ -12,9 +12,9 @@ type t
 
 val length : t -> int
 
-val to_string : t -> string
+val to_string : mandriva_mode:bool -> t -> string
 
-val print : t -> unit 
+val print : mandriva_mode:bool -> t -> unit 
 
 val get_actions : t -> Action.t DynArray.t
 
@@ -26,4 +26,4 @@ val set_action : t -> int -> Action.t -> unit
 
 val insert_action : t -> int -> Action.t -> unit
 
-val add : Buffer.t ref -> t -> Action.t -> unit
+val add : mandriva_mode:bool -> Buffer.t ref -> t -> Action.t -> unit

@@ -69,14 +69,15 @@ module T =
 			val get_all_inst_succs : t -> t list
 			val compute_all_succs : t -> t list
       val find_in_list_by_state : state_id_t -> t list -> t
-			val synthesize_plan : (t list) ref -> string -> string -> Buffer.t ref -> Plan.t
+			(** Compute a sequential deployment plan by means of an adaptive topological sort. *)
+			val synthesize_plan : mandriva_mode:bool -> (t list) ref -> string -> string -> Buffer.t ref -> Plan.t
 			val copy_vertices_until : (t list) ref -> t -> t list -> t list
-			val find_split_edge : t list -> Dep_edge.t  
+			val find_split_edge : t list -> Dep_edge.t
 			val extract_src_from_tag : t -> state_id_t
 			val find_in_list_by_go_edge : Dep_edge.t -> t list -> t
 			val find_by_tag : vertex_tag_t -> t list -> t
-			val remove_go_edge : t -> Dep_edge.t -> unit
-			val remove_return_edge : t -> Dep_edge.t -> unit
+			val remove_go_edge : Buffer.t ref -> t -> Dep_edge.t -> unit
+			val remove_return_edge : Buffer.t ref -> t -> Dep_edge.t -> unit
 			val find_in_blue_edges_vertices : t -> t list -> (Dep_edge.t * t) list
 			val find_position : int ref -> t -> t list -> int 
 			val find_go_edge_by_port : port_name -> t -> (Dep_edge.t option)
@@ -461,7 +462,7 @@ module T =
 				let dest_vertex = !(Dep_edge.get_dest edge) in
 				dest_vertex.nr_in_edges <- (dest_vertex.nr_in_edges + 1)
 			
-			let remove_go_edge vertex edge =
+			let remove_go_edge file_buffer vertex edge =
 				vertex.go_edges <- (Dep_edge.remove_edge edge vertex.go_edges);
 				let dest_vertex = !(Dep_edge.get_dest edge) in 
 				dest_vertex.nr_in_edges <- (dest_vertex.nr_in_edges - 1);
@@ -470,7 +471,7 @@ module T =
 					(Printf.bprintf !file_buffer "%s\n" ("Destination vertex " ^ (to_string_with_id dest_vertex) ^ " has now nr_in_edges = " ^ (string_of_int dest_vertex.nr_in_edges)))
 				END
 			
-			let remove_return_edge vertex edge =
+			let remove_return_edge file_buffer vertex edge =
 				vertex.return_edges <- (Dep_edge.remove_edge edge vertex.return_edges);
 				let dest_vertex = !(Dep_edge.get_dest edge) in
 				dest_vertex.nr_in_edges <- (dest_vertex.nr_in_edges - 1);
@@ -1110,27 +1111,24 @@ module T =
   		
       
 			(** Deal with [initial vertices] (i.e. with no incoming edges) *)
-			let add_initial_vertex stack plan file_buffer vertex =
+			let add_initial_vertex ~mandriva_mode stack plan file_buffer vertex =
 				let new_action = (New (vertex.id, vertex.comp_type_name)) in
-				(Plan.add file_buffer plan new_action);
+				(Plan.add mandriva_mode file_buffer plan new_action);
 				(Stack.push vertex stack)
-				(*
-				IFDEF VERBOSE THEN
-					(Printf.bprintf !file_buffer "%s\n" ("Added action " ^ (Action.to_string new_action) ^ " to the plan."))	
-				END
-				*)
 
 			(** Deal with [return edges] (the red ones) *)
-			let process_ret_edge plan stack src_vertex file_buffer return_edge =
-				(* we ignore Unbind actions: we simply remove the red edge 
-				let dst_vertex = !(Dep_edge.get_dest return_edge) in
-				let port = (Dep_edge.get_port return_edge) in
-				let unbind_act = Unbind (port, dst_vertex.id, src_vertex.id) in (* unbind action is performed by requirer *)
-				(* add unbind action to plan *)
-				(Plan.add plan unbind_act);
-				*)
+			let process_ret_edge mandriva_mode plan stack src_vertex file_buffer return_edge =
+				(* if working in default mode add Unbind action to the plan *)
+				if mandriva_mode == false then begin
+					let dst_vertex = !(Dep_edge.get_dest return_edge) in
+					let port = (Dep_edge.get_port return_edge) in
+					let unbind_act = Unbind (port, dst_vertex.id, src_vertex.id) in (* unbind action is performed by requirer *)
+					(* add unbind action to plan *)
+					(Plan.add ~mandriva_mode:false file_buffer plan unbind_act)
+				end;
+				(* N.B. there is no else branch because when working in mandriva mode we simply ignore Unbind actions *)
 				(* remove edge *)
-				(remove_return_edge src_vertex return_edge);
+				(remove_return_edge file_buffer src_vertex return_edge);
 				(* if destination vertex has no more incoming edges push it onto stack toVisit *)
 				let dst_vertex = !(Dep_edge.get_dest return_edge) in
 				if (has_no_in_edges dst_vertex) then begin
@@ -1142,15 +1140,18 @@ module T =
 				end
 
 			(** Deal with [go edges] (the blue ones) *)
-			let process_go_edge plan stack src_vertex file_buffer go_edge =
+			let process_go_edge mandriva_mode plan stack src_vertex file_buffer go_edge =
 				let dst_vertex = !(Dep_edge.get_dest go_edge) in
 				let port = (Dep_edge.get_port go_edge) in
 				let bind_act = Bind (port, src_vertex.id, dst_vertex.id) in (* bind action is performed by provider *)
-				(* add bind action to plan *)
-				(*(Plan.add plan bind_act);*)
-				(add_action dst_vertex bind_act);
+				(* if working in default mode simply add action to the plan *)
+				if mandriva_mode == false then
+					(Plan.add mandriva_mode file_buffer plan bind_act)
+				(* working in mandriva mode => bind action must be added to the destination vertex (to be later processed) *)
+				else
+					(add_action dst_vertex bind_act);
 				(* remove edge *)
-				(remove_go_edge src_vertex go_edge);
+				(remove_go_edge file_buffer src_vertex go_edge);
 				(* if dest. vertex has no more incoming edges push it onto stack toVisit *)
 				if (has_no_in_edges dst_vertex) then begin
 					(Stack.push dst_vertex stack);
@@ -1184,17 +1185,17 @@ module T =
 				state_change_act 
 											
 			let process_method_invocation file_buffer plan action =
-				(Plan.add file_buffer plan action)
+				(Plan.add ~mandriva_mode:true file_buffer plan action)
 			
-			(** Compute a deployment plan *)
-			let synthesize_plan vertices targetComponent targetState file_buffer =
+			(** Compute a sequential deployment plan by means of an adaptive topological sort. *)
+			let synthesize_plan ~mandriva_mode vertices targetComponent targetState file_buffer =
 				(* initialize data structures *)
 				let plan = (Plan.make 100) in 
 				let toVisit = Stack.create () in
 				let finished = (ref false) in
         (* all initial vertices are pushed on the toVisit stack *)
 				let startVertices = (List.filter has_no_in_edges !vertices) in
-					(List.iter (add_initial_vertex toVisit plan file_buffer) startVertices);
+					(List.iter (add_initial_vertex ~mandriva_mode toVisit plan file_buffer) startVertices);
 				(* External loop *)
 				(repeat_until 
 					(* External loop body *)
@@ -1213,7 +1214,7 @@ module T =
 										let currentVertex = (Stack.pop toVisit) in
 										IFDEF VERBOSE THEN
 											(Printf.bprintf !file_buffer "\n*********************** %s\n" ("Internal loop iteration j = " ^ (string_of_int !j)));
-											(Printf.bprintf !file_buffer "%s\n" ("Plan BEFORE: " ^ (Plan.to_string plan)));
+											(Printf.bprintf !file_buffer "%s\n" ("Plan BEFORE: " ^ (Plan.to_string mandriva_mode plan)));
 											(Printf.bprintf !file_buffer "%s\n" ("Vertex popped: " ^ (to_string_with_id currentVertex))); 
 											(print_stack toVisit file_buffer)
 										END;
@@ -1227,21 +1228,22 @@ module T =
 										(* final node case *)
 										end else if (is_final currentVertex) then begin
 											(* deal with return/red edges *)
-											(List.iter (process_ret_edge plan toVisit currentVertex file_buffer) currentVertex.return_edges);
+											(List.iter (process_ret_edge mandriva_mode plan toVisit currentVertex file_buffer) currentVertex.return_edges);
 											(* add del action *)
 											let deleteAct = (Del currentVertex.id) in
-											(Plan.add file_buffer plan deleteAct);
+											(Plan.add mandriva_mode file_buffer plan deleteAct);
 											IFDEF VERBOSE THEN
 												(Printf.bprintf !file_buffer "%s\n" "Deal with return/red edges");
 												(Printf.bprintf !file_buffer "%s\n" "Current vertex is final: we add a Del action to the plan.")
 											END
 										(* inner node case *)
 										end else begin
-											(* deal with method invocation actions *)
-											(List.iter (process_method_invocation file_buffer plan) currentVertex.actions);
+											(* deal with method invocation actions only when mandriva mode is on *)
+											if mandriva_mode == true then
+												(List.iter (process_method_invocation file_buffer plan) currentVertex.actions);
 											(* add stateChange action *)
 											let stateChangeAct = (compute_state_change_act currentVertex) in
-											(Plan.add file_buffer plan stateChangeAct);
+											(Plan.add mandriva_mode file_buffer plan stateChangeAct);
 											IFDEF VERBOSE THEN
 												(Printf.bprintf !file_buffer "%s\n" ("It's an intermediate vertex => add action " 
 													^ (Action.to_string stateChangeAct) ^ " to the plan."))
@@ -1250,12 +1252,12 @@ module T =
 											IFDEF VERBOSE THEN
 												(Printf.bprintf !file_buffer "%s\n" "Deal with go/blue edges")
 											END;
-											(List.iter (process_go_edge plan toVisit currentVertex file_buffer) currentVertex.go_edges);
+											(List.iter (process_go_edge mandriva_mode plan toVisit currentVertex file_buffer) currentVertex.go_edges);
 											(* deal with return/red edges *)
 											IFDEF VERBOSE THEN
 												(Printf.bprintf !file_buffer "%s\n" "Deal with return/red edges")
 											END;
-											(List.iter (process_ret_edge plan toVisit currentVertex file_buffer) currentVertex.return_edges);
+											(List.iter (process_ret_edge mandriva_mode plan toVisit currentVertex file_buffer) currentVertex.return_edges);
 											(* deal with instance successor *)
 											IFDEF VERBOSE THEN
 											 (Printf.bprintf !file_buffer "%s\n" "Deal with successor vertex.")
