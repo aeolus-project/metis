@@ -95,7 +95,7 @@ let () =
 	END;
 
 	(* perform component selection by bottom-up visit of the reachability graph *)	
-  let polished_array = (Ggraph.visit file_buffer ggraph) in
+  let polished_array = (Ggraph.visit ~heuristics_on:!use_heuristics file_buffer ggraph) in
   begin
     let target = (Ggraph.get_target ggraph) in
     let trimmed_paths_list = (Ggraph.linearize polished_array target) in
@@ -145,9 +145,6 @@ let () =
 		IFDEF VERBOSE THEN
 			(Printf.bprintf !file_buffer "\n\n%s\n" "----------------------- PLAN SYNTHESIS START -----------------------")
 		END;
-(*
-		let plan = (T.Vertex.synthesize_plan all_vertices !target_component_name !target_state file_buffer) in
-*)
 		let plan = (T.Vertex.synthesize_plan ~mandriva_mode:!mandrivian_mode all_vertices !target_component_name !target_state file_buffer) in
 		(Printf.bprintf !file_buffer "\n%s\n" ("The computed PLAN is: " ^ (Plan.to_string ~mandriva_mode:!mandrivian_mode plan)));
 		(print_string "\nThe computed "); (Plan.print ~mandriva_mode:!mandrivian_mode plan); 

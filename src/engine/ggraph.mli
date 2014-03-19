@@ -1,4 +1,13 @@
 
+(** Module containing the Reachability-graph data structure, 
+		formerly known as G-graph.
+		It deals with:
+		- generations of nodes produced during the first phase of the 
+			general algorithm, namely reachability analysis; 
+		- bottom-up visit used to perform component selection, 
+			the second phase of the general algorithm.
+*)
+
 open My_datatypes
 open Datatypes_t
 open Generation
@@ -8,10 +17,6 @@ open Gg
 (****************************************************************************************)
 (*					G-graph						*)
 (****************************************************************************************)
-(*
-module type GGRAPH = 
-  sig
-*)          
     	type t
       val get_target : t -> Gg.Node.t
 		  val get_generations : t -> (Generation.t list)
@@ -28,10 +33,8 @@ module type GGRAPH =
       val build_initial_gen : t -> Generation.t
 		  (* generate the G-graph *)
       val populate : t -> unit
-      val populate_DEBUG : t -> Buffer.t ref -> unit
-      val populate_CHECK : t -> Buffer.t ref -> unit
       (* working with an array of generations, instead of the full graph *)
-      val visit : Buffer.t ref -> t -> (Gg.Node.t list) array
+      val visit : heuristics_on:bool -> Buffer.t ref -> t -> (Gg.Node.t list) array
       val linearize : (Gg.Node.t list) array -> Gg.Node.t -> (Gg.Node.t list) list
       val print_generations_a : (Gg.Node.t list) array -> unit
       val print_generations_full_a : (Gg.Node.t list) array -> unit

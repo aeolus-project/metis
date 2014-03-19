@@ -1,4 +1,13 @@
 
+(** Module containing the Reachability-graph data structure, 
+		formerly known as G-graph.
+		It deals with:
+		- generations of nodes produced during the first phase of the 
+			general algorithm, namely reachability analysis; 
+		- bottom-up visit used to perform component selection, 
+			the second phase of the general algorithm.
+*)
+
 open My_datatypes
 open Datatypes_t
 open Generation
@@ -137,97 +146,8 @@ open Gg
        (* alignment of generations index and index of the list containing
        * generations => need to reverse generations *)
       (reverse_generations graph) 
-		
-		(* generate the G-graph DEBUG version *)
-    let populate_DEBUG graph file_buffer =
-			(* first build initial generation *)
-			let firstGen = (build_initial_gen graph) in (add_generation graph firstGen);
-			(* initialize needed structures *)
-      let newNodes = (ref []) in
-			(* Loop for building and adding one generation at the time *)
-			(repeat_until 
-				(* Loop body *)
-				(fun i ->
-          begin 
-						print_endline ("\n ----------------- POPULATE cycle body: execution nr. " ^ 
-							(string_of_int (!i+1))^"----------------");
-						i := !i + 1;
-						(* extract current generation *)
-            let currentGen = (List.hd graph.generations) in 
-						print_string "current generation: "; (Generation.print file_buffer currentGen);
-            let currentIndex = (Generation.get_index currentGen) in
-            let newGen = (Generation.create_with_index (currentIndex+1)) in
-						(* compute nodes not in previous generation *)
-            newNodes := (Generation.compute_new_nodes_DEBUG currentGen); 
-						print_string "new nodes: "; Gg.Node.print_list !newNodes;
-            (* build copy nodes and arcs to previous generation *)
-						let copyNodes = (Gg.Node.build_copy_nodes (Generation.get_nodes currentGen)) in
-						(* new generation nodes = fresh nodes + replica nodes (of nodes in current gen.) *)
-            let allNodes = (copyNodes @ !newNodes) in
-						(Generation.set_nodes newGen allNodes);
-						print_string "\n new generation: "; (Generation.print file_buffer newGen);
-						(* add new generation to the G-graph *)
-						(add_generation graph newGen);
-						if (Gg.Node.in_list graph.target !newNodes) then
-							begin	
- 							  (set_target graph (Gg.Node.find_in_list graph.target !newNodes));
-							  print_endline ("target updated to " ^ (Gg.Node.to_string_full graph.target)) 
-							end;
-						i
-          end)
-				(* Loop condition: stop when we reach a fixpoint (no new nodes are added) or we find target *)
-				(fun i -> (Gg.Node.is_empty !newNodes) || (Gg.Node.in_list graph.target !newNodes)) 
-      ~init:(ref 0));
-       (* alignment of generations index and index of the list containing
-       * generations => need to reverse generations *)
-      (reverse_generations graph) 
-		
-		(* generate the G-graph, version for checking the new nodes computation *)
-    let populate_CHECK graph file_buffer =
-			(* first build initial generation *)
-			let firstGen = (build_initial_gen graph) in (add_generation graph firstGen);
-			(* initialize needed structures *)
-      let newNodes_check = (ref []) in
-      let newNodes = (ref []) in
-			(* Loop for building and adding one generation at the time *)
-			(repeat_until 
-				(* Loop body *)
-				(fun i ->
-          begin 
-						i := !i + 1;
-						(* extract current generation *)
-            let currentGen = (List.hd graph.generations) in 
-            let currentIndex = (Generation.get_index currentGen) in
-            let newGen = (Generation.create_with_index (currentIndex+1)) in
-						(* compute nodes not in previous generation *)
-            newNodes_check := (Generation.compute_new_nodes currentGen); 
-            newNodes := (Generation.old_compute_new_nodes currentGen);
-						if (Gg.Node.list_neq !newNodes_check !newNodes) then begin  
-							let msg1 = "\n\n ##################### NEW NODES DIFFER #############################" in
-							let msg2 = ("\n************************** New nodes according to NEW COMPUTATION: " ^ (Gg.Node.to_string_list !newNodes_check)) in
-							let msg3 = ("\n****************************************************** New nodes: " ^ (Gg.Node.to_string_list !newNodes)) in
-							let error_msg = msg1 ^ msg2 ^ msg3 in
-							raise (Different_new_nodes error_msg) 
-						end;
-            (* build copy nodes and arcs to previous generation *)
-						let copyNodes = (Gg.Node.build_copy_nodes (Generation.get_nodes currentGen)) in
-						(* new generation nodes = fresh nodes + replica nodes (of nodes in current gen.) *)
-            let allNodes = (copyNodes @ !newNodes) in
-						(Generation.set_nodes newGen allNodes);
-						(* add new generation to the G-graph *)
-						(add_generation graph newGen);
-						if (Gg.Node.in_list graph.target !newNodes) then
- 							(set_target graph (Gg.Node.find_in_list graph.target !newNodes));
-						i
-          end)
-				(* Loop condition: stop when we reach a fixpoint (no new nodes are added) or we find target *)
-				(fun i -> (Gg.Node.is_empty !newNodes) || (Gg.Node.in_list graph.target !newNodes)) 
-      ~init:(ref 0));
-       (* alignment of generations index and index of the list containing
-       * generations => need to reverse generations *)
-      (reverse_generations graph) 
- 
-    (* this function takes care of a node that is initial: we add it as is (no
+    
+		(* this function takes care of a node that is initial: we add it as is (no
      * need to choose parent and providers) to current generation and we mark it
      * to be examined at next level (add it to prev_wset) *)
     let handle_initial_node init_node current_gen prev_wset =
@@ -240,13 +160,13 @@ open Gg
     (** Function used to choose providers nodes for the requires of
      		[node]. It adds arcs to current generation and providers to next working
      		set. *)
-    let handle_providers file_buffer node current_gen prev_wset graph =
+    let handle_providers ~heuristics_on file_buffer node current_gen prev_wset graph =
       (* search for providers in the previous generation *)
       let current_gen_index = (Generation.get_index current_gen) in      
       let providers_gen = (nth_generation graph (current_gen_index - 1)) in 
       let nodes = (Generation.get_nodes providers_gen) in
       (* it also adds bind arcs *)
-      let ports_and_providers = (Gg.Node.choose_providers file_buffer node nodes) in
+      let ports_and_providers = (Gg.Node.choose_providers ~heuristics_on file_buffer node nodes) in
       let providers = (Gg.Node.elim_duplicates (snd (List.split ports_and_providers))) in
 			IFDEF VERBOSE THEN
 				(print_to_file file_buffer ("list of chosen providers: " ^ Gg.Node.to_string_list providers))
@@ -256,9 +176,13 @@ open Gg
 
     (** This function chooses a parent node for [node] and adds it to the next 
     		working set. *)
-    let handle_origin file_buffer node prev_wset =
-			(* origin choice + update accordingly the fanIn field of nodes at the same level *)
-		  let origin = (Gg.Node.choose_origin file_buffer node) in
+    let handle_origin ~heuristics_on file_buffer node prev_wset =
+			(* choose the right function whether relying on heuristics or not *)
+			let origin = match heuristics_on with
+				(* origin choice + update accordingly the fanIn field of nodes at the same level *)
+				true -> (Gg.Node.choose_origin_heuristics file_buffer node)
+			| false ->(Gg.Node.choose_origin file_buffer node)
+			in
       (* origin is now father of node *)
       (Gg.Node.set_origin node (ref origin));
       (* node is now among the sons of origin *)
@@ -295,7 +219,7 @@ open Gg
       (set_nth_nlist generations_array !prev_wset 0)
 
     (* Bottom-up visit for component selection *)
-    let visit file_buffer graph = 
+    let visit ~heuristics_on file_buffer graph = 
 			(*print_endline ("\n ----------------- START BOTTOM-UP VISIT ------------------------- ");*)
       let generations_array = (init_gen_array graph) in
       (*let newGraph = (clone_with_empty_gen graph) in *)
@@ -339,23 +263,22 @@ open Gg
 										END;	
                     (handle_initial_node nodeToExamine currentGen prevWset); 
                  end else begin       
-                 (* else need to find_in_list parent and (maybe) providers for fulfilling the requires *)
+                 (* else need to choose parent and (maybe) providers for fulfilling its requires *)
 										IFDEF VERBOSE THEN
 								    	(print_to_file file_buffer ((Gg.Node.to_string nodeToExamine) 
 												^ " is NOT an initial node => need to look for parent"))
 										END;	
                     (* the extracted node becomes part of the new graph *) 
                     (Generation.add_node currentGen nodeToExamine);      
-                    let origin = (handle_origin file_buffer nodeToExamine prevWset) in
+                    let origin = (handle_origin ~heuristics_on file_buffer nodeToExamine prevWset) in
 										(Gg.Node.update_fanIn file_buffer origin prevNodes);
-										(*print_endline ("next working set after adding ORIGIN: " ^ "{ " ^ (Gg.Node.to_string_list !prevWset) ^ " }");	*)
-                    (* if is not a copy then choose provider *)
+                    (* if it's not a copy then choose providers *)
                     if (Gg.Node.not_a_copy nodeToExamine) then begin
 											IFDEF VERBOSE THEN
 								    		(print_to_file file_buffer ((Gg.Node.to_string nodeToExamine)
                       		^ " is NOT a copy => must take care of providers")); 
 											END;	
-                      (handle_providers file_buffer nodeToExamine currentGen prevWset graph);
+                      (handle_providers ~heuristics_on file_buffer nodeToExamine currentGen prevWset graph);
                     end;  
                   end;
                   workSets.(l-1) <- !prevWset;
@@ -375,7 +298,6 @@ open Gg
 					end
         done;
         (* set the initial generation in the new graph by exploiting prevWset *)
-        (*(handle_initial_gen newGraph prevWset);*)
         (handle_initial_nlist generations_array prevWset);
         generations_array
     

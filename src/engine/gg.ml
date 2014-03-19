@@ -106,12 +106,16 @@ module Gg =
       
 			val not_a_copy : t -> bool      
       
- 			(** Choose origin node relying on heuristics. *)
+ 			(** Choose origin node by simply picking the first available one: 
+					cheaper than relying on heuristics. *)
 			val choose_origin: Buffer.t ref -> t -> t
+ 			
+			(** Choose origin node relying on heuristics. *)
+			val choose_origin_heuristics: Buffer.t ref -> t -> t
       
 			(* from a given node n compute a list of nodes satsfying requirements of n *)
-      val choose_providers : Buffer.t ref -> t -> (t list) -> ((port_name * t) list) 
-      
+      val choose_providers : heuristics_on:bool -> Buffer.t ref -> t -> (t list) -> ((port_name * t) list) 
+			
 			(* this function corresponds to set addition (no duplicates) of node list to a given list *)
       val add_list_no_duplicate : (t list) -> (t list) -> (t list)
       
@@ -585,9 +589,25 @@ module Gg =
 		let has_eq_value value node = (node.dist == value) in 
 		let min_dist_nodes = (List.filter (has_eq_value min_dist_value) nodes) in 
 		min_dist_nodes
-    
+   
+
+ 	(** Choose origin node by simply picking the first available one. *)
+	let choose_origin file_buffer node =
+		let origin = match node.copy with
+      (Some copy_arc) -> !(Copy_arc.get_dest copy_arc)
+    | None -> if (not_empty node.preds) then
+                let pred_arc = (List.hd node.preds) in
+                !(Pred_arc.get_dest pred_arc)
+              else
+                raise (No_available_origin_node ("node " ^ (to_string node) ^ " has no origin!" ))
+ 		in
+		IFDEF VERBOSE THEN
+			(print_to_file file_buffer ((to_string origin) ^ " chosen as origin of " ^ (to_string node))) 
+		END;
+		origin
+	
  	(** Choose origin node relying on heuristics. *)
-  let choose_origin file_buffer node =
+  let choose_origin_heuristics file_buffer node =
 		let get_pred pred_arc = !(Pred_arc.get_dest pred_arc) in
 		let predecessors = (List.map get_pred node.preds) in
 		let copy_list = match node.copy with
@@ -632,11 +652,28 @@ module Gg =
 							end
 				end in
 		origin
+
+(** Choose provider of port [require] from the list of nodes [nlist]. 
+		This is a ligthweight version that picks the first provider at hand 
+		without any heuristics. *)
+let choose_port_provider file_buffer node require nlist =
+	let providers_list = (filter_port_providers require nlist) in	
+	match providers_list with 
+		[] -> raise (No_available_provider ("No provider available for require " ^ require))
+	|	head :: tail -> 
+      begin
+        (* keep track in provider of the choice made *)      
+        (add_node_bound_to_me head require (ref node));     
+        (* build an explicit binding to the provider *)      
+        let bind_arc = (Bind_arc.make require (ref head)) in       
+        (add_bind_arc node bind_arc);
+        (require, head)
+      end
 		
 (** Choose provider of port [require] from the list of nodes [nlist], relying 
 		on heuristics. *)
 (* N.B. we use Bind arcs *)
-let choose_port_provider file_buffer node require nlist =
+let choose_port_provider_heuristics file_buffer node require nlist =
 	let providers = (filter_port_providers require nlist) in	
 	match providers with 
 		[] -> raise (No_available_provider ("No provider available for require " ^ require))
@@ -683,29 +720,14 @@ let choose_port_provider file_buffer node require nlist =
         (require, provider)
       end
 
-(** Choose provider of port [require] from the list of nodes [nlist]. 
-		This is a ligthweight version that picks the first provider at hand 
-		without any heuristics. *)
-let choose_port_provider_light file_buffer node require nlist =
-(** Choose provider of port [require] from the list of nodes [nlist] by simply 
-		picking the first provider at hand (no heuristics involved). *)
-	let providers_list = (filter_port_providers require nlist) in	
-	match providers_list with 
-		[] -> raise (No_available_provider ("No provider available for require " ^ require))
-	|	head :: tail -> 
-      begin
-        (* keep track in provider of the choice made *)      
-        (add_node_bound_to_me head require (ref node));     
-        (* build an explicit binding to the provider *)      
-        let bind_arc = (Bind_arc.make require (ref head)) in       
-        (add_bind_arc node bind_arc);
-        (require, head)
-      end
-
 (** Choose providers relying on heuristics. *)
-let choose_providers file_buffer node nlist =
+let choose_providers ~heuristics_on file_buffer node nlist =
   let requiresList = (requires_of_node node) in      
-  let choose_provider require = (choose_port_provider file_buffer node require nlist) in
+  (* choose the right function whether relying on heuristics or not *)
+  let choose_provider require = match heuristics_on with
+  	true -> (choose_port_provider_heuristics file_buffer node require nlist)
+  | false -> (choose_port_provider file_buffer node require nlist)
+  in
   let providersList = (List.map choose_provider requiresList) in
   providersList  
   
