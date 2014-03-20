@@ -74,17 +74,14 @@ let user_universe = (Datatypes_j.universe_of_string buffer)
 let universe = (Universe_translator.translate user_universe)
 
 (* find target component in provided universe *)
-let targetType = (Facade.find_component_by_name universe !target_component_name) 
+let target_type = (Facade.find_component_by_name universe !target_component_name) 
 
-(* TODO: check for correctness: if the given state ID does not belong to the given component abort *)
-(* kept for simplicity, just a matter of names *)
-let targetStateID = target_state 
-
-let ggraph = (Ggraph.create universe (ref targetType) !targetStateID) 
+(* build the reachability graph (previously known as G-graph) *)
+let ggraph = (Ggraph.create universe (ref target_type) !target_state) 
 let () =
 	let file_buffer = ref (Buffer.create 500) in ();
   
-	(* build the reachability graph (previously known as G-graph) *)
+	(* populate the reachability graph with all generations by sauration *)
 	(Ggraph.populate ggraph);
 	
 	IFDEF VERBOSE THEN

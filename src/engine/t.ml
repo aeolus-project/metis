@@ -811,17 +811,6 @@ module T =
         | Final (state_id, Delete) -> 
               [(Del vertex.id)] (* TODO: for the moment we leave it unspecified *) 
 
-      let old_actions_from_return_edges vertex =
-        let action_from_single_edge edge =
-          begin      
-            let port = (Dep_edge.get_port edge) in
-            let dest_id = (Dep_edge.get_dest_id edge) in     
-            let bind_action = (Unbind (port, dest_id, vertex.id)) in
-            bind_action
-          end
-        in  
-        let actions = (List.map action_from_single_edge vertex.return_edges) in
-        actions 
       (* we only compute unbind actions if vertex is not a final one (i,D) *)
 			let actions_from_return_edges vertex =
 				let actions = (ref []) in

@@ -11,14 +11,6 @@ open My_datatypes
 open Datatypes_t
 open Facade
 
-(*	TODO:
- *   we keep a whole state in each node: it suffices to store a state_id and 
- *   then retrieve the whole state from the component and the state_id
- *   
- *   rename field res_type to comp_type 
- *   
- *)
-
 module Gg =
   struct
     (** A node is basically a component type in a given state. *)
@@ -51,8 +43,7 @@ module Gg =
       val print_list : t list -> unit
       val print_list_full : t list -> unit
       
-			val build_succs_list : port_name list -> t list -> t list 
-      val build_succs_list_DEBUG : port_name list -> t list -> t list 
+			val build_succs_list : port_name list -> t list -> t list
       
 			(* it creates an initial node  < T, q0 > *)
       val build_initial : (component_t ref) -> t
@@ -151,20 +142,20 @@ module Gg =
 			val update_fanIn : Buffer.t ref -> t -> t list -> unit
     
 		end = struct
-    (** A node of the G-graph  is made of :
-	    - a component type 
-	    - the current state
-	    - a list of predecessor arcs
-	    - an (optional) reference to the copy node 
-	    - a list of require arcs
-	    - a list of binding arcs
-			- an origin node (the chosen father)
-			- a list of the node's sons
-			- a list of the nodes bound to the current one
-	    - card --> cardinality, i.e. the nr. of requirements (computed in construction phase)
-	    - dist --> distance, i.e. the nr. of state-change actions (computed in construction phase)
-      - fanIn --> the nr. of incoming arcs (synthesized during bottom-up traversal)
-			- copy_index : ???
+    (** A node of the G-graph  is made of:
+	    - res_type, its component type 
+	    - state, the current state
+	    - preds, a list of predecessor arcs
+	    - copy, an (optional) reference to the copy node 
+	    - require_arcs, a list of require arcs
+	    - bindings, a list of binding arcs
+			- origin, an origin node (the chosen father)
+			- sons, a list of the node's sons
+			- boun_to_me, a list of the nodes bound to the current one
+	    - card, cardinality, i.e. the nr. of requirements (computed in construction phase)
+	    - dist, distance, i.e. the nr. of state-change actions (computed in construction phase)
+      - fanIn, the nr. of incoming arcs (synthesized during bottom-up traversal)
+			- copy_index, level of copy (n_3 is the third copy of node n)
 			- is_final, tag used to identify the maximal paths
     *)
               type t = { 
@@ -196,11 +187,11 @@ module Gg =
               exception Empty_list_of_nodes ;;
               exception No_selected_nodes ;;
             
-            (* TODO: where is better to place these dummy functions? *)  
+            (* TODO: where to place these dummy functions? *)  
             (* Test for list emptiness *)
             let is_empty nlist = (nlist = [])
             (* Test for list emptiness *)
-            let not_empty nlist = (not (nlist = []))
+            let not_empty nlist = not (is_empty nlist)
  
  
   (**************************************************************)
@@ -317,19 +308,8 @@ module Gg =
   let print_list_full nlist =
 	  List.iter print_full nlist 
  
-    (* 
-  let to_string_nlist nlist =
-    let nodes_string_list = (List.map to_string nlist) in
-    let string_repr = (String.concat "; " nodes_string_list) in
-    string_repr  
   
-  let to_string_nlist_full nlist =
-    let nodes_string_list = (List.map to_string_full nlist) in
-    let string_repr = (String.concat "; " nodes_string_list) in
-    string_repr  
-   *)       
-
-  (****************************************************)
+	(****************************************************)
   (*				    utility functions on nodes    				*)
   (****************************************************)
  
@@ -939,26 +919,6 @@ let build_succs_list provides nlist =
   nlist;
   !resultNodes
 
-let build_succs_list_DEBUG provides nlist =
-  let filter_fulfilled some_provides nodes = 
-		(List.filter (fun node -> are_fulfilled (requires_of_node node) some_provides) nodes) in
-  let resultNodes = (ref []) in
-  List.iter 
-  ( fun node -> 
-          let successors = (build_succs node) in 
-					print_endline ("\nsuccessors of node " ^ (to_string node) 
-						^ ": " ^ (to_string_list successors));
-          let new_nodes = (filter_fulfilled provides successors) in 
-					let new_nodes_str = (ref "{ }") in
-					if (new_nodes != []) then
-						new_nodes_str := (to_string_list new_nodes);
-					print_endline ("and the fulfilled ones are: " ^ !new_nodes_str);
-          resultNodes := new_nodes @ !resultNodes;
-					print_endline ("resultNodes updated to: " ^ (to_string_list !resultNodes))
-  )
-  nlist;
-  !resultNodes
-
 (* this function extracts the head of a list modifying the given list to contain only the tail *)	
 let extract nlistRef =
 	let nlist = !nlistRef in
@@ -993,9 +953,6 @@ let not_copied next_nodes node =
 
 (* a node is final if it has no successor and it is not a copy of somebody else *)
 (* N.B. as a side-effect field is_final of node is updated if it is final *)
-let old_is_final_node next_nodes node =
-  (no_successors next_nodes node) && (not_copied next_nodes node)
-
 let is_final_node next_nodes node =
   let result = (no_successors next_nodes node) 
                 && (not_copied next_nodes node) in
@@ -1228,8 +1185,6 @@ end
         let to_string arc = (" ----> " ^ arc.dest)
     end        
    
-    (* TODO: change name of the field, store port and destination node
-     * separately instead of a pair? *) 
     and Bind_arc : sig
         type t
         val get_dest : t -> port_name * (Node.t ref) 
@@ -1251,15 +1206,8 @@ end
         let eq_port_ndest a_port a_node_dest arc =      
           let arc_content = arc.dest in
           let port = (fst arc_content) and nref = (snd arc_content) in
-          (*
-          print_endline ("\n in function eq_port_ndest: want to check if
-                  contents of arc " ^ (to_string arc) ^ " are equal to " 
-                  ^ "port " ^ a_port 
-                  ^ " and destination " ^ (Node.to_string !a_node_dest));
-          *)        
           (port = a_port) && (!nref == !a_node_dest)       
           
-
         let find_by_port_dest arc_list portName node_dest =
           (List.find (eq_port_ndest portName node_dest) arc_list)
 

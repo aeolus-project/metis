@@ -33,6 +33,9 @@ let create_with_index i =
 let create_with_index_and_nodes i inodes = 
   { index = i; nodes = inodes }
 
+(* This method computes the new nodes originated from the ones in the current 
+	generation. It returns the list of new nodes that are not in the current 
+	generation. *)
 (* New version that computes and updates cardinality and distance info *)
 let compute_new_nodes currentGen =
   let currentNodes = currentGen.nodes in 
@@ -43,27 +46,6 @@ let compute_new_nodes currentGen =
 	let successors = (Gg.Node.unify_successors successorsList) in
 	(* compute the "really" new nodes *)
 	let newNodes = (List.filter (fun node -> Gg.Node.not_in_list node currentNodes) successors) in
-  newNodes
-
-(* This method computes the new nodes originated from the ones in the current 
-	generation. It returns the list of new nodes that are not in the current 
-	generation. *)
-let old_compute_new_nodes currentGen =
-  let currentNodes = currentGen.nodes in 
-	let provides = (Gg.Node.provides_of_node_list currentNodes) in 
-	(* for every node in current generation compute its successors whose requires are fulfilled by current provides *)
-  let successorsList = (Gg.Node.build_succs_list provides currentNodes) in
-	let newNodesWithDupl = (List.filter (fun node -> Gg.Node.not_in_list node currentNodes) successorsList) in
-	let newNodes = (Gg.Node.elim_duplicates_simple newNodesWithDupl) in
-  newNodes
-
-let compute_new_nodes_DEBUG currentGen =
-  let currentNodes = currentGen.nodes in 
-	let provides = (Gg.Node.provides_of_node_list currentNodes) in 
-	(* for every node in current generation compute its successors whose requires are fulfilled by current provides *)
-  let successorsList = (Gg.Node.build_succs_list_DEBUG provides currentNodes) in
-	let newNodesWithDupl = (List.filter (fun node -> Gg.Node.not_in_list node currentNodes) successorsList) in
-	let newNodes = (Gg.Node.elim_duplicates_simple newNodesWithDupl) in
   newNodes
 
 let to_string gen =
