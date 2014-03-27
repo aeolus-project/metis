@@ -1,0 +1,36 @@
+{
+	"version" : "1",
+	"component_types": [
+		{
+			"name": "mysql",
+			"states": [
+				{
+					"name": "inst",
+					"provide": {"@mysql" : "infinite" }
+				},
+				{
+					"name": "uninst",
+					"successors" : ["inst"],
+					"initial": true 
+				}
+				
+			],
+			"consume": {"resource" : "5"}
+		},
+		{
+			"name": "wp",
+			"states": [
+				{
+					"name": "uninst",
+					"initial": true,
+					"successors" : ["inst"]
+				},
+				{
+					"name": "inst",
+					"require": {"@mysql" : "1"}
+				}
+			],
+			"consume": {"resource" : "3"}
+		}
+	]
+}

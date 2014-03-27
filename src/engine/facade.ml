@@ -9,7 +9,8 @@ open Datatypes_t
 (** Exception thrown when a component name cannot be found in the given 
 		universe. *)              
 exception Component_name_not_found of string
-
+exception State_not_found of string ;;
+              
 (* Functions dealing with state *)
 
 let get_state_id state =
@@ -126,6 +127,7 @@ let find_state_by_name automaton name =
 										^ " could not be found in the corresponding automaton."))
 	|	(Some state) -> state
 
+
 let find_component_by_name universe name =
   let match_comp_name name component =
     (component.cname = name) in  
@@ -135,22 +137,8 @@ let find_component_by_name universe name =
   with 
     Not_found -> raise (Component_name_not_found ("There is no component with name " 
 			^ "'" ^ name ^ "'" ^ " in the given universe."))
+			
 
-(** Turn a  [target] record with type name and state name into a pair 
-		containing a type ref and state ref, as specified in the given 
-		[universe]. *)
-let transform_single_target universe target =
-	let target_type = (find_component universe target.component) in
-	let target_state = (find_state_by_name target_type.automaton target.state) in 
-	let target_pair = (ref target_type, ref target_state) in
-	target
-
-(** Turn a list of records with type name and state name into  a list of pairs
-		where each pair contains a type ref and state ref. 
-		Function used to translate the targets specified by the user. *)
-let transform_user_targets universe multiple_targets =
-	let targets = (List.map (transform_single_target universe) multiple_targets) in
-	targets 
 	 
 
 (*********************************************************************************)

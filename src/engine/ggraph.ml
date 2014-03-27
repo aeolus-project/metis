@@ -54,10 +54,8 @@ open Gg
 		  let get_generations graph = graph.generations
 		
       (* used to update target field if/when we find_in_list it in the initial top-down phase *)
-			(*
-      let set_target graph node =
-              graph.target <- node
-		  *)
+      let set_targets graph nodes =
+              graph.targets <- nodes
 
       let set_generations graph newGen = 
               graph.generations <- newGen
@@ -65,14 +63,14 @@ open Gg
       let create the_universe =
 				{ 
 					universe = the_universe; 
-        	target = []; 
+        	targets = []; 
         	generations = []
 				}
  
      let clone_with_empty_gen graph =        
               {  
                  universe = graph.universe; 
-                 target = graph.target;
+                 targets = graph.targets;
                  generations = []
               }
     
@@ -110,7 +108,15 @@ open Gg
     let reverse_generations graph =
       let reverse_generations = List.rev graph.generations in
       (set_generations graph reverse_generations) 
-		
+			
+		let delete_targets nodes targets =
+			(* let targets_in = (List.filter (fun x -> (List.mem x nodes)) !targets) in *)
+			let targets_in = (List.filter (fun x -> (Gg.Node.in_list x nodes)) !targets) in
+			targets := (List.filter (fun x -> (Gg.Node.not_in_list x targets_in)) !targets);
+			(* (Gg.Node.print_list targets_in); *)
+			(* (Gg.Node.print_list !targets); (print_endline ""); *)
+			targets_in
+						
 		(* generate the whole G-graph with all generations *)
     let populate graph targets =
 			(* first build initial generation *)
@@ -138,12 +144,14 @@ open Gg
 						(* add new generation to the G-graph *)
 						(add_generation graph newGen);
 						(* if we find target nodes we update targets field in the G-graph *)
-						let targets_found = ... in 
- 							graph.targets <- (Gg.Node.find_all_in_list !newNodes targets);
+						(* We also remove the targets nodes in targets ref *)
+						graph.targets <- (delete_targets !newNodes targets) @ graph.targets;
+						(print_string "nodi ");(Gg.Node.print_list !newNodes); (print_endline "");
+						(print_string "target ");(Gg.Node.print_list graph.targets); (print_endline "");
 						i
           end)
 				(* Loop condition: stop when we reach a fixpoint (no new nodes are added) or we find target *)
-				(fun i -> (Gg.Node.is_empty !newNodes) || (Gg.Node.in_list graph.target !newNodes)) 
+				(fun i -> (Gg.Node.is_empty !newNodes) || (Gg.Node.is_empty !targets)) 
       ~init:(ref 0));
        (* alignment of generations index and index of the list containing
        * generations => need to reverse generations *)
@@ -230,7 +238,7 @@ open Gg
 			(* i-th entry in the array corresponds to working set P_i *) 
 			let workSets = Array.make nrlevels [] in
 		  (* at the beginning last working set, P_(nrlevels-1), contains only the target node *)
-			workSets.(last_level) <- [ graph.target ];
+			workSets.(last_level) <- graph.targets;
       let prevWset = (ref []) in (* need to declare it here for a trick to fix initial generation *)
       (* work bottom up, stopping at the level before-the-last, i.e. 1 *)
 			for l = last_level downto 1 do
@@ -304,7 +312,7 @@ open Gg
         generations_array
     
     (* Bottom-up visit to generate instance lines (each one corresponds to a maximal path) *)
-    let linearize generations_array target = 
+    let linearize generations_array targets = 
 			(*print_endline ("\n ----------------- START TO LINEARIZE ------------------------- ");*)
       let last_level = ((Array.length generations_array) - 1) in
       let trimmed_paths_list = (ref []) in
@@ -313,7 +321,7 @@ open Gg
         (*print_string "current nodes: "; (Gg.Node.print_list current_nodes);*)       
         let working_set = (ref []) in  
         if (l = last_level) then
-          working_set := [ target ]
+          working_set := targets
         else begin
           let next_nodes = generations_array.(l+1) in 
           (*print_string "\nnext nodes: "; (Gg.Node.print_list next_nodes);*) 

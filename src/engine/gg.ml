@@ -48,11 +48,8 @@ module Gg =
 			(* it creates an initial node  < T, q0 > *)
       val build_initial : (component_t ref) -> t
       
-			(** Create multiple target nodes. *)
-      val build_targets : (component_t ref * state_t ref) list -> t list
-			(*
-      val build_multiple_targets : ((component_t ref) * state_name) list -> t list
-			*)      
+			(* Create multiple target nodes. *)
+      val build_targets : universe_t -> ((string * string) list) -> ((t list) ref)
       
 			(* it creates a new node with the given pair < T, q > *)
       val build_from_pair : (component_t ref) -> state_id_t -> t
@@ -184,7 +181,6 @@ module Gg =
               exception Impossible_to_extract_node of string ;;
               exception Empty_copy_arc of string ;;
               exception No_vertex_value ;;
-              exception State_not_found of string ;;
               exception No_available_origins of string ;;
               exception No_available_providers of string ;;
               exception Empty_list_of_nodes ;;
@@ -393,9 +389,6 @@ module Gg =
       N.B. it only looks at the resource type state pair <T,q>. 
   *)	
   let find_in_list node nlist = List.find (pair_eq node) nlist
-
-	let find_all_in_list nlist1 nlist2 =
-		(List.filter 
 
   (** Check equality of pair <T,q> of a given node and provided T' and q'. *)
   let eq_node_pair comp_type state_id node =
@@ -786,29 +779,15 @@ let build_initial resTypeRef =
   } in
   initialNode 
 
-
-let find_state_by_name automaton name =
-	let size = (Array.length automaton) in
-	let found_state = (ref None) in
-	for i = 0 to (size-1) do
-		let current_state = automaton.(i) in 
-		let state_name = (current_state.id).value in 
-		if (state_name = name) then
-			found_state := (Some current_state);  
-	done;	
-	match !found_state with
-	|	None -> raise (State_not_found ("state " ^ name 
-										^ " could not be found in the corresponding automaton."))
-	|	(Some state) -> state
-
 (** Create a new node with the given pair <T,q> where only the name of state 
 q is provided. *)
-let build_single_target target_type_state_pair =
-	let target_type = (fst target_type_state_pair) in 
-	let target_state = (snd target_type_state_pair) in 
+let build_single_target universe target_type_state_pair =
+	let target_type_name = (fst target_type_state_pair) in 
+	let target_state_name = (snd target_type_state_pair) in 
+	let comp_type = (Facade.find_component_by_name universe target_type_name) in
 	let newNode = { 
-      res_type = target_type; 
-			state = target_state; 
+      res_type = ref comp_type; 
+			state = ref (Facade.find_state_by_name comp_type.automaton target_state_name); 
 			preds = []; 
 			sons = []; 
 			copy = None;
@@ -825,9 +804,9 @@ let build_single_target target_type_state_pair =
 	newNode 
 
 (** Build a list of target nodes from a list of . *)
-let build_targets type_state_pairs =
-	let targets = (List.map build_single_target type_state_pairs) in
-	targets
+let build_targets universe type_state_pairs =
+	let targets = (List.map (build_single_target universe) type_state_pairs) in
+	(ref targets)
 
 (** Create a new node with the given pair <T,q>. *) 
 let build_from_pair resTypeRef state_id =

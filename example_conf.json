@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "locations": [
+    {
+      "name": "location",
+      "provide_resources": { "resource": 100 },
+      "repository": "repository",
+      "packages_installed": [ "mysql_package", "wp_package", "common_package" ],
+      "cost": 1
+    }
+  ],
+  "components": [
+    { "name": "mysql-1", "type": "mysql", "location": "location", "state": "inst" },
+    { "name": "mysql-2", "type": "mysql", "location": "location", "state": "inst" },
+    { "name": "wp-1", "type": "wp", "location": "location", "state": "inst" },
+    { "name": "wp-2", "type": "wp", "location": "location", "state": "inst" }
+  ],
+  "bindings": [
+    { "port": "@mysql", "requirer": "wp-1", "provider": "mysql-1" },
+    { "port": "@mysql", "requirer": "wp-2", "provider": "mysql-2" },
+    { "port": "@mysql", "requirer": "wp-1", "provider": "mysql-2" }
+  ]
+}

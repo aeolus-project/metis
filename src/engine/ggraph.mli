@@ -18,10 +18,10 @@ open Gg
 (*					G-graph						*)
 (****************************************************************************************)
     	type t
-      val get_targets : t -> Gg.Node.t
+      val get_targets : t -> Gg.Node.t list
 		  val get_generations : t -> (Generation.t list)
       (* used to update target field if/when we find_in_list it in the initial top-down phase *)
-      val set_target : t -> Gg.Node.t -> unit
+      val set_targets : t -> Gg.Node.t list -> unit
       val set_generations : t -> (Generation.t list) -> unit
       val create : My_datatypes.universe_t -> t
       val generations_num : t -> int
@@ -32,9 +32,9 @@ open Gg
 		  (* build first generation of the G-graph: all components in their initial state *)
       val build_initial_gen : t -> Generation.t
 		  (* generate the G-graph *)
-      val populate : t -> unit
+      val populate : t -> ((Gg.Node.t list) ref) -> unit
       (* working with an array of generations, instead of the full graph *)
       val visit : heuristics_on:bool -> Buffer.t ref -> t -> (Gg.Node.t list) array
-      val linearize : (Gg.Node.t list) array -> Gg.Node.t -> (Gg.Node.t list) list
+      val linearize : (Gg.Node.t list) array -> Gg.Node.t list -> (Gg.Node.t list) list
       val print_generations_a : (Gg.Node.t list) array -> unit
       val print_generations_full_a : (Gg.Node.t list) array -> unit

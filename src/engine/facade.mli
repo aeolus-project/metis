@@ -41,7 +41,4 @@ val print_u_universe : universe -> unit
 		name. *)
 val find_component_by_name : universe_t -> component_name -> component_t
 
-(** Turn a list of records with type name and state name into  a list of pairs
-		where each pair contains a type ref and state ref. 
-		Function used to translate the targets specified by the user. *)
-val transform_user_targets : universe_t -> multiple_targets -> (component_t ref * state_t ref) list 
+val find_state_by_name : automaton_t -> string -> state_t

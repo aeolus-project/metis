@@ -1,5 +1,6 @@
 
-(** These datatypes are tuned ones that transform the original ones.
+(** These datatypes are tuned ones that transform the original ones found in
+		datatypes_t.ml (generated from datatypes.atd).
 		A state type (here state_t) contains now also a key (an int) used to 
   	identify it in the automaton_t (implemented with an array).
   	This additional field is set by traversing the universe specified by the
@@ -23,8 +24,8 @@ type state_id_t = {
 type state_t = {
   id: state_id_t;
   mutable successors: state_id_t list;
-  mutable provides: port_name list;
-  mutable requires: port_name list
+  provides: port_name list;
+  requires: port_name list
 }
 
 (** Definition of automaton type. *)
