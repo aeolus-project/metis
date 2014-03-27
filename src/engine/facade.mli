@@ -39,4 +39,9 @@ val print_u_universe : universe -> unit
 
 (** Function used to retrieve a component from the universe structure by its 
 		name. *)
-val find_component_by_name : universe_t -> string -> component_t
+val find_component_by_name : universe_t -> component_name -> component_t
+
+(** Turn a list of records with type name and state name into  a list of pairs
+		where each pair contains a type ref and state ref. 
+		Function used to translate the targets specified by the user. *)
+val transform_user_targets : universe_t -> multiple_targets -> (component_t ref * state_t ref) list 

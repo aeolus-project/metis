@@ -48,8 +48,11 @@ module Gg =
 			(* it creates an initial node  < T, q0 > *)
       val build_initial : (component_t ref) -> t
       
-			(* it creates target node *)
-      val build_target : (component_t ref) -> string -> t
+			(** Create multiple target nodes. *)
+      val build_targets : (component_t ref * state_t ref) list -> t list
+			(*
+      val build_multiple_targets : ((component_t ref) * state_name) list -> t list
+			*)      
       
 			(* it creates a new node with the given pair < T, q > *)
       val build_from_pair : (component_t ref) -> state_id_t -> t
@@ -211,7 +214,6 @@ module Gg =
   let set_origin node nref =
     node.origin <- (Some nref)    
   
-  (* TODO: comment *) 
   let set_copy node copyArc =
     node.copy <- copyArc
   
@@ -391,6 +393,9 @@ module Gg =
       N.B. it only looks at the resource type state pair <T,q>. 
   *)	
   let find_in_list node nlist = List.find (pair_eq node) nlist
+
+	let find_all_in_list nlist1 nlist2 =
+		(List.filter 
 
   (** Check equality of pair <T,q> of a given node and provided T' and q'. *)
   let eq_node_pair comp_type state_id node =
@@ -798,12 +803,12 @@ let find_state_by_name automaton name =
 
 (** Create a new node with the given pair <T,q> where only the name of state 
 q is provided. *)
-let build_target resTypeRef target_name =
-  let comp_type = !resTypeRef in
-  let new_state = (find_state_by_name comp_type.automaton target_name) in  
+let build_single_target target_type_state_pair =
+	let target_type = (fst target_type_state_pair) in 
+	let target_state = (snd target_type_state_pair) in 
 	let newNode = { 
-      res_type = resTypeRef; 
-			state = (ref new_state); 
+      res_type = target_type; 
+			state = target_state; 
 			preds = []; 
 			sons = []; 
 			copy = None;
@@ -818,6 +823,11 @@ let build_target resTypeRef target_name =
       is_final = false 
   } in
 	newNode 
+
+(** Build a list of target nodes from a list of . *)
+let build_targets type_state_pairs =
+	let targets = (List.map build_single_target type_state_pairs) in
+	targets
 
 (** Create a new node with the given pair <T,q>. *) 
 let build_from_pair resTypeRef state_id =

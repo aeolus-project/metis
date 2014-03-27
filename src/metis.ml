@@ -13,12 +13,15 @@ open Plan
 
 (* input / output *)
 let universe_channel              = ref stdin
+let targets_channel              	= ref stdin
 (* sequential plan output channel *)
 let output_channel                = ref stdout
 (* (a)bstract (p)lan output channel *)
 let ap_output_channel             = ref stdout
+(*
 let	target_component_name					= ref "" 
 let	target_state 									= ref "" 
+*)
 
 (* settings for Metis' behaviour *)
 let use_heuristics								= ref false
@@ -28,14 +31,17 @@ let mandrivian_mode								= ref false
 
 let usage = 
   Printf.sprintf
-    "usage: %s %s %s %s %s %s %s %s"
+    "usage: %s %s %s %s %s %s %s"
     Sys.argv.(0)
     "[-hr]"
     "[-m]"
     "[-u input-universe-file]"
+    "[-t input-targets-file]"
+(*
     "[-c target-component-type]"
     "[-s target-state]"
-    "[-o output-file]"
+*)  
+  	"[-o output-file]"
     "[-ap output-file-abstract-plan]"
     
 let speclist = 
@@ -44,8 +50,11 @@ let speclist =
 		("-hr",        Arg.Set use_heuristics, " Use heuristics for component selection");
 		("-m",         Arg.Set mandrivian_mode, " Work in Mandriva mode");
     ("-u",         Arg.String (fun filename -> universe_channel := (open_in filename)), " The universe input file");
+    ("-t",         Arg.String (fun filename -> targets_channel := (open_in filename)), " The type-state targets input file");
+(*
     ("-c",         Arg.String (fun component_name -> target_component_name := component_name), " The target component");
     ("-s",         Arg.String (fun component_state -> target_state := component_state), " The target state name");
+*)
     ("-o",         Arg.String (fun filename -> output_channel := (open_out_gen [Open_creat;Open_trunc;Open_wronly] 0o666 filename)), " The output file with the sequential plan");
     ("-ap",        Arg.String (fun filename -> ap_output_channel := (open_out_gen [Open_creat;Open_trunc;Open_wronly] 0o666 filename)), " The output file for the abstract plan")
   ] 
@@ -64,7 +73,6 @@ let () =
 	(really_input !universe_channel buffer 0 (file_length - 1));
 	(close_in !universe_channel)
 let user_universe = (Datatypes_j.universe_of_string buffer) 
-
 (* we first translate the universe provided by the user into one 
  * in which every state has an ID = (key,value) where:
  *  - key is the position in the array representation of the automaton
@@ -73,16 +81,31 @@ let user_universe = (Datatypes_j.universe_of_string buffer)
  *)
 let universe = (Universe_translator.translate user_universe)
 
-(* find target component in provided universe *)
-let target_type = (Facade.find_component_by_name universe !target_component_name) 
+(* read targets in *)
+let targets_file_length = (in_channel_length !targets_channel) 
+let targets_buffer = (String.create targets_file_length)
+let () =
+	(really_input !targets_channel targets_buffer 0 (targets_file_length - 1));
+	(close_in !targets_channel)
+let user_targets = (Datatypes_j.multiple_targets_of_string targets_buffer) 
+
+(* transform a list of comp_name state_name into a list of comp_type and state ref *) 
+let target_pairs = (Facade.transform_user_targets universe user_targets)
+let targets = (Gg.Node.build_targets target_pairs)
 
 (* build the reachability graph (previously known as G-graph) *)
-let ggraph = (Ggraph.create universe (ref target_type) !target_state) 
+let ggraph = (Ggraph.create universe) 
+
+(*
+(* find target component in provided universe *)
+let target_type = (Facade.find_component_by_name universe !target_component_name) 
+*)
+
 let () =
 	let file_buffer = ref (Buffer.create 500) in ();
   
 	(* populate the reachability graph with all generations by sauration *)
-	(Ggraph.populate ggraph);
+	(Ggraph.populate ggraph targets);
 	
 	IFDEF VERBOSE THEN
 		(Printf.bprintf !file_buffer "%s\n" "\nWe generate the FULL G-GRAPH: \n"); 

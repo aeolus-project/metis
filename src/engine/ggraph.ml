@@ -23,7 +23,7 @@ open Gg
 
       type t = {
         universe : My_datatypes.universe_t;
-        mutable target : Gg.Node.t;
+        mutable targets : Gg.Node.t list;
         mutable generations : (Generation.t list);	
       }
               
@@ -49,25 +49,27 @@ open Gg
           (Gg.Node.print_list_full current_nodes_list)
         done  
       
-		  let get_target graph = graph.target
+		  let get_targets graph = graph.targets
 
 		  let get_generations graph = graph.generations
 		
       (* used to update target field if/when we find_in_list it in the initial top-down phase *)
+			(*
       let set_target graph node =
               graph.target <- node
-		  
+		  *)
+
       let set_generations graph newGen = 
               graph.generations <- newGen
 
-      let create puniverse targetTypeRef targetState = 
-              {  
-                 universe = puniverse; 
-                 target = (Gg.Node.build_target targetTypeRef targetState);
-                 generations = []
-              }
-
-      let clone_with_empty_gen graph =        
+      let create the_universe =
+				{ 
+					universe = the_universe; 
+        	target = []; 
+        	generations = []
+				}
+ 
+     let clone_with_empty_gen graph =        
               {  
                  universe = graph.universe; 
                  target = graph.target;
@@ -110,12 +112,12 @@ open Gg
       (set_generations graph reverse_generations) 
 		
 		(* generate the whole G-graph with all generations *)
-    let populate graph =
+    let populate graph targets =
 			(* first build initial generation *)
 			let firstGen = (build_initial_gen graph) in 
 			(add_generation graph firstGen);
 			(* initialize needed structures *)
-      let newNodes = (ref []) in
+      let newNodes = ref [] in
 			(* Loop for building and adding one generation at a time *)
 			(repeat_until 
 				(* Loop body *)
@@ -135,9 +137,9 @@ open Gg
 						(Generation.set_nodes newGen allNodes);
 						(* add new generation to the G-graph *)
 						(add_generation graph newGen);
-						(* if we find target node we set target field (a reference to it) in the G-graph *)
-						if (Gg.Node.in_list graph.target !newNodes) then
- 							  (set_target graph (Gg.Node.find_in_list graph.target !newNodes));
+						(* if we find target nodes we update targets field in the G-graph *)
+						let targets_found = ... in 
+ 							graph.targets <- (Gg.Node.find_all_in_list !newNodes targets);
 						i
           end)
 				(* Loop condition: stop when we reach a fixpoint (no new nodes are added) or we find target *)

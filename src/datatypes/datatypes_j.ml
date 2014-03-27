@@ -27,7 +27,15 @@ type component_type = Datatypes_t.component_type = {
   u_automaton: automaton_type
 }
 
+(** Type definitions for multiple targets specification. *)
 type universe = Datatypes_t.universe
+
+type target = Datatypes_t.target = {
+  component: component_name;
+  state: state_name
+}
+
+type multiple_targets = Datatypes_t.multiple_targets
 
 let write_component_type_name = (
   Yojson.Safe.write_string
@@ -591,3 +599,185 @@ let read_universe = (
 )
 let universe_of_string s =
   read_universe (Yojson.Safe.init_lexer ()) (Lexing.from_string s)
+let write_target = (
+  fun ob x ->
+    Bi_outbuf.add_char ob '{';
+    let is_first = ref true in
+    if !is_first then
+      is_first := false
+    else
+      Bi_outbuf.add_char ob ',';
+    Bi_outbuf.add_string ob "\"component\":";
+    (
+      write_component_name
+    )
+      ob x.component;
+    if !is_first then
+      is_first := false
+    else
+      Bi_outbuf.add_char ob ',';
+    Bi_outbuf.add_string ob "\"state\":";
+    (
+      write_state_name
+    )
+      ob x.state;
+    Bi_outbuf.add_char ob '}';
+)
+let string_of_target ?(len = 1024) x =
+  let ob = Bi_outbuf.create len in
+  write_target ob x;
+  Bi_outbuf.contents ob
+let read_target = (
+  fun p lb ->
+    Yojson.Safe.read_space p lb;
+    Yojson.Safe.read_lcurl p lb;
+    let x =
+      {
+        component = Obj.magic 0.0;
+        state = Obj.magic 0.0;
+      }
+    in
+    let bits0 = ref 0 in
+    try
+      Yojson.Safe.read_space p lb;
+      Yojson.Safe.read_object_end lb;
+      Yojson.Safe.read_space p lb;
+      let f =
+        fun s pos len ->
+          if pos < 0 || len < 0 || pos + len > String.length s then
+            invalid_arg "out-of-bounds substring position or length";
+          match len with
+            | 5 -> (
+                if String.unsafe_get s pos = 's' && String.unsafe_get s (pos+1) = 't' && String.unsafe_get s (pos+2) = 'a' && String.unsafe_get s (pos+3) = 't' && String.unsafe_get s (pos+4) = 'e' then (
+                  1
+                )
+                else (
+                  -1
+                )
+              )
+            | 9 -> (
+                if String.unsafe_get s pos = 'c' && String.unsafe_get s (pos+1) = 'o' && String.unsafe_get s (pos+2) = 'm' && String.unsafe_get s (pos+3) = 'p' && String.unsafe_get s (pos+4) = 'o' && String.unsafe_get s (pos+5) = 'n' && String.unsafe_get s (pos+6) = 'e' && String.unsafe_get s (pos+7) = 'n' && String.unsafe_get s (pos+8) = 't' then (
+                  0
+                )
+                else (
+                  -1
+                )
+              )
+            | _ -> (
+                -1
+              )
+      in
+      let i = Yojson.Safe.map_ident p f lb in
+      Ag_oj_run.read_until_field_value p lb;
+      (
+        match i with
+          | 0 ->
+            let v =
+              (
+                read_component_name
+              ) p lb
+            in
+            Obj.set_field (Obj.repr x) 0 (Obj.repr v);
+            bits0 := !bits0 lor 0x1;
+          | 1 ->
+            let v =
+              (
+                read_state_name
+              ) p lb
+            in
+            Obj.set_field (Obj.repr x) 1 (Obj.repr v);
+            bits0 := !bits0 lor 0x2;
+          | _ -> (
+              Yojson.Safe.skip_json p lb
+            )
+      );
+      while true do
+        Yojson.Safe.read_space p lb;
+        Yojson.Safe.read_object_sep p lb;
+        Yojson.Safe.read_space p lb;
+        let f =
+          fun s pos len ->
+            if pos < 0 || len < 0 || pos + len > String.length s then
+              invalid_arg "out-of-bounds substring position or length";
+            match len with
+              | 5 -> (
+                  if String.unsafe_get s pos = 's' && String.unsafe_get s (pos+1) = 't' && String.unsafe_get s (pos+2) = 'a' && String.unsafe_get s (pos+3) = 't' && String.unsafe_get s (pos+4) = 'e' then (
+                    1
+                  )
+                  else (
+                    -1
+                  )
+                )
+              | 9 -> (
+                  if String.unsafe_get s pos = 'c' && String.unsafe_get s (pos+1) = 'o' && String.unsafe_get s (pos+2) = 'm' && String.unsafe_get s (pos+3) = 'p' && String.unsafe_get s (pos+4) = 'o' && String.unsafe_get s (pos+5) = 'n' && String.unsafe_get s (pos+6) = 'e' && String.unsafe_get s (pos+7) = 'n' && String.unsafe_get s (pos+8) = 't' then (
+                    0
+                  )
+                  else (
+                    -1
+                  )
+                )
+              | _ -> (
+                  -1
+                )
+        in
+        let i = Yojson.Safe.map_ident p f lb in
+        Ag_oj_run.read_until_field_value p lb;
+        (
+          match i with
+            | 0 ->
+              let v =
+                (
+                  read_component_name
+                ) p lb
+              in
+              Obj.set_field (Obj.repr x) 0 (Obj.repr v);
+              bits0 := !bits0 lor 0x1;
+            | 1 ->
+              let v =
+                (
+                  read_state_name
+                ) p lb
+              in
+              Obj.set_field (Obj.repr x) 1 (Obj.repr v);
+              bits0 := !bits0 lor 0x2;
+            | _ -> (
+                Yojson.Safe.skip_json p lb
+              )
+        );
+      done;
+      assert false;
+    with Yojson.End_of_object -> (
+        if !bits0 <> 0x3 then Ag_oj_run.missing_fields [| !bits0 |] [| "component"; "state" |];
+        Ag_oj_run.identity x
+      )
+)
+let target_of_string s =
+  read_target (Yojson.Safe.init_lexer ()) (Lexing.from_string s)
+let write__5 = (
+  Ag_oj_run.write_list (
+    write_target
+  )
+)
+let string_of__5 ?(len = 1024) x =
+  let ob = Bi_outbuf.create len in
+  write__5 ob x;
+  Bi_outbuf.contents ob
+let read__5 = (
+  Ag_oj_run.read_list (
+    read_target
+  )
+)
+let _5_of_string s =
+  read__5 (Yojson.Safe.init_lexer ()) (Lexing.from_string s)
+let write_multiple_targets = (
+  write__5
+)
+let string_of_multiple_targets ?(len = 1024) x =
+  let ob = Bi_outbuf.create len in
+  write_multiple_targets ob x;
+  Bi_outbuf.contents ob
+let read_multiple_targets = (
+  read__5
+)
+let multiple_targets_of_string s =
+  read_multiple_targets (Yojson.Safe.init_lexer ()) (Lexing.from_string s)

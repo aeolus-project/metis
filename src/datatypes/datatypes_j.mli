@@ -27,7 +27,15 @@ type component_type = Datatypes_t.component_type = {
   u_automaton: automaton_type
 }
 
+(** Type definitions for multiple targets specification. *)
 type universe = Datatypes_t.universe
+
+type target = Datatypes_t.target = {
+  component: component_name;
+  state: state_name
+}
+
+type multiple_targets = Datatypes_t.multiple_targets
 
 val write_component_type_name :
   Bi_outbuf.t -> component_type_name -> unit
@@ -188,4 +196,44 @@ val read_universe :
 val universe_of_string :
   string -> universe
   (** Deserialize JSON data of type {!universe}. *)
+
+val write_target :
+  Bi_outbuf.t -> target -> unit
+  (** Output a JSON value of type {!target}. *)
+
+val string_of_target :
+  ?len:int -> target -> string
+  (** Serialize a value of type {!target}
+      into a JSON string.
+      @param len specifies the initial length 
+                 of the buffer used internally.
+                 Default: 1024. *)
+
+val read_target :
+  Yojson.Safe.lexer_state -> Lexing.lexbuf -> target
+  (** Input JSON data of type {!target}. *)
+
+val target_of_string :
+  string -> target
+  (** Deserialize JSON data of type {!target}. *)
+
+val write_multiple_targets :
+  Bi_outbuf.t -> multiple_targets -> unit
+  (** Output a JSON value of type {!multiple_targets}. *)
+
+val string_of_multiple_targets :
+  ?len:int -> multiple_targets -> string
+  (** Serialize a value of type {!multiple_targets}
+      into a JSON string.
+      @param len specifies the initial length 
+                 of the buffer used internally.
+                 Default: 1024. *)
+
+val read_multiple_targets :
+  Yojson.Safe.lexer_state -> Lexing.lexbuf -> multiple_targets
+  (** Input JSON data of type {!multiple_targets}. *)
+
+val multiple_targets_of_string :
+  string -> multiple_targets
+  (** Deserialize JSON data of type {!multiple_targets}. *)
 

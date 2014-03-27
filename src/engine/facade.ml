@@ -112,6 +112,20 @@ let print_universe universe =
 
 (* Functions dealing with universe *)
 
+let find_state_by_name automaton name =
+	let size = (Array.length automaton) in
+	let found_state = (ref None) in
+	for i = 0 to (size-1) do
+		let current_state = automaton.(i) in 
+		let state_name = (current_state.id).value in 
+		if (state_name = name) then
+			found_state := (Some current_state);  
+	done;	
+	match !found_state with
+	|	None -> raise (State_not_found ("state " ^ name 
+										^ " could not be found in the corresponding automaton."))
+	|	(Some state) -> state
+
 let find_component_by_name universe name =
   let match_comp_name name component =
     (component.cname = name) in  
@@ -122,6 +136,22 @@ let find_component_by_name universe name =
     Not_found -> raise (Component_name_not_found ("There is no component with name " 
 			^ "'" ^ name ^ "'" ^ " in the given universe."))
 
+(** Turn a  [target] record with type name and state name into a pair 
+		containing a type ref and state ref, as specified in the given 
+		[universe]. *)
+let transform_single_target universe target =
+	let target_type = (find_component universe target.component) in
+	let target_state = (find_state_by_name target_type.automaton target.state) in 
+	let target_pair = (ref target_type, ref target_state) in
+	target
+
+(** Turn a list of records with type name and state name into  a list of pairs
+		where each pair contains a type ref and state ref. 
+		Function used to translate the targets specified by the user. *)
+let transform_user_targets universe multiple_targets =
+	let targets = (List.map (transform_single_target universe) multiple_targets) in
+	targets 
+	 
 
 (*********************************************************************************)
 (* Functions dealing with state, component and universe as specified by the user *)

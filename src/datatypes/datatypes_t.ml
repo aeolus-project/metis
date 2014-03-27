@@ -19,7 +19,7 @@ type state_type = {
   u_requires: port_name list
 }
 
-type automaton_type = state_type array
+type automaton_type = state_type Ag_util.ocaml_array
 
 (** Type definitions for Universe. *)
 type component_type = {
@@ -27,4 +27,9 @@ type component_type = {
   u_automaton: automaton_type
 }
 
+(** Type definitions for multiple targets specification. *)
 type universe = component_type list
+
+type target = { component: component_name; state: state_name }
+
+type multiple_targets = target list

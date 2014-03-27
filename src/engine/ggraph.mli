@@ -18,12 +18,12 @@ open Gg
 (*					G-graph						*)
 (****************************************************************************************)
     	type t
-      val get_target : t -> Gg.Node.t
+      val get_targets : t -> Gg.Node.t
 		  val get_generations : t -> (Generation.t list)
       (* used to update target field if/when we find_in_list it in the initial top-down phase *)
       val set_target : t -> Gg.Node.t -> unit
       val set_generations : t -> (Generation.t list) -> unit
-      val create : My_datatypes.universe_t -> (My_datatypes.component_t ref) -> string -> t
+      val create : My_datatypes.universe_t -> t
       val generations_num : t -> int
       val nth_generation : t -> int -> Generation.t
       val add_generation : t -> Generation.t -> unit 

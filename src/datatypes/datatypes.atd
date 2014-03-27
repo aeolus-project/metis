@@ -33,3 +33,11 @@ type component_type = {
 
 type universe = component_type list 
 
+<doc text="Type definitions for multiple targets specification.">
+
+type target = {
+	component : component_name;
+	state : state_name 
+}
+
+type multiple_targets = target list
