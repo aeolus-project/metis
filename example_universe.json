@@ -12,6 +12,9 @@
 					"name": "uninst",
 					"successors" : ["inst"],
 					"initial": true 
+				},
+				{
+					"name": "not_reachable"
 				}
 				
 			],

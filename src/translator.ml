@@ -105,4 +105,3 @@ let translate user_universe =
 	print_endline ("\n UNIVERSE GIVEN BY USER:\n" ^ (Facade.string_of_u_universe user_universe));*)
 	(* print_endline ("\n TRANSLATED UNIVERSE:\n" ^ (Facade.string_of_universe universe)); *)
 	universe
-

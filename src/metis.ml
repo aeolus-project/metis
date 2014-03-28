@@ -73,7 +73,7 @@ let () =
 	
 let user_universe = (Json_zephyrous_output_j.universe_of_string buffer)
 
-(* read configuration in *)
+(* read configuration file *)
 let file_length = (in_channel_length !conf_channel) 
 let buffer = (String.create file_length)
 let () =
@@ -84,30 +84,39 @@ let user_conf = (Json_zephyrous_output_j.configuration_of_string buffer)
 (* convert universe into internal representation and replicate the components in the final configuration *)
 let universe = Replicator.combine_universe_configurator (translate user_universe) user_conf
 
-(* transform a list of comp_name state_name into a list of comp_type and state ref *) 
-let target_pairs = [ ("mysql-1", "inst");("mysql-2", "inst");("wp-1", "inst");("wp-2", "inst")]
+(* transform a list of comp_name state_name into a list of comp_type and state ref *)
+(* TODO fix *)
+let target_pairs = Replicator.get_targets user_conf
 let targets = (Gg.Node.build_targets universe target_pairs)
-
-(* let () = Gg.Node.print_list !targets *)
-let () = Facade.print_universe universe
-
 
 (* build the reachability graph (previously known as G-graph) *)
 let ggraph = (Ggraph.create universe) 
 
 let () =
 	let file_buffer = ref (Buffer.create 500) in ();
+	
+	IFDEF VERBOSE THEN
+  (Printf.bprintf !file_buffer "%s\n" "UNIVERSE");
+  (Printf.bprintf !file_buffer "%s\n" (Facade.string_of_universe universe));
+  END;
   
 	(* populate the reachability graph with all generations by saturation *)
 	(Ggraph.populate ggraph targets);
-	(* TODO: da sistemare controllo *)
-	if !targets != [] then 
-		raise (Some_target_not_found ((Gg.Node.to_string_list !targets)));
+	
 	
 	IFDEF VERBOSE THEN
 		(Printf.bprintf !file_buffer "%s\n" "\nWe generate the FULL G-GRAPH: \n"); 
 		(Ggraph.print_generations ggraph file_buffer);
-		(print_endline "ERROR"); 
+	END;
+	
+	if !targets != [] then
+		begin
+		print_endline ("Warning: one or more target can not be reached.");
+		print_endline ("Not reachable targets: " ^ (Gg.Node.to_string_list !targets));
+		exit 1
+		end;
+		
+	IFDEF VERBOSE THEN
 		(Printf.bprintf !file_buffer "%s\n" ("\nBOTTOM-UP VISIT of the G-graph. "
     	^ "For every node we choose origin node and providers."))
 	END;

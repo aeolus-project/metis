@@ -81,7 +81,10 @@ let combine_universe_configurator universe conf =
 	let new_component_types = get_component_types universe conf.configuration_components in
 	List.iter (function x -> change_port x conf.configuration_bindings) new_component_types;
 	List.append universe new_component_types
-		
+
+(* Extract the targets from the configuration		 *)
+let get_targets conf =
+	List.map (fun x -> (x.component_name,x.component_state)) conf.configuration_components
 
 		
 

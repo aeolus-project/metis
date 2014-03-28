@@ -110,8 +110,7 @@ open Gg
       (set_generations graph reverse_generations) 
 			
 		let delete_targets nodes targets =
-			(* let targets_in = (List.filter (fun x -> (List.mem x nodes)) !targets) in *)
-			let targets_in = (List.filter (fun x -> (Gg.Node.in_list x nodes)) !targets) in
+			let targets_in = (List.filter (fun x -> (Gg.Node.in_list x !targets)) nodes) in
 			targets := (List.filter (fun x -> (Gg.Node.not_in_list x targets_in)) !targets);
 			(* (Gg.Node.print_list targets_in); *)
 			(* (Gg.Node.print_list !targets); (print_endline ""); *)
@@ -146,8 +145,8 @@ open Gg
 						(* if we find target nodes we update targets field in the G-graph *)
 						(* We also remove the targets nodes in targets ref *)
 						graph.targets <- (delete_targets !newNodes targets) @ graph.targets;
-						(print_string "nodi ");(Gg.Node.print_list !newNodes); (print_endline "");
-						(print_string "target ");(Gg.Node.print_list graph.targets); (print_endline "");
+						(* (print_string "nodi ");(Gg.Node.print_list !newNodes); (print_endline "");       *)
+						(* (print_string "target ");(Gg.Node.print_list graph.targets); (print_endline ""); *)
 						i
           end)
 				(* Loop condition: stop when we reach a fixpoint (no new nodes are added) or we find target *)
