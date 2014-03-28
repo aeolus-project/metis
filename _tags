@@ -4,6 +4,9 @@
 <src/datatypes/*.{ml,mli,native}>:package(atdgen),package(extlib)
 <src/datatypes>:include
 
+<src/atd_files/*.{ml,mli,native}>:package(atdgen),package(extlib)
+<src/atd_files>:include
+
 <src/engine/*.{ml,mli,native}>:package(atdgen),package(extlib)
 <src/engine>:include
 
