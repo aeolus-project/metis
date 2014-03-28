@@ -1,5 +1,5 @@
 {
-	"version" : "1",
+	"version" : 1,
 	"component_types": [
 		{
 			"name": "mysql",
@@ -18,7 +18,7 @@
 				}
 				
 			],
-			"consume": {"resource" : "5"}
+			"consume": {"resource" : 5}
 		},
 		{
 			"name": "wp",
@@ -30,10 +30,10 @@
 				},
 				{
 					"name": "inst",
-					"require": {"@mysql" : "1"}
+					"require": {"@mysql" : 1}
 				}
 			],
-			"consume": {"resource" : "3"}
+			"consume": {"resource" : 3}
 		}
 	]
 }
