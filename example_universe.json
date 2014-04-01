@@ -6,7 +6,7 @@
 			"states": [
 				{
 					"name": "inst",
-					"provide": {"@mysql" : "infinite" }
+					"provide": {"@mysql" : 1 }
 				},
 				{
 					"name": "uninst",

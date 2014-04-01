@@ -70,7 +70,7 @@ module T =
 			val compute_all_succs : t -> t list
       val find_in_list_by_state : state_id_t -> t list -> t
 			(** Compute a sequential deployment plan by means of an adaptive topological sort. *)
-			val synthesize_plan : mandriva_mode:bool -> (t list) ref -> string -> string -> Buffer.t ref -> Plan.t
+			val synthesize_plan : mandriva_mode:bool -> (t list) ref -> (string * string) list -> Buffer.t ref -> Plan.t
 			val copy_vertices_until : (t list) ref -> t -> t list -> t list
 			val find_split_edge : t list -> Dep_edge.t
 			val extract_src_from_tag : t -> state_id_t
@@ -477,7 +477,7 @@ module T =
 				dest_vertex.nr_in_edges <- (dest_vertex.nr_in_edges - 1);
 				IFDEF VERBOSE THEN
 					(Printf.bprintf !file_buffer "%s\n" ("Removed RETURN edge " ^ (to_string_with_id vertex) ^ (Dep_edge.to_string edge)));
-					(Printf.bprintf !file_buffer "%s\n" ("Destination vertex " ^ (to_string_with_id dest_vertex) ^ " has now nr_in_edges = " ^ (string_of_int dest_vertex.nr_in_edges)))
+					(Printf.bprintf !file_buffer "%s\n" ("Destination vertex " ^ (to_string_with_id dest_vertex) ^ " has now nr_in_edges = " ^ (string_of_int dest_vertex.nr_in_edges)))				
 				END
 
       (* this function simply extracts a value of type Vertex.t from an option *)    
@@ -1097,7 +1097,6 @@ module T =
 			(**************************************************)
       (*                  	Plan Synthesis              *)  
       (**************************************************)
-  		
       
 			(** Deal with [initial vertices] (i.e. with no incoming edges) *)
 			let add_initial_vertex ~mandriva_mode stack plan file_buffer vertex =
@@ -1177,12 +1176,13 @@ module T =
 				(Plan.add ~mandriva_mode:true file_buffer plan action)
 			
 			(** Compute a sequential deployment plan by means of an adaptive topological sort. *)
-			let synthesize_plan ~mandriva_mode vertices targetComponent targetState file_buffer =
+			let synthesize_plan ~mandriva_mode vertices targets file_buffer =
 				(* initialize data structures *)
+				let targets_aux = ref targets in
 				let plan = (Plan.make 100) in 
 				let toVisit = Stack.create () in
 				let finished = (ref false) in
-        (* all initial vertices are pushed on the toVisit stack *)
+				(* all initial vertices are pushed on the toVisit stack *)
 				let startVertices = (List.filter has_no_in_edges !vertices) in
 					(List.iter (add_initial_vertex ~mandriva_mode toVisit plan file_buffer) startVertices);
 				(* External loop *)
@@ -1253,12 +1253,20 @@ module T =
 											END;
 											(process_inst_edge plan toVisit file_buffer currentVertex)
 										end;
-										(* if we reach the target node *)
-										if (currentVertex.comp_type_name = targetComponent) && 
-												((extract_tag_dst_name currentVertex.tag) = targetState) then 
+										let targets_reached = List.filter (fun x ->
+											x = (currentVertex.comp_type_name,(extract_tag_dst_name currentVertex.tag))) !targets_aux in
+										if targets_reached != [] then 
+											print_endline ("TODEL Reach target: " ^ (to_string_with_id currentVertex));
+										(* if we reach one of the targets remove it from the target_aux list *)
+										targets_aux := List.filter (fun x ->
+											x != (currentVertex.comp_type_name,(extract_tag_dst_name currentVertex.tag))) !targets_aux;
+										(* TODO Duplicare istanza se un target e'lungo la linea di un altro target *)
+										(* List.iter print_string  print string of the list *)
+										
+										if !targets_aux = [] then 
 											begin 
 													IFDEF VERBOSE THEN
-														(Printf.bprintf !file_buffer "%s\n" "Target has been REACHED.")
+														(Printf.bprintf !file_buffer "%s\n" "All targets are REACHED.")
 													END;
 													finished := true
 											end;

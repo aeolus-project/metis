@@ -85,7 +85,6 @@ let user_conf = (Json_zephyrous_output_j.configuration_of_string buffer)
 let universe = Replicator.combine_universe_configurator (translate user_universe) user_conf
 
 (* transform a list of comp_name state_name into a list of comp_type and state ref *)
-(* TODO fix *)
 let target_pairs = Replicator.get_targets user_conf
 let targets = (Gg.Node.build_targets universe target_pairs)
 
@@ -169,12 +168,14 @@ let () =
     let all_vertices = (ref (Instance.list_to_vertices instance_lines)) in ();
 		
 		(* sequential plan synthesis by means of adaptive topological sort *)
-		(* IFDEF VERBOSE THEN                                                                                                                     *)
-		(* 	(Printf.bprintf !file_buffer "\n\n%s\n" "----------------------- PLAN SYNTHESIS START -----------------------")                      *)
-		(* END;                                                                                                                                   *)
-		(* let plan = (T.Vertex.synthesize_plan ~mandriva_mode:!mandrivian_mode all_vertices !target_component_name !target_state file_buffer) in *)
-		(* (Printf.bprintf !file_buffer "\n%s\n" ("The computed PLAN is: " ^ (Plan.to_string ~mandriva_mode:!mandrivian_mode plan)));             *)
-		(* (print_string "\nThe computed "); (Plan.print ~mandriva_mode:!mandrivian_mode plan);                                                   *)
+		IFDEF VERBOSE THEN
+			(Printf.bprintf !file_buffer "\n\n%s\n" "----------------------- PLAN SYNTHESIS START -----------------------");
+			(Buffer.output_buffer !output_channel !file_buffer);
+			(Buffer.reset !file_buffer)
+		END;
+		(* let plan = (T.Vertex.synthesize_plan ~mandriva_mode:!mandrivian_mode all_vertices target_pairs file_buffer) in             *)
+		(* (Printf.bprintf !file_buffer "\n%s\n" ("The computed PLAN is: " ^ (Plan.to_string ~mandriva_mode:!mandrivian_mode plan))); *)
+		(* (print_string "\nThe computed "); (Plan.print ~mandriva_mode:!mandrivian_mode plan);                                       *)
 
 		(Buffer.output_buffer !output_channel !file_buffer);
 		(close_out !output_channel);
