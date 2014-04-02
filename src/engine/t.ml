@@ -810,7 +810,7 @@ module T =
       let action_from_tag vertex =
         match vertex.tag with
           Initial (Create, state_id) -> 
-              [New (vertex.id, vertex.comp_type_name)] 
+              [New (vertex.id, vertex.comp_type_name, state_id.value)] 
         | Trans (state_id_1, state_id_2) -> 
               [State_change (vertex.id, state_id_1.value, state_id_2.value)]  
         | Final (state_id, Delete) -> 
@@ -1069,8 +1069,8 @@ module T =
 																			(Plan.set_action plan j (Unbind (port, new_inst_ID, requirer)))
   				| Unbind (port, provider, requirer) when requirer = orig_inst_ID ->
   																		(Plan.insert_action plan j (Unbind (port, provider, new_inst_ID)))
-	  			|	New (inst_ID, comp_type_name) when inst_ID = orig_inst_ID -> 
-																			(Plan.insert_action plan j (New (new_inst_ID, comp_type_name))) 
+	  			|	New (inst_ID, comp_type_name,state) when inst_ID = orig_inst_ID -> 
+																			(Plan.insert_action plan j (New (new_inst_ID, comp_type_name,state))) 
   				| State_change (inst_ID, src, dst) when inst_ID = orig_inst_ID -> 
 																			(Plan.insert_action plan j (State_change (new_inst_ID, src, dst)))
   				| _ -> ()
@@ -1105,7 +1105,7 @@ module T =
       
 			(** Deal with [initial vertices] (i.e. with no incoming edges) *)
 			let add_initial_vertex ~mandriva_mode stack plan file_buffer vertex =
-				let new_action = (New (vertex.id, vertex.comp_type_name)) in
+				let new_action = (New (vertex.id, vertex.comp_type_name, (extract_tag_dst_name vertex.tag))) in
 				(Plan.add mandriva_mode file_buffer plan new_action);
 				(Stack.push vertex stack)
 
@@ -1192,6 +1192,7 @@ module T =
 				(* all initial vertices are pushed on the toVisit stack *)
 				let startVertices = (List.filter has_no_in_edges !vertices) in
 					(List.iter (add_initial_vertex ~mandriva_mode toVisit plan file_buffer) startVertices);
+				(List.iter (fun v -> (List.iter (process_go_edge mandriva_mode plan toVisit v file_buffer) v.go_edges)) startVertices);
 				(* External loop *)
 				(repeat_until 
 					(* External loop body *)
@@ -1228,7 +1229,7 @@ module T =
 										(* final node case *)
 										end else if (is_final currentVertex) then begin
 											(* deal with return/red edges *)
-											(List.iter (process_ret_edge mandriva_mode plan toVisit currentVertex file_buffer) currentVertex.return_edges);
+											(* (List.iter (process_ret_edge mandriva_mode plan toVisit currentVertex file_buffer) currentVertex.return_edges); *)
 											(* delete actions are ignored: we simply don't add them to the plan *)
 											(* let deleteAct = (Del currentVertex.id) in            *)
 											(* (Plan.add mandriva_mode file_buffer plan deleteAct); *)
@@ -1264,10 +1265,10 @@ module T =
 											END;
 											(process_inst_edge plan toVisit file_buffer currentVertex)
 										end;
-										
+
 										if targets_reached != [] then
 											begin
-											print_endline ("TODEL Reach target: " ^ (to_string_with_id currentVertex));
+											(* print_endline ("TODEL Reach target: " ^ (to_string_with_id currentVertex)); *)
 											(* if we reach one of the targets remove it from the target_aux list *)
 											targets_aux := List.filter (fun x ->
 												x <> (List.hd targets_reached)) !targets_aux;
@@ -1283,7 +1284,9 @@ module T =
 										(* delete current vertex from vertices list *)
 										vertices := (remove_from_list currentVertex !vertices); 
 										IFDEF VERBOSE THEN
-											(Printf.bprintf !file_buffer "%s\n" ("Vertex removed: " ^ (to_string_with_id currentVertex)))
+											(Printf.bprintf !file_buffer "%s\n" ("Vertex removed: " ^ (to_string_with_id currentVertex)));
+											(Buffer.output_buffer stdout !file_buffer);
+											(Buffer.reset !file_buffer)
 										END;
 										j
           				end)

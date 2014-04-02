@@ -61,7 +61,8 @@ let translate_automaton user_automaton =
 					id = { key = i; value = user_state.state_name };
 					successors = [];
 					provides = List.map fst user_state.state_provide;
-					requires = List.map fst user_state.state_require
+					requires = List.map fst user_state.state_require;
+					initial = user_state.state_initial; 
 		} in
 		automaton_with_ids_list := state :: !automaton_with_ids_list
 	done; 

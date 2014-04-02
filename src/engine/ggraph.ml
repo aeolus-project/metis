@@ -97,13 +97,10 @@ open Gg
 		(* build first generation of the G-graph: all components in their initial state *)
     let build_initial_gen graph =
 			let firstGen = Generation.create_empty in
-			let buildInitialNode component =
-				let initialNode = (Gg.Node.build_initial (ref component)) in
-				(Generation.add_node firstGen initialNode) in
-        begin
-				  List.iter buildInitialNode graph.universe;
-				  firstGen
-        end 
+			let initialNodes component = (Gg.Node.build_initials (ref component)) in
+			List.iter (fun x -> 
+				List.iter (Generation.add_node firstGen) (initialNodes x)) graph.universe;
+			firstGen
 
     let reverse_generations graph =
       let reverse_generations = List.rev graph.generations in
@@ -121,6 +118,7 @@ open Gg
 			(* first build initial generation *)
 			let firstGen = (build_initial_gen graph) in 
 			(add_generation graph firstGen);
+			graph.targets <- (delete_targets (Generation.get_nodes firstGen) targets) @ graph.targets;
 			(* initialize needed structures *)
       let newNodes = ref [] in
 			(* Loop for building and adding one generation at a time *)
@@ -145,8 +143,9 @@ open Gg
 						(* if we find target nodes we update targets field in the G-graph *)
 						(* We also remove the targets nodes in targets ref *)
 						graph.targets <- (delete_targets !newNodes targets) @ graph.targets;
-						(* (print_string "nodi ");(Gg.Node.print_list !newNodes); (print_endline "");       *)
-						(* (print_string "target ");(Gg.Node.print_list graph.targets); (print_endline ""); *)
+						(* (print_string "TODEL nodes ");(Gg.Node.print_list !newNodes); (print_endline "");            *)
+						(* (print_string "TODEL target added ");(Gg.Node.print_list graph.targets); (print_endline ""); *)
+						(* (print_string "TODEL target remaining");(Gg.Node.print_list !targets);(print_endline "");    *)
 						i
           end)
 				(* Loop condition: stop when we reach a fixpoint (no new nodes are added) or we find target *)

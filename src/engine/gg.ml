@@ -46,7 +46,7 @@ module Gg =
 			val build_succs_list : port_name list -> t list -> t list
       
 			(* it creates an initial node  < T, q0 > *)
-      val build_initial : (component_t ref) -> t
+      val build_initials : (component_t ref) -> t list
       
 			(* Create multiple target nodes. *)
       val build_targets : universe_t -> ((string * string) list) -> ((t list) ref)
@@ -349,11 +349,11 @@ module Gg =
               
   (** Check node equality by looking only at resource type state pair. *)
   let pair_eq n1 n2 =
-	  (!(n1.res_type).cname = !(n2.res_type).cname) && (n1.state = n2.state) 
+	  (!(n1.res_type).cname = !(n2.res_type).cname) && (!(n1.state).id.value = !(n2.state).id.value) 
   
   (** Check node in-equality by looking only at resource type state pair. *)
   let pair_not_eq n1 n2 =
-	  (!(n1.res_type).cname != !(n2.res_type).cname) || (n1.state != n2.state) 
+	  not (pair_eq n1 n2)
 
 	
 	let rec list_neq_aux nlist1 nlist2 =
@@ -758,26 +758,33 @@ let print_fanIn file_buffer nodes =
 	(print_to_file file_buffer ("Nodes with fanIn values:\n" ^ string_repr))
 
 (* it creates a new node with the given pair <T,q> *)
-let build_initial resTypeRef =
-  let comp_type = !resTypeRef in
-  let initialState = (comp_type.automaton).(0) in  
-	let initialNode = { 
-      res_type = resTypeRef; 
-			state = (ref initialState); 
-			preds = []; 
-			sons = []; 
+let build_initial resTypeRef initialState  =
+  let initialNode = {
+      res_type = resTypeRef;
+			state = (ref initialState);
+			preds = [];
+			sons = [];
 			copy = None;
-			require_arcs = []; 
-			bindings = []; 
+			require_arcs = [];
+			bindings = [];
       bound_to_me = [];
-      origin = None; 
+      origin = None;
 			card = 0;
 			dist = 0;
-			fanIn = 0; 
+			fanIn = 0;
       copy_index = 0;
-      is_final = false 
+      is_final = false
   } in
-  initialNode 
+  initialNode
+	
+let build_initials resTypeRef =
+  let comp_type = !resTypeRef in
+	let intialStates = (Array.fold_left (fun x y -> 
+		if y.initial then
+			y::x
+		else
+			x) [] comp_type.automaton) in 
+	List.map (build_initial resTypeRef) intialStates	
 
 (** Create a new node with the given pair <T,q> where only the name of state 
 q is provided. *)

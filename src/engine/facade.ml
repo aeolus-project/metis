@@ -63,8 +63,9 @@ let string_of_state_full state =
 			^ (String.concat " " state.provides) ^ " }") in
 	let requires_string = (" requires: " ^ "{ " 
 			^ (String.concat " " state.requires) ^ " }") in
+	let initial_string = (" initial: " ^ (string_of_bool state.initial)) in
 	let string_repr = (id_string ^ succs_string ^ provides_string 
-			^ requires_string) in
+			^ requires_string ^ initial_string) in
 	string_repr 
 	 
 let string_of_state_id state_id =
@@ -77,9 +78,7 @@ let to_int_state state =
   (state.id).key
 
 let is_initial_state state =
-	match (state.id).key with
-		0 -> true
-  | _ -> false
+	state.initial
 
 let string_of_automaton automaton =
 	let string_array = (Array.map string_of_state_full automaton) in

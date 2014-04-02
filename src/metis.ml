@@ -112,6 +112,8 @@ let () =
 		begin
 		print_endline ("Warning: one or more target can not be reached.");
 		print_endline ("Not reachable targets: " ^ (Gg.Node.to_string_list !targets));
+		(Buffer.output_buffer !output_channel !file_buffer);
+		(Buffer.reset !file_buffer);
 		exit 1
 		end;
 		

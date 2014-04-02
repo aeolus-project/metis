@@ -19,7 +19,8 @@ let copy_state state =
   	id = state.id;
     successors = state.successors;
     provides = List.fold_right (function x -> (function y -> x::y)) state.provides [];
-    requires = List.fold_right (function x -> (function y -> x::y)) state.requires []
+    requires = List.fold_right (function x -> (function y -> x::y)) state.requires [];
+		initial = state.initial;
 	} in
 	new_state
 

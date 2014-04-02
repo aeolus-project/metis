@@ -24,7 +24,8 @@ type state_t = {
   id: state_id_t;
   mutable successors: state_id_t list;
   mutable provides: port_name list;
-  mutable requires: port_name list
+  mutable requires: port_name list;
+	initial: bool;
 }
 
 (** Definition of automaton type. *)

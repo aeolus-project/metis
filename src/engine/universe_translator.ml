@@ -11,7 +11,7 @@ open My_datatypes
 (** Exception thrown when a state name doesn't correspond to any position in 
     the given automaton. *)              
 exception Position_not_found of string
-exception Intial_state_not_unique of string
+exception Intial_state_not_present of string
 
 (** Build a state ID given a key and a name. *)
 let make_state_id new_key new_name =
@@ -61,7 +61,8 @@ let translate_automaton user_automaton =
 					id = { key = i; value = user_state.state_name };
 					successors = [];
 					provides = List.map fst user_state.state_provide;
-					requires = List.map fst user_state.state_require
+					requires = List.map fst user_state.state_require;
+					initial = user_state.state_initial; 
 		} in
 		automaton_with_ids_list := state :: !automaton_with_ids_list
 	done; 
@@ -84,12 +85,10 @@ let translate_component user_component =
 	let user_automaton = user_component.component_type_states in
 	let initial = List.filter (function x ->
 		 x.state_initial = true) user_automaton in
-	if not ((List.length initial) = 1) then
-		raise (Intial_state_not_unique ("Intial state not unique in component " 
+	if initial = [] then
+		raise (Intial_state_not_present ("Intial state is not specified in component " 
 			^ user_component.component_type_name ^ "."));
-	let not_initial = List.filter (function x ->
-		 x.state_initial = false) user_automaton in
-	let res_automaton = (translate_automaton (Array.of_list ((List.hd initial)::not_initial))) in 
+	let res_automaton = (translate_automaton (Array.of_list user_automaton)) in 
 	let res_component = {
 				cname = user_component.component_type_name;	
 				automaton = res_automaton
