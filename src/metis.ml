@@ -173,9 +173,9 @@ let () =
 			(Buffer.output_buffer !output_channel !file_buffer);
 			(Buffer.reset !file_buffer)
 		END;
-		(* let plan = (T.Vertex.synthesize_plan ~mandriva_mode:!mandrivian_mode all_vertices target_pairs file_buffer) in             *)
-		(* (Printf.bprintf !file_buffer "\n%s\n" ("The computed PLAN is: " ^ (Plan.to_string ~mandriva_mode:!mandrivian_mode plan))); *)
-		(* (print_string "\nThe computed "); (Plan.print ~mandriva_mode:!mandrivian_mode plan);                                       *)
+		let plan = (T.Vertex.synthesize_plan ~mandriva_mode:!mandrivian_mode all_vertices target_pairs file_buffer) in
+		(Printf.bprintf !file_buffer "\n%s\n" ("The computed PLAN is: " ^ (Plan.to_string ~mandriva_mode:!mandrivian_mode plan)));
+		(print_string "\nThe computed "); (Plan.print ~mandriva_mode:!mandrivian_mode plan);
 
 		(Buffer.output_buffer !output_channel !file_buffer);
 		(close_out !output_channel);

@@ -191,12 +191,12 @@ module T =
 				match vertex.tag with
         	Final (state_id, Delete) -> false 
 				| _ -> true
-		
+
 			let is_final vertex =
 				match vertex.tag with
         	Final (state_id, Delete) -> true
 				| _ -> false 
-				
+												
 			let is_initial vertex =
 				match vertex.tag with
         	Initial (Create, state_id) -> true 
@@ -388,6 +388,11 @@ module T =
 				match vertex.inst_edge with
 						None -> raise (No_instance_edge ("in vertex " ^ (to_string_with_id vertex)))
 					| (Some edge) -> !(Inst_edge.get_dest edge)
+
+			let is_target vertex type_state_name_pair =
+				(is_not_final vertex) &&
+				(vertex.comp_type_name, (extract_tag_dst_name vertex.tag)) = type_state_name_pair &&
+				(is_final (get_succ vertex))				
       
 			(* a_state should always be (State 0) *)  
       let make_create a_state inst_id comp_type dupl_nr =
@@ -1174,6 +1179,8 @@ module T =
 											
 			let process_method_invocation file_buffer plan action =
 				(Plan.add ~mandriva_mode:true file_buffer plan action)
+				
+				
 			
 			(** Compute a sequential deployment plan by means of an adaptive topological sort. *)
 			let synthesize_plan ~mandriva_mode vertices targets file_buffer =
@@ -1201,6 +1208,10 @@ module T =
           				begin 
 										j := !j + 1;
 										let currentVertex = (Stack.pop toVisit) in
+										(* For the kind of encoding targets should always be the end node of the instance line*)
+										(* preceding a delete action.*)
+										(* target_reached is set to contain an element if the current vertex is a target *)
+										let targets_reached = List.filter (is_target currentVertex) !targets_aux in
 										IFDEF VERBOSE THEN
 											(Printf.bprintf !file_buffer "\n*********************** %s\n" ("Internal loop iteration j = " ^ (string_of_int !j)));
 											(Printf.bprintf !file_buffer "%s\n" ("Plan BEFORE: " ^ (Plan.to_string mandriva_mode plan)));
@@ -1218,9 +1229,9 @@ module T =
 										end else if (is_final currentVertex) then begin
 											(* deal with return/red edges *)
 											(List.iter (process_ret_edge mandriva_mode plan toVisit currentVertex file_buffer) currentVertex.return_edges);
-											(* add del action *)
-											let deleteAct = (Del currentVertex.id) in
-											(Plan.add mandriva_mode file_buffer plan deleteAct);
+											(* delete actions are ignored: we simply don't add them to the plan *)
+											(* let deleteAct = (Del currentVertex.id) in            *)
+											(* (Plan.add mandriva_mode file_buffer plan deleteAct); *)
 											IFDEF VERBOSE THEN
 												(Printf.bprintf !file_buffer "%s\n" "Deal with return/red edges");
 												(Printf.bprintf !file_buffer "%s\n" "Current vertex is final: we add a Del action to the plan.")
@@ -1253,15 +1264,14 @@ module T =
 											END;
 											(process_inst_edge plan toVisit file_buffer currentVertex)
 										end;
-										let targets_reached = List.filter (fun x ->
-											x = (currentVertex.comp_type_name,(extract_tag_dst_name currentVertex.tag))) !targets_aux in
-										if targets_reached != [] then 
+										
+										if targets_reached != [] then
+											begin
 											print_endline ("TODEL Reach target: " ^ (to_string_with_id currentVertex));
-										(* if we reach one of the targets remove it from the target_aux list *)
-										targets_aux := List.filter (fun x ->
-											x != (currentVertex.comp_type_name,(extract_tag_dst_name currentVertex.tag))) !targets_aux;
-										(* TODO Duplicare istanza se un target e'lungo la linea di un altro target *)
-										(* List.iter print_string  print string of the list *)
+											(* if we reach one of the targets remove it from the target_aux list *)
+											targets_aux := List.filter (fun x ->
+												x <> (List.hd targets_reached)) !targets_aux;
+											end;
 										
 										if !targets_aux = [] then 
 											begin 
