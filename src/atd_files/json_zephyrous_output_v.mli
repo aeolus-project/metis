@@ -1,12 +1,14 @@
 (* Auto-generated from "json_zephyrous_output.atd" *)
 
 
-(** Type definition for syntax version. *)
+(** Type definition for stateful syntax version. *)
 
 (** Type definitions for naming. *)
 type version = Json_versions_t.version
 
 type component_type_name = Json_zephyrous_output_t.component_type_name
+
+type state_name = Json_zephyrous_output_t.state_name
 
 type port_name = Json_zephyrous_output_t.port_name
 
@@ -18,10 +20,8 @@ type repository_name = Json_zephyrous_output_t.repository_name
 
 type location_name = Json_zephyrous_output_t.location_name
 
-type resource_name = Json_zephyrous_output_t.resource_name
-
 (** Type definitions for Universe. *)
-type state_name = Json_zephyrous_output_t.state_name
+type resource_name = Json_zephyrous_output_t.resource_name
 
 type provide_arity = Json_zephyrous_output_t.provide_arity
 
@@ -31,18 +31,18 @@ type resource_consumption = Json_zephyrous_output_t.resource_consumption
 
 type resource_provide_arity = Json_zephyrous_output_t.resource_provide_arity
 
-type state_type = Json_zephyrous_output_t.state_type = {
+type state = Json_zephyrous_output_t.state = {
   state_name (*atd name *): state_name;
+  state_initial (*atd initial *): bool;
   state_provide (*atd provide *): (port_name * provide_arity) list;
   state_require (*atd require *): (port_name * require_arity) list;
   state_conflict (*atd conflict *): port_name list;
-  state_successors (*atd successors *): state_name list;
-  state_initial (*atd initial *): bool
+  state_successors (*atd successors *): state_name list
 }
 
 type component_type = Json_zephyrous_output_t.component_type = {
   component_type_name (*atd name *): component_type_name;
-  component_type_states (*atd states *): state_type list;
+  component_type_states (*atd states *): state list;
   component_type_consume (*atd consume *):
     (resource_name * resource_consumption) list
 }
@@ -66,14 +66,21 @@ type repository = Json_zephyrous_output_t.repository = {
 
 type repositories = Json_zephyrous_output_t.repositories
 
-type package_names = Json_zephyrous_output_t.package_names
+type implementation_package =
+  Json_zephyrous_output_t.implementation_package = {
+  implementation_package_repository (*atd repository *): repository_name;
+  implementation_package_package (*atd package *): package_name
+}
+
+type implementation_packages =
+  Json_zephyrous_output_t.implementation_packages
 
 (** Type definitions for Configuration. *)
 type universe = Json_zephyrous_output_t.universe = {
   universe_version (*atd version *): version;
   universe_component_types (*atd component_types *): component_types;
   universe_implementation (*atd implementation *):
-    (component_type_name * package_names) list;
+    (component_type_name * implementation_packages) list;
   universe_repositories (*atd repositories *): repositories
 }
 
@@ -92,8 +99,8 @@ type location = Json_zephyrous_output_t.location = {
 type component = Json_zephyrous_output_t.component = {
   component_name (*atd name *): component_name;
   component_type (*atd component_type_workaround *): component_type_name;
-  component_location (*atd location *): location_name;
-  component_state (*atd state *): state_name
+  component_state (*atd state *): state_name;
+  component_location (*atd location *): location_name
 }
 
 type binding = Json_zephyrous_output_t.binding = {
@@ -116,6 +123,10 @@ val validate_version :
 val validate_component_type_name :
   Ag_util.Validation.path -> component_type_name -> Ag_util.Validation.error option
   (** Validate a value of type {!component_type_name}. *)
+
+val validate_state_name :
+  Ag_util.Validation.path -> state_name -> Ag_util.Validation.error option
+  (** Validate a value of type {!state_name}. *)
 
 val validate_port_name :
   Ag_util.Validation.path -> port_name -> Ag_util.Validation.error option
@@ -141,10 +152,6 @@ val validate_resource_name :
   Ag_util.Validation.path -> resource_name -> Ag_util.Validation.error option
   (** Validate a value of type {!resource_name}. *)
 
-val validate_state_name :
-  Ag_util.Validation.path -> state_name -> Ag_util.Validation.error option
-  (** Validate a value of type {!state_name}. *)
-
 val validate_provide_arity :
   Ag_util.Validation.path -> provide_arity -> Ag_util.Validation.error option
   (** Validate a value of type {!provide_arity}. *)
@@ -161,23 +168,23 @@ val validate_resource_provide_arity :
   Ag_util.Validation.path -> resource_provide_arity -> Ag_util.Validation.error option
   (** Validate a value of type {!resource_provide_arity}. *)
 
-val create_state_type :
+val create_state :
   state_name: state_name ->
+  ?state_initial: bool ->
   ?state_provide: (port_name * provide_arity) list ->
   ?state_require: (port_name * require_arity) list ->
   ?state_conflict: port_name list ->
   ?state_successors: state_name list ->
-  ?state_initial: bool ->
-  unit -> state_type
-  (** Create a record of type {!state_type}. *)
+  unit -> state
+  (** Create a record of type {!state}. *)
 
-val validate_state_type :
-  Ag_util.Validation.path -> state_type -> Ag_util.Validation.error option
-  (** Validate a value of type {!state_type}. *)
+val validate_state :
+  Ag_util.Validation.path -> state -> Ag_util.Validation.error option
+  (** Validate a value of type {!state}. *)
 
 val create_component_type :
   component_type_name: component_type_name ->
-  component_type_states: state_type list ->
+  component_type_states: state list ->
   ?component_type_consume: (resource_name * resource_consumption) list ->
   unit -> component_type
   (** Create a record of type {!component_type}. *)
@@ -220,14 +227,24 @@ val validate_repositories :
   Ag_util.Validation.path -> repositories -> Ag_util.Validation.error option
   (** Validate a value of type {!repositories}. *)
 
-val validate_package_names :
-  Ag_util.Validation.path -> package_names -> Ag_util.Validation.error option
-  (** Validate a value of type {!package_names}. *)
+val create_implementation_package :
+  implementation_package_repository: repository_name ->
+  implementation_package_package: package_name ->
+  unit -> implementation_package
+  (** Create a record of type {!implementation_package}. *)
+
+val validate_implementation_package :
+  Ag_util.Validation.path -> implementation_package -> Ag_util.Validation.error option
+  (** Validate a value of type {!implementation_package}. *)
+
+val validate_implementation_packages :
+  Ag_util.Validation.path -> implementation_packages -> Ag_util.Validation.error option
+  (** Validate a value of type {!implementation_packages}. *)
 
 val create_universe :
   universe_version: version ->
   ?universe_component_types: component_types ->
-  ?universe_implementation: (component_type_name * package_names) list ->
+  ?universe_implementation: (component_type_name * implementation_packages) list ->
   ?universe_repositories: repositories ->
   unit -> universe
   (** Create a record of type {!universe}. *)
@@ -260,8 +277,8 @@ val validate_location :
 val create_component :
   component_name: component_name ->
   component_type: component_type_name ->
-  component_location: location_name ->
   component_state: state_name ->
+  component_location: location_name ->
   unit -> component
   (** Create a record of type {!component}. *)
 

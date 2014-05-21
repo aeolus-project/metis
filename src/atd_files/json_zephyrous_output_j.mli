@@ -1,12 +1,14 @@
 (* Auto-generated from "json_zephyrous_output.atd" *)
 
 
-(** Type definition for syntax version. *)
+(** Type definition for stateful syntax version. *)
 
 (** Type definitions for naming. *)
 type version = Json_versions_t.version
 
 type component_type_name = Json_zephyrous_output_t.component_type_name
+
+type state_name = Json_zephyrous_output_t.state_name
 
 type port_name = Json_zephyrous_output_t.port_name
 
@@ -18,10 +20,8 @@ type repository_name = Json_zephyrous_output_t.repository_name
 
 type location_name = Json_zephyrous_output_t.location_name
 
-type resource_name = Json_zephyrous_output_t.resource_name
-
 (** Type definitions for Universe. *)
-type state_name = Json_zephyrous_output_t.state_name
+type resource_name = Json_zephyrous_output_t.resource_name
 
 type provide_arity = Json_zephyrous_output_t.provide_arity
 
@@ -31,18 +31,18 @@ type resource_consumption = Json_zephyrous_output_t.resource_consumption
 
 type resource_provide_arity = Json_zephyrous_output_t.resource_provide_arity
 
-type state_type = Json_zephyrous_output_t.state_type = {
+type state = Json_zephyrous_output_t.state = {
   state_name (*atd name *): state_name;
+  state_initial (*atd initial *): bool;
   state_provide (*atd provide *): (port_name * provide_arity) list;
   state_require (*atd require *): (port_name * require_arity) list;
   state_conflict (*atd conflict *): port_name list;
-  state_successors (*atd successors *): state_name list;
-  state_initial (*atd initial *): bool
+  state_successors (*atd successors *): state_name list
 }
 
 type component_type = Json_zephyrous_output_t.component_type = {
   component_type_name (*atd name *): component_type_name;
-  component_type_states (*atd states *): state_type list;
+  component_type_states (*atd states *): state list;
   component_type_consume (*atd consume *):
     (resource_name * resource_consumption) list
 }
@@ -66,14 +66,21 @@ type repository = Json_zephyrous_output_t.repository = {
 
 type repositories = Json_zephyrous_output_t.repositories
 
-type package_names = Json_zephyrous_output_t.package_names
+type implementation_package =
+  Json_zephyrous_output_t.implementation_package = {
+  implementation_package_repository (*atd repository *): repository_name;
+  implementation_package_package (*atd package *): package_name
+}
+
+type implementation_packages =
+  Json_zephyrous_output_t.implementation_packages
 
 (** Type definitions for Configuration. *)
 type universe = Json_zephyrous_output_t.universe = {
   universe_version (*atd version *): version;
   universe_component_types (*atd component_types *): component_types;
   universe_implementation (*atd implementation *):
-    (component_type_name * package_names) list;
+    (component_type_name * implementation_packages) list;
   universe_repositories (*atd repositories *): repositories
 }
 
@@ -92,8 +99,8 @@ type location = Json_zephyrous_output_t.location = {
 type component = Json_zephyrous_output_t.component = {
   component_name (*atd name *): component_name;
   component_type (*atd component_type_workaround *): component_type_name;
-  component_location (*atd location *): location_name;
-  component_state (*atd state *): state_name
+  component_state (*atd state *): state_name;
+  component_location (*atd location *): location_name
 }
 
 type binding = Json_zephyrous_output_t.binding = {
@@ -148,6 +155,26 @@ val read_component_type_name :
 val component_type_name_of_string :
   string -> component_type_name
   (** Deserialize JSON data of type {!component_type_name}. *)
+
+val write_state_name :
+  Bi_outbuf.t -> state_name -> unit
+  (** Output a JSON value of type {!state_name}. *)
+
+val string_of_state_name :
+  ?len:int -> state_name -> string
+  (** Serialize a value of type {!state_name}
+      into a JSON string.
+      @param len specifies the initial length
+                 of the buffer used internally.
+                 Default: 1024. *)
+
+val read_state_name :
+  Yojson.Safe.lexer_state -> Lexing.lexbuf -> state_name
+  (** Input JSON data of type {!state_name}. *)
+
+val state_name_of_string :
+  string -> state_name
+  (** Deserialize JSON data of type {!state_name}. *)
 
 val write_port_name :
   Bi_outbuf.t -> port_name -> unit
@@ -269,26 +296,6 @@ val resource_name_of_string :
   string -> resource_name
   (** Deserialize JSON data of type {!resource_name}. *)
 
-val write_state_name :
-  Bi_outbuf.t -> state_name -> unit
-  (** Output a JSON value of type {!state_name}. *)
-
-val string_of_state_name :
-  ?len:int -> state_name -> string
-  (** Serialize a value of type {!state_name}
-      into a JSON string.
-      @param len specifies the initial length
-                 of the buffer used internally.
-                 Default: 1024. *)
-
-val read_state_name :
-  Yojson.Safe.lexer_state -> Lexing.lexbuf -> state_name
-  (** Input JSON data of type {!state_name}. *)
-
-val state_name_of_string :
-  string -> state_name
-  (** Deserialize JSON data of type {!state_name}. *)
-
 val write_provide_arity :
   Bi_outbuf.t -> provide_arity -> unit
   (** Output a JSON value of type {!provide_arity}. *)
@@ -369,25 +376,25 @@ val resource_provide_arity_of_string :
   string -> resource_provide_arity
   (** Deserialize JSON data of type {!resource_provide_arity}. *)
 
-val write_state_type :
-  Bi_outbuf.t -> state_type -> unit
-  (** Output a JSON value of type {!state_type}. *)
+val write_state :
+  Bi_outbuf.t -> state -> unit
+  (** Output a JSON value of type {!state}. *)
 
-val string_of_state_type :
-  ?len:int -> state_type -> string
-  (** Serialize a value of type {!state_type}
+val string_of_state :
+  ?len:int -> state -> string
+  (** Serialize a value of type {!state}
       into a JSON string.
       @param len specifies the initial length
                  of the buffer used internally.
                  Default: 1024. *)
 
-val read_state_type :
-  Yojson.Safe.lexer_state -> Lexing.lexbuf -> state_type
-  (** Input JSON data of type {!state_type}. *)
+val read_state :
+  Yojson.Safe.lexer_state -> Lexing.lexbuf -> state
+  (** Input JSON data of type {!state}. *)
 
-val state_type_of_string :
-  string -> state_type
-  (** Deserialize JSON data of type {!state_type}. *)
+val state_of_string :
+  string -> state
+  (** Deserialize JSON data of type {!state}. *)
 
 val write_component_type :
   Bi_outbuf.t -> component_type -> unit
@@ -509,25 +516,45 @@ val repositories_of_string :
   string -> repositories
   (** Deserialize JSON data of type {!repositories}. *)
 
-val write_package_names :
-  Bi_outbuf.t -> package_names -> unit
-  (** Output a JSON value of type {!package_names}. *)
+val write_implementation_package :
+  Bi_outbuf.t -> implementation_package -> unit
+  (** Output a JSON value of type {!implementation_package}. *)
 
-val string_of_package_names :
-  ?len:int -> package_names -> string
-  (** Serialize a value of type {!package_names}
+val string_of_implementation_package :
+  ?len:int -> implementation_package -> string
+  (** Serialize a value of type {!implementation_package}
       into a JSON string.
       @param len specifies the initial length
                  of the buffer used internally.
                  Default: 1024. *)
 
-val read_package_names :
-  Yojson.Safe.lexer_state -> Lexing.lexbuf -> package_names
-  (** Input JSON data of type {!package_names}. *)
+val read_implementation_package :
+  Yojson.Safe.lexer_state -> Lexing.lexbuf -> implementation_package
+  (** Input JSON data of type {!implementation_package}. *)
 
-val package_names_of_string :
-  string -> package_names
-  (** Deserialize JSON data of type {!package_names}. *)
+val implementation_package_of_string :
+  string -> implementation_package
+  (** Deserialize JSON data of type {!implementation_package}. *)
+
+val write_implementation_packages :
+  Bi_outbuf.t -> implementation_packages -> unit
+  (** Output a JSON value of type {!implementation_packages}. *)
+
+val string_of_implementation_packages :
+  ?len:int -> implementation_packages -> string
+  (** Serialize a value of type {!implementation_packages}
+      into a JSON string.
+      @param len specifies the initial length
+                 of the buffer used internally.
+                 Default: 1024. *)
+
+val read_implementation_packages :
+  Yojson.Safe.lexer_state -> Lexing.lexbuf -> implementation_packages
+  (** Input JSON data of type {!implementation_packages}. *)
+
+val implementation_packages_of_string :
+  string -> implementation_packages
+  (** Deserialize JSON data of type {!implementation_packages}. *)
 
 val write_universe :
   Bi_outbuf.t -> universe -> unit

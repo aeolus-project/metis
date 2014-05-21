@@ -1,12 +1,14 @@
 (* Auto-generated from "json_zephyrous_output.atd" *)
 
 
-(** Type definition for syntax version. *)
+(** Type definition for stateful syntax version. *)
 
 (** Type definitions for naming. *)
 type version = Json_versions_t.version
 
 type component_type_name = string
+
+type state_name = string
 
 type port_name = string
 
@@ -18,10 +20,8 @@ type repository_name = string
 
 type location_name = string
 
-type resource_name = string
-
 (** Type definitions for Universe. *)
-type state_name = string
+type resource_name = string
 
 type provide_arity = string
 
@@ -31,18 +31,18 @@ type resource_consumption = int
 
 type resource_provide_arity = int
 
-type state_type = {
+type state = {
   state_name (*atd name *): state_name;
+  state_initial (*atd initial *): bool;
   state_provide (*atd provide *): (port_name * provide_arity) list;
   state_require (*atd require *): (port_name * require_arity) list;
   state_conflict (*atd conflict *): port_name list;
-  state_successors (*atd successors *): state_name list;
-  state_initial (*atd initial *): bool
+  state_successors (*atd successors *): state_name list
 }
 
 type component_type = {
   component_type_name (*atd name *): component_type_name;
-  component_type_states (*atd states *): state_type list;
+  component_type_states (*atd states *): state list;
   component_type_consume (*atd consume *):
     (resource_name * resource_consumption) list
 }
@@ -66,14 +66,19 @@ type repository = {
 
 type repositories = repository list
 
-type package_names = (repository_name * package_name) list
+type implementation_package = {
+  implementation_package_repository (*atd repository *): repository_name;
+  implementation_package_package (*atd package *): package_name
+}
+
+type implementation_packages = implementation_package list
 
 (** Type definitions for Configuration. *)
 type universe = {
   universe_version (*atd version *): version;
   universe_component_types (*atd component_types *): component_types;
   universe_implementation (*atd implementation *):
-    (component_type_name * package_names) list;
+    (component_type_name * implementation_packages) list;
   universe_repositories (*atd repositories *): repositories
 }
 
@@ -92,8 +97,8 @@ type location = {
 type component = {
   component_name (*atd name *): component_name;
   component_type (*atd component_type_workaround *): component_type_name;
-  component_location (*atd location *): location_name;
-  component_state (*atd state *): state_name
+  component_state (*atd state *): state_name;
+  component_location (*atd location *): location_name
 }
 
 type binding = {

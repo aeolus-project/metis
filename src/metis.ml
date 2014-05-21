@@ -71,6 +71,8 @@ let () =
 	(really_input !universe_channel buffer 0 (file_length - 1));
   (close_in !universe_channel)
 	
+
+(* let () = print_endline ("Start parsing universe file.") *)
 let user_universe = (Json_zephyrous_output_j.universe_of_string buffer)
 
 (* read configuration file *)
@@ -79,6 +81,8 @@ let buffer = (String.create file_length)
 let () =
 	(really_input !conf_channel buffer 0 (file_length - 1));
   (close_in !conf_channel)
+
+(* let () = print_endline ("Start parsing final configuration file.") *)
 let user_conf = (Json_zephyrous_output_j.configuration_of_string buffer)
 
 (* convert universe into internal representation and replicate the components in the final configuration *)
