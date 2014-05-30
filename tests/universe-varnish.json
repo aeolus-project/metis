@@ -1,0 +1,311 @@
+{
+  "implementation": {
+    "Httpd": [
+      {
+        "repository": "repository", 
+        "package": "stub_package"
+      }
+    ], 
+    "Varnish": [
+      {
+        "repository": "repository", 
+        "package": "stub_package"
+      }
+    ], 
+    "Wordpress": [
+      {
+        "repository": "repository", 
+        "package": "stub_package"
+      }
+    ], 
+    "Nfs_client": [
+      {
+        "repository": "repository", 
+        "package": "stub_package"
+      }
+    ], 
+    "Mysql": [
+      {
+        "repository": "repository", 
+        "package": "stub_package"
+      }
+    ], 
+    "Nfs_server": [
+      {
+        "repository": "repository", 
+        "package": "stub_package"
+      }
+    ]
+  }, 
+  "version": 1, 
+  "component_types": [
+    {
+      "states": [
+        {
+          "provide": {}, 
+          "require": {}, 
+          "initial": true, 
+          "name": "Installed", 
+          "successors": [
+            "Active"
+          ]
+        }, 
+        {
+          "provide": {
+            "@Nfs_client/Active/mount": 1
+          }, 
+          "require": {
+            "@Nfs_server/Active/get_dir": 1
+          }, 
+          "name": "Active"
+        }
+      ], 
+      "name": "Nfs_client"
+    }, 
+    {
+      "states": [
+        {
+          "provide": {}, 
+          "require": {}, 
+          "initial": true, 
+          "name": "Installed", 
+          "successors": [
+            "Configured"
+          ]
+        }, 
+        {
+          "provide": {}, 
+          "require": {}, 
+          "successors": [
+            "Active"
+          ], 
+          "name": "Configured"
+        }, 
+        {
+          "provide": {
+            "@Nfs_server/Active/get_dir": 1
+          }, 
+          "require": {}, 
+          "name": "Active"
+        }
+      ], 
+      "name": "Nfs_server"
+    }, 
+    {
+      "states": [
+        {
+          "provide": {}, 
+          "require": {}, 
+          "initial": true, 
+          "name": "Installed", 
+          "successors": [
+            "Template"
+          ]
+        }, 
+        {
+          "provide": {}, 
+          "require": {}, 
+          "successors": [
+            "Configured"
+          ], 
+          "name": "Template"
+        }, 
+        {
+          "provide": {}, 
+          "require": {
+            "@Mysql/Active/add_database": 1
+          }, 
+          "successors": [
+            "Active"
+          ], 
+          "name": "Configured"
+        }, 
+        {
+          "provide": {}, 
+          "require": {
+            "@Httpd/Active/start": 1, 
+            "@Httpd/Configured/get_document_root": 1
+          }, 
+          "successors": [
+            "ActiveWithNfs"
+          ], 
+          "name": "Active"
+        }, 
+        {
+          "provide": {
+            "@Wordpress/ActiveWithNfs/get_website": 1
+          }, 
+          "require": {
+            "@Nfs_client/Active/mount": 1
+          }, 
+          "name": "ActiveWithNfs"
+        }
+      ], 
+      "name": "Wordpress"
+    }, 
+    {
+      "states": [
+        {
+          "provide": {}, 
+          "require": {}, 
+          "initial": true, 
+          "name": "Installed.InstalledOnMBS", 
+          "successors": [
+            "Installed"
+          ]
+        }, 
+        {
+          "provide": {}, 
+          "require": {}, 
+          "successors": [
+            "SetRootPassword"
+          ], 
+          "name": "Installed"
+        }, 
+        {
+          "provide": {}, 
+          "require": {}, 
+          "successors": [
+            "Configured"
+          ], 
+          "name": "SetRootPassword"
+        }, 
+        {
+          "provide": {}, 
+          "require": {}, 
+          "successors": [
+            "Active.ActiveOnMBS"
+          ], 
+          "name": "Configured"
+        }, 
+        {
+          "provide": {}, 
+          "require": {}, 
+          "successors": [
+            "Active"
+          ], 
+          "name": "Active.ActiveOnMBS"
+        }, 
+        {
+          "provide": {
+            "@Mysql/Active/add_database": 1
+          }, 
+          "require": {}, 
+          "name": "Active"
+        }
+      ], 
+      "name": "Mysql"
+    }, 
+    {
+      "states": [
+        {
+          "provide": {}, 
+          "require": {}, 
+          "initial": true, 
+          "name": "Installed", 
+          "successors": [
+            "Configured"
+          ]
+        }, 
+        {
+          "provide": {
+            "@Httpd/Configured/get_document_root": 1
+          }, 
+          "require": {}, 
+          "successors": [
+            "Active"
+          ], 
+          "name": "Configured"
+        }, 
+        {
+          "provide": {
+            "@Httpd/Active/start": 1
+          }, 
+          "require": {}, 
+          "name": "Active"
+        }
+      ], 
+      "name": "Httpd"
+    }, 
+    {
+      "states": [
+        {
+          "provide": {}, 
+          "require": {}, 
+          "initial": true, 
+          "name": "Installed", 
+          "successors": [
+            "Configured"
+          ]
+        }, 
+        {
+          "provide": {}, 
+          "require": {
+            "@Wordpress/ActiveWithNfs/get_website": 2
+          }, 
+          "name": "Configured"
+        }
+      ], 
+      "name": "Varnish"
+    }
+  ],
+    "implementation": {
+    "Wordpress" :
+    [
+      {
+        "repository": "repository",
+        "package" : "stub_package"
+      }
+    ],
+    
+    "Nfs_client" :
+    [
+      {
+        "repository": "repository",
+        "package" : "stub_package"
+      }
+    ],
+
+    "Nfs_server" :
+    [
+      {
+        "repository": "repository",
+        "package" : "stub_package"
+      }
+    ],
+
+    "Mysql" :
+    [
+      {
+        "repository": "repository",
+        "package" : "stub_package"
+      }
+    ],
+
+    "Httpd" :
+    [
+      {
+        "repository": "repository",
+        "package" : "stub_package"
+      }
+    ],
+
+    "Varnish" :
+    [
+      {
+        "repository": "repository",
+        "package" : "stub_package"
+      }
+    ]
+  },
+  "repositories": [
+    {
+      "name": "repository",
+      "packages": [
+        {
+          "name": "stub_package"
+        }
+      ]
+    }
+  ]
+}

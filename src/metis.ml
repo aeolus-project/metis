@@ -83,7 +83,7 @@ let () =
   (close_in !conf_channel)
 
 (* let () = print_endline ("Start parsing final configuration file.") *)
-let user_conf = (Json_zephyrous_output_j.configuration_of_string buffer)
+let user_conf = (Json_zephyrous_output_j.configuration_of_string buffer) 
 
 (* convert universe into internal representation and replicate the components in the final configuration *)
 let universe = Replicator.combine_universe_configurator (translate user_universe) user_conf
@@ -110,6 +110,9 @@ let () =
 	IFDEF VERBOSE THEN
 		(Printf.bprintf !file_buffer "%s\n" "\nWe generate the FULL G-GRAPH: \n"); 
 		(Ggraph.print_generations ggraph file_buffer);
+		(Buffer.output_buffer !output_channel !file_buffer);
+		(Buffer.reset !file_buffer);
+
 	END;
 	
 	if !targets != [] then
@@ -134,7 +137,10 @@ let () =
 		IFDEF VERBOSE THEN
 			(Printf.bprintf !file_buffer "%s\n" "\nLINEARIZATION phase");
     	let paths_string = (Gg.Node.to_string_list_of_list trimmed_paths_list) in
-			(Printf.bprintf !file_buffer "%s\n" ("\nThe linearized paths are the following:\n\n" ^ paths_string))
+			(Printf.bprintf !file_buffer "%s\n" ("\nThe linearized paths are the following:\n\n" ^ paths_string));
+			(Buffer.output_buffer !output_channel !file_buffer);
+			(Buffer.reset !file_buffer);
+
 		END;
 
 		(* keep only maximal paths *)
@@ -144,14 +150,20 @@ let () =
     let instance_lines = (Instance.build_instance_lines maximal_paths) in
 		IFDEF VERBOSE THEN
 			(Printf.bprintf !file_buffer "%s\n" "\n\nThe INSTANCE LINES are the following:\n");
-    	(Instance.print_list file_buffer instance_lines)
+    	(Instance.print_list file_buffer instance_lines);
+			(Buffer.output_buffer !output_channel !file_buffer);
+			(Buffer.reset !file_buffer);
+
 		END;
 
 		(* add dependency edges: go/blue and return/red arcs *)	
     (Instance.list_add_dep_edges instance_lines);
 		IFDEF VERBOSE THEN
 			(Printf.bprintf !file_buffer "%s\n" "\nNext we ADD GO (blue) and RETURN (red) EDGES.\n");
-    	(Instance.print_list file_buffer instance_lines)
+    	(Instance.print_list file_buffer instance_lines);
+			(Buffer.output_buffer !output_channel !file_buffer);
+			(Buffer.reset !file_buffer);
+
 		END;
 
 		(* deal with enclosing dependency edges, e.g. g1 g1' r1 r1' should become g1 r1' *)	
@@ -159,7 +171,11 @@ let () =
 		IFDEF VERBOSE THEN
 			(Printf.bprintf !file_buffer "%s" "\nNext we FIX ENCLOSING GO (blue) and RETURN (red) EDGES.");
 			(Printf.bprintf !file_buffer "%s\n" "\nNow the INSTANCE LINES WITH EDGES look like this:\n");
-    	(Instance.print_list file_buffer instance_lines)
+    	(Instance.print_list file_buffer instance_lines);
+			(Buffer.output_buffer !output_channel !file_buffer);
+		  (Buffer.reset !file_buffer);
+
+			
 		END;
 
 		(* output abstract plan in DOT file *)

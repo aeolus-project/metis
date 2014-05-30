@@ -4,8 +4,8 @@ ADDPPFLAGS := -pp 'camlp4o pa_macro.cmo -DVERBOSE'
 RMPPFLAGS := -pp 'camlp4o pa_macro.cmo -UVERBOSE'
 
 all:
-	ocamlbuild $(RMPPFLAGS) $(OBFLAGS) metis.native
-	#ocamlbuild $(ADDPPFLAGS) $(OBFLAGS) metis.native
+	#ocamlbuild $(RMPPFLAGS) $(OBFLAGS) metis.native
+	ocamlbuild $(ADDPPFLAGS) $(OBFLAGS) metis.native
 
 verbose:
 	ocamlbuild $(ADDPPFLAGS) $(OBFLAGS) metis.native

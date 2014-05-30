@@ -1,0 +1,88 @@
+{
+  "version": 1,
+  "locations": [
+    {
+      "name": "location",
+      "provide_resources": { "resource": 100 },
+      "repository": "repository",
+      "packages_installed": [ "stub_package" ],
+      "cost": 1
+    }
+  ],
+  "components": [
+    {
+      "name": "Varnish-1",
+      "type": "Varnish",
+      "state": "Configured",
+      "location": "location"
+    },
+    {
+      "name": "Wordpress-1",
+      "type": "Wordpress",
+      "state": "ActiveWithNfs",
+      "location": "location"
+    },
+    {
+      "name": "Wordpress-2",
+      "type": "Wordpress",
+      "state": "ActiveWithNfs",
+      "location": "location"
+    },
+    {
+      "name": "Nfs_server-1",
+      "type": "Nfs_server",
+      "state": "Active",
+      "location": "location"
+    },
+    {
+      "name": "Nfs_server-2",
+      "type": "Nfs_server",
+      "state": "Active",
+      "location": "location"
+    },
+    {
+      "name": "Nfs_client-1",
+      "type": "Nfs_client",
+      "state": "Active",
+      "location": "location"
+    },
+    {
+      "name": "Nfs_client-2",
+      "type": "Nfs_client",
+      "state": "Active",
+      "location": "location"
+    }
+  ],
+  "bindings": [
+    {
+      "port": "@Nfs_client/Active/mount",
+      "requirer": "Wordpress-2",
+      "provider": "Nfs_client-1"
+    },
+    {
+      "port": "@Nfs_client/Active/mount",
+      "requirer": "Wordpress-1",
+      "provider": "Nfs_client-2"
+    },
+    {
+      "port": "@Nfs_server/Active/get_dir",
+      "requirer": "Nfs_client-2",
+      "provider": "Nfs_server-1"
+    },
+    {
+      "port": "@Nfs_server/Active/get_dir",
+      "requirer": "Nfs_client-1",
+      "provider": "Nfs_server-2"
+    },
+    {
+      "port": "@Wordpress/ActiveWithNfs/get_website",
+      "requirer": "Varnish-1",
+      "provider": "Wordpress-1"
+    },
+    {
+      "port": "@Wordpress/ActiveWithNfs/get_website",
+      "requirer": "Varnish-1",
+      "provider": "Wordpress-2"
+    }
+  ]
+}
