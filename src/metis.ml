@@ -65,7 +65,7 @@ let () =
     usage
 
 (* read universe in *)
-let file_length = (in_channel_length !universe_channel) 
+(*let file_length = (in_channel_length !universe_channel) 
 let buffer = (String.create file_length)
 let () =
 	(really_input !universe_channel buffer 0 (file_length - 1));
@@ -73,17 +73,19 @@ let () =
 	
 
 (* let () = print_endline ("Start parsing universe file.") *)
-let user_universe = (Json_zephyrous_output_j.universe_of_string buffer)
+let user_universe = (Json_zephyrous_output_j.universe_of_string buffer)*)
+let user_universe = (Json_zephyrous_output_j.read_universe (Yojson.Safe.init_lexer ()) (Lexing.from_channel (!universe_channel)))
 
 (* read configuration file *)
-let file_length = (in_channel_length !conf_channel) 
+(*let file_length = (in_channel_length !conf_channel) 
 let buffer = (String.create file_length)
 let () =
 	(really_input !conf_channel buffer 0 (file_length - 1));
   (close_in !conf_channel)
 
 (* let () = print_endline ("Start parsing final configuration file.") *)
-let user_conf = (Json_zephyrous_output_j.configuration_of_string buffer) 
+let user_conf = (Json_zephyrous_output_j.configuration_of_string buffer) *)
+let user_conf = (Json_zephyrous_output_j.read_configuration (Yojson.Safe.init_lexer ()) (Lexing.from_channel (!conf_channel)))
 
 (* convert universe into internal representation and replicate the components in the final configuration *)
 let universe = Replicator.combine_universe_configurator (translate user_universe) user_conf
@@ -96,7 +98,7 @@ let targets = (Gg.Node.build_targets universe target_pairs)
 let ggraph = (Ggraph.create universe) 
 
 let () =
-	let file_buffer = ref (Buffer.create 500) in ();
+	let file_buffer = ref (Buffer.create 500) in (); 
 	
 	IFDEF VERBOSE THEN
   (Printf.bprintf !file_buffer "%s\n" "UNIVERSE");

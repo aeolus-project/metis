@@ -219,7 +219,8 @@
         }, 
         {
           "provide": {
-            "@Httpd/Active/start": 1
+            "@Httpd/Active/start": 1,
+            "@Httpd/Configured/get_document_root": 1
           }, 
           "require": {}, 
           "name": "Active"
