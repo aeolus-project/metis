@@ -456,16 +456,35 @@ module T =
       let set_inst_edge vertex dst_vertex gnode_ref =
         let new_inst_edge = (Inst_edge.make gnode_ref dst_vertex) in
         vertex.inst_edge <- (Some new_inst_edge) 
-
-      let add_go_edge vertex edge =
-        vertex.go_edges <- edge :: vertex.go_edges;
-				let dest_vertex = !(Dep_edge.get_dest edge) in
-				dest_vertex.nr_in_edges <- (dest_vertex.nr_in_edges + 1)
-
+			
+(*				function
+				| [] -> false
+        | (h :: t) when h = edge ->  true 
+        | (h :: t) ->  ((is_present_edge edge) t) *)
+			
+			let add_go_edge vertex edge = 
+				if not (List.exists (Dep_edge.eq edge) vertex.go_edges) then
+					begin
+						vertex.go_edges <- edge :: vertex.go_edges;
+    				let dest_vertex = !(Dep_edge.get_dest edge) in
+    				dest_vertex.nr_in_edges <- (dest_vertex.nr_in_edges + 1)
+					end
+				else
+					IFDEF VERBOSE THEN
+						(print_string "Attention: Trying to duplicate a go edge. Patched but probem to fix\n")
+					END
+					
       let add_return_edge vertex edge =
-        vertex.return_edges <- edge :: vertex.return_edges;     
-				let dest_vertex = !(Dep_edge.get_dest edge) in
-				dest_vertex.nr_in_edges <- (dest_vertex.nr_in_edges + 1)
+        if not (List.exists (Dep_edge.eq edge) vertex.return_edges) then
+					begin
+						vertex.return_edges <- edge :: vertex.return_edges;     
+						let dest_vertex = !(Dep_edge.get_dest edge) in
+						dest_vertex.nr_in_edges <- (dest_vertex.nr_in_edges + 1)
+					end
+				else
+					IFDEF VERBOSE THEN
+						(print_string "Attention: Trying to duplicate a return edge. Patched but probem to fix\n")
+					END
 			
 			let remove_go_edge file_buffer vertex edge =
 				vertex.go_edges <- (Dep_edge.remove_edge edge vertex.go_edges);
@@ -972,7 +991,7 @@ module T =
 				if candidates = [] then
 					raise No_candidates_for_duplication
 				else 
-					(print_endline ("The list of candidates is the following one: " ^ (to_string_list candidates)));
+					(* (print_endline ("The list of candidates is the following one: " ^ (to_string_list candidates))); *)
 					(Printf.bprintf !file_buffer "%s\n" ("The list of candidates is the following one: " ^ (to_string_list candidates)));
 					let duplicate_vertex = (List.hd candidates) in
 					duplicate_vertex
@@ -1080,16 +1099,24 @@ module T =
 			let duplicate vertices plan to_visit_stack file_buffer =
 				(* find instance to duplicate *)
 				let duplicate_vertex = (find_duplicate_vertex vertices file_buffer) in
-				(print_endline ("\nChosen vertex for splitting = " ^ (to_string_with_id duplicate_vertex)));
-				(Printf.bprintf !file_buffer "%s\n" ("Chosen vertex for splitting = " ^ (to_string_with_id duplicate_vertex)));
+				IFDEF VERBOSE THEN
+  				(print_endline ("\nChosen vertex for splitting = " ^ (to_string_with_id duplicate_vertex)));
+  				(Printf.bprintf !file_buffer "%s\n" ("Chosen vertex for splitting = " ^ (to_string_with_id duplicate_vertex)));
+				END;
 				(* build duplicate vertex *)
 				let new_vertex = (make_dupl_instance duplicate_vertex) in
-				(print_endline ("\nBuilt the following new vertex = " ^ (to_string_with_id new_vertex)));
-				(Printf.bprintf !file_buffer "%s\n" ("Built the following new vertex = " ^ (to_string_with_id new_vertex)));
+				IFDEF VERBOSE THEN
+  				(print_endline ("\nBuilt the following new vertex = " ^ (to_string_with_id new_vertex)));
+  				(Printf.bprintf !file_buffer "%s\n" ("Built the following new vertex = " ^ (to_string_with_id new_vertex)));
+				END;
 				(* add new vertex to vertices list *)
 				vertices := new_vertex :: !vertices;
 				(* for all vertices pointing to <i,x,y> move return/red edge to new instance <i',x,e> *)
 				let points_to_return_edges = (find_return_predecessors duplicate_vertex !vertices) in
+				IFDEF VERBOSE THEN
+					(print_endline ("\nNumber of incoming arrows " ^ (string_of_int duplicate_vertex.nr_in_edges)));
+					(print_endline ("\nNumber of moved arrows " ^ (string_of_int (List.length points_to_return_edges))));
+				END;
 				(List.iter (manage_return_edges duplicate_vertex new_vertex to_visit_stack file_buffer) points_to_return_edges);
 				(* fix plan to deal with new instance i' *)
 				let orig_inst_id = duplicate_vertex.id in
@@ -1301,6 +1328,7 @@ module T =
 								END;
 								let vertex = (duplicate vertices plan toVisit file_buffer) in begin
 									if vertex.nr_in_edges = 0 then begin
+										
 										(Stack.push vertex toVisit);
 										IFDEF VERBOSE THEN
 											(Printf.bprintf !file_buffer "%s\n" ("Pushed duplicated vertex: " ^ (to_string_with_id vertex)));

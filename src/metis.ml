@@ -161,9 +161,7 @@ let () =
     	(Instance.print_list file_buffer instance_lines);
 			(Buffer.output_buffer !output_channel !file_buffer);
 		  (Buffer.reset !file_buffer);
-
-			
-		END;
+		END;		
 
 		(* output abstract plan in DOT file *)
 		if !ap_output_channel != stdout then begin
