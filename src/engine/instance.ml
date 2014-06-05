@@ -117,10 +117,12 @@ open T
 	(*						dealing with DOT file representation					*)
 	(************************************************************)
   
+	let dotStringFormat = Str.global_replace (Str.regexp "-") "_"
+  
 	let dot_of_nodes instance =
 		let instance_comment = ("\n\t// Instance line of " ^ instance.id) in
-		let cluster_id = ("cluster_" ^ instance.id) in
-		let header = "\n\tsubgraph " ^ cluster_id ^ " {" in
+		let cluster_id = ("cluster_" ^ (dotStringFormat instance.id)) in
+		let header = "\n\tsubgraph " ^ (dotStringFormat cluster_id) ^ " {" in
 		(*
     let style_str = "\n\tstyle=filled;" in
     let style_str = "\n\tnode[style=filled];" in
@@ -803,8 +805,11 @@ open T
 				END
 			end
 		end
-		with No_pairs -> (Printf.bprintf !file_buffer "%s\n" 
-			 ("DO NOTHING because farthest edge is the SAME as the original edge " ^ (T.Dep_edge.to_string go_edge)))
+		with No_pairs -> 
+			IFDEF VERBOSE THEN
+				(Printf.bprintf !file_buffer "%s\n" 
+			 		("DO NOTHING because farthest edge is the SAME as the original edge " ^ (T.Dep_edge.to_string go_edge)))
+			END
 
 	(** Deal with pair of edges that overlap on all go edges of [vertex]. *)
 	let vertex_fix_enclosing_edges file_buffer inst_lines vertex =
