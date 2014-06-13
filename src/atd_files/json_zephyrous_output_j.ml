@@ -34,6 +34,7 @@ type resource_provide_arity = Json_zephyrous_output_t.resource_provide_arity
 type state = Json_zephyrous_output_t.state = {
   state_name (*atd name *): state_name;
   state_initial (*atd initial *): bool;
+  state_final (*atd final *): bool;
   state_provide (*atd provide *): (port_name * provide_arity) list;
   state_require (*atd require *): (port_name * require_arity) list;
   state_conflict (*atd conflict *): port_name list;
@@ -381,6 +382,15 @@ let write_state : _ -> state -> _ = (
       is_first := false
     else
       Bi_outbuf.add_char ob ',';
+    Bi_outbuf.add_string ob "\"final\":";
+    (
+      Yojson.Safe.write_bool
+    )
+      ob x.state_final;
+    if !is_first then
+      is_first := false
+    else
+      Bi_outbuf.add_char ob ',';
     Bi_outbuf.add_string ob "\"provide\":";
     (
       write__1
@@ -427,6 +437,7 @@ let read_state = (
       {
         state_name = Obj.magic 0.0;
         state_initial = false;
+        state_final = false;
         state_provide = [];
         state_require = [];
         state_conflict = [];
@@ -451,6 +462,14 @@ let read_state = (
                   -1
                 )
               )
+            | 5 -> (
+                if String.unsafe_get s pos = 'f' && String.unsafe_get s (pos+1) = 'i' && String.unsafe_get s (pos+2) = 'n' && String.unsafe_get s (pos+3) = 'a' && String.unsafe_get s (pos+4) = 'l' then (
+                  2
+                )
+                else (
+                  -1
+                )
+              )
             | 7 -> (
                 match String.unsafe_get s pos with
                   | 'i' -> (
@@ -463,7 +482,7 @@ let read_state = (
                     )
                   | 'p' -> (
                       if String.unsafe_get s (pos+1) = 'r' && String.unsafe_get s (pos+2) = 'o' && String.unsafe_get s (pos+3) = 'v' && String.unsafe_get s (pos+4) = 'i' && String.unsafe_get s (pos+5) = 'd' && String.unsafe_get s (pos+6) = 'e' then (
-                        2
+                        3
                       )
                       else (
                         -1
@@ -471,7 +490,7 @@ let read_state = (
                     )
                   | 'r' -> (
                       if String.unsafe_get s (pos+1) = 'e' && String.unsafe_get s (pos+2) = 'q' && String.unsafe_get s (pos+3) = 'u' && String.unsafe_get s (pos+4) = 'i' && String.unsafe_get s (pos+5) = 'r' && String.unsafe_get s (pos+6) = 'e' then (
-                        3
+                        4
                       )
                       else (
                         -1
@@ -483,7 +502,7 @@ let read_state = (
               )
             | 8 -> (
                 if String.unsafe_get s pos = 'c' && String.unsafe_get s (pos+1) = 'o' && String.unsafe_get s (pos+2) = 'n' && String.unsafe_get s (pos+3) = 'f' && String.unsafe_get s (pos+4) = 'l' && String.unsafe_get s (pos+5) = 'i' && String.unsafe_get s (pos+6) = 'c' && String.unsafe_get s (pos+7) = 't' then (
-                  4
+                  5
                 )
                 else (
                   -1
@@ -491,7 +510,7 @@ let read_state = (
               )
             | 10 -> (
                 if String.unsafe_get s pos = 's' && String.unsafe_get s (pos+1) = 'u' && String.unsafe_get s (pos+2) = 'c' && String.unsafe_get s (pos+3) = 'c' && String.unsafe_get s (pos+4) = 'e' && String.unsafe_get s (pos+5) = 's' && String.unsafe_get s (pos+6) = 's' && String.unsafe_get s (pos+7) = 'o' && String.unsafe_get s (pos+8) = 'r' && String.unsafe_get s (pos+9) = 's' then (
-                  5
+                  6
                 )
                 else (
                   -1
@@ -526,7 +545,7 @@ let read_state = (
             if not (Yojson.Safe.read_null_if_possible p lb) then (
               let v =
                 (
-                  read__1
+                  Ag_oj_run.read_bool
                 ) p lb
               in
               Obj.set_field (Obj.repr x) 2 (Obj.repr v);
@@ -535,7 +554,7 @@ let read_state = (
             if not (Yojson.Safe.read_null_if_possible p lb) then (
               let v =
                 (
-                  read__2
+                  read__1
                 ) p lb
               in
               Obj.set_field (Obj.repr x) 3 (Obj.repr v);
@@ -544,7 +563,7 @@ let read_state = (
             if not (Yojson.Safe.read_null_if_possible p lb) then (
               let v =
                 (
-                  read__3
+                  read__2
                 ) p lb
               in
               Obj.set_field (Obj.repr x) 4 (Obj.repr v);
@@ -553,10 +572,19 @@ let read_state = (
             if not (Yojson.Safe.read_null_if_possible p lb) then (
               let v =
                 (
-                  read__4
+                  read__3
                 ) p lb
               in
               Obj.set_field (Obj.repr x) 5 (Obj.repr v);
+            )
+          | 6 ->
+            if not (Yojson.Safe.read_null_if_possible p lb) then (
+              let v =
+                (
+                  read__4
+                ) p lb
+              in
+              Obj.set_field (Obj.repr x) 6 (Obj.repr v);
             )
           | _ -> (
               Yojson.Safe.skip_json p lb
@@ -579,6 +607,14 @@ let read_state = (
                     -1
                   )
                 )
+              | 5 -> (
+                  if String.unsafe_get s pos = 'f' && String.unsafe_get s (pos+1) = 'i' && String.unsafe_get s (pos+2) = 'n' && String.unsafe_get s (pos+3) = 'a' && String.unsafe_get s (pos+4) = 'l' then (
+                    2
+                  )
+                  else (
+                    -1
+                  )
+                )
               | 7 -> (
                   match String.unsafe_get s pos with
                     | 'i' -> (
@@ -591,7 +627,7 @@ let read_state = (
                       )
                     | 'p' -> (
                         if String.unsafe_get s (pos+1) = 'r' && String.unsafe_get s (pos+2) = 'o' && String.unsafe_get s (pos+3) = 'v' && String.unsafe_get s (pos+4) = 'i' && String.unsafe_get s (pos+5) = 'd' && String.unsafe_get s (pos+6) = 'e' then (
-                          2
+                          3
                         )
                         else (
                           -1
@@ -599,7 +635,7 @@ let read_state = (
                       )
                     | 'r' -> (
                         if String.unsafe_get s (pos+1) = 'e' && String.unsafe_get s (pos+2) = 'q' && String.unsafe_get s (pos+3) = 'u' && String.unsafe_get s (pos+4) = 'i' && String.unsafe_get s (pos+5) = 'r' && String.unsafe_get s (pos+6) = 'e' then (
-                          3
+                          4
                         )
                         else (
                           -1
@@ -611,7 +647,7 @@ let read_state = (
                 )
               | 8 -> (
                   if String.unsafe_get s pos = 'c' && String.unsafe_get s (pos+1) = 'o' && String.unsafe_get s (pos+2) = 'n' && String.unsafe_get s (pos+3) = 'f' && String.unsafe_get s (pos+4) = 'l' && String.unsafe_get s (pos+5) = 'i' && String.unsafe_get s (pos+6) = 'c' && String.unsafe_get s (pos+7) = 't' then (
-                    4
+                    5
                   )
                   else (
                     -1
@@ -619,7 +655,7 @@ let read_state = (
                 )
               | 10 -> (
                   if String.unsafe_get s pos = 's' && String.unsafe_get s (pos+1) = 'u' && String.unsafe_get s (pos+2) = 'c' && String.unsafe_get s (pos+3) = 'c' && String.unsafe_get s (pos+4) = 'e' && String.unsafe_get s (pos+5) = 's' && String.unsafe_get s (pos+6) = 's' && String.unsafe_get s (pos+7) = 'o' && String.unsafe_get s (pos+8) = 'r' && String.unsafe_get s (pos+9) = 's' then (
-                    5
+                    6
                   )
                   else (
                     -1
@@ -654,7 +690,7 @@ let read_state = (
               if not (Yojson.Safe.read_null_if_possible p lb) then (
                 let v =
                   (
-                    read__1
+                    Ag_oj_run.read_bool
                   ) p lb
                 in
                 Obj.set_field (Obj.repr x) 2 (Obj.repr v);
@@ -663,7 +699,7 @@ let read_state = (
               if not (Yojson.Safe.read_null_if_possible p lb) then (
                 let v =
                   (
-                    read__2
+                    read__1
                   ) p lb
                 in
                 Obj.set_field (Obj.repr x) 3 (Obj.repr v);
@@ -672,7 +708,7 @@ let read_state = (
               if not (Yojson.Safe.read_null_if_possible p lb) then (
                 let v =
                   (
-                    read__3
+                    read__2
                   ) p lb
                 in
                 Obj.set_field (Obj.repr x) 4 (Obj.repr v);
@@ -681,10 +717,19 @@ let read_state = (
               if not (Yojson.Safe.read_null_if_possible p lb) then (
                 let v =
                   (
-                    read__4
+                    read__3
                   ) p lb
                 in
                 Obj.set_field (Obj.repr x) 5 (Obj.repr v);
+              )
+            | 6 ->
+              if not (Yojson.Safe.read_null_if_possible p lb) then (
+                let v =
+                  (
+                    read__4
+                  ) p lb
+                in
+                Obj.set_field (Obj.repr x) 6 (Obj.repr v);
               )
             | _ -> (
                 Yojson.Safe.skip_json p lb

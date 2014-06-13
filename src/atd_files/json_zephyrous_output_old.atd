@@ -17,7 +17,7 @@
 (*                                                                          *)
 (****************************************************************************)
 
-<doc text="Type definition for syntax version.">
+<doc text="Type definition for stateful syntax version.">
 
 type version <ocaml from="Json_versions"> = abstract
 
@@ -25,13 +25,14 @@ type version <ocaml from="Json_versions"> = abstract
 <doc text="Type definitions for naming.">
 
 type component_type_name = string
+type state_name          = string
 type port_name           = string
 type component_name      = string
 type package_name        = string
 type repository_name     = string
 type location_name       = string
 type resource_name       = string
-type state_name			 = string
+
 
 
 
@@ -42,18 +43,18 @@ type require_arity = int
 type resource_consumption   = int
 type resource_provide_arity = int (* Better name? *)
 
-type state_type = {
-  name 							    : state_name;
-  ~provide  <ocaml default="[]">    : (port_name * provide_arity) list <json repr = "object">;
-  ~require  <ocaml default="[]">    : (port_name * require_arity) list <json repr = "object">;
-  ~conflict <ocaml default="[]">    : port_name list;
-  ~successors <ocaml default="[]">  : state_name list;
-  ~initial <ocaml default="false" >  : bool
+type state = {
+  name                                : state_name;
+  ~initial    <ocaml default="false"> : bool;
+  ~provide    <ocaml default="[]">    : (port_name * provide_arity) list <json repr = "object">;
+  ~require    <ocaml default="[]">    : (port_name * require_arity) list <json repr = "object">;
+  ~conflict   <ocaml default="[]">    : port_name list;
+  ~successors <ocaml default="[]">    : state_name list;
 } <ocaml field_prefix="state_">
 
 type component_type = {
   name                           : component_type_name;
-  states						 : state_type list; 
+  states                         : state list;
   ~consume  <ocaml default="[]"> : (resource_name * resource_consumption) list <json repr = "object"> 
 } <ocaml field_prefix="component_type_">
 
@@ -61,7 +62,7 @@ type component_types = component_type list
 
 type package = {
   name                           : package_name;
-  ~depend   <ocaml default="[]"> : (package_name list) list;
+  ~depend   <ocaml default="[]"> : package_name list list;
   ~conflict <ocaml default="[]"> : package_name list;
   ~consume  <ocaml default="[]"> : (resource_name * resource_consumption) list <json repr = "object">
 } <ocaml field_prefix="package_">
@@ -75,13 +76,18 @@ type repository = {
 
 type repositories = repository list
 
-type package_names = (repository_name * package_name) list
+type implementation_package = {
+  repository : repository_name;
+  package    : package_name;
+} <ocaml field_prefix="implementation_package_">
+
+type implementation_packages = implementation_package list
   (* This definition is useless, but ATD won't swallow the next one with a type which has nested lists and tuples in the same type. WHY? *)
 
 type universe = {
   version                               : version;
   ~component_types <ocaml default="[]"> : component_types;
-  ~implementation  <ocaml default="[]"> : (component_type_name * package_names) list <json repr = "object">; (* mapping from component type name to sets of package names *)
+  ~implementation  <ocaml default="[]"> : (component_type_name * implementation_packages) list <json repr = "object">; (* mapping from component type name to sets of package names *)
   ~repositories    <ocaml default="[]"> : repositories
 } <ocaml field_prefix="universe_">
 
@@ -107,8 +113,8 @@ type component = {
     <json name="type"> 
     <ocaml name="component_type"> : component_type_name;
   (* This is a little workaround around the little problem, that the word "type" is an ATD keyword. *)
+  state                           : state_name;
   location                        : location_name;
-  state							  : state_name;
 } <ocaml field_prefix="component_">
 
 type binding = {
@@ -123,14 +129,3 @@ type configuration = {
   ~components <ocaml default="[]"> : component list;
   ~bindings   <ocaml default="[]"> : binding list;
 } <ocaml field_prefix="configuration_">
-
-
-(* 
- * Correctness: 
- *
- * 1. the validity of components           (ports: requires / provides, conflicts)
- * 2. the validity of implementation       (all components are implemented by packages)
- * 3. the validity of package dependencies (all package dependencies are satisfied, no package conflicts are violated)
- * 4. the validity of resource consumption (all consumed resources are provided)
- *
- *)

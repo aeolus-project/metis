@@ -34,6 +34,7 @@ type resource_provide_arity = Json_zephyrous_output_t.resource_provide_arity
 type state = Json_zephyrous_output_t.state = {
   state_name (*atd name *): state_name;
   state_initial (*atd initial *): bool;
+  state_final (*atd final *): bool;
   state_provide (*atd provide *): (port_name * provide_arity) list;
   state_require (*atd require *): (port_name * require_arity) list;
   state_conflict (*atd conflict *): port_name list;
@@ -263,6 +264,7 @@ let validate_configuration : _ -> configuration -> _ = (
 let create_state 
   ~state_name
   ?(state_initial = false)
+  ?(state_final = false)
   ?(state_provide = [])
   ?(state_require = [])
   ?(state_conflict = [])
@@ -271,6 +273,7 @@ let create_state
   {
     state_name = state_name;
     state_initial = state_initial;
+    state_final = state_final;
     state_provide = state_provide;
     state_require = state_require;
     state_conflict = state_conflict;
