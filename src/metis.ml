@@ -65,18 +65,20 @@ let () =
     usage
 
 
+    
 
 (* let () = print_endline ("Start parsing universe file.") *)
-let user_universe = (Json_zephyrous_output_j.read_universe (Yojson.Safe.init_lexer ()) (Lexing.from_channel (!universe_channel)))
+let user_universe = 
+  (Json_zephyrous_output_j.read_universe (Yojson.Safe.init_lexer ()) (Lexing.from_channel (!universe_channel)))
 
-(* let () = print_endline ("Start parsing final configuration file.") *)
-let user_conf = (Json_zephyrous_output_j.read_configuration (Yojson.Safe.init_lexer ()) (Lexing.from_channel (!conf_channel)))
-
-(* convert universe into internal representation and replicate the components in the final configuration *)
-let universe = Replicator.combine_universe_configurator (translate user_universe) user_conf
-
-(* transform a list of comp_name state_name into a list of comp_type and state ref *)
-let target_pairs = Replicator.get_targets user_conf
+let (universe, target_pairs) =
+  if !target_component_name = "" then
+    (* let () = print_endline ("Start parsing final configuration file.") *)
+    let user_conf = (Json_zephyrous_output_j.read_configuration (Yojson.Safe.init_lexer ()) (Lexing.from_channel (!conf_channel))) in 
+      (* convert universe into internal representation and replicate the components in the final configuration *)
+      ( Replicator.combine_universe_configurator (translate user_universe) user_conf, Replicator.get_targets user_conf)
+  else (translate user_universe, [(!target_component_name,!target_state)])  
+  
 let targets = (Gg.Node.build_targets universe target_pairs)
 
 (* build the reachability graph (previously known as G-graph) *)
