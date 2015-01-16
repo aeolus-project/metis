@@ -1,0 +1,178 @@
+// Abstract plan in DOT file representation 
+
+digraph {
+
+	// Instance line of varnish
+	subgraph cluster_varnish {
+		node[style=filled, color=lightgrey];
+		"varnish (C,Installed)" -> "varnish (Installed,Configured)";
+		"varnish (Installed,Configured)" -> "varnish (Configured,Active.ActiveSysD)";
+		"varnish (Configured,Active.ActiveSysD)" -> "varnish (Active.ActiveSysD,Active)";
+		"varnish (Active.ActiveSysD,Active)" -> "varnish (Active,D)";
+		label="VARNISH";
+	}
+
+	// Instance line of wordpress-3
+	subgraph cluster_wordpress_3 {
+		node[style=filled, color=lightgrey];
+		"wordpress-3 (C,Installed)" -> "wordpress-3 (Installed,Template)";
+		"wordpress-3 (Installed,Template)" -> "wordpress-3 (Template,Configured)";
+		"wordpress-3 (Template,Configured)" -> "wordpress-3 (Configured,Active)";
+		"wordpress-3 (Configured,Active)" -> "wordpress-3 (Active,ActiveWithNfs)";
+		"wordpress-3 (Active,ActiveWithNfs)" -> "wordpress-3 (ActiveWithNfs,D)";
+		label="WORDPRESS-3";
+	}
+
+	// Instance line of wordpress-2
+	subgraph cluster_wordpress_2 {
+		node[style=filled, color=lightgrey];
+		"wordpress-2 (C,Installed)" -> "wordpress-2 (Installed,Template)";
+		"wordpress-2 (Installed,Template)" -> "wordpress-2 (Template,Configured)";
+		"wordpress-2 (Template,Configured)" -> "wordpress-2 (Configured,Active)";
+		"wordpress-2 (Configured,Active)" -> "wordpress-2 (Active,ActiveWithNfs)";
+		"wordpress-2 (Active,ActiveWithNfs)" -> "wordpress-2 (ActiveWithNfs,D)";
+		label="WORDPRESS-2";
+	}
+
+	// Instance line of wordpress-1
+	subgraph cluster_wordpress_1 {
+		node[style=filled, color=lightgrey];
+		"wordpress-1 (C,Installed)" -> "wordpress-1 (Installed,Template)";
+		"wordpress-1 (Installed,Template)" -> "wordpress-1 (Template,Configured)";
+		"wordpress-1 (Template,Configured)" -> "wordpress-1 (Configured,Active)";
+		"wordpress-1 (Configured,Active)" -> "wordpress-1 (Active,ActiveWithNfs)";
+		"wordpress-1 (Active,ActiveWithNfs)" -> "wordpress-1 (ActiveWithNfs,D)";
+		label="WORDPRESS-1";
+	}
+
+	// Instance line of nfs_client-1
+	subgraph cluster_nfs_client_1 {
+		node[style=filled, color=lightgrey];
+		"nfs_client-1 (C,Installed)" -> "nfs_client-1 (Installed,Active)";
+		"nfs_client-1 (Installed,Active)" -> "nfs_client-1 (Active,D)";
+		label="NFS_CLIENT-1";
+	}
+
+	// Instance line of httpd-1
+	subgraph cluster_httpd_1 {
+		node[style=filled, color=lightgrey];
+		"httpd-1 (C,Installed)" -> "httpd-1 (Installed,Configured)";
+		"httpd-1 (Installed,Configured)" -> "httpd-1 (Configured,Active)";
+		"httpd-1 (Configured,Active)" -> "httpd-1 (Active,D)";
+		label="HTTPD-1";
+	}
+
+	// Instance line of nfs_client-2
+	subgraph cluster_nfs_client_2 {
+		node[style=filled, color=lightgrey];
+		"nfs_client-2 (C,Installed)" -> "nfs_client-2 (Installed,Active)";
+		"nfs_client-2 (Installed,Active)" -> "nfs_client-2 (Active,D)";
+		label="NFS_CLIENT-2";
+	}
+
+	// Instance line of httpd-2
+	subgraph cluster_httpd_2 {
+		node[style=filled, color=lightgrey];
+		"httpd-2 (C,Installed)" -> "httpd-2 (Installed,Configured)";
+		"httpd-2 (Installed,Configured)" -> "httpd-2 (Configured,Active)";
+		"httpd-2 (Configured,Active)" -> "httpd-2 (Active,D)";
+		label="HTTPD-2";
+	}
+
+	// Instance line of nfs_client-3
+	subgraph cluster_nfs_client_3 {
+		node[style=filled, color=lightgrey];
+		"nfs_client-3 (C,Installed)" -> "nfs_client-3 (Installed,Active)";
+		"nfs_client-3 (Installed,Active)" -> "nfs_client-3 (Active,D)";
+		label="NFS_CLIENT-3";
+	}
+
+	// Instance line of mysql
+	subgraph cluster_mysql {
+		node[style=filled, color=lightgrey];
+		"mysql (C,Installed.InstalledOnMBS)" -> "mysql (Installed.InstalledOnMBS,Installed)";
+		"mysql (Installed.InstalledOnMBS,Installed)" -> "mysql (Installed,SetRootPassword)";
+		"mysql (Installed,SetRootPassword)" -> "mysql (SetRootPassword,Configured)";
+		"mysql (SetRootPassword,Configured)" -> "mysql (Configured,Active.ActiveOnMBS)";
+		"mysql (Configured,Active.ActiveOnMBS)" -> "mysql (Active.ActiveOnMBS,Active)";
+		"mysql (Active.ActiveOnMBS,Active)" -> "mysql (Active,D)";
+		label="MYSQL";
+	}
+
+	// Instance line of nfs_server
+	subgraph cluster_nfs_server {
+		node[style=filled, color=lightgrey];
+		"nfs_server (C,Installed)" -> "nfs_server (Installed,Configured)";
+		"nfs_server (Installed,Configured)" -> "nfs_server (Configured,Active)";
+		"nfs_server (Configured,Active)" -> "nfs_server (Active,D)";
+		label="NFS_SERVER";
+	}
+
+	// Instance line of httpd-3
+	subgraph cluster_httpd_3 {
+		node[style=filled, color=lightgrey];
+		"httpd-3 (C,Installed)" -> "httpd-3 (Installed,Configured)";
+		"httpd-3 (Installed,Configured)" -> "httpd-3 (Configured,Active)";
+		"httpd-3 (Configured,Active)" -> "httpd-3 (Active,D)";
+		label="HTTPD-3";
+	}
+	// Edges from instance line of varnish
+		"varnish (Active,D)" -> "wordpress-1 (ActiveWithNfs,D)" [style=bold, label="@Wordpress/ActiveWithNfs/get_website-1", color=red]; 
+		"varnish (Active,D)" -> "wordpress-2 (ActiveWithNfs,D)" [style=bold, label="@Wordpress/ActiveWithNfs/get_website-2", color=red]; 
+		"varnish (Active,D)" -> "wordpress-3 (ActiveWithNfs,D)" [style=bold, label="@Wordpress/ActiveWithNfs/get_website-3", color=red];
+
+	// Edges from instance line of wordpress-3
+		"wordpress-3 (Active,ActiveWithNfs)" -> "varnish (Installed,Configured)" [style=bold, label="@Wordpress/ActiveWithNfs/get_website-3", color=blue];
+		"wordpress-3 (ActiveWithNfs,D)" -> "httpd-3 (Active,D)" [style=bold, label="@Httpd/Configured/get_document_root-3", color=red]; 
+		"wordpress-3 (ActiveWithNfs,D)" -> "nfs_server (Active,D)" [style=bold, label="@Nfs_server/Active/get_dir", color=red]; 
+		"wordpress-3 (ActiveWithNfs,D)" -> "mysql (Active,D)" [style=bold, label="@Mysql/Active/add_database", color=red]; 
+		"wordpress-3 (ActiveWithNfs,D)" -> "nfs_client-3 (Active,D)" [style=bold, label="@Nfs_client/Active/mount-3", color=red]; 
+		"wordpress-3 (ActiveWithNfs,D)" -> "httpd-3 (Active,D)" [style=bold, label="@Httpd/Active/start-3", color=red];
+
+	// Edges from instance line of wordpress-2
+		"wordpress-2 (Active,ActiveWithNfs)" -> "varnish (Installed,Configured)" [style=bold, label="@Wordpress/ActiveWithNfs/get_website-2", color=blue];
+		"wordpress-2 (ActiveWithNfs,D)" -> "httpd-2 (Active,D)" [style=bold, label="@Httpd/Configured/get_document_root-2", color=red]; 
+		"wordpress-2 (ActiveWithNfs,D)" -> "nfs_server (Active,D)" [style=bold, label="@Nfs_server/Active/get_dir", color=red]; 
+		"wordpress-2 (ActiveWithNfs,D)" -> "mysql (Active,D)" [style=bold, label="@Mysql/Active/add_database", color=red]; 
+		"wordpress-2 (ActiveWithNfs,D)" -> "nfs_client-2 (Active,D)" [style=bold, label="@Nfs_client/Active/mount-2", color=red]; 
+		"wordpress-2 (ActiveWithNfs,D)" -> "httpd-2 (Active,D)" [style=bold, label="@Httpd/Active/start-2", color=red];
+
+	// Edges from instance line of wordpress-1
+		"wordpress-1 (Active,ActiveWithNfs)" -> "varnish (Installed,Configured)" [style=bold, label="@Wordpress/ActiveWithNfs/get_website-1", color=blue];
+		"wordpress-1 (ActiveWithNfs,D)" -> "httpd-1 (Active,D)" [style=bold, label="@Httpd/Configured/get_document_root-1", color=red]; 
+		"wordpress-1 (ActiveWithNfs,D)" -> "nfs_server (Active,D)" [style=bold, label="@Nfs_server/Active/get_dir", color=red]; 
+		"wordpress-1 (ActiveWithNfs,D)" -> "mysql (Active,D)" [style=bold, label="@Mysql/Active/add_database", color=red]; 
+		"wordpress-1 (ActiveWithNfs,D)" -> "nfs_client-1 (Active,D)" [style=bold, label="@Nfs_client/Active/mount-1", color=red]; 
+		"wordpress-1 (ActiveWithNfs,D)" -> "httpd-1 (Active,D)" [style=bold, label="@Httpd/Active/start-1", color=red];
+
+	// Edges from instance line of nfs_client-1
+		"nfs_client-1 (Installed,Active)" -> "wordpress-1 (Active,ActiveWithNfs)" [style=bold, label="@Nfs_client/Active/mount-1", color=blue];
+
+	// Edges from instance line of httpd-1
+		"httpd-1 (Installed,Configured)" -> "wordpress-1 (Configured,Active)" [style=bold, label="@Httpd/Configured/get_document_root-1", color=blue];
+		"httpd-1 (Configured,Active)" -> "wordpress-1 (Configured,Active)" [style=bold, label="@Httpd/Active/start-1", color=blue];
+
+	// Edges from instance line of nfs_client-2
+		"nfs_client-2 (Installed,Active)" -> "wordpress-2 (Active,ActiveWithNfs)" [style=bold, label="@Nfs_client/Active/mount-2", color=blue];
+
+	// Edges from instance line of httpd-2
+		"httpd-2 (Installed,Configured)" -> "wordpress-2 (Configured,Active)" [style=bold, label="@Httpd/Configured/get_document_root-2", color=blue];
+		"httpd-2 (Configured,Active)" -> "wordpress-2 (Configured,Active)" [style=bold, label="@Httpd/Active/start-2", color=blue];
+
+	// Edges from instance line of nfs_client-3
+		"nfs_client-3 (Installed,Active)" -> "wordpress-3 (Active,ActiveWithNfs)" [style=bold, label="@Nfs_client/Active/mount-3", color=blue];
+
+	// Edges from instance line of mysql
+		"mysql (Active.ActiveOnMBS,Active)" -> "wordpress-1 (Template,Configured)" [style=bold, label="@Mysql/Active/add_database", color=blue]; 
+		"mysql (Active.ActiveOnMBS,Active)" -> "wordpress-2 (Template,Configured)" [style=bold, label="@Mysql/Active/add_database", color=blue]; 
+		"mysql (Active.ActiveOnMBS,Active)" -> "wordpress-3 (Template,Configured)" [style=bold, label="@Mysql/Active/add_database", color=blue];
+
+	// Edges from instance line of nfs_server
+		"nfs_server (Configured,Active)" -> "wordpress-1 (Active,ActiveWithNfs)" [style=bold, label="@Nfs_server/Active/get_dir", color=blue]; 
+		"nfs_server (Configured,Active)" -> "wordpress-2 (Active,ActiveWithNfs)" [style=bold, label="@Nfs_server/Active/get_dir", color=blue]; 
+		"nfs_server (Configured,Active)" -> "wordpress-3 (Active,ActiveWithNfs)" [style=bold, label="@Nfs_server/Active/get_dir", color=blue];
+
+	// Edges from instance line of httpd-3
+		"httpd-3 (Installed,Configured)" -> "wordpress-3 (Configured,Active)" [style=bold, label="@Httpd/Configured/get_document_root-3", color=blue];
+		"httpd-3 (Configured,Active)" -> "wordpress-3 (Configured,Active)" [style=bold, label="@Httpd/Active/start-3", color=blue];
+}

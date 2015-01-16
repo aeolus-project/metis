@@ -1,0 +1,549 @@
+{
+ "implementation": {
+  "Httpd-1": [
+   {
+    "repository": "mbs", 
+    "package": "mbs_stub_package"
+   }
+  ], 
+  "Httpd-2": [
+   {
+    "repository": "mbs", 
+    "package": "mbs_stub_package"
+   }
+  ], 
+  "Httpd-3": [
+   {
+    "repository": "mbs", 
+    "package": "mbs_stub_package"
+   }
+  ], 
+  "Varnish": [
+   {
+    "repository": "mbs", 
+    "package": "mbs_stub_package"
+   }
+  ], 
+  "Wordpress-1": [
+   {
+    "repository": "mbs", 
+    "package": "mbs_stub_package"
+   }
+  ], 
+  "Wordpress-2": [
+   {
+    "repository": "mbs", 
+    "package": "mbs_stub_package"
+   }
+  ], 
+  "Wordpress-3": [
+   {
+    "repository": "mbs", 
+    "package": "mbs_stub_package"
+   }
+  ], 
+  "Nfs_client-1": [
+   {
+    "repository": "mbs", 
+    "package": "mbs_stub_package"
+   }
+  ], 
+  "Nfs_client-2": [
+   {
+    "repository": "mbs", 
+    "package": "mbs_stub_package"
+   }
+  ], 
+  "Nfs_client-3": [
+   {
+    "repository": "mbs", 
+    "package": "mbs_stub_package"
+   }
+  ], 
+  "Mysql": [
+   {
+    "repository": "mbs", 
+    "package": "mbs_stub_package"
+   }
+  ], 
+  "Nfs_server": [
+   {
+    "repository": "mbs", 
+    "package": "mbs_stub_package"
+   }
+  ]
+ }, 
+ "component_types": [
+  {
+   "states": [
+    {
+     "provide": {}, 
+     "require": {}, 
+     "initial": true, 
+     "name": "Installed", 
+     "successors": [
+      "Configured"
+     ]
+    }, 
+    {
+     "provide": {}, 
+     "require": {}, 
+     "successors": [
+      "Active"
+     ], 
+     "name": "Configured"
+    }, 
+    {
+     "provide": {
+      "@Nfs_server/Active/get_dir": 1000
+     }, 
+     "require": {}, 
+     "name": "Active"
+    }
+   ], 
+   "name": "Nfs_server"
+  }, 
+  {
+   "states": [
+    {
+     "provide": {}, 
+     "require": {}, 
+     "initial": true, 
+     "name": "Installed", 
+     "successors": [
+      "Template"
+     ]
+    }, 
+    {
+     "provide": {}, 
+     "require": {}, 
+     "successors": [
+      "Configured"
+     ], 
+     "name": "Template"
+    }, 
+    {
+     "provide": {}, 
+     "require": {
+      "@Mysql/Active/add_database": 1
+     }, 
+     "successors": [
+      "Active"
+     ], 
+     "name": "Configured"
+    }, 
+    {
+     "provide": {}, 
+     "require": {
+      "@Httpd/Active/start-1": 1, 
+      "@Mysql/Active/add_database": 1, 
+      "@Httpd/Configured/get_document_root-1": 1
+     }, 
+     "successors": [
+      "ActiveWithNfs"
+     ], 
+     "name": "Active"
+    }, 
+    {
+     "provide": {
+      "@Wordpress/ActiveWithNfs/get_website-1": 1000
+     }, 
+     "require": {
+      "@Httpd/Configured/get_document_root-1": 1, 
+      "@Nfs_server/Active/get_dir": 1, 
+      "@Mysql/Active/add_database": 1, 
+      "@Nfs_client/Active/mount-1": 1, 
+      "@Httpd/Active/start-1": 1
+     }, 
+     "name": "ActiveWithNfs"
+    }
+   ], 
+   "name": "Wordpress-1"
+  },
+  
+  {
+   "states": [
+    {
+     "provide": {}, 
+     "require": {}, 
+     "initial": true, 
+     "name": "Installed", 
+     "successors": [
+      "Template"
+     ]
+    }, 
+    {
+     "provide": {}, 
+     "require": {}, 
+     "successors": [
+      "Configured"
+     ], 
+     "name": "Template"
+    }, 
+    {
+     "provide": {}, 
+     "require": {
+      "@Mysql/Active/add_database": 1
+     }, 
+     "successors": [
+      "Active"
+     ], 
+     "name": "Configured"
+    }, 
+    {
+     "provide": {}, 
+     "require": {
+      "@Httpd/Active/start-2": 1, 
+      "@Mysql/Active/add_database": 1, 
+      "@Httpd/Configured/get_document_root-2": 1
+     }, 
+     "successors": [
+      "ActiveWithNfs"
+     ], 
+     "name": "Active"
+    }, 
+    {
+     "provide": {
+      "@Wordpress/ActiveWithNfs/get_website-2": 1000
+     }, 
+     "require": {
+      "@Httpd/Configured/get_document_root-2": 1, 
+      "@Nfs_server/Active/get_dir": 1, 
+      "@Mysql/Active/add_database": 1, 
+      "@Nfs_client/Active/mount-2": 1, 
+      "@Httpd/Active/start-2": 1
+     }, 
+     "name": "ActiveWithNfs"
+    }
+   ], 
+   "name": "Wordpress-2"
+  },
+  {
+  "states": [
+    {
+     "provide": {}, 
+     "require": {}, 
+     "initial": true, 
+     "name": "Installed", 
+     "successors": [
+      "Template"
+     ]
+    }, 
+    {
+     "provide": {}, 
+     "require": {}, 
+     "successors": [
+      "Configured"
+     ], 
+     "name": "Template"
+    }, 
+    {
+     "provide": {}, 
+     "require": {
+      "@Mysql/Active/add_database": 1
+     }, 
+     "successors": [
+      "Active"
+     ], 
+     "name": "Configured"
+    }, 
+    {
+     "provide": {}, 
+     "require": {
+      "@Httpd/Active/start-3": 1, 
+      "@Mysql/Active/add_database": 1, 
+      "@Httpd/Configured/get_document_root-3": 1
+     }, 
+     "successors": [
+      "ActiveWithNfs"
+     ], 
+     "name": "Active"
+    }, 
+    {
+     "provide": {
+      "@Wordpress/ActiveWithNfs/get_website-3": 1000
+     }, 
+     "require": {
+      "@Httpd/Configured/get_document_root-3": 1, 
+      "@Nfs_server/Active/get_dir": 1, 
+      "@Mysql/Active/add_database": 1, 
+      "@Nfs_client/Active/mount-3": 1, 
+      "@Httpd/Active/start-3": 1
+     }, 
+     "name": "ActiveWithNfs"
+    }
+   ], 
+   "name": "Wordpress-3"
+  },
+  {
+   "states": [
+    {
+     "provide": {}, 
+     "require": {}, 
+     "initial": true, 
+     "name": "Installed.InstalledOnMBS", 
+     "successors": [
+      "Installed"
+     ]
+    }, 
+    {
+     "provide": {}, 
+     "require": {}, 
+     "successors": [
+      "SetRootPassword"
+     ], 
+     "name": "Installed"
+    }, 
+    {
+     "provide": {}, 
+     "require": {}, 
+     "successors": [
+      "Configured"
+     ], 
+     "name": "SetRootPassword"
+    }, 
+    {
+     "provide": {}, 
+     "require": {}, 
+     "successors": [
+      "Active.ActiveOnMBS"
+     ], 
+     "name": "Configured"
+    }, 
+    {
+     "provide": {}, 
+     "require": {}, 
+     "successors": [
+      "Active"
+     ], 
+     "name": "Active.ActiveOnMBS"
+    }, 
+    {
+     "provide": {
+      "@Mysql/Active/add_database": 1000
+     }, 
+     "require": {}, 
+     "name": "Active"
+    }
+   ], 
+   "name": "Mysql"
+  }, 
+  {
+   "states": [
+    {
+     "provide": {}, 
+     "require": {}, 
+     "initial": true, 
+     "name": "Installed", 
+     "successors": [
+      "Configured"
+     ]
+    }, 
+    {
+     "provide": {
+      "@Httpd/Configured/get_document_root-1": 1
+     }, 
+     "require": {}, 
+     "successors": [
+      "Active"
+     ], 
+     "name": "Configured"
+    }, 
+    {
+     "provide": {
+      "@Httpd/Active/start-1": 1, 
+      "@Httpd/Configured/get_document_root-1": 1
+     }, 
+     "require": {}, 
+     "name": "Active"
+    }
+   ], 
+   "name": "Httpd-1"
+  }, 
+  {
+   "states": [
+    {
+     "provide": {}, 
+     "require": {}, 
+     "initial": true, 
+     "name": "Installed", 
+     "successors": [
+      "Configured"
+     ]
+    }, 
+    {
+     "provide": {
+      "@Httpd/Configured/get_document_root-2": 1
+     }, 
+     "require": {}, 
+     "successors": [
+      "Active"
+     ], 
+     "name": "Configured"
+    }, 
+    {
+     "provide": {
+      "@Httpd/Active/start-2": 1, 
+      "@Httpd/Configured/get_document_root-2": 1
+     }, 
+     "require": {}, 
+     "name": "Active"
+    }
+   ], 
+   "name": "Httpd-2"
+  }, 
+  {
+   "states": [
+    {
+     "provide": {}, 
+     "require": {}, 
+     "initial": true, 
+     "name": "Installed", 
+     "successors": [
+      "Configured"
+     ]
+    }, 
+    {
+     "provide": {
+      "@Httpd/Configured/get_document_root-3": 1
+     }, 
+     "require": {}, 
+     "successors": [
+      "Active"
+     ], 
+     "name": "Configured"
+    }, 
+    {
+     "provide": {
+      "@Httpd/Active/start-3": 1, 
+      "@Httpd/Configured/get_document_root-3": 1
+     }, 
+     "require": {}, 
+     "name": "Active"
+    }
+   ], 
+   "name": "Httpd-3"
+  }, 
+  {
+   "states": [
+    {
+     "provide": {}, 
+     "require": {}, 
+     "initial": true, 
+     "name": "Installed", 
+     "successors": [
+      "Active"
+     ]
+    }, 
+    {
+     "provide": {
+      "@Nfs_client/Active/mount-1": 1
+     }, 
+     "require": {}, 
+     "name": "Active"
+    }
+   ], 
+   "name": "Nfs_client-1"
+  }, 
+  {
+   "states": [
+    {
+     "provide": {}, 
+     "require": {}, 
+     "initial": true, 
+     "name": "Installed", 
+     "successors": [
+      "Active"
+     ]
+    }, 
+    {
+     "provide": {
+      "@Nfs_client/Active/mount-2": 1
+     }, 
+     "require": {}, 
+     "name": "Active"
+    }
+   ], 
+   "name": "Nfs_client-2"
+  }, 
+  {
+   "states": [
+    {
+     "provide": {}, 
+     "require": {}, 
+     "initial": true, 
+     "name": "Installed", 
+     "successors": [
+      "Active"
+     ]
+    }, 
+    {
+     "provide": {
+      "@Nfs_client/Active/mount-3": 1
+     }, 
+     "require": {}, 
+     "name": "Active"
+    }
+   ], 
+   "name": "Nfs_client-3"
+  }, 
+  {
+   "states": [
+    {
+     "provide": {}, 
+     "require": {}, 
+     "initial": true, 
+     "name": "Installed", 
+     "successors": [
+      "Configured"
+     ]
+    }, 
+    {
+     "provide": {}, 
+     "require": {
+      "@Wordpress/ActiveWithNfs/get_website-1": 1,
+      "@Wordpress/ActiveWithNfs/get_website-2": 1,
+      "@Wordpress/ActiveWithNfs/get_website-3": 1      
+     }, 
+     "successors": [
+      "Active.ActiveSysD"
+     ], 
+     "name": "Configured"
+    }, 
+    {
+     "provide": {}, 
+     "require": {
+      "@Wordpress/ActiveWithNfs/get_website-1": 1,
+      "@Wordpress/ActiveWithNfs/get_website-2": 1,
+      "@Wordpress/ActiveWithNfs/get_website-3": 1      
+     }, 
+     "successors": [
+      "Active"
+     ], 
+     "name": "Active.ActiveSysD"
+    }, 
+    {
+     "provide": {}, 
+     "require": {
+      "@Wordpress/ActiveWithNfs/get_website-1": 1,
+      "@Wordpress/ActiveWithNfs/get_website-2": 1,
+      "@Wordpress/ActiveWithNfs/get_website-3": 1      
+     }, 
+     "name": "Active"
+    }
+   ], 
+   "name": "Varnish"
+  }
+ ], 
+ "version": 1, 
+ "repositories": [
+  {
+   "packages": [
+    {
+     "name": "mbs_stub_package"
+    }
+   ], 
+   "name": "mbs"
+  }
+ ]
+}
