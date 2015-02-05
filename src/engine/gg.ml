@@ -1032,7 +1032,7 @@ let rec find_trim_path_to_root node =
 let make_id nlist =
   let first_node = (List.hd nlist) in
   let comp_type = !(first_node.res_type) in
-  let instance_name = (String.lowercase comp_type.cname) in
+  let instance_name = comp_type.cname in
   let inst_id = instance_name in
   (*
   let inst_id = (String.concat " " [instance_name; ":"; comp_type.name]) in
